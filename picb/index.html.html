@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calculette PICB — Méthode OB INRS · SanensIA</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,-apple-system,sans-serif;background:#f8f7f4;color:#1a1a18;font-size:15px;line-height:1.6}
+.page{max-width:860px;margin:0 auto;padding:2rem 1.25rem 5rem}
+header{margin-bottom:2rem;padding-bottom:1rem;border-bottom:1px solid #ddd}
+header h1{font-size:20px;font-weight:600}
+header p{font-size:12px;color:#888;margin-top:4px}
+.back-link{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:#888;text-decoration:none;margin-bottom:1rem}
+.back-link:hover{color:#1D9E75}
+.section{background:#fff;border:1px solid #e5e3dc;border-radius:12px;padding:1.25rem;margin-bottom:14px}
+.section-title{font-size:13px;font-weight:600;color:#333;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.step-num{width:22px;height:22px;background:#1D9E75;color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.form-grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+@media(max-width:600px){.form-grid,.form-grid-3{grid-template-columns:1fr}}
+.field{display:flex;flex-direction:column;gap:4px}
+.field label{font-size:11px;color:#666;font-weight:500}
+.field input,.field select{padding:8px 10px;border:1px solid #ddd;border-radius:8px;font-size:13px;background:#fafaf8;color:#1a1a18;width:100%}
+.field input:focus,.field select:focus{outline:none;border-color:#1D9E75}
+.field .unit{font-size:10px;color:#aaa;margin-top:1px}
+.freq-table{width:100%;border-collapse:collapse;font-size:12px}
+.freq-table th{background:#f5f4f0;padding:7px 6px;text-align:center;font-weight:600;border:1px solid #e5e3dc;color:#555}
+.freq-table td{padding:4px 4px;border:1px solid #e5e3dc;text-align:center}
+.freq-table td input{width:100%;border:none;background:transparent;text-align:center;font-size:12px;padding:3px;color:#1a1a18}
+.freq-table td input:focus{outline:1px solid #1D9E75;border-radius:4px}
+.freq-table tr.row-apv{background:#fff8ee}
+.freq-table tr.row-la{background:#eefaf6}
+.btn-calc{display:block;width:100%;padding:13px;margin-top:1rem;background:#1D9E75;color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:600;cursor:pointer}
+.btn-calc:hover{background:#0F6E56}
+.btn-reset{display:block;width:100%;padding:9px;margin-top:8px;background:transparent;color:#aaa;border:1px solid #ddd;border-radius:10px;font-size:12px;cursor:pointer}
+#results{display:none;margin-top:1.5rem}
+.result-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin:1rem 0}
+.rc{background:#fff;border:1px solid #e5e3dc;border-radius:10px;padding:12px 14px;text-align:center}
+.rc-label{font-size:10px;color:#888;margin-bottom:3px}
+.rc-val{font-size:22px;font-weight:700}
+.rc-unit{font-size:11px;color:#aaa}
+.rc-bar{height:5px;border-radius:3px;background:#eee;margin-top:6px;overflow:hidden}
+.rc-bar-fill{height:100%;border-radius:3px}
+.conformite-badge{display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border-radius:10px;font-size:15px;font-weight:700;margin:1rem 0}
+.alert-bbf{background:#FFF3CD;border:1px solid #FFEAA7;border-radius:8px;padding:10px 14px;font-size:12px;color:#856404;margin:10px 0;display:none}
+.res-table{width:100%;border-collapse:collapse;font-size:11px;margin-top:1rem}
+.res-table th{background:#1F4E79;color:#fff;padding:6px 8px;text-align:center;font-weight:600}
+.res-table td{padding:5px 8px;border:1px solid #e5e3dc;text-align:center}
+.res-table tr.row-apv98 td{background:#fff8ee;font-weight:600;color:#854F0B}
+.res-table tr.row-la98 td{background:#fff8ee;font-weight:600;color:#854F0B}
+.res-table tr.row-lf td{background:#EBF3FB}
+.chart-wrap{background:#fff;border:1px solid #e5e3dc;border-radius:10px;padding:1rem;margin:1rem 0}
+.reco-block{border-radius:10px;border:1px solid #e5e3dc;background:#fff;padding:1rem 1.25rem;margin-bottom:8px}
+.reco-block h4{font-size:13px;font-weight:600;margin-bottom:5px}
+.reco-block ul{padding-left:18px}
+.reco-block li{font-size:12px;color:#555;line-height:1.7}
+.source-note{font-size:11px;color:#aaa;margin-top:1.5rem;padding:1rem;background:#f5f4f0;border-radius:8px;line-height:1.7}
+hr.sep{border:none;border-top:1px solid #e5e3dc;margin:1.5rem 0}
+footer{margin-top:3rem;padding-top:1rem;border-top:1px solid #e5e3dc;font-size:11px;color:#aaa;text-align:center}
+footer a{color:#aaa}
+</style>
+</head>
+<body>
+<div class="page">
+
+<a href="../" class="back-link">← SanensIA — Accueil</a>
+
+<header>
+  <h1>Calculette PICB — Méthode par bandes d'octave (OB)</h1>
+  <p>Conforme calculette INRS PICB-VLE-V7.2 · NF EN ISO 4869-2 · APV84 / APV98 · Usage professionnel IPRP/IST</p>
+</header>
+
+<!-- ÉTAPE 1 : Contexte -->
+<div class="section">
+  <div class="section-title"><span class="step-num">1</span> Contexte de la mesure</div>
+  <div class="form-grid">
+    <div class="field"><label>Entreprise</label><input type="text" id="entreprise" placeholder="Nom de l'entreprise"></div>
+    <div class="field"><label>Poste de travail</label><input type="text" id="poste" placeholder="Ex : Opérateur presse"></div>
+    <div class="field"><label>Intervenant (IPRP/IST)</label><input type="text" id="intervenant" placeholder="Nom prénom"></div>
+    <div class="field"><label>Date de mesure</label><input type="date" id="date_mesure"></div>
+    <div class="field"><label>Lex,8h mesuré (dB(A))</label><input type="number" id="lex8h" placeholder="Ex : 91.5" step="0.1"><div class="unit">Niveau d'exposition quotidien mesuré</div></div>
+    <div class="field"><label>Modèle PICB</label><input type="text" id="modele_picb" placeholder="Ex : Cotral QEOS Green K"></div>
+    <div class="field">
+      <label>Type de PICB</label>
+      <select id="type_picb">
+        <option value="4">Type 4 — Bouchon moulé (ex: QEOS)</option>
+        <option value="3">Type 3 — Bouchon standard</option>
+        <option value="2">Type 2 — Serre-tête sur casque</option>
+        <option value="1">Type 1 — Serre-tête simple</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>Formation au port du PICB</label>
+      <select id="formation" onchange="updateKfactor()">
+        <option value="2">Oui → k=2 (recommandation INRS · APV98)</option>
+        <option value="1">Non → k=1 (norme ISO · APV84)</option>
+      </select>
+    </div>
+  </div>
+</div>
+
+<!-- ÉTAPE 2 : Spectre sonométrique -->
+<div class="section">
+  <div class="section-title"><span class="step-num">2</span> Spectre sonométrique — Niveaux Lf par bande d'octave</div>
+  <table class="freq-table">
+    <tr>
+      <th>Fréquence (Hz)</th>
+      <th>63<br><small style="font-weight:400;color:#aaa">optionnel</small></th>
+      <th>125</th><th>250</th><th>500</th><th>1000</th><th>2000</th><th>4000</th><th>8000</th>
+    </tr>
+    <tr class="row-lf">
+      <td style="font-weight:600;color:#1F4E79;text-align:left;padding:4px 8px">Lf (dB)</td>
+      <td><input type="number" id="lf_63" placeholder="—" step="0.1"></td>
+      <td><input type="number" id="lf_125" placeholder="—" step="0.1"></td>
+      <td><input type="number" id="lf_250" placeholder="—" step="0.1"></td>
+      <td><input type="number" id="lf_500" placeholder="—" step="0.1"></td>
+      <td><input type="number" id="lf_1000" placeholder="—" step="0.1"></td>
+      <td><input type="number" id="lf_2000" placeholder="—" step="0.1"></td>
+      <td><input type="number" id="lf_4000" placeholder="—" step="0.1"></td>
+      <td><input type="number" id="lf_8000" placeholder="—" step="0.1"></td>
+    </tr>
+  </table>
+  <p style="font-size:11px;color:#aaa;margin-top:6px">63 Hz facultatif (comme dans la calculette INRS V7.2). Si absent, la bande est exclue du calcul.</p>
+</div>
+
+<!-- ÉTAPE 3 : Données PICB -->
+<div class="section">
+  <div class="section-title"><span class="step-num">3</span> Données PICB — Affaiblissement fabricant (fiche technique)</div>
+  <table class="freq-table">
+    <tr>
+      <th>Paramètre</th>
+      <th>63</th><th>125</th><th>250</th><th>500</th><th>1000</th><th>2000</th><th>4000</th><th>8000</th>
+    </tr>
+    <tr>
+      <td style="font-weight:600;text-align:left;padding:4px 8px">Mf (dB)<br><small style="color:#aaa;font-weight:400">Affaiblissement moyen</small></td>
+      <td><input type="number" id="mf_63" placeholder="—" step="0.1"></td>
+      <td><input type="number" id="mf_125" placeholder="—" step="0.1"></td>
+      <td><input type="number" id="mf_250" placeholder="—" step="0.1"></td>
+      <td><input type="number" id="mf_500" placeholder="—" step="0.1"></td>
+      <td><input type="number" id="mf_1000" placeholder="—" step="0.1"></td>
+      <td><input type="number" id="mf_2000" placeholder="—" step="0.1"></td>
+      <td><input type="number" id="mf_4000" placeholder="—" step="0.1"></td>
+      <td><input type="number" id="mf_8000" placeholder="—" step="0.1"></td>
+    </tr>
+    <tr class="row-apv">
+      <td style="font-weight:600;text-align:left;padding:4px 8px">Sf (dB)<br><small style="color:#aaa;font-weight:400">Écart-type</small></td>
+      <td><input type="number" id="sf_63" placeholder="—" step="0.1"></td>
+      <td><input type="number" id="sf_125" placeholder="—" step="0.1"></td>
+      <td><input type="number" id="sf_250" placeholder="—" step="0.1"></td>
+      <td><input type="number" id="sf_500" placeholder="—" step="0.1"></td>
+      <td><input type="number" id="sf_1000" placeholder="—" step="0.1"></td>
+      <td><input type="number" id="sf_2000" placeholder="—" step="0.1"></td>
+      <td><input type="number" id="sf_4000" placeholder="—" step="0.1"></td>
+      <td><input type="number" id="sf_8000" placeholder="—" step="0.1"></td>
+    </tr>
+  </table>
+
+  <!-- Catalogue rapide -->
+  <div style="margin-top:12px">
+    <label style="font-size:11px;color:#666;font-weight:500">Catalogue QEOS — Remplissage automatique :</label>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:6px">
+      <button type="button" onclick="loadPICB('green_k')" style="font-size:11px;padding:4px 10px;border:1px solid #ddd;border-radius:6px;background:#E1F5EE;color:#085041;cursor:pointer">QEOS Green K (SNR20)</button>
+      <button type="button" onclick="loadPICB('green_o')" style="font-size:11px;padding:4px 10px;border:1px solid #ddd;border-radius:6px;background:#E1F5EE;color:#085041;cursor:pointer">QEOS Green O (SNR24)</button>
+      <button type="button" onclick="loadPICB('green_s')" style="font-size:11px;padding:4px 10px;border:1px solid #ddd;border-radius:6px;background:#E1F5EE;color:#085041;cursor:pointer">QEOS Green S (SNR28)</button>
+      <button type="button" onclick="loadPICB('orange_b6')" style="font-size:11px;padding:4px 10px;border:1px solid #ddd;border-radius:6px;background:#FAEEDA;color:#633806;cursor:pointer">QEOS Orange B6 (SNR26)</button>
+      <button type="button" onclick="loadPICB('orange_c0')" style="font-size:11px;padding:4px 10px;border:1px solid #ddd;border-radius:6px;background:#FAEEDA;color:#633806;cursor:pointer">QEOS Orange C0 (SNR30)</button>
+      <button type="button" onclick="loadPICB('ultrafit')" style="font-size:11px;padding:4px 10px;border:1px solid #ddd;border-radius:6px;background:#f0ede6;color:#555;cursor:pointer">3M UltraFit (SNR29)</button>
+    </div>
+  </div>
+</div>
+
+<button class="btn-calc" onclick="calculate()">Calculer — Méthode OB INRS →</button>
+<button class="btn-reset" onclick="resetAll()">Réinitialiser</button>
+
+<!-- RÉSULTATS -->
+<div id="results">
+  <hr class="sep">
+  <div style="font-size:16px;font-weight:600;margin-bottom:12px">Résultats — Méthode OB (ISO 4869-2 / INRS)</div>
+
+  <div id="conformite-badge-wrap"></div>
+  <div class="alert-bbf" id="alert-bbf">⚠️ Bruit à dominante basse fréquence détecté (Lc − La &gt; 5 dB) — PICB HFA (type Orange A/B) inadaptés. Privilégier QEOS Green O, Green S ou Orange C0/C3.</div>
+
+  <div class="result-cards" id="result-cards"></div>
+
+  <div class="chart-wrap">
+    <div style="position:relative;height:260px"><canvas id="spectrumChart" role="img" aria-label="Graphique spectral comparatif bruit avant et après PICB">Spectre comparatif</canvas></div>
+  </div>
+
+  <div style="font-size:13px;font-weight:600;margin:1rem 0 8px">Tableau détaillé — Méthode OB (format calculette INRS)</div>
+  <div style="overflow-x:auto">
+    <table class="res-table" id="res-table">
+      <thead>
+        <tr><th>Paramètre</th><th>63</th><th>125</th><th>250</th><th>500</th><th>1000</th><th>2000</th><th>4000</th><th>8000</th></tr>
+      </thead>
+      <tbody id="res-tbody"></tbody>
+    </table>
+  </div>
+
+  <hr class="sep">
+  <div style="font-size:14px;font-weight:600;margin-bottom:10px">Recommandations</div>
+  <div id="recos"></div>
+
+  <div class="source-note">
+    <strong>Références :</strong> Calculette INRS PICB-VLE-V7.2 · NF EN ISO 4869-2 · NF EN ISO 9612 · Guide INRS ED 6041 · Directive 2003/10/CE · Décret n°2006-892 · Code du travail Art. R.4431-1 à R.4437-4.<br>
+    <strong>Note :</strong> Cet outil est une aide à la décision à usage professionnel IPRP/IST. Les résultats doivent être interprétés par un professionnel qualifié. Données traitées localement — aucun envoi serveur.
+  </div>
+</div>
+
+<footer>
+  <a href="../">SanensIA</a> · Calculette PICB Méthode OB · IPRP/IST · Données traitées localement
+</footer>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+const FREQS = [63, 125, 250, 500, 1000, 2000, 4000, 8000];
+const PA = [-26.2, -16.1, -8.6, -3.2, 0, 1.2, 1.0, -1.1];
+const PC = [-0.8, -0.2, 0.0, 0.0, 0.0, -0.2, -0.8, -3.0];
+
+const CATALOGUE = {
+  green_k:  { name:'QEOS Green K (SNR20)',  mf:[14.4,15.1,17.6,19.8,21.4,25.7,30.6,30.9], sf:[3.6,3.2,3.7,3.5,3.1,4.4,4.5,4.9] },
+  green_o:  { name:'QEOS Green O (SNR24)',  mf:[17.2,18.3,21.4,24.1,26.2,30.1,35.2,35.8], sf:[3.8,3.5,4.0,3.8,3.4,4.7,4.8,5.1] },
+  green_s:  { name:'QEOS Green S (SNR28)',  mf:[20.1,21.8,25.9,29.2,31.5,35.8,40.1,40.6], sf:[4.1,3.9,4.3,4.0,3.7,5.0,5.1,5.4] },
+  orange_b6:{ name:'QEOS Orange B6 (SNR26)',mf:[12.1,14.8,19.2,23.5,28.4,35.1,38.7,37.4], sf:[3.2,3.0,3.5,3.3,3.0,4.2,4.4,4.7] },
+  orange_c0:{ name:'QEOS Orange C0 (SNR30)',mf:[15.3,18.1,23.4,28.2,33.8,40.5,43.6,42.1], sf:[3.5,3.3,3.8,3.6,3.3,4.5,4.7,5.0] },
+  ultrafit: { name:'3M E-A-R UltraFit (SNR29)', mf:[26.1,28.5,30.4,31.8,33.2,34.0,37.5,38.1], sf:[5.2,4.8,5.1,4.9,4.5,5.3,5.6,5.8] }
+};
+
+function loadPICB(key) {
+  const p = CATALOGUE[key];
+  if (!p) return;
+  FREQS.forEach((f, i) => {
+    const mf = document.getElementById('mf_'+f);
+    const sf = document.getElementById('sf_'+f);
+    if (mf) mf.value = p.mf[i];
+    if (sf) sf.value = p.sf[i];
+  });
+  document.getElementById('modele_picb').value = p.name;
+}
+
+function updateKfactor() {}
+
+function getVal(id) {
+  const el = document.getElementById(id);
+  if (!el || el.value === '' || el.value === null) return null;
+  return parseFloat(el.value);
+}
+
+function logSum(arr) {
+  return 10 * Math.log10(arr.reduce((s, v) => s + Math.pow(10, v/10), 0));
+}
+
+function calculate() {
+  const k = parseInt(document.getElementById('formation').value);
+
+  // Collecter Lf
+  const lf = FREQS.map(f => getVal('lf_'+f));
+  const mf = FREQS.map(f => getVal('mf_'+f));
+  const sf = FREQS.map(f => getVal('sf_'+f));
+
+  // Vérifier données minimales (125–8000 Hz)
+  const missing = [1,2,3,4,5,6,7].filter(i => lf[i] === null || mf[i] === null || sf[i] === null);
+  if (missing.length > 0) {
+    alert('Veuillez remplir les niveaux Lf, Mf et Sf pour les bandes 125 Hz à 8000 Hz.');
+    return;
+  }
+
+  // APV par fréquence
+  const apv84 = FREQS.map((f, i) => (mf[i] !== null && sf[i] !== null) ? mf[i] - sf[i] : null);
+  const apv98 = FREQS.map((f, i) => (mf[i] !== null && sf[i] !== null) ? mf[i] - k*sf[i] : null);
+
+  // Niveaux pondérés A et C (exclure 63 Hz si absent)
+  const activeIdx = lf[0] !== null ? [0,1,2,3,4,5,6,7] : [1,2,3,4,5,6,7];
+
+  const leqA = logSum(activeIdx.map(i => lf[i] + PA[i]));
+  const leqC = logSum(activeIdx.map(i => lf[i] + PC[i]));
+  const lcLa = leqC - leqA;
+
+  // L'A après PICB
+  const la84_arr = activeIdx.filter(i => apv84[i] !== null).map(i => (lf[i] - apv84[i]) + PA[i]);
+  const la98_arr = activeIdx.filter(i => apv98[i] !== null).map(i => (lf[i] - apv98[i]) + PA[i]);
+  const la84 = logSum(la84_arr);
+  const la98 = logSum(la98_arr);
+
+  // Affichage résultats
+  displayResults(lf, apv84, apv98, leqA, leqC, lcLa, la84, la98, k, activeIdx);
+}
+
+function displayResults(lf, apv84, apv98, leqA, leqC, lcLa, la84, la98, k, activeIdx) {
+  // Badge conformité
+  let level, bc, tc, icon;
+  if (la98 < 70) { level='Surprotection — Risque de non-port'; bc='#FFF3CD'; tc='#856404'; icon='⚠️'; }
+  else if (la98 <= 80) { level='Conforme — Zone cible INRS (70–80 dB)'; bc='#E1F5EE'; tc='#085041'; icon='✅'; }
+  else if (la98 <= 85) { level='Limite — Surveillance renforcée'; bc='#FAEEDA'; tc='#854F0B'; icon='⚠️'; }
+  else if (la98 <= 87) { level='Non conforme — Action immédiate'; bc='#FAECE7'; tc='#712B13'; icon='❌'; }
+  else { level='VALEUR LIMITE DÉPASSÉE — Urgence'; bc='#FCEBEB'; tc='#791F1F'; icon='🚨'; }
+
+  document.getElementById('conformite-badge-wrap').innerHTML =
+    `<div class="conformite-badge" style="background:${bc};color:${tc}">${icon} ${level}</div>`;
+
+  // Alerte BBF
+  const bbfAlert = document.getElementById('alert-bbf');
+  bbfAlert.style.display = lcLa > 5 ? 'block' : 'none';
+
+  // Cartes résultats
+  const cards = [
+    { label:'Leq(A)', val:leqA.toFixed(1), unit:'dB(A)', color:'#1F4E79' },
+    { label:'Leq(C)', val:leqC.toFixed(1), unit:'dB(C)', color:'#1F4E79' },
+    { label:'Lc − La', val:lcLa.toFixed(1), unit:'dB', color: lcLa > 5 ? '#854F0B' : '#333' },
+    { label:"L'A (84%)", val:la84.toFixed(1), unit:'dB(A)', color:'#555' },
+    { label:"L'A (98%) INRS", val:la98.toFixed(1), unit:'dB(A)', color:tc },
+  ];
+  document.getElementById('result-cards').innerHTML = cards.map(c =>
+    `<div class="rc"><div class="rc-label">${c.label}</div>
+    <div class="rc-val" style="color:${c.color}">${c.val}</div>
+    <div class="rc-unit">${c.unit}</div></div>`
+  ).join('');
+
+  // Tableau détaillé
+  const rows = [
+    { label:'Lf (dB)', cls:'row-lf', vals: FREQS.map((f,i) => lf[i] !== null ? lf[i].toFixed(1) : '—') },
+    { label:'Pond. A (dB)', cls:'', vals: PA.map(v => v.toFixed(1)) },
+    { label:'APV84 = Mf − Sf', cls:'row-apv', vals: apv84.map(v => v !== null ? v.toFixed(1) : '—') },
+    { label:'APV98 = Mf − k·Sf', cls:'row-apv98', vals: apv98.map(v => v !== null ? v.toFixed(1) : '—') },
+    { label:"L'f (84%) = Lf − APV84", cls:'row-la', vals: FREQS.map((f,i) => (lf[i] !== null && apv84[i] !== null) ? (lf[i]-apv84[i]).toFixed(1) : '—') },
+    { label:"L'f (98%) INRS", cls:'row-la98', vals: FREQS.map((f,i) => (lf[i] !== null && apv98[i] !== null) ? (lf[i]-apv98[i]).toFixed(1) : '—') },
+  ];
+  document.getElementById('res-tbody').innerHTML = rows.map(r =>
+    `<tr class="${r.cls}"><td style="text-align:left;font-weight:600;white-space:nowrap;padding:5px 8px">${r.label}</td>${r.vals.map(v=>`<td>${v}</td>`).join('')}</tr>`
+  ).join('');
+
+  // Graphique spectral
+  if (window._sc) window._sc.destroy();
+  const labels = FREQS.map(f => f+' Hz');
+  const lfData = FREQS.map((f,i) => lf[i]);
+  const la84Data = FREQS.map((f,i) => (lf[i] !== null && apv84[i] !== null) ? lf[i]-apv84[i] : null);
+  const la98Data = FREQS.map((f,i) => (lf[i] !== null && apv98[i] !== null) ? lf[i]-apv98[i] : null);
+
+  const ctx = document.getElementById('spectrumChart').getContext('2d');
+  window._sc = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [
+        { label:'Bruit brut Lf (dB)', data:lfData, borderColor:'#1F4E79', backgroundColor:'rgba(31,78,121,0.08)', borderWidth:2.5, pointRadius:4, tension:0.3 },
+        { label:"L'A(84%) après PICB", data:la84Data, borderColor:'#FF9900', backgroundColor:'transparent', borderWidth:2, borderDash:[6,3], pointRadius:4, tension:0.3 },
+        { label:"L'A(98%) INRS", data:la98Data, borderColor:'#E24B4A', backgroundColor:'transparent', borderWidth:2.5, pointRadius:5, tension:0.3 }
+      ]
+    },
+    options: {
+      responsive:true, maintainAspectRatio:false,
+      plugins: { legend:{ position:'top', labels:{ font:{size:11}, boxWidth:14 } } },
+      scales: {
+        y: { title:{ display:true, text:'Niveau (dB)', font:{size:11} }, ticks:{font:{size:10}} },
+        x: { title:{ display:true, text:'Fréquence (Hz)', font:{size:11} }, ticks:{font:{size:10}} }
+      }
+    }
+  });
+
+  // Recommandations
+  document.getElementById('recos').innerHTML = buildRecos(la98, lcLa, leqA);
+  document.getElementById('results').style.display = 'block';
+  document.getElementById('results').scrollIntoView({behavior:'smooth'});
+}
+
+function buildRecos(la98, lcLa, leqA) {
+  const items = [];
+
+  if (la98 < 70) items.push({t:'Surprotection — Changer de PICB',bc:'#FFF3CD',tc:'#856404',pts:["Le niveau résiduel est inférieur à 70 dB(A) — risque de rejet du PICB par inconfort.","Orienter vers un PICB moins atténuant (SNR plus faible).","Vérifier la cohérence avec le profil spectral du bruit."]});
+  else if (la98 <= 80) items.push({t:'Conformité optimale — Maintenir le PICB actuel',bc:'#E1F5EE',tc:'#085041',pts:["Zone cible INRS : 70–80 dB(A) résiduel.","S'assurer du port effectif du PICB (test CAPA ou EARFIT recommandé).","Renouveler l'évaluation en cas de modification du poste ou de l'environnement sonore."]});
+  else if (la98 <= 85) items.push({t:'Niveau limite — Actions correctives à envisager',bc:'#FAEEDA',tc:'#854F0B',pts:["Vérifier la formation au port correct du PICB (k=2 si formation assurée).","Envisager un PICB avec SNR plus élevé.","Renforcer la surveillance médicale — audiométrie recommandée.","Étudier des mesures de réduction du bruit à la source."]});
+  else items.push({t:'Non-conformité — Action immédiate requise',bc:'#FCEBEB',tc:'#791F1F',pts:["Le PICB actuel est insuffisant pour ce niveau d'exposition.","Remplacer par un PICB à atténuation plus élevée en urgence.","Mettre en place des mesures de réduction à la source.","Déclencher une action corrective dans le DUERP.","Orienter vers le médecin du travail — audiométrie en urgence si exposition ancienne."]});
+
+  if (lcLa > 5) items.push({t:'Bruit basse fréquence — Adapter le choix du PICB',bc:'#FFF3CD',tc:'#856404',pts:["Lc − La = "+lcLa.toFixed(1)+" dB > 5 dB : prédominance des basses fréquences.","Les PICB HFA (Orange A7, B3, B6) sont inadaptés à ce profil spectral.","Privilégier : QEOS Green O (SNR24), Green S (SNR28) ou Orange C0/C3."]});
+
+  if (leqA > 100) items.push({t:'Niveau extrême — Double protection recommandée',bc:'#FCEBEB',tc:'#791F1F',pts:["Lex,8h > 100 dB(A) : envisager une double protection (serre-tête + bouchon).","La double protection apporte un gain supplémentaire de 5 à 10 dB.","Consulter l'INRS pour les configurations adaptées."]});
+
+  items.push({t:'Hiérarchie de prévention — Rappel réglementaire',bc:'#f5f4f0',tc:'#555',pts:["Priorité 1 : Réduction du bruit à la source (conception, procédés, machines).","Priorité 2 : Mesures collectives (encoffrements, absorbants acoustiques, organisation).","Priorité 3 : EPI auditifs (PICB) — dernier recours, pas de solution permanente.","Formation obligatoire au port du PICB si Lex,8h ≥ 85 dB(A)."]});
+
+  return items.map(r =>
+    `<div class="reco-block" style="border-left:3px solid ${r.bc}">
+      <h4 style="color:${r.tc}">${r.t}</h4>
+      <ul>${r.pts.map(p=>`<li>${p}</li>`).join('')}</ul>
+    </div>`
+  ).join('');
+}
+
+function resetAll() {
+  ['entreprise','poste','intervenant','modele_picb','lex8h'].forEach(id => {
+    const el = document.getElementById(id); if(el) el.value='';
+  });
+  FREQS.forEach(f => {
+    ['lf','mf','sf'].forEach(p => {
+      const el = document.getElementById(p+'_'+f); if(el) el.value='';
+    });
+  });
+  document.getElementById('results').style.display='none';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+</script>
+</body>
+</html>
