@@ -1,1 +1,1176 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calculette PICB — Méthode OB INRS | SPSTI 23/87</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bleu:      #1B3F6E;
+  --bleu-med:  #2E6CB8;
+  --bleu-lt:   #D6E8F7;
+  --bleu-pale: #EDF4FB;
+  --orange:    #E07B00;
+  --orange-lt: #FFF3DC;
+  --vert:      #1A7A3C;
+  --vert-lt:   #E4F5EB;
+  --rouge:     #C0392B;
+  --rouge-lt:  #FDECEA;
+  --jaune-lt:  #FFFBE6;
+  --gris-0:    #F7F8FA;
+  --gris-1:    #EDEEF2;
+  --gris-2:    #D4D6DE;
+  --gris-3:    #9096A8;
+  --gris-4:    #5A6070;
+  --txt:       #1A1D26;
+  --radius:    10px;
+  --shadow:    0 2px 12px rgba(0,0,0,.08);
+  --mono:      'DM Mono', monospace;
+  --sans:      'Outfit', sans-serif;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--sans);
+  font-size: 14px;
+  color: var(--txt);
+  background: var(--gris-0);
+  min-height: 100vh;
+}
 
+/* ── HEADER ────────────────────────────────────────────── */
+header {
+  background: var(--bleu);
+  color: #fff;
+  padding: 0 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 58px;
+  position: sticky; top: 0; z-index: 100;
+  box-shadow: 0 2px 16px rgba(0,0,0,.18);
+}
+.header-left { display: flex; align-items: center; gap: 14px; }
+.logo-mark {
+  width: 34px; height: 34px; border-radius: 8px;
+  background: rgba(255,255,255,.15);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--mono); font-size: 11px; font-weight: 500;
+  color: #fff; letter-spacing: -.5px; line-height: 1;
+  border: 1px solid rgba(255,255,255,.25);
+}
+header h1 { font-size: 15px; font-weight: 600; letter-spacing: -.2px; }
+header small { font-size: 11px; color: rgba(255,255,255,.6); font-weight: 300; }
+.badge-inrs {
+  background: rgba(255,255,255,.12);
+  border: 1px solid rgba(255,255,255,.25);
+  border-radius: 20px;
+  padding: 4px 12px;
+  font-size: 11px; font-weight: 500;
+  color: rgba(255,255,255,.9);
+  font-family: var(--mono);
+}
+
+/* ── LAYOUT ────────────────────────────────────────────── */
+main {
+  max-width: 1060px;
+  margin: 0 auto;
+  padding: 1.5rem 1.5rem 4rem;
+  display: grid;
+  grid-template-columns: 340px 1fr;
+  gap: 1.25rem;
+  align-items: start;
+}
+@media (max-width: 820px) {
+  main { grid-template-columns: 1fr; padding: 1rem; }
+}
+
+/* ── CARDS ──────────────────────────────────────────────── */
+.card {
+  background: #fff;
+  border-radius: var(--radius);
+  border: 1px solid var(--gris-1);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+.card-head {
+  background: var(--bleu);
+  color: #fff;
+  padding: .65rem 1.1rem;
+  font-size: 12px; font-weight: 600;
+  letter-spacing: .6px; text-transform: uppercase;
+  display: flex; align-items: center; gap: 8px;
+}
+.card-head .dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: rgba(255,255,255,.4);
+}
+.card-head.orange { background: var(--orange); }
+.card-head.vert   { background: var(--vert); }
+.card-body { padding: 1.1rem; }
+
+/* ── FORM ELEMENTS ──────────────────────────────────────── */
+.form-group { margin-bottom: .85rem; }
+label {
+  display: block;
+  font-size: 11px; font-weight: 600;
+  color: var(--gris-4);
+  text-transform: uppercase; letter-spacing: .5px;
+  margin-bottom: 4px;
+}
+input[type=text], input[type=date], select, textarea {
+  width: 100%;
+  border: 1.5px solid var(--gris-2);
+  border-radius: 7px;
+  padding: 8px 10px;
+  font-family: var(--sans); font-size: 13px;
+  color: var(--txt);
+  background: #fff;
+  transition: border-color .15s;
+  outline: none;
+}
+input:focus, select:focus, textarea:focus {
+  border-color: var(--bleu-med);
+  box-shadow: 0 0 0 3px rgba(46,108,184,.1);
+}
+select { cursor: pointer; appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%239096A8' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 10px center;
+  padding-right: 28px;
+}
+
+/* ── SPECTRE GRID ──────────────────────────────────────── */
+.spectre-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+}
+.spectre-cell { text-align: center; }
+.spectre-cell label {
+  font-family: var(--mono); font-size: 10px;
+  color: var(--bleu-med); font-weight: 500;
+  text-transform: none; letter-spacing: 0;
+}
+.spectre-cell input {
+  text-align: center;
+  font-family: var(--mono); font-size: 13px;
+  font-weight: 500;
+  padding: 7px 4px;
+}
+.spectre-cell input:focus { border-color: var(--bleu-med); }
+
+/* ── RADIO FORMATION ────────────────────────────────────── */
+.radio-group { display: flex; gap: 8px; }
+.radio-btn {
+  flex: 1; text-align: center;
+  padding: 9px;
+  border: 1.5px solid var(--gris-2);
+  border-radius: 7px;
+  cursor: pointer;
+  font-size: 13px; font-weight: 500;
+  transition: all .15s;
+  user-select: none;
+}
+.radio-btn.active-yes { border-color: var(--vert); background: var(--vert-lt); color: var(--vert); }
+.radio-btn.active-no  { border-color: var(--orange); background: var(--orange-lt); color: var(--orange); }
+.radio-btn:not(.active-yes):not(.active-no):hover { border-color: var(--bleu-med); background: var(--bleu-pale); }
+
+/* ── BOUTON PRINCIPAL ──────────────────────────────────── */
+.btn-calc {
+  width: 100%;
+  padding: 12px;
+  background: var(--bleu);
+  color: #fff;
+  border: none; border-radius: 8px;
+  font-family: var(--sans); font-size: 14px; font-weight: 600;
+  cursor: pointer;
+  transition: background .15s, transform .1s;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+}
+.btn-calc:hover  { background: var(--bleu-med); }
+.btn-calc:active { transform: scale(.98); }
+.btn-calc svg { width: 16px; height: 16px; }
+
+.btn-export {
+  padding: 9px 18px;
+  background: var(--vert);
+  color: #fff;
+  border: none; border-radius: 7px;
+  font-family: var(--sans); font-size: 13px; font-weight: 600;
+  cursor: pointer;
+  transition: background .15s;
+  display: inline-flex; align-items: center; gap: 6px;
+}
+.btn-export:hover { background: #155e2e; }
+.btn-reset {
+  padding: 9px 18px;
+  background: transparent;
+  color: var(--gris-4);
+  border: 1.5px solid var(--gris-2);
+  border-radius: 7px;
+  font-family: var(--sans); font-size: 13px; font-weight: 500;
+  cursor: pointer;
+  transition: all .15s;
+}
+.btn-reset:hover { border-color: var(--rouge); color: var(--rouge); }
+
+/* ── RÉSULTATS ──────────────────────────────────────────── */
+#results-panel { display: none; flex-direction: column; gap: 1.25rem; }
+#results-panel.visible { display: flex; }
+
+.metrics-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+.metric-box {
+  background: var(--gris-0);
+  border: 1.5px solid var(--gris-1);
+  border-radius: 9px;
+  padding: .9rem 1rem;
+  text-align: center;
+}
+.metric-box .mlabel { font-size: 10px; font-weight: 600; color: var(--gris-3); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 4px; }
+.metric-box .mval   { font-family: var(--mono); font-size: 22px; font-weight: 500; color: var(--bleu); }
+.metric-box .munit  { font-size: 11px; color: var(--gris-3); margin-top: 1px; }
+.metric-box.highlight { background: var(--bleu-pale); border-color: var(--bleu-med); }
+.metric-box.highlight .mval { color: var(--bleu); }
+
+/* ── TABLEAU OB ─────────────────────────────────────────── */
+.ob-table-wrap { overflow-x: auto; }
+table.ob-table {
+  width: 100%; border-collapse: collapse;
+  font-family: var(--mono); font-size: 12px;
+}
+.ob-table th {
+  background: var(--bleu); color: #fff;
+  padding: 7px 10px; text-align: center;
+  font-weight: 500; font-size: 11px;
+  border-right: 1px solid rgba(255,255,255,.15);
+}
+.ob-table th:first-child { text-align: left; border-radius: 0; min-width: 160px; }
+.ob-table td {
+  padding: 6px 10px; text-align: center;
+  border-bottom: 1px solid var(--gris-1);
+  border-right: 1px solid var(--gris-1);
+}
+.ob-table td:first-child { text-align: left; font-family: var(--sans); font-size: 12px; font-weight: 500; color: var(--gris-4); }
+.ob-table tr:nth-child(even) td { background: var(--gris-0); }
+.ob-table .row-lf td    { background: var(--bleu-pale); font-weight: 600; color: var(--bleu); }
+.ob-table .row-mf td    { background: #f9f9f9; color: var(--gris-4); }
+.ob-table .row-sf td    { background: #f9f9f9; color: var(--gris-4); }
+.ob-table .row-apv84 td { background: #fafafa; }
+.ob-table .row-apv98 td { background: var(--orange-lt); font-weight: 600; color: var(--orange); }
+.ob-table .row-lp84 td  { background: #fafafa; }
+.ob-table .row-lp98 td  { background: var(--orange-lt); font-weight: 600; color: var(--orange); }
+
+/* ── DIAGNOSTIC BADGE ───────────────────────────────────── */
+.diag-box {
+  border-radius: 10px;
+  padding: 1.1rem 1.3rem;
+  display: flex; align-items: center; gap: 16px;
+}
+.diag-box .diag-icon {
+  width: 44px; height: 44px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px; flex-shrink: 0;
+}
+.diag-box .diag-title { font-size: 16px; font-weight: 700; }
+.diag-box .diag-sub   { font-size: 12px; margin-top: 2px; }
+.diag-box .diag-val   { font-family: var(--mono); font-size: 28px; font-weight: 500; margin-left: auto; flex-shrink: 0; }
+
+.diag-surprot { background: #FFF3DC; border: 2px solid #E07B00; }
+.diag-surprot .diag-icon  { background: #FFE5B0; }
+.diag-surprot .diag-title { color: #8B4D00; }
+.diag-surprot .diag-sub   { color: #B06400; }
+.diag-surprot .diag-val   { color: #E07B00; }
+
+.diag-ok { background: var(--vert-lt); border: 2px solid var(--vert); }
+.diag-ok .diag-icon  { background: #B8EDD0; }
+.diag-ok .diag-title { color: #0F4D25; }
+.diag-ok .diag-sub   { color: #1A7A3C; }
+.diag-ok .diag-val   { color: var(--vert); }
+
+.diag-limite { background: #FFF3DC; border: 2px solid #E07B00; }
+.diag-limite .diag-icon  { background: #FFD980; }
+.diag-limite .diag-title { color: #8B4D00; }
+.diag-limite .diag-sub   { color: #B06400; }
+.diag-limite .diag-val   { color: #E07B00; }
+
+.diag-nc { background: var(--rouge-lt); border: 2px solid var(--rouge); }
+.diag-nc .diag-icon  { background: #F7BDB8; }
+.diag-nc .diag-title { color: #7B1A12; }
+.diag-nc .diag-sub   { color: var(--rouge); }
+.diag-nc .diag-val   { color: var(--rouge); }
+
+.diag-vle { background: #3D0A06; border: 2px solid #7B0000; }
+.diag-vle .diag-icon  { background: #7B0000; }
+.diag-vle .diag-title { color: #FFB3AD; }
+.diag-vle .diag-sub   { color: #FF8B82; }
+.diag-vle .diag-val   { color: #FF6B60; }
+
+/* ── ALERTE BF ──────────────────────────────────────────── */
+.alert-bf {
+  background: #FFF8E6; border-left: 4px solid #E07B00;
+  border-radius: 0 8px 8px 0;
+  padding: .8rem 1rem;
+  font-size: 12px; color: #8B4D00;
+  display: none;
+}
+.alert-bf.show { display: block; }
+
+/* ── RÉGLEMENTAIRE ──────────────────────────────────────── */
+.regl-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+.regl-table th { background: var(--gris-1); padding: 6px 10px; text-align: left; font-weight: 600; font-size: 11px; color: var(--gris-4); text-transform: uppercase; letter-spacing: .4px; }
+.regl-table td { padding: 7px 10px; border-bottom: 1px solid var(--gris-1); }
+.regl-table .tag {
+  display: inline-block; padding: 2px 8px; border-radius: 4px;
+  font-size: 10px; font-weight: 700; font-family: var(--mono);
+  letter-spacing: .3px;
+}
+.tag-inf { background: var(--vert-lt); color: var(--vert); }
+.tag-sup { background: var(--orange-lt); color: var(--orange); }
+.tag-vle { background: var(--rouge-lt); color: var(--rouge); }
+
+/* ── PICB INFO ──────────────────────────────────────────── */
+.picb-info {
+  background: var(--gris-0); border: 1px solid var(--gris-1);
+  border-radius: 8px; padding: .75rem 1rem;
+  font-size: 11px; color: var(--gris-4);
+  display: flex; gap: 12px; align-items: center; flex-wrap: wrap;
+}
+.picb-info strong { color: var(--bleu); font-size: 12px; }
+.picb-chip {
+  background: var(--bleu-pale); color: var(--bleu);
+  border-radius: 4px; padding: 2px 7px;
+  font-family: var(--mono); font-size: 10px; font-weight: 500;
+}
+
+/* ── ACTIONS BAR ────────────────────────────────────────── */
+.actions-bar {
+  display: flex; gap: 10px; justify-content: flex-end; flex-wrap: wrap;
+  padding-top: 4px;
+}
+
+/* ── SECTION TITLE ──────────────────────────────────────── */
+.section-title {
+  font-size: 11px; font-weight: 700; color: var(--gris-3);
+  text-transform: uppercase; letter-spacing: .6px;
+  margin-bottom: 8px; display: flex; align-items: center; gap: 6px;
+}
+.section-title::after {
+  content: ''; flex: 1; height: 1px; background: var(--gris-1);
+}
+
+/* ── EMPTY STATE ────────────────────────────────────────── */
+#empty-state {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: 3rem 1rem; text-align: center; color: var(--gris-3);
+}
+#empty-state svg { width: 48px; height: 48px; margin-bottom: 1rem; opacity: .35; }
+#empty-state p { font-size: 13px; }
+
+/* ── FOOTER ─────────────────────────────────────────────── */
+footer {
+  text-align: center; padding: 1.5rem;
+  font-size: 11px; color: var(--gris-3);
+  border-top: 1px solid var(--gris-1);
+  background: #fff;
+  margin-top: 2rem;
+}
+
+/* ── PRINT ──────────────────────────────────────────────── */
+@media print {
+  header, .col-left, .actions-bar, #empty-state, footer { display: none !important; }
+  main { grid-template-columns: 1fr; }
+  #results-panel { display: flex !important; }
+  .card { box-shadow: none; border: 1px solid #ccc; }
+}
+</style>
+</head>
+<body>
+
+<!-- ── HEADER ──────────────────────────────────────────────────── -->
+<header>
+  <div class="header-left">
+    <div class="logo-mark">OB<br>INRS</div>
+    <div>
+      <h1>Calculette PICB — Méthode par Bandes d'Octave</h1>
+      <small>SPSTI 23/87 — Conforme calculette INRS PICB-VLE-V7.2 — NF EN ISO 4869-2</small>
+    </div>
+  </div>
+  <span class="badge-inrs">α = 98% INRS</span>
+</header>
+
+<!-- ── MAIN ────────────────────────────────────────────────────── -->
+<main>
+
+  <!-- COLONNE GAUCHE : FORMULAIRE -->
+  <div class="col-left" style="display:flex; flex-direction:column; gap:1.1rem;">
+
+    <!-- Identification -->
+    <div class="card">
+      <div class="card-head"><span class="dot"></span>Identification</div>
+      <div class="card-body" style="display:flex; flex-direction:column; gap:.7rem;">
+        <div class="form-group">
+          <label>Entreprise</label>
+          <input type="text" id="f-entreprise" placeholder="Ex : IMERYS JURIOL">
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+          <div class="form-group">
+            <label>Poste / Zone</label>
+            <input type="text" id="f-poste" placeholder="Ex : Atelier poudre">
+          </div>
+          <div class="form-group">
+            <label>Date mesure</label>
+            <input type="date" id="f-date">
+          </div>
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+          <div class="form-group">
+            <label>Opérateur</label>
+            <input type="text" id="f-operateur" placeholder="Ex : Mr DUPONT">
+          </div>
+          <div class="form-group">
+            <label>Intervenant IPRP</label>
+            <input type="text" id="f-iprp" value="Mme DURUPT Émilie">
+          </div>
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+          <div class="form-group">
+            <label>Lex,8h mesuré (dB(A))</label>
+            <input type="text" id="f-lex" placeholder="Ex : 88.5" style="font-family:var(--mono);">
+          </div>
+          <div class="form-group">
+            <label>Lpc crête (dB(C))</label>
+            <input type="text" id="f-lpc" placeholder="Ex : 132.0" style="font-family:var(--mono);">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Spectre sonométrique -->
+    <div class="card">
+      <div class="card-head orange"><span class="dot"></span>Spectre sonométrique — Lf par bande (dB)</div>
+      <div class="card-body">
+        <div class="section-title">Fréquences 63 Hz → 8000 Hz</div>
+        <div style="display:grid; grid-template-columns:repeat(8,1fr); gap:6px; margin-bottom:6px;">
+          <div class="spectre-cell">
+            <label style="color:var(--orange);">63*</label>
+            <input type="text" id="lf-63" placeholder="—" class="lf-input" style="border-color:var(--orange-lt);">
+          </div>
+          <div class="spectre-cell">
+            <label>125</label>
+            <input type="text" id="lf-125" placeholder="—" class="lf-input">
+          </div>
+          <div class="spectre-cell">
+            <label>250</label>
+            <input type="text" id="lf-250" placeholder="—" class="lf-input">
+          </div>
+          <div class="spectre-cell">
+            <label>500</label>
+            <input type="text" id="lf-500" placeholder="—" class="lf-input">
+          </div>
+          <div class="spectre-cell">
+            <label>1k</label>
+            <input type="text" id="lf-1000" placeholder="—" class="lf-input">
+          </div>
+          <div class="spectre-cell">
+            <label>2k</label>
+            <input type="text" id="lf-2000" placeholder="—" class="lf-input">
+          </div>
+          <div class="spectre-cell">
+            <label>4k</label>
+            <input type="text" id="lf-4000" placeholder="—" class="lf-input">
+          </div>
+          <div class="spectre-cell">
+            <label>8k</label>
+            <input type="text" id="lf-8000" placeholder="—" class="lf-input">
+          </div>
+        </div>
+        <div style="font-size:11px; color:var(--orange);">
+          * 63 Hz : inclus dans le calcul si renseigné — recommandé (impact Lc-La)
+        </div>
+        <div style="margin-top:3px; font-size:11px; color:var(--gris-3);">
+          Virgule ou point acceptés — laisser vide si non mesuré
+        </div>
+      </div>
+    </div>
+
+    <!-- PICB -->
+    <div class="card">
+      <div class="card-head"><span class="dot"></span>Protecteur auditif (PICB)</div>
+      <div class="card-body" style="display:flex; flex-direction:column; gap:.8rem;">
+        <div class="form-group">
+          <label>Modèle PICB utilisé</label>
+          <select id="f-picb" onchange="onPicbChange()">
+            <option value="">— Sélectionner un PICB —</option>
+            <optgroup label="Cotral QEOS Green (bouchons moulés, Type 4)">
+              <option value="green_h">COTRAL QEOS GREEN H — SNR 17 dB</option>
+              <option value="green_k">COTRAL QEOS GREEN K — SNR 20 dB</option>
+              <option value="green_o">COTRAL QEOS GREEN O — SNR 24 dB</option>
+              <option value="green_s">COTRAL QEOS GREEN S — SNR 28 dB</option>
+            </optgroup>
+            <optgroup label="3M (bouchons standard, Type 3)">
+              <option value="ultrafit">3M E-A-R UltraFit — SNR 29 dB</option>
+            </optgroup>
+          </select>
+        </div>
+        <div id="picb-info-box" class="picb-info" style="display:none;"></div>
+        <div class="form-group">
+          <label>Salariés formés au port du PICB ?</label>
+          <div class="radio-group">
+            <div class="radio-btn" id="btn-oui" onclick="setFormation(1)">✓ Oui — k = 2</div>
+            <div class="radio-btn" id="btn-non" onclick="setFormation(0)">✗ Non — k = 1</div>
+          </div>
+          <input type="hidden" id="f-formation" value="">
+        </div>
+        <button class="btn-calc" onclick="calculate()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M9 7h6m0 10v-3m-3 3V7m-4 10h8a2 2 0 002-2V9a2 2 0 00-2-2H7a2 2 0 00-2 2v6a2 2 0 002 2z"/>
+          </svg>
+          Calculer — Méthode OB
+        </button>
+      </div>
+    </div>
+
+    <!-- Seuils réglementaires -->
+    <div class="card">
+      <div class="card-head vert"><span class="dot"></span>Seuils réglementaires</div>
+      <div class="card-body">
+        <table class="regl-table">
+          <thead>
+            <tr><th>Seuil</th><th>Niveau</th><th>Obligation</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Val. action inférieure</td>
+              <td><span class="tag tag-inf">80 dB(A)</span></td>
+              <td>Mise à disposition PICB</td>
+            </tr>
+            <tr>
+              <td>Val. action supérieure</td>
+              <td><span class="tag tag-sup">85 dB(A)</span></td>
+              <td>Port PICB obligatoire</td>
+            </tr>
+            <tr>
+              <td><strong>Val. limite exposition</strong></td>
+              <td><span class="tag tag-vle">87 dB(A)</span></td>
+              <td><strong>Jamais dépassable</strong></td>
+            </tr>
+          </tbody>
+        </table>
+        <p style="font-size:10px; color:var(--gris-3); margin-top:8px;">
+          Code du travail Art. R.4431-2 — Directive 2003/10/CE
+        </p>
+      </div>
+    </div>
+
+  </div><!-- /col-left -->
+
+  <!-- COLONNE DROITE : RÉSULTATS -->
+  <div class="col-right">
+
+    <!-- État vide -->
+    <div id="empty-state">
+      <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5">
+        <rect x="6" y="6" width="36" height="36" rx="6"/>
+        <path d="M16 24h16M16 32h10M16 16h16"/>
+      </svg>
+      <p>Renseignez le spectre sonométrique et sélectionnez<br>un PICB pour afficher les résultats méthode OB.</p>
+    </div>
+
+    <!-- Résultats -->
+    <div id="results-panel">
+
+      <!-- En-tête résultat -->
+      <div class="card">
+        <div class="card-head"><span class="dot"></span>Résultats — <span id="res-title">—</span></div>
+        <div class="card-body" style="display:flex; flex-direction:column; gap:1rem;">
+
+          <!-- Métriques globales -->
+          <div>
+            <div class="section-title">Niveaux globaux</div>
+            <div class="metrics-row">
+              <div class="metric-box">
+                <div class="mlabel">Leq(A)</div>
+                <div class="mval" id="res-leqa">—</div>
+                <div class="munit">dB(A)</div>
+              </div>
+              <div class="metric-box">
+                <div class="mlabel">Leq(C)</div>
+                <div class="mval" id="res-leqc">—</div>
+                <div class="munit">dB(C)</div>
+              </div>
+              <div class="metric-box">
+                <div class="mlabel">Lc − La</div>
+                <div class="mval" id="res-lc-la">—</div>
+                <div class="munit">dB</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Alerte BF -->
+          <div class="alert-bf" id="alert-bf">
+            ⚠️ <strong>Lc − La &gt; 5 dB</strong> — Spectre à dominante basses fréquences.
+            Les PICB à profil HFA (hautes fréquences) sont inadaptés.
+            Recommander QEOS Green O, Green S ou 3M UltraFit.
+          </div>
+
+          <!-- Résultats L'A -->
+          <div>
+            <div class="section-title">Bruit effectif à l'oreille L'A — Méthode OB</div>
+            <div class="metrics-row">
+              <div class="metric-box">
+                <div class="mlabel">L'A 84% <span style="font-weight:400;">(ISO 4869-2)</span></div>
+                <div class="mval" id="res-la84" style="font-size:18px;">—</div>
+                <div class="munit">dB(A)</div>
+              </div>
+              <div class="metric-box highlight" style="grid-column: span 2;">
+                <div class="mlabel">L'A 98% — Référence INRS <span style="font-weight:400;">(recommandation principale)</span></div>
+                <div class="mval" id="res-la98" style="font-size:28px;">—</div>
+                <div class="munit">dB(A) — k = <span id="res-k">—</span></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Diagnostic -->
+          <div>
+            <div class="section-title">Diagnostic de conformité</div>
+            <div class="diag-box" id="diag-box">
+              <div class="diag-icon" id="diag-icon">—</div>
+              <div>
+                <div class="diag-title" id="diag-title">—</div>
+                <div class="diag-sub"  id="diag-sub">—</div>
+              </div>
+              <div class="diag-val" id="diag-val">—</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Tableau OB complet -->
+      <div class="card">
+        <div class="card-head orange"><span class="dot"></span>Tableau méthode OB — Onglet 3-a) calculette INRS</div>
+        <div class="card-body">
+          <div class="ob-table-wrap">
+            <table class="ob-table">
+              <thead>
+                <tr>
+                  <th>Paramètre</th>
+                  <th>63 Hz*</th><th>125 Hz</th><th>250 Hz</th><th>500 Hz</th>
+                  <th>1000 Hz</th><th>2000 Hz</th><th>4000 Hz</th><th>8000 Hz</th>
+                </tr>
+              </thead>
+              <tbody id="ob-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recommandations -->
+      <div class="card" id="reco-card">
+        <div class="card-head vert"><span class="dot"></span>Recommandations</div>
+        <div class="card-body">
+          <div id="reco-content" style="font-size:13px; line-height:1.7; color:var(--gris-4);"></div>
+        </div>
+      </div>
+
+      <!-- Boutons export -->
+      <div class="actions-bar">
+        <button class="btn-reset" onclick="resetForm()">↺ Nouvelle saisie</button>
+        <button class="btn-export" onclick="exportWord()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>
+          Exporter rapport Word (.docx)
+        </button>
+        <button class="btn-export" style="background:var(--bleu);" onclick="window.print()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9V2h12v7M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+          Imprimer
+        </button>
+      </div>
+
+    </div><!-- /results-panel -->
+  </div><!-- /col-right -->
+
+</main>
+
+<footer>
+  SPSTI 23/87 — 6 rue Voltaire CS 51223, 87065 Limoges Cedex — 05 55 77 65 63 — emilie.durupt@spsti23-87.fr
+  &nbsp;|&nbsp; Méthode OB conforme NF EN ISO 4869-2 &amp; calculette INRS PICB-VLE-V7.2
+  &nbsp;|&nbsp; Version 1.0 — Avril 2026 — Usage IPRP/IST
+</footer>
+
+<!-- ── docx.js pour export Word ─────────────────────────────────── -->
+<script src="https://cdn.jsdelivr.net/npm/docx@8.5.0/build/index.umd.js"></script>
+
+<script>
+// ══════════════════════════════════════════════════════════════
+// CATALOGUE PICB — Données fabricant officielles
+// Mf = affaiblissement moyen (dB), Sf = écart-type (dB)
+// Fréquences : 125 | 250 | 500 | 1000 | 2000 | 4000 | 8000 Hz
+// ══════════════════════════════════════════════════════════════
+const CATALOGUE = {
+  // 8 bandes : 63 | 125 | 250 | 500 | 1000 | 2000 | 4000 | 8000 Hz
+  // Source : fiches techniques Cotral officielles (tableau affaiblissement) + 3M
+  // Validé contre calculette INRS PICB-VLE-V7.2 — Avril 2026
+  green_h: {
+    label: 'COTRAL QEOS GREEN H',
+    snr: 17, type_code: 4, type_label: 'Bouchons moulés individualisés',
+    Mf: [20.9, 18.6, 16.0, 14.7, 12.4, 16.8, 18.0, 23.9],
+    Sf: [ 5.5,  4.6,  4.4,  4.6,  4.9,  4.6,  4.0,  4.6],
+  },
+  green_k: {
+    label: 'COTRAL QEOS GREEN K',
+    snr: 20, type_code: 4, type_label: 'Bouchons moulés individualisés',
+    Mf: [23.7, 22.5, 21.1, 20.3, 17.3, 21.4, 22.9, 27.8],
+    Sf: [ 5.5,  4.9,  5.1,  5.6,  4.9,  4.6,  4.9,  3.9],
+  },
+  green_o: {
+    label: 'COTRAL QEOS GREEN O',
+    snr: 24, type_code: 4, type_label: 'Bouchons moulés individualisés',
+    Mf: [26.9, 26.0, 25.0, 26.7, 26.3, 25.1, 26.4, 31.2],
+    Sf: [ 5.2,  4.2,  3.8,  3.7,  3.4,  5.1,  3.5,  4.9],
+  },
+  green_s: {
+    label: 'COTRAL QEOS GREEN S',
+    snr: 28, type_code: 4, type_label: 'Bouchons moulés individualisés',
+    Mf: [28.8, 28.2, 26.7, 29.8, 29.4, 30.4, 32.3, 34.8],
+    Sf: [ 4.0,  4.4,  3.7,  3.9,  3.9,  4.7,  5.2,  3.7],
+  },
+  ultrafit: {
+    label: '3M E-A-R UltraFit',
+    snr: 29, type_code: 3, type_label: 'Bouchons standard réutilisables',
+    Mf: [26.8, 27.0, 26.3, 27.7, 28.7, 32.0, 37.8, 41.1],
+    Sf: [ 3.7,  4.9,  4.2,  4.5,  4.4,  3.7,  4.4,  2.7],
+  },
+};
+
+// Pondérations 8 bandes : 63 | 125 | 250 | 500 | 1000 | 2000 | 4000 | 8000 Hz
+// 63 Hz inclus si mesuré — conforme calculette INRS V7.2
+const FREQ   = [63, 125, 250, 500, 1000, 2000, 4000, 8000];
+const POND_A = [-26.2, -16.1, -8.6, -3.2, 0.0, +1.2, +1.0, -1.1];
+const POND_C = [ -0.8,  -0.2,  0.0,  0.0, 0.0, -0.2, -0.8, -3.0];
+
+// ── État global ──────────────────────────────────────────────
+let lastResult = null;
+let formationVal = '';
+
+// ── Init date ────────────────────────────────────────────────
+document.getElementById('f-date').value = new Date().toISOString().split('T')[0];
+
+// ── Formation toggle ─────────────────────────────────────────
+function setFormation(val) {
+  formationVal = val;
+  document.getElementById('f-formation').value = val;
+  document.getElementById('btn-oui').className = 'radio-btn' + (val === 1 ? ' active-yes' : '');
+  document.getElementById('btn-non').className = 'radio-btn' + (val === 0 ? ' active-no'  : '');
+}
+
+// ── PICB select → afficher infos ─────────────────────────────
+function onPicbChange() {
+  const key = document.getElementById('f-picb').value;
+  const box = document.getElementById('picb-info-box');
+  if (!key) { box.style.display = 'none'; return; }
+  const p = CATALOGUE[key];
+  box.style.display = 'flex';
+  box.innerHTML = `
+    <strong>${p.label}</strong>
+    <span class="picb-chip">SNR ${p.snr} dB</span>
+    <span class="picb-chip">Type ${p.type_code}</span>
+    <span style="color:var(--gris-3);">${p.type_label}</span>
+  `;
+}
+
+// ── Utilitaire : log sum ─────────────────────────────────────
+function logSum(vals) {
+  return 10 * Math.log10(vals.reduce((s, v) => s + Math.pow(10, v / 10), 0));
+}
+
+function fmt(v) { return v.toFixed(1); }
+
+// ── CALCUL PRINCIPAL ─────────────────────────────────────────
+function calculate() {
+  // Lire Lf — 8 bandes : 63 | 125 | 250 | 500 | 1000 | 2000 | 4000 | 8000 Hz
+  const ids = ['lf-63','lf-125','lf-250','lf-500','lf-1000','lf-2000','lf-4000','lf-8000'];
+  const Lf = ids.map(id => {
+    const el = document.getElementById(id);
+    if (!el) return null;
+    const v = el.value.replace(',', '.');
+    return v === '' ? null : parseFloat(v);
+  });
+
+  // Validation
+  if (Lf.every(v => v === null)) {
+    alert('Veuillez saisir au moins quelques niveaux de spectre.');
+    return;
+  }
+  const picbKey = document.getElementById('f-picb').value;
+  if (!picbKey) { alert('Veuillez sélectionner un PICB.'); return; }
+  if (formationVal === '') { alert('Veuillez indiquer si les salariés sont formés au port du PICB.'); return; }
+
+  const picb = CATALOGUE[picbKey];
+  const k = formationVal === 1 ? 2 : 1;
+
+  // Filtrer les bandes avec valeur
+  const valid = Lf.map((v, i) => v !== null ? i : -1).filter(i => i >= 0);
+
+  // Leq(A) et Leq(C)
+  const leqA = logSum(valid.map(i => Lf[i] + POND_A[i]));
+  const leqC = logSum(valid.map(i => Lf[i] + POND_C[i]));
+  const lc_la = leqC - leqA;
+
+  // APV
+  const APV84 = picb.Mf.map((m, i) => m - 1 * picb.Sf[i]);
+  const APV98 = picb.Mf.map((m, i) => m - k * picb.Sf[i]);
+
+  // L'f
+  const Lp84 = Lf.map((v, i) => v !== null ? v - APV84[i] : null);
+  const Lp98 = Lf.map((v, i) => v !== null ? v - APV98[i] : null);
+
+  // L'A
+  const LA84 = logSum(valid.map(i => Lp84[i] + POND_A[i]));
+  const LA98 = logSum(valid.map(i => Lp98[i] + POND_A[i]));
+
+  // Diagnostic
+  const diag = getDiag(LA98);
+
+  lastResult = {
+    Lf, picb, picbKey, k, valid,
+    leqA, leqC, lc_la,
+    APV84, APV98, Lp84, Lp98,
+    LA84, LA98, diag,
+    entreprise: document.getElementById('f-entreprise').value,
+    poste:      document.getElementById('f-poste').value,
+    date:       document.getElementById('f-date').value,
+    operateur:  document.getElementById('f-operateur').value,
+    iprp:       document.getElementById('f-iprp').value,
+    lex:        document.getElementById('f-lex').value,
+    lpc:        document.getElementById('f-lpc').value,
+    formation:  formationVal,
+  };
+
+  renderResults(lastResult);
+}
+
+// ── Diagnostic ───────────────────────────────────────────────
+function getDiag(la98) {
+  if (la98 < 70)  return { cls: 'diag-surprot', icon: '⚠', title: 'SURPROTECTION',
+    sub: 'Risque de non-port — SNR trop élevé. Envisager un PICB de SNR inférieur.',
+    action: 'Changer pour un PICB moins atténuant (ex. Green H ou Green K). Surveiller l\'acceptabilité.' };
+  if (la98 < 80)  return { cls: 'diag-ok',      icon: '✓', title: 'CONFORME — Zone cible INRS',
+    sub: 'Le PICB protège efficacement. Port rigoureux à maintenir.',
+    action: 'Maintenir le port systématique. Renouveler la formation annuellement. Vérifier l\'état des bouchons.' };
+  if (la98 < 85)  return { cls: 'diag-limite',  icon: '!', title: 'LIMITE — Surveillance renforcée',
+    sub: 'Au-dessus de la valeur d\'action inférieure (80 dB). Envisager un PICB de SNR supérieur.',
+    action: 'Envisager de passer au modèle Green SNR supérieur. Vérifier le port effectif. Réduction à la source prioritaire.' };
+  if (la98 < 87)  return { cls: 'diag-nc',      icon: '✗', title: 'NON CONFORME — Action immédiate',
+    sub: 'Dépasse la valeur d\'action supérieure (85 dB) avec PICB. Changer de PICB.',
+    action: 'Changer immédiatement de PICB pour un modèle de SNR supérieur. Mettre en place des actions de réduction à la source.' };
+  return           { cls: 'diag-vle',     icon: '!', title: 'VALEUR LIMITE DÉPASSÉE — URGENCE',
+    sub: 'L\'A(98%) dépasse 87 dB(A). Situation réglementairement inacceptable.',
+    action: 'Arrêt ou aménagement urgent du poste. Contacter le médecin du travail. Réduction à la source obligatoire.' };
+}
+
+// ── Affichage résultats ───────────────────────────────────────
+function renderResults(r) {
+  document.getElementById('empty-state').style.display = 'none';
+  document.getElementById('results-panel').classList.add('visible');
+
+  const poste = [r.poste, r.entreprise].filter(Boolean).join(' — ') || 'Sans titre';
+  document.getElementById('res-title').textContent = poste;
+
+  document.getElementById('res-leqa').textContent = fmt(r.leqA);
+  document.getElementById('res-leqc').textContent = fmt(r.leqC);
+  document.getElementById('res-lc-la').textContent = fmt(r.lc_la);
+  document.getElementById('res-la84').textContent = fmt(r.LA84);
+  document.getElementById('res-la98').textContent = fmt(r.LA98);
+  document.getElementById('res-k').textContent = r.k;
+
+  // Alerte BF
+  document.getElementById('alert-bf').classList.toggle('show', r.lc_la > 5);
+
+  // Diagnostic
+  const d = r.diag;
+  const db = document.getElementById('diag-box');
+  db.className = 'diag-box ' + d.cls;
+  document.getElementById('diag-icon').textContent  = d.icon;
+  document.getElementById('diag-title').textContent = d.title;
+  document.getElementById('diag-sub').textContent   = d.sub;
+  document.getElementById('diag-val').textContent   = fmt(r.LA98) + ' dB';
+
+  // Tableau OB
+  const tbody = document.getElementById('ob-tbody');
+  const rows = [
+    { cls: 'row-lf',    label: 'Lf (dB) — spectre mesuré',        vals: r.Lf },
+    { cls: 'row-mf',    label: 'Mf (dB) — atténuation moyenne',    vals: r.picb.Mf },
+    { cls: 'row-sf',    label: 'Sf (dB) — écart-type',             vals: r.picb.Sf },
+    { cls: 'row-apv84', label: 'APV84 = Mf − Sf  (α=84%)',         vals: r.APV84 },
+    { cls: 'row-apv98', label: `APV98 = Mf − ${r.k}×Sf  (α=98%)`, vals: r.APV98 },
+    { cls: 'row-lp84',  label: "L'f84 = Lf − APV84 (dB)",         vals: r.Lp84 },
+    { cls: 'row-lp98',  label: "L'f98 = Lf − APV98 (dB)",         vals: r.Lp98 },
+  ];
+  tbody.innerHTML = rows.map(row => `
+    <tr class="${row.cls}">
+      <td>${row.label}</td>
+      ${row.vals.map(v => `<td>${v !== null && v !== undefined ? fmt(v) : '—'}</td>`).join('')}
+    </tr>
+  `).join('') + `
+    <tr style="background:var(--bleu-pale); font-weight:600;">
+      <td colspan="8" style="font-family:var(--sans); font-size:12px; color:var(--bleu); padding:8px 10px;">
+        Leq(A) = ${fmt(r.leqA)} dB(A) &nbsp;|&nbsp;
+        Leq(C) = ${fmt(r.leqC)} dB(C) &nbsp;|&nbsp;
+        Lc − La = ${fmt(r.lc_la)} dB &nbsp;|&nbsp;
+        <span style="color:var(--orange);">L'A(84%) = ${fmt(r.LA84)} dB(A)</span> &nbsp;|&nbsp;
+        <span style="color:var(--bleu); font-size:13px;">L'A(98%) = ${fmt(r.LA98)} dB(A)</span>
+      </td>
+    </tr>
+  `;
+
+  // Recommandations
+  document.getElementById('reco-content').innerHTML = `
+    <p style="margin-bottom:.5rem;"><strong>Action recommandée :</strong> ${d.action}</p>
+    <p style="margin-bottom:.5rem;"><strong>Rappel :</strong> La réduction à la source est toujours prioritaire sur les EPI auditifs (hiérarchie de prévention).</p>
+    ${r.lc_la > 5 ? `<p style="margin-bottom:.5rem; color:var(--orange);"><strong>⚠ Spectre BF :</strong> Lc − La = ${fmt(r.lc_la)} dB &gt; 5 dB. Les PICB à profil HFA sont inadaptés. Privilégier QEOS Green O, Green S ou 3M UltraFit.</p>` : ''}
+    <p style="font-size:11px; color:var(--gris-3); margin-top:.5rem;">Référence : NF EN ISO 4869-2 | Calculette INRS PICB-VLE-V7.2 | Code du travail Art. R.4431-2 à R.4437-4</p>
+  `;
+
+  // Scroll vers résultats sur mobile
+  if (window.innerWidth < 821) {
+    document.getElementById('results-panel').scrollIntoView({ behavior: 'smooth' });
+  }
+}
+
+// ── Reset ────────────────────────────────────────────────────
+function resetForm() {
+  document.querySelectorAll('.lf-input').forEach(i => i.value = '');
+  const lf63 = document.getElementById('lf-63');
+  if (lf63) lf63.value = '';
+  document.getElementById('f-picb').value = '';
+  document.getElementById('f-lex').value = '';
+  document.getElementById('f-lpc').value = '';
+  document.getElementById('picb-info-box').style.display = 'none';
+  formationVal = '';
+  document.getElementById('btn-oui').className = 'radio-btn';
+  document.getElementById('btn-non').className = 'radio-btn';
+  document.getElementById('results-panel').classList.remove('visible');
+  document.getElementById('empty-state').style.display = 'flex';
+  lastResult = null;
+}
+
+// ══════════════════════════════════════════════════════════════
+// EXPORT WORD (.docx) via docx.js
+// ══════════════════════════════════════════════════════════════
+async function exportWord() {
+  if (!lastResult) { alert('Veuillez d\'abord lancer un calcul.'); return; }
+  if (typeof docx === 'undefined') {
+    alert('La librairie docx.js n\'est pas chargée. Vérifiez votre connexion internet.');
+    return;
+  }
+
+  const r = lastResult;
+  const {
+    Document, Packer, Paragraph, TextRun, Table, TableRow, TableCell,
+    AlignmentType, HeadingLevel, BorderStyle, WidthType, ShadingType,
+    VerticalAlign, Header, Footer, PageNumber
+  } = docx;
+
+  const BLEU_D   = "1F4E79";
+  const BLEU_LT  = "D6E4F0";
+  const ORANGE_D = "E07B00";
+  const ORANGE_L = "FFF3DC";
+  const VERT_D   = "1A7A3C";
+  const VERT_L   = "E4F5EB";
+  const ROUGE_D  = "C0392B";
+  const ROUGE_L  = "FDECEA";
+  const GRIS     = "F2F2F2";
+  const BLANC    = "FFFFFF";
+
+  const bdr = (c="CCCCCC") => ({ style: BorderStyle.SINGLE, size: 1, color: c });
+  const bdrs = (c="CCCCCC") => ({ top:bdr(c), bottom:bdr(c), left:bdr(c), right:bdr(c) });
+
+  function tc(txt, opts={}) {
+    const { fill=BLANC, bold=false, color="000000", align=AlignmentType.CENTER, w=800, span=1 } = opts;
+    return new TableCell({
+      columnSpan: span,
+      borders: bdrs(opts.bc || "CCCCCC"),
+      width: { size: w, type: WidthType.DXA },
+      shading: { fill, type: ShadingType.CLEAR },
+      margins: { top: 60, bottom: 60, left: 100, right: 100 },
+      verticalAlign: VerticalAlign.CENTER,
+      children: [new Paragraph({ alignment: align,
+        children: [new TextRun({ text: String(txt), bold, color, font: "Arial", size: 18 })]
+      })]
+    });
+  }
+  function hc(txt, opts={}) { return tc(txt, { fill: BLEU_D, bold: true, color: BLANC, ...opts }); }
+
+  function p(txt, opts={}) {
+    const { bold=false, size=20, color="000000", align=AlignmentType.LEFT, space={before:60,after:60} } = opts;
+    return new Paragraph({ alignment: align, spacing: space,
+      children: [new TextRun({ text: txt, bold, size, color, font: "Arial" })]
+    });
+  }
+
+  const freqLabels = ['63 Hz*','125 Hz','250 Hz','500 Hz','1000 Hz','2000 Hz','4000 Hz','8000 Hz'];
+  const CW = [2200, 800, 800, 800, 800, 800, 800, 800, 800];
+  const CW_SUM = CW.reduce((a,b)=>a+b,0);
+
+  function makeOBRow(label, vals, fillColor=BLANC, bold=false, color="000000") {
+    return new TableRow({ children: [
+      tc(label, { fill: fillColor, bold, color, align: AlignmentType.LEFT, w: 2200 }),
+      ...vals.map(v => tc(v !== null && v !== undefined ? parseFloat(v).toFixed(1) : '—',
+        { fill: fillColor, bold, color, w: 800 }))
+    ]});
+  }
+
+  const d = r.diag;
+  const diagFill = d.cls === 'diag-ok' ? VERT_L :
+                   d.cls === 'diag-nc' || d.cls === 'diag-vle' ? ROUGE_L : ORANGE_L;
+  const diagColor = d.cls === 'diag-ok' ? VERT_D :
+                    d.cls === 'diag-nc' || d.cls === 'diag-vle' ? ROUGE_D : ORANGE_D;
+
+  const dateStr = r.date ? new Date(r.date).toLocaleDateString('fr-FR') : '—';
+
+  const doc = new Document({
+    styles: {
+      default: { document: { run: { font: "Arial", size: 20 } } },
+      paragraphStyles: [
+        { id: "Heading1", name: "Heading 1", basedOn: "Normal", next: "Normal", quickFormat: true,
+          run: { size: 28, bold: true, font: "Arial", color: BLEU_D },
+          paragraph: { spacing: { before: 240, after: 120 }, outlineLevel: 0 } },
+        { id: "Heading2", name: "Heading 2", basedOn: "Normal", next: "Normal", quickFormat: true,
+          run: { size: 22, bold: true, font: "Arial", color: BLEU_D },
+          paragraph: { spacing: { before: 180, after: 80 }, outlineLevel: 1 } },
+      ]
+    },
+    sections: [{
+      properties: {
+        page: { size: { width: 11906, height: 16838 }, margin: { top: 1080, right: 1080, bottom: 1080, left: 1080 } }
+      },
+      headers: { default: new Header({ children: [
+        new Paragraph({ alignment: AlignmentType.RIGHT,
+          border: { bottom: { style: BorderStyle.SINGLE, size: 4, color: BLEU_D, space: 4 } },
+          children: [new TextRun({ text: `SPSTI 23/87 — Évaluation PICB méthode OB — ${r.entreprise || 'Entreprise'} — ${r.poste || 'Poste'}`, size: 16, color: "888888", font: "Arial" })]
+        })
+      ]}) },
+      footers: { default: new Footer({ children: [
+        new Paragraph({ alignment: AlignmentType.CENTER,
+          border: { top: { style: BorderStyle.SINGLE, size: 4, color: BLEU_D, space: 4 } },
+          children: [
+            new TextRun({ text: "SPSTI 23/87 — 6 rue Voltaire CS 51223, 87065 Limoges — ", size: 16, color: "888888", font: "Arial" }),
+            new TextRun({ text: "Page ", size: 16, color: "888888", font: "Arial" }),
+            new TextRun({ children: [PageNumber.CURRENT], size: 16, color: "888888", font: "Arial" }),
+          ]
+        })
+      ]}) },
+      children: [
+        // TITRE
+        new Paragraph({ alignment: AlignmentType.CENTER, spacing: { before: 400, after: 200 },
+          children: [new TextRun({ text: "RAPPORT D'ÉVALUATION PICB", bold: true, size: 36, color: BLEU_D, font: "Arial" })]
+        }),
+        new Paragraph({ alignment: AlignmentType.CENTER, spacing: { before: 0, after: 60 },
+          children: [new TextRun({ text: "Méthode par Bandes d'Octave (OB) — NF EN ISO 4869-2 / INRS", size: 22, color: ORANGE_D, font: "Arial" })]
+        }),
+        p(''),
+
+        // Identification
+        new Table({
+          width: { size: 9746, type: WidthType.DXA }, columnWidths: [3000, 6746],
+          rows: [
+            new TableRow({ children: [hc('Entreprise',{w:3000}), tc(r.entreprise||'—',{align:AlignmentType.LEFT,w:6746})] }),
+            new TableRow({ children: [hc('Poste / Zone',{w:3000}), tc(r.poste||'—',{align:AlignmentType.LEFT,w:6746})] }),
+            new TableRow({ children: [hc('Opérateur',{w:3000}), tc(r.operateur||'—',{align:AlignmentType.LEFT,w:6746})] }),
+            new TableRow({ children: [hc('Date de mesure',{w:3000}), tc(dateStr,{align:AlignmentType.LEFT,w:6746})] }),
+            new TableRow({ children: [hc('Intervenant IPRP',{w:3000}), tc(r.iprp||'—',{align:AlignmentType.LEFT,w:6746})] }),
+            new TableRow({ children: [hc('Lex,8h mesuré',{w:3000}), tc(r.lex ? r.lex+' dB(A)' : '—',{align:AlignmentType.LEFT,w:6746})] }),
+            new TableRow({ children: [hc('PICB évalué',{w:3000}), tc(`${r.picb.label} — SNR ${r.picb.snr} dB — ${r.picb.type_label}`,{align:AlignmentType.LEFT,w:6746})] }),
+            new TableRow({ children: [hc('Formation port PICB',{w:3000}), tc(r.formation===1?`OUI — k = 2`:`NON — k = 1`,{align:AlignmentType.LEFT,w:6746})] }),
+          ]
+        }),
+        p(''),
+
+        // Résultats OB
+        new Paragraph({ heading: HeadingLevel.HEADING_1, children: [new TextRun({ text: "Résultats — Méthode OB (onglet 3-a) calculette INRS)", bold: true, size: 26, color: BLEU_D, font: "Arial" })] }),
+
+        new Table({
+          width: { size: CW_SUM, type: WidthType.DXA }, columnWidths: CW,
+          rows: [
+            new TableRow({ children: [hc('Paramètre',{w:2200}), ...freqLabels.map(f=>hc(f,{w:800}))] }),
+            makeOBRow('Lf (dB) — spectre mesuré', r.Lf, BLEU_LT, true, BLEU_D),
+            makeOBRow('Mf (dB) — atténuation moyenne', r.picb.Mf, GRIS, false, "555555"),
+            makeOBRow('Sf (dB) — écart-type', r.picb.Sf, GRIS, false, "555555"),
+            makeOBRow('APV84 = Mf − Sf', r.APV84, BLANC),
+            makeOBRow(`APV98 = Mf − ${r.k}×Sf`, r.APV98, ORANGE_L, true, ORANGE_D),
+            makeOBRow("L'f84 = Lf − APV84 (dB)", r.Lp84, BLANC),
+            makeOBRow("L'f98 = Lf − APV98 (dB)", r.Lp98, ORANGE_L, true, ORANGE_D),
+          ]
+        }),
+        p(''),
+
+        // Récapitulatif
+        new Table({
+          width: { size: 9746, type: WidthType.DXA }, columnWidths: [3300, 2148, 2150, 2148],
+          rows: [
+            new TableRow({ children: [
+              hc('Leq(A)',{w:3300}), tc(`${fmt(r.leqA)} dB(A)`,{fill:BLEU_LT,bold:true,color:BLEU_D,w:2148}),
+              hc('Leq(C)',{w:2150}), tc(`${fmt(r.leqC)} dB(C)`,{fill:BLEU_LT,bold:true,color:BLEU_D,w:2148}),
+            ]}),
+            new TableRow({ children: [
+              hc('Lc − La',{w:3300}), tc(`${fmt(r.lc_la)} dB${r.lc_la>5?' ⚠ BF':''}`,{fill:r.lc_la>5?ORANGE_L:BLANC,bold:r.lc_la>5,color:r.lc_la>5?ORANGE_D:"000000",w:2148}),
+              hc("L'A (84%) — ISO",{w:2150}), tc(`${fmt(r.LA84)} dB(A)`,{fill:GRIS,bold:true,w:2148}),
+            ]}),
+            new TableRow({ children: [
+              tc("L'A (98%) — Réf. INRS",{fill:ORANGE_D,bold:true,color:BLANC,w:3300}),
+              tc(`${fmt(r.LA98)} dB(A)`,{fill:ORANGE_L,bold:true,color:ORANGE_D,span:3,w:6446}),
+            ]}),
+            new TableRow({ children: [
+              tc('DIAGNOSTIC',{fill:diagColor,bold:true,color:BLANC,w:3300}),
+              tc(d.title,{fill:diagFill,bold:true,color:diagColor,span:3,w:6446}),
+            ]}),
+          ]
+        }),
+        p(''),
+
+        // Recommandations
+        new Paragraph({ heading: HeadingLevel.HEADING_2, children: [new TextRun({ text: "Recommandations", bold: true, size: 22, color: VERT_D, font: "Arial" })] }),
+        p(d.action, { size: 20 }),
+        p('La réduction à la source est toujours prioritaire sur les EPI auditifs (hiérarchie de prévention — Art. L.4121-2 du Code du travail).', { size: 18, color: "555555" }),
+        r.lc_la > 5 ? p(`⚠ Spectre à dominante basses fréquences (Lc−La = ${fmt(r.lc_la)} dB > 5 dB) : les PICB à profil HFA sont inadaptés. Privilégier QEOS Green O, Green S ou 3M UltraFit.`, { size: 18, color: ORANGE_D, bold: true }) : p(''),
+        p(''),
+
+        // Validation
+        new Paragraph({ heading: HeadingLevel.HEADING_2, children: [new TextRun({ text: "Validation", bold: true, size: 22, color: BLEU_D, font: "Arial" })] }),
+        new Table({
+          width: { size: 9746, type: WidthType.DXA }, columnWidths: [4873, 4873],
+          rows: [
+            new TableRow({ children: [hc('Intervenant IPRP/IST',{w:4873}), hc('Médecin du Travail',{w:4873})] }),
+            new TableRow({ children: [
+              tc(`${r.iprp||'—'}\nAu SPSTI, le ${dateStr}`,{align:AlignmentType.LEFT,w:4873}),
+              tc('Dr JAOUEN Audrey',{align:AlignmentType.LEFT,w:4873})
+            ]}),
+            new TableRow({ children: [
+              tc('[Signature]',{fill:GRIS,align:AlignmentType.CENTER,w:4873}),
+              tc('[Signature]',{fill:GRIS,align:AlignmentType.CENTER,w:4873})
+            ]}),
+          ]
+        }),
+        p(''),
+        p('NF EN ISO 4869-2 | NF EN ISO 9612 | NF S 31-084 | Calculette INRS PICB-VLE-V7.2 | Code du travail Art. R.4431-1 à R.4437-4', { size: 16, color: "888888" }),
+      ]
+    }]
+  });
+
+  const blob = await Packer.toBlob(doc);
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  const fname = `PICB_OB_${(r.entreprise||'rapport').replace(/\s+/g,'_')}_${(r.poste||'poste').replace(/\s+/g,'_')}_${r.date||''}.docx`;
+  a.href = url; a.download = fname; a.click();
+  URL.revokeObjectURL(url);
+}
+</script>
+
+</body>
+</html>
