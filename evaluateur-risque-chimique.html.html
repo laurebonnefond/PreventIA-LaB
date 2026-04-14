@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Évaluateur Risque Chimique — SanensIA</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --blue:#185FA5;--blue-dk:#0C447C;--blue-lt:#E6F1FB;
+  --green-bg:#EAF3DE;--green-tx:#3B6D11;
+  --amber-bg:#FAEEDA;--amber-tx:#854F0B;
+  --red-bg:#FCEBEB;--red-tx:#A32D2D;
+  --pink-bg:#FBEAF0;--pink-bd:#ED93B1;--pink-tx:#993556;
+  --surf:#faf9f7;--border:#e5e2da;--border-lt:#eeece6;
+  --text:#1a1a18;--muted:#6b6b66;--hint:#aaa9a2;
+  --radius:10px;--radius-lg:14px;
+}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f2efe8;color:var(--text);min-height:100vh;padding:1.5rem 1rem}
+.wrap{max-width:900px;margin:0 auto;display:flex;flex-direction:column;gap:1rem}
+.hdr{background:#fff;border-radius:var(--radius-lg);border:0.5px solid var(--border);padding:1.1rem 1.4rem;display:flex;align-items:center;gap:14px}
+.logo{width:40px;height:40px;background:var(--blue);border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.logo svg{width:21px;height:21px;stroke:#fff;fill:none;stroke-width:1.8}
+.hdr h1{font-size:16px;font-weight:600}
+.hdr p{font-size:11.5px;color:var(--muted);margin-top:2px}
+.badge{font-size:10px;padding:2px 8px;background:var(--blue-lt);color:var(--blue);border-radius:20px;margin-left:8px;vertical-align:middle}
+.panel{background:#fff;border-radius:var(--radius-lg);border:0.5px solid var(--border);padding:1.25rem 1.4rem}
+.panel-title{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:12px}
+.product-list{display:flex;flex-direction:column;gap:8px;margin-bottom:12px}
+.product-row{display:flex;gap:8px;align-items:center}
+.product-row input{flex:1;padding:10px 13px;border:1px solid var(--border);border-radius:8px;font-size:13.5px;background:var(--surf);color:var(--text);transition:border-color 0.15s}
+.product-row input:focus{outline:none;border-color:var(--blue);background:#fff;box-shadow:0 0 0 3px rgba(24,95,165,0.08)}
+.product-row input::placeholder{color:var(--hint)}
+.btn-del{width:32px;height:32px;border:0.5px solid var(--border);border-radius:6px;background:var(--surf);color:var(--muted);cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all 0.15s;line-height:1}
+.btn-del:hover{background:var(--red-bg);color:var(--red-tx);border-color:#f09595}
+.row-btns{display:flex;gap:8px;margin-top:4px;flex-wrap:wrap;align-items:center}
+.btn-add{padding:9px 14px;border:1px dashed var(--border);border-radius:8px;background:transparent;color:var(--muted);cursor:pointer;font-size:13px;transition:all 0.15s}
+.btn-add:hover{border-color:var(--blue);color:var(--blue);background:var(--blue-lt)}
+.btn-run{padding:9px 24px;background:var(--blue);color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:500;cursor:pointer;margin-left:auto;transition:background 0.2s}
+.btn-run:hover{background:var(--blue-dk)}
+.btn-run:disabled{background:#bbb;cursor:not-allowed}
+.chips{display:flex;flex-wrap:wrap;gap:5px;margin-top:10px;padding-top:10px;border-top:0.5px solid var(--border-lt);align-items:center}
+.chip-hint{font-size:11.5px;color:var(--hint)}
+.chip{font-size:12px;padding:4px 11px;border:0.5px solid var(--border);border-radius:20px;cursor:pointer;color:var(--muted);background:var(--surf);transition:all 0.12s}
+.chip:hover{background:var(--blue-lt);border-color:var(--blue);color:var(--blue)}
+.info-box{background:var(--blue-lt);border:0.5px solid #B5D4F4;border-radius:8px;padding:10px 14px;font-size:12.5px;color:#0C447C;margin-bottom:10px;display:none}
+.loading{background:#fff;border-radius:var(--radius-lg);border:0.5px solid var(--border);padding:1.25rem 1.4rem}
+.load-item{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:0.5px solid var(--border-lt);font-size:13px;color:var(--muted)}
+.load-item:last-child{border-bottom:none}
+.spin{width:16px;height:16px;border:2px solid var(--border);border-top-color:var(--blue);border-radius:50%;animation:sp 0.7s linear infinite;flex-shrink:0}
+.done-ico{width:16px;height:16px;border-radius:50%;background:var(--green-bg);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.done-ico svg{width:10px;height:10px;stroke:var(--green-tx);fill:none;stroke-width:2.5}
+@keyframes sp{to{transform:rotate(360deg)}}
+.results{display:flex;flex-direction:column;gap:14px}
+.section-label{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em;padding:0 2px;margin-top:4px}
+.card{background:#fff;border-radius:var(--radius-lg);border:0.5px solid var(--border);overflow:hidden}
+.card-cmr{border-color:var(--pink-bd)}
+.ch{display:flex;align-items:center;gap:10px;padding:11px 16px;border-bottom:0.5px solid var(--border-lt);background:var(--surf)}
+.ch svg{width:14px;height:14px;stroke:var(--muted);fill:none;stroke-width:2;flex-shrink:0}
+.ch-title{font-size:12.5px;font-weight:600;color:var(--text)}
+.ch-sub{font-size:11px;color:var(--hint);margin-left:auto}
+.cb{padding:14px 16px}
+.bdg{display:inline-block;font-size:11.5px;padding:3px 9px;border-radius:5px;font-weight:500;margin:2px}
+.bd{background:var(--red-bg);color:var(--red-tx)}
+.bw{background:var(--amber-bg);color:var(--amber-tx)}
+.bi{background:var(--blue-lt);color:var(--blue)}
+.bs{background:var(--green-bg);color:var(--green-tx)}
+.bp{background:var(--pink-bg);color:var(--pink-tx);border:0.5px solid var(--pink-bd)}
+.sgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:10px 0}
+.sc{background:var(--surf);border:0.5px solid var(--border-lt);border-radius:8px;padding:10px;text-align:center}
+.sv{font-size:22px;font-weight:600}
+.sl{font-size:10.5px;color:var(--hint);margin-top:2px;line-height:1.3}
+.rbar{height:8px;border-radius:4px;background:var(--border-lt);overflow:hidden;margin:8px 0}
+.rfill{height:100%;border-radius:4px;transition:width 0.8s cubic-bezier(.4,0,.2,1)}
+.risk-label{font-size:13.5px;font-weight:600}
+.pictos{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.pbox{display:flex;flex-direction:column;align-items:center;gap:4px;border:0.5px solid var(--border);border-radius:9px;padding:10px 12px;min-width:75px;background:var(--surf)}
+.pico{font-size:26px;line-height:1}
+.pnm{font-size:10px;color:var(--muted);text-align:center;line-height:1.3}
+.tbl{width:100%;border-collapse:collapse;font-size:12px}
+.tbl th{text-align:left;padding:6px 10px;background:var(--surf);color:var(--muted);font-weight:600;border-bottom:0.5px solid var(--border)}
+.tbl td{padding:6px 10px;border-bottom:0.5px solid var(--border-lt);vertical-align:top}
+.tbl tr:last-child td{border-bottom:none}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.dv{border:none;border-top:0.5px solid var(--border-lt);margin:10px 0}
+.lbl{font-size:11px;color:var(--hint);font-weight:600;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:5px}
+.tabs{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:12px}
+.tab{padding:6px 14px;border-radius:7px;font-size:12.5px;font-weight:500;cursor:pointer;border:0.5px solid var(--border);background:var(--surf);color:var(--muted);transition:all 0.12s}
+.tab.active{background:var(--blue);color:#fff;border-color:var(--blue)}
+.tab-content{display:none}
+.tab-content.active{display:block}
+.matrix-wrap{overflow-x:auto;margin-top:10px}
+.matrix{border-collapse:collapse;font-size:11.5px;width:100%}
+.matrix th,.matrix td{padding:7px 12px;border:0.5px solid var(--border);text-align:center}
+.matrix th{background:var(--surf);font-weight:600;color:var(--muted)}
+.matrix .ok{background:#EAF3DE;color:#3B6D11;font-weight:500}
+.matrix .warn{background:#FAEEDA;color:#854F0B;font-weight:500}
+.matrix .ko{background:#FCEBEB;color:#A32D2D;font-weight:500}
+.matrix .self{background:var(--surf);color:var(--hint)}
+.matrix .rh{text-align:left;font-weight:500;color:var(--text);background:var(--surf)}
+.alert{border-radius:8px;padding:10px 14px;font-size:12.5px;margin:6px 0;border:0.5px solid}
+.alert-red{background:var(--red-bg);border-color:#f09595;color:var(--red-tx)}
+.alert-warn{background:var(--amber-bg);border-color:#FAC775;color:var(--amber-tx)}
+.alert-green{background:var(--green-bg);border-color:#C0DD97;color:var(--green-tx)}
+.alert-pink{background:var(--pink-bg);border-color:var(--pink-bd);color:var(--pink-tx)}
+.combined-score{display:flex;align-items:center;gap:20px;padding:16px;background:var(--surf);border-radius:10px;margin-bottom:14px}
+.big-score{font-size:42px;font-weight:700;line-height:1}
+.score-info{flex:1}
+.score-name{font-size:16px;font-weight:600;margin-bottom:4px}
+.score-detail{font-size:12px;color:var(--muted)}
+.fds-src{font-size:11px;color:var(--hint);padding:6px 0 2px;margin-top:8px;border-top:0.5px solid var(--border-lt)}
+.err{padding:1rem;background:var(--red-bg);border-radius:8px;color:var(--red-tx);font-size:13px;border:0.5px solid #f09595}
+.note-foot{font-size:11px;color:var(--hint);text-align:center;padding:8px 0 4px}
+@media(max-width:600px){.g2{grid-template-columns:1fr}.sgrid{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="hdr">
+  <div class="logo">
+    <svg viewBox="0 0 24 24"><path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2V9M9 21H5a2 2 0 0 1-2-2V9m0 0h18"/></svg>
+  </div>
+  <div>
+    <h1>Évaluateur risque chimique <span class="badge">SanensIA</span></h1>
+    <p>Recherche FDS en ligne &middot; INRS ED&nbsp;6140 &middot; SEIRICH &middot; CMR &middot; Compatibilité de stockage groupée</p>
+  </div>
+</div>
+
+<div class="panel">
+  <div class="panel-title">Produits à évaluer — un produit par ligne</div>
+  <div id="infoBox" class="info-box"></div>
+  <div class="product-list" id="productList">
+    <div class="product-row">
+      <input type="text" placeholder="Nom commercial, nom chimique ou N° CAS — ex. Acétone, White spirit 60-95, 67-64-1" />
+    </div>
+  </div>
+  <div class="row-btns">
+    <button class="btn-add" onclick="addRow()">+ Ajouter un produit</button>
+    <button class="btn-run" id="runBtn" onclick="startEval()">Lancer l'évaluation</button>
+  </div>
+  <div class="chips">
+    <span class="chip-hint">Exemples :</span>
+    <div class="chip" onclick="addChip('Acétone')">Acétone</div>
+    <div class="chip" onclick="addChip('Trichloréthylène')">Trichloréthylène</div>
+    <div class="chip" onclick="addChip('Benzène')">Benzène</div>
+    <div class="chip" onclick="addChip('Acide sulfurique')">Acide sulfurique</div>
+    <div class="chip" onclick="addChip('Ammoniaque')">Ammoniaque</div>
+    <div class="chip" onclick="addChip('Formaldéhyde')">Formaldéhyde</div>
+    <div class="chip" onclick="addChip('White spirit')">White spirit</div>
+    <div class="chip" onclick="addChip('Acide peracétique')">Ac. peracétique</div>
+    <div class="chip" onclick="addChip('Chlore choc piscine')">Chlore choc</div>
+    <div class="chip" onclick="addChip('Méthanol')">Méthanol</div>
+  </div>
+</div>
+
+<div id="out"></div>
+
+<div class="note-foot">Outil d'aide à l'évaluation — à croiser avec les FDS officielles &middot; SanensIA &copy; 2025 — IPRP / SPSTI</div>
+</div>
+
+<script>
+// ── helpers ──────────────────────────────────────────────────
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+
+function addRow(val){
+  var list=document.getElementById('productList');
+  var div=document.createElement('div');
+  div.className='product-row';
+  div.innerHTML='<input type="text" placeholder="Nom commercial, nom chimique ou N° CAS" value="'+(val?esc(val):'')+'" />'
+    +'<button class="btn-del" onclick="delRow(this)" title="Supprimer">&#215;</button>';
+  list.appendChild(div);
+  div.querySelector('input').focus();
+}
+
+function delRow(btn){
+  var rows=document.querySelectorAll('.product-row');
+  if(rows.length>1) btn.parentNode.remove();
+}
+
+function addChip(name){
+  var rows=document.querySelectorAll('.product-row');
+  var last=rows[rows.length-1].querySelector('input');
+  if(last.value.trim()) addRow(name);
+  else last.value=name;
+}
+
+function getProducts(){
+  var raw=Array.from(document.querySelectorAll('.product-row input'))
+    .map(function(i){return i.value.trim();}).filter(Boolean);
+  // auto-split comma-separated entries
+  var result=[];
+  raw.forEach(function(v){
+    v.split(/,|;/).forEach(function(p){var t=p.trim();if(t)result.push(t);});
+  });
+  return [...new Set(result)];
+}
+
+function riskInfo(s){
+  s=Number(s)||0;
+  if(s<=4)return{fill:'#639922',lbl:'Faible',cls:'bs'};
+  if(s<=8)return{fill:'#EF9F27',lbl:'Modéré',cls:'bw'};
+  if(s<=12)return{fill:'#D85A30',lbl:'Élevé',cls:'bd'};
+  return{fill:'#A32D2D',lbl:'Très élevé',cls:'bd'};
+}
+
+function picoEmoji(code){
+  var m={'GHS01':'💥','GHS02':'🔥','GHS03':'🔆','GHS04':'🔵','GHS05':'⚗️','GHS06':'☠️','GHS07':'❕','GHS08':'⚕️','GHS09':'🌿'};
+  return m[String(code).toUpperCase()]||'⚠️';
+}
+
+function markDone(spinId,rowId){
+  var sp=document.getElementById(spinId);
+  if(sp) sp.outerHTML='<div class="done-ico"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></div>';
+  var row=document.getElementById(rowId);
+  if(row) row.style.opacity='0.65';
+}
+
+// ── API ──────────────────────────────────────────────────────
+async function callClaude(userPrompt){
+  var body={
+    model:'claude-sonnet-4-20250514',
+    max_tokens:1000,
+    tools:[{type:'web_search_20250305',name:'web_search'}],
+    messages:[{role:'user',content:userPrompt}]
+  };
+  var resp=await fetch('https://api.anthropic.com/v1/messages',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify(body)
+  });
+  if(!resp.ok){
+    var err=await resp.text();
+    throw new Error('API '+resp.status+': '+err.substring(0,200));
+  }
+  var data=await resp.json();
+  var text=data.content.filter(function(b){return b.type==='text';}).map(function(b){return b.text;}).join('');
+  return text.replace(/```json[\s\S]*?```|```[\s\S]*?```/g,function(m){return m.replace(/```json|```/g,'');}).trim();
+}
+
+async function evalProduct(prod){
+  var p='Tu es expert en santé au travail et risque chimique (INRS, REACH, CLP, Code du travail français).\n\n'
+   +'Utilise web_search pour trouver la FDS officielle, la fiche toxicologique INRS, ou toute donnée officielle pour : "'+prod+' FDS fiche sécurité"\n\n'
+   +'Sur la base des résultats trouvés ET de tes connaissances réglementaires, génère l\'évaluation complète.\n\n'
+   +'Réponds UNIQUEMENT en JSON valide sans aucun texte avant/après ni balises markdown. Structure EXACTE :\n'
+   +'{"_input":"'+prod.replace(/"/g,'\\"')+'","_fds_source":null,"nom_usuel":"","nom_chimique":"","numero_cas":null,"famille_chimique":"","etat_physique":"liquide",'
+   +'"score_inrs":{"danger_intrinseque":3,"exposition":2,"protection_collective":0.5,"score_final":3,"niveau_risque":"modéré","justification":""},'
+   +'"seirich":{"danger_sante":3,"danger_securite":2,"voies_exposition":["inhalation","contact cutané"],"frequence_usage_type":"quotidien","quantite_type":"moyenne","mesure_exposition":""},'
+   +'"cmr":{"est_cmr":false,"categories":[],"mentions_h_cmr":[],"valeur_limite_fr":null,"obligation_substitution":false,"textes_applicables":[]},'
+   +'"pictogrammes_sgh":[{"code":"GHS07","libelle":"Irritant"}],'
+   +'"mentions_danger":["H315: Provoque une irritation cutanée"],'
+   +'"conseils_prudence":["P280: Porter des équipements de protection"],'
+   +'"effets_sante":{"aigus":"","chroniques":"","organes_cibles":["peau"]},'
+   +'"prevention":{"protection_collective":["ventilation"],"epi_requis":["gants nitrile"],"surveillance_medicale":"simple","fiche_metier_inrs":null},'
+   +'"stockage":{"conditions":"","classe_stockage":null,"incompatibilites":[{"produit":"oxydants","consequence":"réaction dangereuse"}]},'
+   +'"substitution":{"recommandee":false,"alternatives":[]},'
+   +'"references":["INRS"]}';
+  var raw=await callClaude(p);
+  // extract JSON robustly
+  var m=raw.match(/\{[\s\S]*\}/);
+  if(!m) throw new Error('Réponse IA non parseable');
+  return JSON.parse(m[0]);
+}
+
+async function evalGroup(products){
+  var valid=products.filter(function(p){return !p._error;});
+  if(valid.length<2) return null;
+  var names=valid.map(function(p){return p.nom_usuel;});
+  var summary=valid.map(function(p,i){
+    return (i+1)+'. '+p.nom_usuel+' (CAS:'+(p.numero_cas||'N/A')+') famille:'+p.famille_chimique+' état:'+p.etat_physique+' CMR:'+(p.cmr.est_cmr?'OUI':'non')+' scoreINRS:'+p.score_inrs.score_final+' incompatibles:'+p.stockage.incompatibilites.map(function(x){return x.produit;}).join(',');
+  }).join('\n');
+
+  var matPairs=[];
+  names.forEach(function(a){names.forEach(function(b){matPairs.push('{"a":"'+a.replace(/"/g,'\\"')+'","b":"'+b.replace(/"/g,'\\"')+'","statut":"ok"}');});});
+
+  var p='Tu es expert risque chimique (INRS, CLP, Code du travail). Ces produits sont stockés ensemble :\n'+summary+'\n\n'
+   +'Analyse la compatibilité de stockage et le risque cumulé.\n'
+   +'Réponds UNIQUEMENT en JSON valide sans texte avant/après ni balises markdown :\n'
+   +'{"score_risque_global":5,"niveau_global":"modéré","resume":"",'
+   +'"incompatibilites_critiques":[{"produit_a":"","produit_b":"","type":"réaction dangereuse","description":"","gravite":"élevée"}],'
+   +'"cmr_presents":[],"classes_stockage_problemes":"",'
+   +'"risques_cumules":[""],'
+   +'"matrice_compatibilite":['+matPairs.join(',')+'],'
+   +'"recommandations_stockage":[""],'
+   +'"epi_cumules":[""],'
+   +'"surveillance_medicale_globale":"renforcée",'
+   +'"references":["Code du travail R.4412-xx"]}';
+
+  var raw=await callClaude(p);
+  var m=raw.match(/\{[\s\S]*\}/);
+  if(!m) throw new Error('Groupe: réponse IA non parseable');
+  return JSON.parse(m[0]);
+}
+
+// ── Main ─────────────────────────────────────────────────────
+var allData=[];
+
+async function startEval(){
+  var products=getProducts();
+  if(!products.length) return;
+
+  // show info if comma-split happened
+  var rawInputs=Array.from(document.querySelectorAll('.product-row input')).map(function(i){return i.value.trim();}).filter(Boolean);
+  var info=document.getElementById('infoBox');
+  if(products.length>rawInputs.length){
+    info.style.display='block';
+    info.textContent='Produits détectés séparément : '+products.join(' · ');
+  } else { info.style.display='none'; }
+
+  var btn=document.getElementById('runBtn');
+  btn.disabled=true;
+  allData=[];
+
+  var loadHtml='<div class="loading"><div class="panel-title" style="margin-bottom:10px">Analyse en cours…</div>';
+  products.forEach(function(p,i){
+    loadHtml+='<div class="load-item" id="li'+i+'"><div class="spin" id="sp'+i+'"></div>'
+      +'<span>Recherche FDS + évaluation : <b>'+esc(p)+'</b></span></div>';
+  });
+  if(products.length>1){
+    loadHtml+='<div class="load-item" id="liG"><div class="spin" id="spG"></div><span>Analyse groupée — compatibilité de stockage</span></div>';
+  }
+  loadHtml+='</div>';
+  document.getElementById('out').innerHTML=loadHtml;
+
+  for(var i=0;i<products.length;i++){
+    try{ var d=await evalProduct(products[i]); allData.push(d); }
+    catch(e){ allData.push({_error:true,_input:products[i],_msg:e.message}); }
+    markDone('sp'+i,'li'+i);
+  }
+
+  var groupData=null;
+  if(products.length>1){
+    try{ groupData=await evalGroup(allData); }
+    catch(e){ groupData={_error:true,_msg:e.message}; }
+    markDone('spG','liG');
+  }
+
+  setTimeout(function(){renderAll(allData,groupData);},400);
+  btn.disabled=false;
+}
+
+// ── Render ────────────────────────────────────────────────────
+function renderAll(products,groupData){
+  var valid=products.filter(function(p){return !p._error;});
+  var html='<div class="results">';
+  html+='<div class="section-label">Évaluation individuelle — '+valid.length+' produit'+(valid.length>1?'s':'')+' analysé'+(valid.length>1?'s':'')+' (FDS en ligne)</div>';
+
+  if(valid.length>1){
+    html+='<div class="tabs">';
+    valid.forEach(function(d,i){
+      var ri=riskInfo(d.score_inrs.score_final);
+      html+='<div class="tab'+(i===0?' active':'')+'" onclick="switchTab('+i+')" id="tab'+i+'">'
+        +esc(d.nom_usuel)
+        +'<span style="margin-left:6px;font-size:10px;padding:1px 7px;border-radius:4px;background:'+ri.fill+';color:#fff">'+ri.lbl+'</span></div>';
+    });
+    html+='</div>';
+    valid.forEach(function(d,i){
+      html+='<div class="tab-content'+(i===0?' active':'')+'" id="tc'+i+'">'+renderProduct(d)+'</div>';
+    });
+  } else if(valid.length===1){
+    html+=renderProduct(valid[0]);
+  }
+
+  products.filter(function(p){return p._error;}).forEach(function(p){
+    html+='<div class="err"><b>Erreur — "'+esc(p._input)+'" :</b> '+esc(p._msg)+'</div>';
+  });
+
+  if(groupData&&!groupData._error&&valid.length>1){
+    html+='<div class="section-label" style="margin-top:6px">Évaluation groupée — stockage simultané</div>';
+    html+=renderGroup(groupData,valid);
+  }
+  html+='</div>';
+  document.getElementById('out').innerHTML=html;
+}
+
+function switchTab(idx){
+  document.querySelectorAll('.tab').forEach(function(t,i){t.classList.toggle('active',i===idx);});
+  document.querySelectorAll('.tab-content').forEach(function(t,i){t.classList.toggle('active',i===idx);});
+}
+
+function renderProduct(d){
+  var ri=riskInfo(d.score_inrs.score_final);
+  var pct=Math.min(100,Math.round((d.score_inrs.score_final/20)*100));
+  var pictos=(d.pictogrammes_sgh||[]).map(function(p){
+    return '<div class="pbox"><div class="pico">'+picoEmoji(p.code)+'</div><div class="pnm">'+esc(p.code)+'<br>'+esc(p.libelle)+'</div></div>';
+  }).join('');
+  var mH=(d.mentions_danger||[]).slice(0,8).map(function(m){return '<div style="padding:3px 0;border-bottom:0.5px solid var(--border-lt);font-size:12px">'+esc(m)+'</div>';}).join('');
+  var mP=(d.conseils_prudence||[]).slice(0,6).map(function(m){return '<div style="padding:3px 0;border-bottom:0.5px solid var(--border-lt);font-size:12px">'+esc(m)+'</div>';}).join('');
+  var epi=(d.prevention.epi_requis||[]).map(function(e){return '<span class="bdg bi">'+esc(e)+'</span>';}).join('');
+  var pc=(d.prevention.protection_collective||[]).map(function(e){return '<div style="padding:2px 0;font-size:13px">&bull; '+esc(e)+'</div>';}).join('');
+  var compat=(d.stockage.incompatibilites||[]).map(function(i){
+    return '<tr><td>'+esc(i.produit)+'</td><td style="color:var(--red-tx)">'+esc(i.consequence)+'</td></tr>';
+  }).join('');
+  var survcls=d.prevention.surveillance_medicale==='renforcée'?'bd':d.prevention.surveillance_medicale==='simple'?'bw':'bs';
+  var alts=(d.substitution.alternatives||[]).length
+    ?(d.substitution.alternatives||[]).map(function(a){return '<span class="bdg bs">'+esc(a)+'</span>';}).join('')
+    :'<span style="font-size:12px;color:var(--hint)">Aucune identifiée</span>';
+  var fdsBlock=d._fds_source
+    ?'<div class="fds-src">Source FDS : '+esc(d._fds_source.substring(0,90))+(d._fds_source.length>90?'…':'')+'</div>'
+    :'<div class="fds-src">Source : référentiel INRS / ECHA / base réglementaire</div>';
+
+  var html='<div style="display:flex;flex-direction:column;gap:10px">';
+
+  html+='<div class="card"><div class="ch"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg><span class="ch-title">Identification</span></div>'
+  +'<div class="cb">'
+  +'<div style="font-size:15px;font-weight:600;margin-bottom:3px">'+esc(d.nom_usuel)+'</div>'
+  +'<div style="font-size:12px;color:var(--muted);margin-bottom:10px">'+esc(d.nom_chimique)+(d.numero_cas?' &mdash; CAS&nbsp;'+esc(d.numero_cas):'')+' &mdash; '+esc(d.famille_chimique)+' &mdash; '+esc(d.etat_physique)+'</div>'
+  +'<span class="bdg '+ri.cls+'">Risque '+ri.lbl+'</span>'
+  +(d.cmr.est_cmr?'<span class="bdg bp">CMR '+d.cmr.categories.join(', ')+'</span>':'')
+  +'<span class="bdg bi">Score INRS : '+d.score_inrs.score_final+'/20</span>'
+  +(d.substitution.recommandee?'<span class="bdg bw">Substitution recommandée</span>':'')
+  +fdsBlock+'</div></div>';
+
+  html+='<div class="card"><div class="ch"><svg viewBox="0 0 24 24"><path d="M9 19v-6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2zm0 0V9a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v10m-6 0a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2m0 0V5a2 2 0 0 1 2-2h2a2 2 0 0 0 2 2v14a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2z"/></svg><span class="ch-title">Score INRS &mdash; ED&nbsp;6140</span></div>'
+  +'<div class="cb"><div class="sgrid">'
+  +'<div class="sc"><div class="sv">'+esc(d.score_inrs.danger_intrinseque)+'</div><div class="sl">Danger intrinsèque (D)</div></div>'
+  +'<div class="sc"><div class="sv">'+esc(d.score_inrs.exposition)+'</div><div class="sl">Exposition (E)</div></div>'
+  +'<div class="sc"><div class="sv">'+esc(d.score_inrs.protection_collective)+'</div><div class="sl">Facteur correction (FC)</div></div>'
+  +'</div>'
+  +'<div class="rbar"><div class="rfill" style="width:'+pct+'%;background:'+ri.fill+'"></div></div>'
+  +'<div class="risk-label" style="color:'+ri.fill+'">Niveau '+ri.lbl+' &mdash; Score '+d.score_inrs.score_final+'/20</div>'
+  +'<hr class="dv"><div style="font-size:12.5px;color:var(--muted)">'+esc(d.score_inrs.justification)+'</div>'
+  +'</div></div>';
+
+  html+='<div class="card"><div class="ch"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg><span class="ch-title">Analyse SEIRICH</span></div>'
+  +'<div class="cb"><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px">'
+  +'<div class="sc"><div class="sv">'+d.seirich.danger_sante+'/5</div><div class="sl">Danger santé</div></div>'
+  +'<div class="sc"><div class="sv">'+d.seirich.danger_securite+'/5</div><div class="sl">Danger sécurité</div></div>'
+  +'</div>'
+  +'<div style="font-size:13px;margin-bottom:5px"><b>Voies d\'exposition :</b> '+(d.seirich.voies_exposition||[]).map(esc).join(', ')+'</div>'
+  +'<div style="font-size:13px;margin-bottom:5px"><b>Usage type :</b> '+esc(d.seirich.frequence_usage_type)+' &mdash; '+esc(d.seirich.quantite_type)+' quantité</div>'
+  +'<div style="font-size:13px;color:var(--muted)">'+esc(d.seirich.mesure_exposition)+'</div>'
+  +'</div></div>';
+
+  if(d.cmr.est_cmr){
+    html+='<div class="card card-cmr"><div class="ch" style="background:var(--pink-bg)">'
+    +'<svg viewBox="0 0 24 24" style="stroke:#993556"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>'
+    +'<span class="ch-title" style="color:#993556">Agent CMR &mdash; attention réglementaire</span></div>'
+    +'<div class="cb">'
+    +(d.cmr.categories||[]).map(function(c){return '<span class="bdg bp">'+esc(c)+'</span>';}).join('')
+    +(d.cmr.obligation_substitution?'<span class="bdg bd">Substitution obligatoire si possible</span>':'')
+    +(d.cmr.valeur_limite_fr?'<div style="font-size:13px;margin-top:10px"><b>VLEP :</b> '+esc(d.cmr.valeur_limite_fr)+'</div>':'')
+    +(d.cmr.mentions_h_cmr&&d.cmr.mentions_h_cmr.length?'<div style="font-size:13px;margin-top:6px"><b>Mentions H CMR :</b> '+d.cmr.mentions_h_cmr.map(esc).join(' &mdash; ')+'</div>':'')
+    +(d.cmr.textes_applicables&&d.cmr.textes_applicables.length?'<div style="font-size:12px;color:var(--hint);margin-top:8px">'+d.cmr.textes_applicables.map(esc).join(' &middot; ')+'</div>':'')
+    +'</div></div>';
+  }
+
+  html+='<div class="g2">'
+  +'<div class="card"><div class="ch"><svg viewBox="0 0 24 24"><path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 0 0-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 0 0-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 0 0-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 0 0-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 0 0 1.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><circle cx="12" cy="12" r="3"/></svg><span class="ch-title">Prévention</span></div>'
+  +'<div class="cb"><div class="lbl">Protection collective</div>'+pc
+  +'<hr class="dv"><div class="lbl">EPI requis</div><div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:4px">'+epi+'</div>'
+  +'<hr class="dv"><div style="font-size:13px"><b>Surveillance médicale :</b> <span class="bdg '+survcls+'">'+esc(d.prevention.surveillance_medicale)+'</span></div>'
+  +(d.prevention.fiche_metier_inrs?'<div style="font-size:11.5px;color:var(--hint);margin-top:5px">Fiche INRS : '+esc(d.prevention.fiche_metier_inrs)+'</div>':'')
+  +'</div></div>'
+  +'<div class="card"><div class="ch"><svg viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg><span class="ch-title">Effets sur la santé</span></div>'
+  +'<div class="cb">'
+  +'<div class="lbl">Aigus</div><div style="font-size:13px;margin-bottom:10px">'+esc(d.effets_sante.aigus)+'</div>'
+  +'<div class="lbl">Chroniques</div><div style="font-size:13px;margin-bottom:10px">'+esc(d.effets_sante.chroniques)+'</div>'
+  +'<div>'+(d.effets_sante.organes_cibles||[]).map(function(o){return '<span class="bdg bw">'+esc(o)+'</span>';}).join('')+'</div>'
+  +'</div></div>'
+  +'</div>';
+
+  html+='<div class="g2">'
+  +'<div class="card"><div class="ch"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg><span class="ch-title">Pictogrammes SGH</span></div>'
+  +'<div class="cb"><div class="pictos">'+pictos+'</div>'
+  +'<hr class="dv"><div class="lbl">Mentions de danger</div>'+mH
+  +'<hr class="dv"><div class="lbl">Conseils de prudence</div>'+mP
+  +'</div></div>'
+  +'<div class="card"><div class="ch"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span class="ch-title">Stockage</span></div>'
+  +'<div class="cb">'
+  +'<div style="font-size:13px;margin-bottom:10px">'+esc(d.stockage.conditions||'')+'</div>'
+  +(d.stockage.classe_stockage?'<div style="font-size:12px;margin-bottom:8px"><b>Classe de stockage :</b> '+esc(d.stockage.classe_stockage)+'</div>':'')
+  +'<div class="lbl">Incompatibilités</div>'
+  +'<table class="tbl"><tr><th>Incompatible avec</th><th>Risque</th></tr>'+compat+'</table>'
+  +'</div></div>'
+  +'</div>';
+
+  if(d.substitution.recommandee){
+    html+='<div class="card"><div class="ch"><svg viewBox="0 0 24 24"><path d="M17 1l4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><path d="M7 23l-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg><span class="ch-title">Substitution</span></div>'
+    +'<div class="cb"><div style="font-size:13px;margin-bottom:8px;color:var(--muted)">Alternatives identifiées :</div>'+alts+'</div></div>';
+  }
+
+  html+='<div class="card"><div class="ch"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><span class="ch-title">Références réglementaires</span></div>'
+  +'<div class="cb" style="font-size:12px;color:var(--muted);line-height:2.2">'+(d.references||[]).map(function(r){return '&bull; '+esc(r);}).join('<br>')+'</div></div>';
+
+  html+='</div>';
+  return html;
+}
+
+function renderGroup(g,products){
+  var ri=riskInfo(g.score_risque_global);
+  var pct=Math.min(100,Math.round((g.score_risque_global/20)*100));
+  var names=products.map(function(p){return p.nom_usuel;});
+  var matMap={};
+  (g.matrice_compatibilite||[]).forEach(function(e){matMap[e.a+'||'+e.b]=e.statut;});
+
+  var matHtml='<div class="matrix-wrap"><table class="matrix"><tr><th></th>';
+  names.forEach(function(n){matHtml+='<th title="'+esc(n)+'">'+esc(n.length>10?n.substring(0,10)+'…':n)+'</th>';});
+  matHtml+='</tr>';
+  names.forEach(function(a){
+    matHtml+='<tr><td class="rh">'+esc(a.length>12?a.substring(0,12)+'…':a)+'</td>';
+    names.forEach(function(b){
+      if(a===b){matHtml+='<td class="self">&mdash;</td>';return;}
+      var st=matMap[a+'||'+b]||'?';
+      var cls=st==='ok'?'ok':st==='attention'?'warn':st==='incompatible'?'ko':'self';
+      var txt=st==='ok'?'OK':st==='attention'?'Attention':st==='incompatible'?'INCOMP.':'?';
+      matHtml+='<td class="'+cls+'">'+txt+'</td>';
+    });
+    matHtml+='</tr>';
+  });
+  matHtml+='</table></div>';
+
+  var incompatHtml='';
+  if(g.incompatibilites_critiques&&g.incompatibilites_critiques.length){
+    g.incompatibilites_critiques.forEach(function(ic){
+      var cls=ic.gravite==='critique'?'alert-red':'alert-warn';
+      incompatHtml+='<div class="'+cls+' alert"><b>'+esc(ic.produit_a)+' + '+esc(ic.produit_b)+'</b><br>'
+        +'<span style="font-size:11px;text-transform:uppercase;letter-spacing:0.05em">'+esc(ic.type)+'</span> — '+esc(ic.description)+'</div>';
+    });
+  } else {
+    incompatHtml='<div class="alert alert-green">Aucune incompatibilité critique identifiée entre ces produits.</div>';
+  }
+
+  var cmrBlock=g.cmr_presents&&g.cmr_presents.length
+    ?'<div class="alert alert-pink"><b>Agents CMR présents :</b> '+g.cmr_presents.map(esc).join(', ')+'<br><small>Obligations R.4412-60 et suivants du Code du travail</small></div>'
+    :'';
+  var epiList=(g.epi_cumules||[]).map(function(e){return '<span class="bdg bi">'+esc(e)+'</span>';}).join('');
+  var recos=(g.recommandations_stockage||[]).map(function(r){return '<div style="padding:3px 0">&bull; '+esc(r)+'</div>';}).join('');
+  var risks=(g.risques_cumules||[]).map(function(r){return '<span class="bdg bw">'+esc(r)+'</span>';}).join('');
+  var survcls=g.surveillance_medicale_globale==='renforcée'?'bd':g.surveillance_medicale_globale==='simple'?'bw':'bs';
+
+  return '<div style="display:flex;flex-direction:column;gap:10px">'
+  +'<div class="card"><div class="ch"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg><span class="ch-title">Risque groupé global</span></div>'
+  +'<div class="cb"><div class="combined-score">'
+  +'<div class="big-score" style="color:'+ri.fill+'">'+g.score_risque_global+'</div>'
+  +'<div class="score-info"><div class="score-name" style="color:'+ri.fill+'">Niveau '+ri.lbl+'</div>'
+  +'<div class="score-detail">Score de risque groupé sur 20</div>'
+  +'<div class="rbar" style="margin-top:8px"><div class="rfill" style="width:'+pct+'%;background:'+ri.fill+'"></div></div>'
+  +'</div></div>'
+  +'<div style="font-size:13px;color:var(--muted)">'+esc(g.resume)+'</div>'
+  +(g.classes_stockage_problemes?'<hr class="dv"><div style="font-size:12.5px;color:var(--amber-tx)"><b>Classes de stockage :</b> '+esc(g.classes_stockage_problemes)+'</div>':'')
+  +'</div></div>'
+
+  +'<div class="card"><div class="ch"><svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg><span class="ch-title">Incompatibilités critiques</span></div>'
+  +'<div class="cb">'+cmrBlock+incompatHtml+'</div></div>'
+
+  +'<div class="card"><div class="ch"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M3 15h18M9 3v18M15 3v18"/></svg><span class="ch-title">Matrice de compatibilité</span><span class="ch-sub">stockage simultané</span></div>'
+  +'<div class="cb">'+matHtml
+  +'<div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;font-size:11.5px">'
+  +'<span class="ok" style="padding:3px 8px;border-radius:4px">OK — compatible</span>'
+  +'<span class="warn" style="padding:3px 8px;border-radius:4px;background:var(--amber-bg);color:var(--amber-tx)">Attention</span>'
+  +'<span class="ko" style="padding:3px 8px;border-radius:4px;background:var(--red-bg);color:var(--red-tx)">INCOMP. — séparer</span>'
+  +'</div></div></div>'
+
+  +(risks?'<div class="card"><div class="ch"><svg viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg><span class="ch-title">Risques cumulés et synergiques</span></div><div class="cb">'+risks+'</div></div>':'')
+
+  +'<div class="card"><div class="ch"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg><span class="ch-title">Recommandations de stockage groupé</span></div>'
+  +'<div class="cb">'+recos
+  +'<hr class="dv"><div class="lbl">EPI cumulés recommandés</div><div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:6px">'+epiList+'</div>'
+  +'<hr class="dv"><div style="font-size:13px"><b>Surveillance médicale globale :</b> <span class="bdg '+survcls+'">'+esc(g.surveillance_medicale_globale)+'</span></div>'
+  +'</div></div>'
+
+  +((g.references&&g.references.length)?'<div class="card"><div class="ch"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><span class="ch-title">Références</span></div>'
+  +'<div class="cb" style="font-size:12px;color:var(--muted);line-height:2.2">'+g.references.map(function(r){return '&bull; '+esc(r);}).join('<br>')+'</div></div>':'')
+
+  +'</div>';
+}
+
+document.addEventListener('keydown',function(e){
+  if(e.key==='Enter'&&e.target.tagName==='INPUT') startEval();
+});
+</script>
+</body>
+</html>
