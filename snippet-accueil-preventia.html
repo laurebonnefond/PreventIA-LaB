@@ -1,0 +1,118 @@
+<!-- 
+  Snippet à intégrer dans la page d'accueil PréventIA-LaB
+  À placer dans la grille des outils, à côté de ChimieRisk, Burnout, PICB...
+  
+  Si votre accueil utilise React/JSX, voir la version JSX en bas du fichier.
+-->
+
+<!-- ========== VERSION HTML PURE ========== -->
+<a href="./outils/base-metiers/" class="outil-card outil-card--metiers">
+  <div class="outil-card__icon">📋</div>
+  <h3 class="outil-card__titre">Base Métiers</h3>
+  <p class="outil-card__sous-titre">Santé au travail & prévention</p>
+  <p class="outil-card__description">
+    119 métiers référencés · 28 catégories de risque · 19 secteurs NAF.
+    Référentiel des suivis médicaux (SIR/SIA/SI), EPI, EPC et références réglementaires
+    à jour des décrets 2025.
+  </p>
+  <div class="outil-card__tags">
+    <span class="tag">Fiche d'entreprise</span>
+    <span class="tag">DUERP</span>
+    <span class="tag">Visite médicale</span>
+  </div>
+  <div class="outil-card__cta">Explorer la base →</div>
+</a>
+
+
+<!-- ========== VERSION JSX (composant React) ========== -->
+<!--
+import React from 'react';
+
+export default function BaseMetiersCard() {
+  return (
+    <a href="./outils/base-metiers/" className="outil-card outil-card--metiers">
+      <div className="outil-card__icon">📋</div>
+      <h3 className="outil-card__titre">Base Métiers</h3>
+      <p className="outil-card__sous-titre">Santé au travail & prévention</p>
+      <p className="outil-card__description">
+        119 métiers référencés · 28 catégories de risque · 19 secteurs NAF.
+        Référentiel des suivis médicaux (SIR/SIA/SI), EPI, EPC et références
+        réglementaires à jour des décrets 2025.
+      </p>
+      <div className="outil-card__tags">
+        <span className="tag">Fiche d'entreprise</span>
+        <span className="tag">DUERP</span>
+        <span className="tag">Visite médicale</span>
+      </div>
+      <div className="outil-card__cta">Explorer la base →</div>
+    </a>
+  );
+}
+-->
+
+
+<!-- ========== STYLES (à harmoniser avec votre charte PréventIA-LaB) ========== -->
+<style>
+.outil-card--metiers {
+  /* Couleur d'accent dédiée à la base métiers : navy comme l'interface */
+  --accent: #1F4E79;
+  --accent-light: #DEEBF7;
+  
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  background: white;
+  border: 1px solid #E5E5E0;
+  border-left: 4px solid var(--accent);
+  border-radius: 12px;
+  padding: 22px;
+  transition: all 0.2s;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+}
+.outil-card--metiers:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(31,78,121,0.12);
+  border-color: var(--accent);
+}
+.outil-card__icon {
+  font-size: 2.2rem;
+  margin-bottom: 8px;
+}
+.outil-card__titre {
+  font-family: 'Fraunces', serif;
+  font-size: 1.4rem;
+  color: var(--accent);
+  margin-bottom: 2px;
+}
+.outil-card__sous-titre {
+  font-size: 0.85rem;
+  color: #888;
+  margin-bottom: 12px;
+}
+.outil-card__description {
+  font-size: 0.92rem;
+  line-height: 1.5;
+  color: #444;
+  margin-bottom: 14px;
+}
+.outil-card__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+.outil-card__tags .tag {
+  display: inline-block;
+  padding: 3px 10px;
+  background: var(--accent-light);
+  color: var(--accent);
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 600;
+}
+.outil-card__cta {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--accent);
+}
+</style>
