@@ -374,6 +374,11 @@ var CATALOGUE={
    mf:[26.8,27.0,26.3,27.7,28.7,32.0,37.8,41.1],sf:[2.9,4.8,4.2,4.5,4.4,3.7,4.5,4.4]}
 };
 var WEBHOOK_KEY="previa_picb_webhook";
+/* --- Configuration proxy Make.com ---
+   URL pré-remplie au premier lancement (modifiable ensuite via l'interface).
+   TOKEN : doit être identique au Filter "Verif token" du scénario Make. */
+var WEBHOOK_DEFAULT="https://hook.eu1.make.com/ec49etcswpyv1pplo7a9waehyl39c05t";
+var WEBHOOK_TOKEN="picb-sXEkkDGQFvxrzS9gT3ma";
 
 /* ====== HELPERS ====== */
 function r1(x){return (typeof x==="number"&&isFinite(x))?Math.round(x*10)/10:null;}
@@ -795,7 +800,7 @@ function analyser(){
   var btn=$("btnAnalyse");btn.disabled=true;
   showScan("info","Analyse de la capture en cours…");
   fetch(url,{method:"POST",headers:{"Content-Type":"text/plain"},
-    body:JSON.stringify({image:imgState.b64,media_type:imgState.type})})
+    body:JSON.stringify({image:imgState.b64,media_type:imgState.type,token:WEBHOOK_TOKEN})})
   .then(function(r){return r.text();})
   .then(function(raw){
     var txt=raw;
@@ -871,6 +876,10 @@ function init(){
   buildBands();
   $("date").value=new Date().toISOString().slice(0,10);
   updatePicbUI();
+  // Pré-remplissage de l'URL webhook au tout premier lancement
+  if(!(localStorage.getItem(WEBHOOK_KEY)||"").trim() && WEBHOOK_DEFAULT){
+    localStorage.setItem(WEBHOOK_KEY,WEBHOOK_DEFAULT);
+  }
   updateCfgState();
   // mode toggle
   Array.prototype.forEach.call($("seg").children,function(b){
