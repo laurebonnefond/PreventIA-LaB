@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Base Métiers — Santé au Travail & Prévention</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --navy: #1F4E79;
+  --navy-dark: #143656;
+  --navy-light: #DEEBF7;
+  --orange: #C55A11;
+  --orange-light: #FBE5D6;
+  --rouge-sir: #C00000;
+  --orange-sia: #ED7D31;
+  --vert-si: #548235;
+  --gris: #595959;
+  --bg: #FAFAF7;
+  --card: #FFFFFF;
+  --border: #E5E5E0;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--bg);
+  color: #1a1a1a;
+  line-height: 1.5;
+  min-height: 100vh;
+}
+
+/* ============ HEADER ============ */
+.hero {
+  background: linear-gradient(135deg, var(--navy) 0%, var(--navy-dark) 100%);
+  color: white;
+  padding: 32px 24px 28px;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -30%;
+  right: -10%;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(197,90,17,0.18) 0%, transparent 70%);
+  border-radius: 50%;
+}
+.hero-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+.hero h1 {
+  font-family: 'Fraunces', serif;
+  font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  margin-bottom: 6px;
+}
+.hero h1 .accent {
+  color: #FFB380;
+  font-style: italic;
+  font-weight: 400;
+}
+.hero .subtitle {
+  font-size: 0.95rem;
+  opacity: 0.85;
+  font-weight: 300;
+  max-width: 720px;
+}
+.hero .meta {
+  display: flex;
+  gap: 18px;
+  margin-top: 14px;
+  flex-wrap: wrap;
+  font-size: 0.8rem;
+}
+.hero .meta span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.15);
+}
+.hero .meta .dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  display: inline-block;
+}
+
+/* ============ STATS ============ */
+.stats {
+  max-width: 1400px;
+  margin: -20px auto 0;
+  padding: 0 24px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 10px;
+  position: relative;
+  z-index: 2;
+}
+.stat {
+  background: var(--card);
+  padding: 14px 18px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+.stat .num {
+  font-family: 'Fraunces', serif;
+  font-size: 1.8rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+.stat .label {
+  font-size: 0.78rem;
+  color: var(--gris);
+  margin-top: 2px;
+}
+.stat.sir .num { color: var(--rouge-sir); }
+.stat.sia .num { color: var(--orange-sia); }
+.stat.si .num { color: var(--vert-si); }
+.stat.total .num { color: var(--navy); }
+
+/* ============ CONTROLS ============ */
+main {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 22px 24px 60px;
+}
+.controls {
+  background: var(--card);
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  padding: 18px;
+  margin-bottom: 18px;
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr auto;
+  gap: 12px;
+  align-items: end;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+}
+.field label {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--gris);
+  margin-bottom: 5px;
+}
+.field input, .field select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 0.92rem;
+  background: white;
+  color: #1a1a1a;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.field input:focus, .field select:focus {
+  outline: none;
+  border-color: var(--navy);
+  box-shadow: 0 0 0 3px rgba(31,78,121,0.1);
+}
+.field input::placeholder {
+  color: #9a9a9a;
+}
+.btn-reset {
+  padding: 10px 16px;
+  background: var(--orange-light);
+  color: var(--orange);
+  border: 1.5px solid var(--orange);
+  border-radius: 8px;
+  font-family: inherit;
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+.btn-reset:hover {
+  background: var(--orange);
+  color: white;
+}
+
+/* ============ RESULTS COUNT ============ */
+.results-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 12px;
+  padding: 0 4px;
+  font-size: 0.85rem;
+}
+.results-count {
+  color: var(--gris);
+}
+.results-count strong {
+  color: var(--navy);
+  font-family: 'Fraunces', serif;
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-right: 4px;
+}
+.view-toggle {
+  display: flex;
+  gap: 4px;
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 3px;
+}
+.view-toggle button {
+  padding: 5px 12px;
+  border: none;
+  background: transparent;
+  font-family: inherit;
+  font-size: 0.8rem;
+  cursor: pointer;
+  border-radius: 5px;
+  color: var(--gris);
+  transition: all 0.15s;
+}
+.view-toggle button.active {
+  background: var(--navy);
+  color: white;
+}
+
+/* ============ CARDS VIEW ============ */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+  gap: 16px;
+}
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 18px;
+  transition: transform 0.15s, box-shadow 0.15s, border-color 0.15s;
+  position: relative;
+  overflow: hidden;
+}
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+  border-color: var(--navy);
+}
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 4px;
+  height: 100%;
+}
+.card.sir::before { background: var(--rouge-sir); }
+.card.sia::before { background: var(--orange-sia); }
+.card.si::before { background: var(--vert-si); }
+.card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+.card-title {
+  font-family: 'Fraunces', serif;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--navy);
+  line-height: 1.25;
+}
+.badge {
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 999px;
+  letter-spacing: 0.05em;
+  color: white;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.badge.sir { background: var(--rouge-sir); }
+.badge.sia { background: var(--orange-sia); }
+.badge.si { background: var(--vert-si); }
+.sector {
+  font-size: 0.78rem;
+  color: var(--gris);
+  margin-bottom: 12px;
+  font-weight: 500;
+}
+.card-section {
+  margin-bottom: 10px;
+}
+.card-section:last-child { margin-bottom: 0; }
+.card-section .lbl {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--orange);
+  margin-bottom: 3px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.card-section .lbl::before {
+  content: '';
+  width: 12px;
+  height: 1.5px;
+  background: var(--orange);
+}
+.card-section .content {
+  font-size: 0.85rem;
+  color: #2a2a2a;
+  line-height: 1.5;
+}
+.card-section.ref .content {
+  font-size: 0.78rem;
+  color: var(--gris);
+  font-style: italic;
+}
+
+/* ============ TABLE VIEW ============ */
+.table-wrap {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  overflow-x: auto;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+  min-width: 1200px;
+}
+thead {
+  background: var(--navy);
+  color: white;
+}
+th {
+  padding: 12px 14px;
+  text-align: left;
+  font-weight: 600;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+td {
+  padding: 12px 14px;
+  border-top: 1px solid var(--border);
+  vertical-align: top;
+  line-height: 1.45;
+}
+tr:hover td { background: #FAFAF7; }
+td.suivi {
+  text-align: center;
+  font-weight: 700;
+  font-size: 0.78rem;
+}
+td.suivi-sir { background: var(--rouge-sir); color: white; }
+td.suivi-sia { background: var(--orange-sia); color: white; }
+td.suivi-si { background: var(--vert-si); color: white; }
+td.metier-name {
+  font-family: 'Fraunces', serif;
+  font-weight: 600;
+  color: var(--navy);
+  min-width: 200px;
+}
+
+/* ============ EMPTY STATE ============ */
+.empty {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--gris);
+}
+.empty .emoji {
+  font-size: 3rem;
+  margin-bottom: 10px;
+}
+.empty h3 {
+  font-family: 'Fraunces', serif;
+  font-size: 1.3rem;
+  color: var(--navy);
+  margin-bottom: 6px;
+}
+
+/* ============ LEGEND ============ */
+.legend {
+  margin-top: 32px;
+  padding: 24px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+.legend h2 {
+  font-family: 'Fraunces', serif;
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: var(--navy);
+  margin-bottom: 14px;
+}
+.legend-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 14px;
+  margin-bottom: 22px;
+}
+.legend-item {
+  display: flex;
+  gap: 12px;
+  padding: 12px;
+  background: var(--bg);
+  border-radius: 8px;
+  border-left: 4px solid;
+}
+.legend-item.sir { border-color: var(--rouge-sir); }
+.legend-item.sia { border-color: var(--orange-sia); }
+.legend-item.si { border-color: var(--vert-si); }
+.legend-item .code {
+  font-weight: 700;
+  font-size: 0.95rem;
+  font-family: 'Fraunces', serif;
+  flex-shrink: 0;
+  width: 40px;
+}
+.legend-item.sir .code { color: var(--rouge-sir); }
+.legend-item.sia .code { color: var(--orange-sia); }
+.legend-item.si .code { color: var(--vert-si); }
+.legend-item p {
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: #333;
+}
+.refs h3 {
+  font-family: 'Fraunces', serif;
+  font-size: 1rem;
+  color: var(--orange);
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+.refs ul {
+  list-style: none;
+  font-size: 0.82rem;
+  color: #444;
+}
+.refs li {
+  padding: 5px 0 5px 20px;
+  position: relative;
+  border-bottom: 1px dashed var(--border);
+}
+.refs li::before {
+  content: '§';
+  position: absolute;
+  left: 0;
+  color: var(--orange);
+  font-weight: 700;
+}
+.refs li:last-child { border: none; }
+
+/* ============ FOOTER ============ */
+footer {
+  text-align: center;
+  padding: 28px 20px;
+  color: var(--gris);
+  font-size: 0.78rem;
+  border-top: 1px solid var(--border);
+  margin-top: 32px;
+}
+footer strong { color: var(--navy); }
+
+/* ============ HIGHLIGHT (recherche) ============ */
+mark {
+  background: #FFF3A0;
+  color: inherit;
+  padding: 1px 2px;
+  border-radius: 2px;
+  font-weight: 500;
+}
+
+/* ============ RESPONSIVE ============ */
+@media (max-width: 900px) {
+  .controls {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  .stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .cards {
+    grid-template-columns: 1fr;
+  }
+  .hero { padding: 24px 18px 22px; }
+  main { padding: 18px 14px 50px; }
+}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-inner">
+    <h1>Base Métiers — <span class="accent">Santé au travail</span></h1>
+    <p class="subtitle">Référentiel des suivis médicaux, risques professionnels, EPI et EPC par métier — Classification NAF, droit du travail français.</p>
+    <div class="meta">
+      <span><span class="dot" style="background:#FFB380"></span>118 métiers · 19 secteurs</span>
+      <span><span class="dot" style="background:#fff"></span>Code du travail français</span>
+      <span><span class="dot" style="background:#FFB380"></span>Référence INRS / DGT</span>
+    </div>
+  </div>
+</header>
+
+<div class="stats">
+  <div class="stat total">
+    <div class="num" id="stat-total">118</div>
+    <div class="label">Métiers référencés</div>
+  </div>
+  <div class="stat sir">
+    <div class="num">85</div>
+    <div class="label">Suivi Renforcé (SIR)</div>
+  </div>
+  <div class="stat sia">
+    <div class="num">22</div>
+    <div class="label">Suivi Adapté (SIA)</div>
+  </div>
+  <div class="stat si">
+    <div class="num">11</div>
+    <div class="label">Suivi Simple (SI)</div>
+  </div>
+</div>
+
+<main>
+
+  <div class="controls">
+    <div class="field">
+      <label for="search">🔍 Rechercher un métier, un risque, un EPI…</label>
+      <input type="text" id="search" placeholder="Ex : soudeur, amiante, harnais, biologique…" autofocus>
+    </div>
+    <div class="field">
+      <label for="filter-secteur">Filtrer par secteur</label>
+      <select id="filter-secteur">
+        <option value="">Tous les secteurs</option>
+        <option value="A. Agriculture, sylviculture, pêche">A. Agriculture, sylviculture, pêche</option>
+        <option value="B. Industries extractives">B. Industries extractives</option>
+        <option value="C. Industrie manufacturière">C. Industrie manufacturière</option>
+        <option value="D. Énergie">D. Énergie</option>
+        <option value="E. Eau, déchets">E. Eau, déchets</option>
+        <option value="F. Construction / BTP">F. Construction / BTP</option>
+        <option value="G. Commerce">G. Commerce</option>
+        <option value="H. Transport, logistique">H. Transport, logistique</option>
+        <option value="I. Hébergement, restauration">I. Hébergement, restauration</option>
+        <option value="J. Information, communication">J. Information, communication</option>
+        <option value="K. Finance, assurance">K. Finance, assurance</option>
+        <option value="L. Immobilier">L. Immobilier</option>
+        <option value="M. Activités scientifiques, techniques">M. Activités scientifiques, techniques</option>
+        <option value="N. Services administratifs, soutien">N. Services administratifs, soutien</option>
+        <option value="O. Administration publique, sécurité">O. Administration publique, sécurité</option>
+        <option value="P. Enseignement">P. Enseignement</option>
+        <option value="Q. Santé, action sociale">Q. Santé, action sociale</option>
+        <option value="R. Arts, spectacles, loisirs">R. Arts, spectacles, loisirs</option>
+        <option value="S. Autres services">S. Autres services</option>
+      </select>
+    </div>
+    <div class="field">
+      <label for="filter-suivi">Filtrer par type de suivi</label>
+      <select id="filter-suivi">
+        <option value="">Tous les suivis</option>
+        <option value="SIR">SIR — Suivi Individuel Renforcé</option>
+        <option value="SIA">SIA — Suivi Individuel Adapté</option>
+        <option value="SI">SI — Suivi Individuel simple</option>
+      </select>
+    </div>
+    <button class="btn-reset" onclick="resetFilters()">Réinitialiser</button>
+  </div>
+
+  <div class="results-bar">
+    <div class="results-count"><strong id="count">118</strong> métier(s) affiché(s)</div>
+    <div class="view-toggle">
+      <button class="active" id="btn-cards" onclick="setView('cards')">▦ Cartes</button>
+      <button id="btn-table" onclick="setView('table')">☰ Tableau</button>
+    </div>
+  </div>
+
+  <div id="results-cards" class="cards"></div>
+  <div id="results-table" class="table-wrap" style="display:none">
+    <table>
+      <thead>
+        <tr>
+          <th>Métier</th>
+          <th>Secteur</th>
+          <th style="width:80px">Suivi</th>
+          <th>Risques</th>
+          <th>EPI</th>
+          <th>EPC</th>
+          <th>Réf.</th>
+        </tr>
+      </thead>
+      <tbody id="tbody"></tbody>
+    </table>
+  </div>
+
+  <div id="empty" class="empty" style="display:none">
+    <div class="emoji">🔍</div>
+    <h3>Aucun métier ne correspond</h3>
+    <p>Essayez d'élargir vos critères de recherche ou de réinitialiser les filtres.</p>
+  </div>
+
+  <section class="legend">
+    <h2>Légende des suivis médicaux</h2>
+    <div class="legend-grid">
+      <div class="legend-item si">
+        <div class="code">SI</div>
+        <p>Suivi Individuel — Visite d'Information et de Prévention (VIP) initiale puis tous les 5 ans (3 ans si SIA). Par professionnel de santé au travail.</p>
+      </div>
+      <div class="legend-item sia">
+        <div class="code">SIA</div>
+        <p>Suivi Individuel Adapté — Modulé selon situation : travailleurs de nuit, < 18 ans, travailleurs handicapés (RQTH), femmes enceintes/allaitantes, invalidité, champs EM > VLA. Périodicité ≤ 3 ans.</p>
+      </div>
+      <div class="legend-item sir">
+        <div class="code">SIR</div>
+        <p>Suivi Individuel Renforcé — Examen Médical d'Aptitude (EMA) avant affectation par médecin du travail + visites tous les 4 ans max avec visite intermédiaire à 2 ans par professionnel de santé. Postes à risques : amiante, plomb, CMR, agents biologiques groupes 3-4, RI, hyperbare, chute de hauteur (échafaudages), jeunes en dérogation, port d'arme.</p>
+      </div>
+    </div>
+
+    <div class="refs">
+      <h3>Références réglementaires principales</h3>
+      <ul>
+        <li>Code du travail : R.4624-10 et suivants (SI), R.4624-17 et suivants (SIA), R.4624-22 à R.4624-28 (SIR)</li>
+        <li>CMR : R.4412-1 à R.4412-93 — Cancérogènes, Mutagènes, Reprotoxiques</li>
+        <li>Amiante : R.4412-94 à R.4412-148 + Arrêté du 8 avril 2013 (SS3/SS4)</li>
+        <li>Plomb : R.4412-149 à R.4412-164</li>
+        <li>Agents biologiques : R.4421-1 à R.4427-5 (classement INRS en 4 groupes)</li>
+        <li>Rayonnements ionisants : R.4451-1 à R.4451-135 (catégories A et B)</li>
+        <li>Bruit : R.4431-1 à R.4437-4 (VLE 87 dB(A), VA 80/85 dB(A))</li>
+        <li>Vibrations : R.4441-1 à R.4447-1</li>
+        <li>Hyperbare : R.4461-1 à R.4461-49</li>
+        <li>Champs électromagnétiques : R.4453-1 à R.4453-34</li>
+        <li>Tableaux de Maladies Professionnelles (régime général et agricole)</li>
+        <li>INRS — ED 6140 (évaluation des risques chimiques)</li>
+      </ul>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <p><strong>Base métiers — Santé au travail & prévention</strong></p>
+  <p>Outil de synthèse à adapter à l'évaluation des risques propre à chaque entreprise (DUERP). Décision du suivi sous responsabilité du médecin du travail.</p>
+</footer>
+
+<script>
+const METIERS = [{"metier": "Exploitant agricole / Agriculteur", "secteur": "A. Agriculture, sylviculture, pêche", "suivi": "SIR", "risques": "CMR (pesticides), biologique 2-3 (zoonoses), biomécanique, UV, bruit, vibrations, zoonoses", "epi": "Combinaison Tyvek type 4, masque ABEK-P3, gants nitrile longs, lunettes étanches, bottes, chapeau", "epc": "Cabine pressurisée tracteur, locaux phytos ventilés, pédiluve, douche de décontamination", "ref": "R.4412-60 CMR ; Arrêté 25/07/2019 produits phyto"}, {"metier": "Maraîcher / Horticulteur", "secteur": "A. Agriculture, sylviculture, pêche", "suivi": "SIR", "risques": "CMR (pesticides), chimique, UV, biomécanique (postures contraignantes), allergies", "epi": "Gants nitrile, masque P3, combinaison, lunettes, chapeau", "epc": "Serre ventilée, pulvérisation fermée, douche de décontamination", "ref": "R.4412-60"}, {"metier": "Viticulteur / Ouvrier viticole", "secteur": "A. Agriculture, sylviculture, pêche", "suivi": "SIR", "risques": "CMR (pesticides cuivre, soufre, fongicides), UV, biomécanique, vibrations (sécateur électr.)", "epi": "Combinaison, masque ABEK-P3, gants, lunettes", "epc": "Pulvérisateur à cabine fermée, local phyto ventilé", "ref": "R.4412-60"}, {"metier": "Éleveur (bovin, ovin, porcin, volailles)", "secteur": "A. Agriculture, sylviculture, pêche", "suivi": "SIR", "risques": "Biologique 2-3 (zoonoses : leptospirose, brucellose, fièvre Q, grippe aviaire), biomécanique, bruit, ammoniac", "epi": "Gants étanches, bottes, combinaison, masque FFP2, lunettes", "epc": "Ventilation stabulation, contention animale, point d'eau", "ref": "R.4421-3"}, {"metier": "Apiculteur", "secteur": "A. Agriculture, sylviculture, pêche", "suivi": "SI", "risques": "Biologique (piqûres), allergique (choc anaphylactique), biomécanique", "epi": "Combinaison apicole, voile, gants longs", "epc": "Enfumoir, ruches stabilisées", "ref": "Évaluation allergie"}, {"metier": "Pêcheur professionnel / Marin pêcheur", "secteur": "A. Agriculture, sylviculture, pêche", "suivi": "SIR", "risques": "Chute en eau, mécanique (treuils, filets), bruit, biologique, isolement, hyperbare possible", "epi": "Gilet de sauvetage à déclenchement auto, cirée, gants antidérapants, bottes", "epc": "Garde-corps, filets, dispositif homme à la mer (MOB)", "ref": "Décret 2007-1227 ; R.4461-1 hyperbare"}, {"metier": "Bûcheron / Élagueur", "secteur": "A. Agriculture, sylviculture, pêche", "suivi": "SIR", "risques": "Chute hauteur (élagage), mécanique (tronçonneuse), bruit > 85 dB, vibrations, isolement", "epi": "Casque forestier visière + coquilles antibruit, pantalon anti-coupure classe 1, gants, chaussures anti-coupure", "epc": "Plate-forme nacelle si possible, ligne de vie", "ref": "R.4624-23 (chute hauteur)"}, {"metier": "Conducteur d'engin agricole / forestier", "secteur": "A. Agriculture, sylviculture, pêche", "suivi": "SIR", "risques": "Vibrations corps entier, bruit, renversement, postures", "epi": "Protection auditive, chaussures S3, gilet HV", "epc": "Cabine ROPS/FOPS, ceinture de sécurité, siège suspendu", "ref": "R489 CACES ; R.4441-1 vibrations"}, {"metier": "Mineur de fond / Ouvrier de mine", "secteur": "B. Industries extractives", "suivi": "SIR", "risques": "CMR (silice cristalline, radon), bruit > 85 dB, vibrations, biomécanique, hyperbare possible", "epi": "Masque P3 ou ARI, casque, lampe, combinaison, gants, chaussures", "epc": "Ventilation forcée, arrosage, soutènement, détection grisou", "ref": "R.4412-60 ; Arrêté silice 21/10/2020"}, {"metier": "Ouvrier de carrière", "secteur": "B. Industries extractives", "suivi": "SIR", "risques": "CMR silice, bruit, vibrations, poussières inertes, chute", "epi": "Masque P3, casque antibruit, lunettes, gilet HV, chaussures", "epc": "Arrosage abattage, capotage concasseurs, aspiration", "ref": "Arrêté silice 21/10/2020"}, {"metier": "Foreur (eau, géothermie, pétrole)", "secteur": "B. Industries extractives", "suivi": "SIR", "risques": "CMR (fluides forage), bruit, vibrations, ATEX, chute", "epi": "Combinaison antistatique, gants, masque, antibruit, lunettes", "epc": "Détection gaz, ventilation, capots", "ref": "R.4412-60 ; ATEX"}, {"metier": "Ouvrier d'abattoir / Découpe viande", "secteur": "C. Industrie manufacturière", "suivi": "SIR", "risques": "Biologique 2-3 (zoonoses), mécanique (couteaux, scies), froid, biomécanique (TMS)", "epi": "Gant cotte de mailles anti-coupure, tablier inox, bottes, casque, lunettes, tablier anti-coupure", "epc": "Protections machines, sols antidérapants, séparation zones propre/sale", "ref": "R.4421-3 ; Directive Seveso si frigos NH3"}, {"metier": "Boulanger / Pâtissier industriel", "secteur": "C. Industrie manufacturière", "suivi": "SIR", "risques": "CMR (farines - asthme du boulanger), biomécanique, thermique, horaires de nuit", "epi": "Masque FFP2 anti-poussière farine, gants thermiques, chaussures antidérapantes", "epc": "Aspiration à la source du pétrin, hotte four, ventilation locale", "ref": "Tableau MP 66 ; CMR farines"}, {"metier": "Opérateur de fabrication chimique", "secteur": "C. Industrie manufacturière", "suivi": "SIR", "risques": "CMR (multiples), thermique, ATEX, chimique, biologique selon procédé", "epi": "Combinaison étanche type 3-4, masque ABEK-P3 ou ARI, gants nitrile/butyle, lunettes étanches, bottes", "epc": "Sorbonne, captage à la source, douche/lave-œil, détection gaz, ATEX", "ref": "R.4412-60 ; Seveso"}, {"metier": "Préparateur cytotoxiques / Pharmacie", "secteur": "C. Industrie manufacturière", "suivi": "SIR", "risques": "CMR (cytostatiques), biologique", "epi": "Combinaison étanche, masque P3, double gants nitrile (changés 30 min), lunettes, surchaussures", "epc": "Isolateur ou PSM type III, ventilation à dépression, kit déversement", "ref": "R.4412-60 ; INRS ED 6253"}, {"metier": "Laborantin R&D / contrôle qualité", "secteur": "C. Industrie manufacturière", "suivi": "SIR", "risques": "CMR, biologique 2-3, chimique, AES", "epi": "Blouse, gants nitrile, lunettes, masque selon manip", "epc": "Sorbonne, PSM type II, ventilation locale, douche/lave-œil", "ref": "R.4412-60 ; R.4421-3"}, {"metier": "Fondeur / Mouleur métal", "secteur": "C. Industrie manufacturière", "suivi": "SIR", "risques": "CMR (fumées Ni, Cr, Mn, Co), thermique, bruit, UV, brûlures", "epi": "Cagoule ventilée à adduction d'air, vêtement aluminisé, gants cuir, chaussures alu, lunettes IR", "epc": "Aspiration fumées à la source, captage induction, ventilation générale", "ref": "R.4412-60 ; Tableaux MP 30, 70"}, {"metier": "Soudeur (arc, MIG/MAG, TIG)", "secteur": "C. Industrie manufacturière", "suivi": "SIR", "risques": "CMR fumées de soudage (cancérogène groupe 1 CIRC 2017 : manganèse, nickel, chrome VI, monoxyde de carbone), rayonnement optique UV/IR (coup d'arc, kératoconjonctivite), thermique et brûlures, bruit, manutention manuelle (lombalgies), RX si soudage spécifique", "epi": "Masque soudure ADF (auto-obscurcissant) ou cagoule à adduction d'air, vêtements couvrants à manches longues ignifugés, gants de soudage cuir long, tablier cuir, chaussures S3", "epc": "Torche aspirante et bras aspirant à la source, procédés à faible émission de fumée, rejet des fumées captées à l'extérieur des locaux, ventilation mécanique générale, pinces à souder à câbles bipolaires à préhension déportée, écrans de soudage", "ref": "INRS ED 6435 ; R.4412-60 (CIRC 2017) ; ED 668 INRS"}, {"metier": "Chaudronnier / Tôlier / Métallier", "secteur": "C. Industrie manufacturière", "suivi": "SIR", "risques": "CMR fumées de soudage (cancérogène groupe 1 CIRC : Mn, Ni, Cr VI), manutention manuelle (lombalgies, dorsalgies — 58% des AT du secteur), TMS et blessures liées aux outillages à main, vibrations main-bras (outils pneumatiques), bruit > 85 dB, chute de hauteur et de plain-pied, brûlures et projections (soudage, meulage), UV/IR (coup d'arc)", "epi": "Masque ou cagoule de soudage ADF, vêtements couvrants à manches longues ignifugés + tablier + gants de soudage, protection auditive, lunettes, gants anti-coupure, chaussures S3", "epc": "Torches aspirantes MIG/MAG-TIG, rejet des fumées captées à l'extérieur des locaux, ventilation mécanique générale, aides à la manutention (ponts roulants, potences, portiques, convoyeurs, tables élévatrices, transpalettes, diables), PIR/PIRL et passerelles à escalier normalisé pour travaux en hauteur, suppression des fuites d'huile hydraulique au sol, pinces à souder à câbles bipolaires à préhension déportée", "ref": "INRS ED 6435 ; R.4412-60 (fumées soudage CIRC 2017) ; R.4541-1 manutention ; R.4434-7 bruit"}, {"metier": "Tourneur-fraiseur sur machines-outils", "secteur": "C. Industrie manufacturière", "suivi": "SIR", "risques": "CMR (huiles minérales non spécifiées, brouillards), mécanique, bruit", "epi": "Lunettes, chaussures S3, gants (hors machine en rotation)", "epc": "Capotage machine, aspiration brouillards d'huile, écrans", "ref": "R.4412-60 huiles minérales"}, {"metier": "Mécanicien de maintenance industrielle", "secteur": "C. Industrie manufacturière", "suivi": "SIR", "risques": "Mécanique, chimique (huiles, solvants), électrique, chute, espaces confinés", "epi": "Lunettes, gants, chaussures S3, casque, harnais si hauteur", "epc": "Consignation, LOTO, détection atmo si confiné", "ref": "R.4544-1 électrique ; ED 6184 espaces confinés"}, {"metier": "Menuisier / Ébéniste industriel", "secteur": "C. Industrie manufacturière", "suivi": "SIR", "risques": "CMR (poussières bois feuillus - cancérogène CIRC 1), bruit, mécanique (scies)", "epi": "Masque P3, lunettes, casque antibruit, gants (hors machine)", "epc": "Aspiration à la source obligatoire, captage sur chaque machine, ventilation", "ref": "R.4412-60 ; Tableau MP 47"}, {"metier": "Opérateur plasturgie / Injection", "secteur": "C. Industrie manufacturière", "suivi": "SIR", "risques": "CMR (styrène, isocyanates, formaldéhyde selon résines), thermique, bruit", "epi": "Gants thermiques + nitrile, masque ABEK, lunettes, chaussures", "epc": "Hotte aspirante machine, ventilation générale", "ref": "R.4412-60"}, {"metier": "Verrier / Souffleur de verre", "secteur": "C. Industrie manufacturière", "suivi": "SIR", "risques": "CMR silice, thermique, UV-IR, brûlures", "epi": "Vêtement anti-chaleur, lunettes IR, gants thermiques, chaussures", "epc": "Écrans IR, ventilation, aspiration", "ref": "Arrêté silice"}, {"metier": "Teinturier industriel / Pressing", "secteur": "C. Industrie manufacturière", "suivi": "SIR", "risques": "CMR (perchloroéthylène en pressing - cancérogène 2A, colorants azoïques)", "epi": "Combinaison, masque ABEK, gants nitrile, lunettes", "epc": "Machines fermées 5e génération, ventilation, captage", "ref": "Arrêté 5/12/2012 perchloro"}, {"metier": "Ouvrier textile / Confection", "secteur": "C. Industrie manufacturière", "suivi": "SI", "risques": "TMS (membre supérieur), bruit, poussières, postures", "epi": "Doigtier, lunettes selon poste", "epc": "Aspiration poussières, postes ergonomiques", "ref": "RPS, TMS"}, {"metier": "Technicien centrale nucléaire (cat. A)", "secteur": "D. Énergie", "suivi": "SIR", "risques": "Rayonnements ionisants cat. A (>6 mSv/an), chimique, thermique", "epi": "Combinaison vinyle ou Tyvek, double gants, masque P3 ou ARI, dosimètre opérationnel + passif, surchaussures", "epc": "Blindage plombé, confinement dynamique, ventilation à dépression, balise radiamétrie", "ref": "R.4451-1 et suivants ; Carte CEFRI"}, {"metier": "Électricien réseau / haute tension", "secteur": "D. Énergie", "suivi": "SIR", "risques": "Électrique HT/BT, chute hauteur, CEM (champs électromagnétiques)", "epi": "Gants isolants classe selon U, casque isolant, chaussures isolantes, écran facial arc électrique, harnais", "epc": "Consignation, VAT, perches, mise à la terre, ligne de vie", "ref": "R.4544-9 ; UTE C18-510"}, {"metier": "Technicien maintenance éolienne", "secteur": "D. Énergie", "suivi": "SIR", "risques": "Chute hauteur > 80 m, électrique, espaces confinés, isolement, météo", "epi": "Harnais antichute complet + 2 longes, casque jugulaire, EPI électrique, antichoc", "epc": "Ligne de vie verticale, ascenseur nacelle, évacuation par descente contrôlée", "ref": "R.4624-23 chute hauteur ; GWO formation"}, {"metier": "Égoutier / Curage réseaux", "secteur": "E. Eau, déchets", "suivi": "SIR", "risques": "Biologique 3 (leptospirose, hépatite A, tétanos), chimique (H2S, CH4), ATEX, espaces confinés, noyade", "epi": "Combinaison étanche, ARI, gants étanches, bottes, casque, harnais", "epc": "Ventilation forcée, détecteur 4 gaz, treuil évacuation, surveillance extérieure", "ref": "R.4421-3 ; ED 6184 espaces confinés"}, {"metier": "Ripeur / Éboueur", "secteur": "E. Eau, déchets", "suivi": "SIR", "risques": "Biologique 2-3, biomécanique (TMS), circulation, AES, agression", "epi": "Gants étanches manchettes, vêtement haute visibilité classe 3, chaussures S3, casquette", "epc": "Marchepied sécurisé benne, alerte recul, signalisation, formation gestes", "ref": "Tableau MP 76 leptospirose"}, {"metier": "Agent station d'épuration", "secteur": "E. Eau, déchets", "suivi": "SIR", "risques": "Biologique 3, chimique (chlore, ozone), ATEX (méthane), aérosols", "epi": "Combinaison, masque P3 ou ABEK-P3, gants étanches, bottes, lunettes", "epc": "Ventilation locale, détection gaz, douche, lave-œil", "ref": "R.4421-3"}, {"metier": "Agent de déchèterie", "secteur": "E. Eau, déchets", "suivi": "SIR", "risques": "Biologique, chimique (DDS, DEEE, amiante possible), mécanique, agression", "epi": "Gants, masque P3, chaussures S3, lunettes, vêtement HV", "epc": "Aire couverte, ventilation, séparation flux, signalétique", "ref": "R.4412-60 si amiante"}, {"metier": "Opérateur d'incinérateur / UIOM", "secteur": "E. Eau, déchets", "suivi": "SIR", "risques": "CMR (dioxines, furanes, métaux lourds), thermique, chimique, bruit", "epi": "ARI ou masque P3, combinaison aluminisée, gants, lunettes", "epc": "Cabine pressurisée, captage gaz, filtres à manche, ventilation", "ref": "R.4412-60"}, {"metier": "Maçon / Coffreur", "secteur": "F. Construction / BTP", "suivi": "SIR", "risques": "CMR (silice cristalline, ciment), chute hauteur, biomécanique, bruit, plomb possible", "epi": "Casque, masque P3, gants nitrile (ciment), lunettes, chaussures S3, gilet HV", "epc": "Échafaudages, garde-corps, banches sécurisées, aspiration découpe", "ref": "R.4412-60 silice ; R.4624-23 chute"}, {"metier": "Couvreur / Zingueur", "secteur": "F. Construction / BTP", "suivi": "SIR", "risques": "Chute hauteur, amiante (toitures anciennes), plomb (anciennes soudures), UV, thermique", "epi": "Harnais antichute, casque jugulaire, masque P3 si amiante/plomb, chaussures antidérapantes", "epc": "Ligne de vie, échafaudages, filets antichute, points d'ancrage permanents", "ref": "R.4412-94 amiante ; R.4624-23"}, {"metier": "Charpentier de chantier", "secteur": "F. Construction / BTP", "suivi": "SIR", "risques": "Chute hauteur, mécanique, biomécanique, vibrations", "epi": "Harnais, casque jugulaire, gants, chaussures S3, lunettes", "epc": "Garde-corps, ligne de vie, plate-formes", "ref": "R.4624-23"}, {"metier": "Plombier-chauffagiste", "secteur": "F. Construction / BTP", "suivi": "SIR", "risques": "Amiante (réseaux anciens), plomb (canalisations), thermique (soudage), biomécanique, postures", "epi": "Masque P3, gants, lunettes, genouillères, chaussures S3", "epc": "Aspiration soudage, MPC amiante sous-section 4", "ref": "R.4412-94 ; R.4412-160 plomb"}, {"metier": "Électricien bâtiment", "secteur": "F. Construction / BTP", "suivi": "SIR", "risques": "Électrique, chute hauteur, amiante (gaines anciennes)", "epi": "Gants isolants, casque isolant, chaussures isolantes, écran facial arc, harnais", "epc": "VAT, consignation, balisage", "ref": "R.4544-9 habilitation ; UTE C18-510"}, {"metier": "Peintre en bâtiment", "secteur": "F. Construction / BTP", "suivi": "SIR", "risques": "CMR (solvants, isocyanates si bi-composants, anciens plombs), chute, asthme", "epi": "Combinaison Tyvek, masque ABEK-P3 ou cagoule ventilée, gants nitrile, lunettes", "epc": "Ventilation forcée, captage, balisage zones", "ref": "R.4412-60"}, {"metier": "Conducteur d'engin de chantier (pelle, bull)", "secteur": "F. Construction / BTP", "suivi": "SIR", "risques": "Vibrations corps entier, bruit, renversement, écrasement, poussières silice", "epi": "Protection auditive, chaussures S3, gilet HV, casque hors cabine, masque P3 sortie cabine", "epc": "Cabine ROPS/FOPS pressurisée filtrée, ceinture, caméra recul", "ref": "R482 CACES ; R.4441 vibrations"}, {"metier": "Grutier (tour, mobile)", "secteur": "F. Construction / BTP", "suivi": "SIR", "risques": "Chute hauteur, charge mentale, vibrations, électrique (lignes), météo", "epi": "Casque, gilet HV, chaussures, harnais accès", "epc": "Garde-corps cabine, anémomètre, limiteurs de charge, signalisation", "ref": "R483, R487 CACES"}, {"metier": "Désamianteur (SS3)", "secteur": "F. Construction / BTP", "suivi": "SIR", "risques": "CMR cat. 1 amiante (cancérogène avéré), chute, thermique selon site", "epi": "Combinaison Tyvek type 5 jetable, masque TM3P ventilé ou ARI, 2 paires de gants nitrile, surchaussures, cagoule", "epc": "Confinement dynamique en dépression, sas 3 compartiments, aspirateur THE, douche décontamination", "ref": "R.4412-94 et suivants ; Arrêté 8/04/2013 SS3"}, {"metier": "Démolisseur", "secteur": "F. Construction / BTP", "suivi": "SIR", "risques": "CMR multiples (amiante, plomb, silice), chute, écrasement, bruit, vibrations", "epi": "ARI ou masque TM3P, combinaison, gants, casque, chaussures S3", "epc": "Arrosage, confinement, plan de retrait, repérage avant travaux (RAT)", "ref": "R.4412-94 ; Diagnostic avant démolition"}, {"metier": "Poseur revêtements sols / Carreleur", "secteur": "F. Construction / BTP", "suivi": "SIR", "risques": "CMR (silice carrelage, colles solvants), biomécanique (genoux), postures", "epi": "Genouillères, gants nitrile, masque P3, lunettes", "epc": "Aspiration découpe carrelage, ventilation", "ref": "R.4412-60 silice"}, {"metier": "Façadier / Ravaleur", "secteur": "F. Construction / BTP", "suivi": "SIR", "risques": "Chute hauteur, CMR (silice, plomb ancien), UV, météo", "epi": "Harnais, casque, masque P3, gants, chaussures", "epc": "Échafaudages avec garde-corps, ligne de vie", "ref": "R.4624-23 ; R.4412-160"}, {"metier": "Caissier / Vendeur de magasin", "secteur": "G. Commerce", "suivi": "SI", "risques": "Biomécanique (debout statique), TMS poignets, charge mentale, agression, hold-up", "epi": "—", "epc": "Siège assis-debout, aménagement caisse ergonomique, vidéoprotection, formation conflit", "ref": "RPS"}, {"metier": "Préparateur de commandes / Cariste", "secteur": "G. Commerce", "suivi": "SIR", "risques": "Biomécanique (port charges), mécanique (chariot), chute, bruit, circulation", "epi": "Chaussures S3, gants, casquette anti-heurt, gilet HV", "epc": "Allées matérialisées, racks sécurisés, transpalette électrique, dispositifs anti-collision", "ref": "R489 CACES ; R.4541-1 manutention"}, {"metier": "Mécanicien automobile", "secteur": "G. Commerce", "suivi": "SIR", "risques": "CMR (huiles minérales, gaz échappement diesel cancérogène 1 CIRC, amiante anciens freins), biomécanique, bruit", "epi": "Gants nitrile, combinaison, lunettes, chaussures S3", "epc": "Pont élévateur, aspiration gaz échappement (obligatoire), ventilation", "ref": "R.4412-60 ; ED 755 INRS"}, {"metier": "Carrossier-peintre automobile", "secteur": "G. Commerce", "suivi": "SIR", "risques": "CMR (isocyanates - asthme professionnel, solvants), bruit, biomécanique", "epi": "Combinaison Tyvek, masque ABEK-P3 + cagoule ventilée à adduction d'air, gants nitrile, lunettes", "epc": "Cabine de peinture ventilée et filtrée, captage ponçage, ventilation atelier", "ref": "R.4412-60 ; Tableau MP 62 isocyanates"}, {"metier": "Boucher détail / Charcutier artisan", "secteur": "G. Commerce", "suivi": "SIA", "risques": "Mécanique (couteaux, hachoir), froid, biomécanique, biologique 2", "epi": "Gant cotte de mailles, tablier anti-coupure, bottes, calot", "epc": "Protections machines, sols antidérapants, formation affûtage", "ref": "Tableau MP 76"}, {"metier": "Boulanger artisan", "secteur": "G. Commerce", "suivi": "SIR", "risques": "CMR (farines), horaires de nuit, thermique, biomécanique, allergies", "epi": "Masque FFP2 anti-poussière farine, gants thermiques", "epc": "Aspiration pétrin, hotte four, ventilation", "ref": "Tableau MP 66"}, {"metier": "Poissonnier détail", "secteur": "G. Commerce", "suivi": "SIA", "risques": "Froid, mécanique (couteaux), biologique (allergies), biomécanique", "epi": "Gant anti-coupure, tablier, bottes", "epc": "Vitrines réfrigérées, sols antidérapants", "ref": "Tableau MP 76"}, {"metier": "Chauffeur routier PL / SPL", "secteur": "H. Transport, logistique", "suivi": "SIR", "risques": "Conduite (fatigue, vigilance), postures, isolement, biomécanique (chargement), accident route", "epi": "Gilet HV, gants, chaussures S3", "epc": "Cabine ergonomique, hayon élévateur, sangles, formation FIMO/FCO", "ref": "Arrêté FIMO/FCO ; R.4624-23"}, {"metier": "Chauffeur de bus / car / VTC", "secteur": "H. Transport, logistique", "suivi": "SIR", "risques": "Conduite professionnelle, agression, postures, charge mentale, horaires", "epi": "—", "epc": "Cabine de protection conducteur, vidéoprotection, billettique sans contact", "ref": "FIMO voyageurs"}, {"metier": "Cariste / Conducteur chariot élévateur", "secteur": "H. Transport, logistique", "suivi": "SIR", "risques": "Mécanique, vibrations, renversement, écrasement, bruit", "epi": "Chaussures S3, gilet HV, casque selon zone", "epc": "Allées matérialisées, miroirs, alerte recul, ceinture, formation CACES", "ref": "R489 CACES"}, {"metier": "Marin marchand", "secteur": "H. Transport, logistique", "suivi": "SIR", "risques": "Chute en mer, mécanique, isolement, vibrations, climat, hyperbare possible (plongeurs bord)", "epi": "Gilet de sauvetage, casque, chaussures, harnais", "epc": "Garde-corps, filets, MOB, canots", "ref": "Décret 2007-1227"}, {"metier": "Pilote de ligne / PNT", "secteur": "H. Transport, logistique", "suivi": "SIA", "risques": "Rayonnement cosmique, charge mentale, jet lag, postures, hypoxie", "epi": "—", "epc": "Pressurisation cabine, suivi dosimétrique SIEVERT, gestion rythmes", "ref": "R.4451-1 cosmique"}, {"metier": "Personnel navigant commercial (PNC)", "secteur": "H. Transport, logistique", "suivi": "SIA", "risques": "Rayonnement cosmique, postures, jet lag, charge mentale, agression", "epi": "—", "epc": "Suivi SIEVERT, formation gestion conflit", "ref": "R.4451-1"}, {"metier": "Agent de piste / Bagagiste aéroport", "secteur": "H. Transport, logistique", "suivi": "SIR", "risques": "Bruit cat. 2 (> 87 dB), biomécanique, météo, gaz échappement", "epi": "Casque antibruit (obligatoire), gilet HV, chaussures S3, gants", "epc": "Limitation temps exposition, signalisation", "ref": "R.4434-7 ; SIR pour bruit cat. 2"}, {"metier": "Déménageur / Manutentionnaire lourd", "secteur": "H. Transport, logistique", "suivi": "SIR", "risques": "Biomécanique (lombalgies, TMS), chute hauteur (monte-meuble), écrasement", "epi": "Gants, chaussures S3, casque selon situation", "epc": "Monte-meuble, diables, sangles, gestes & postures", "ref": "R.4541-1 ; R.4624-23"}, {"metier": "Cuisinier / Chef de cuisine", "secteur": "I. Hébergement, restauration", "suivi": "SIA", "risques": "Thermique (brûlures, chaleur), mécanique (coupures), biomécanique (debout), horaires, glissades", "epi": "Tablier, gants anti-coupure, chaussures antidérapantes, calot", "epc": "Hotte aspirante, sols antidérapants, climatisation", "ref": "Tableau MP 79"}, {"metier": "Serveur / Maître d'hôtel", "secteur": "I. Hébergement, restauration", "suivi": "SIA", "risques": "Biomécanique (debout, port), travail de nuit, charge mentale, agression", "epi": "Chaussures antidérapantes", "epc": "Plateaux ergonomiques, formation conflit", "ref": "L.3122-1 nuit"}, {"metier": "Plongeur de restaurant", "secteur": "I. Hébergement, restauration", "suivi": "SIA", "risques": "Chimique (détergents, dermatoses), biomécanique, thermique, glissades", "epi": "Gants nitrile longs, tablier, chaussures antidérapantes", "epc": "Lave-vaisselle pro, dosage auto produits, ventilation", "ref": "Tableau MP 65"}, {"metier": "Femme/Valet de chambre", "secteur": "I. Hébergement, restauration", "suivi": "SIA", "risques": "Biomécanique (TMS, lombalgies), chimique (produits ménage), biologique, postures", "epi": "Gants nitrile, blouse, chaussures", "epc": "Chariot ergonomique, formation gestes, dosage auto produits", "ref": "Tableau MP 57, 98"}, {"metier": "Réceptionniste / Veilleur de nuit", "secteur": "I. Hébergement, restauration", "suivi": "SIA", "risques": "Travail de nuit, isolement, agression, charge mentale", "epi": "—", "epc": "Vidéoprotection, dispositif PTI (Protection Travailleur Isolé), alarme", "ref": "L.3122-1 nuit"}, {"metier": "Développeur / Ingénieur informatique", "secteur": "J. Information, communication", "suivi": "SI", "risques": "Écran, TMS (poignets, nuque), charge mentale, hyperconnexion, sédentarité", "epi": "—", "epc": "Poste ergonomique (norme NF), double écran, fauteuil ajustable, droit à la déconnexion", "ref": "R.4542-1 écran"}, {"metier": "Journaliste reporter / Correspondant", "secteur": "J. Information, communication", "suivi": "SIA", "risques": "Charge mentale, RPS, déplacement (zones de conflit), agression, psychotraumatisme", "epi": "Gilet pare-balles, casque (zones)", "epc": "Formation sécurité hostile (HEAT), assurance, support psy", "ref": "RPS"}, {"metier": "Technicien audiovisuel / Régie", "secteur": "J. Information, communication", "suivi": "SIR", "risques": "Bruit cat. 2 (concerts > 100 dB), électrique, chute hauteur (grilles), postures", "epi": "Protection auditive sur-mesure, harnais, chaussures", "epc": "Limitation 100 dB salle (décret 2017), écrans acoustiques", "ref": "Décret bruit 2017-1244 ; SIR bruit"}, {"metier": "Conseiller bancaire", "secteur": "K. Finance, assurance", "suivi": "SI", "risques": "Écran, charge mentale, agression, hold-up", "epi": "—", "epc": "Parois sécurisées, alarme silencieuse, formation hold-up, vidéoprotection", "ref": "RPS"}, {"metier": "Trader / Analyste financier", "secteur": "K. Finance, assurance", "suivi": "SIA", "risques": "RPS forte intensité, écran, horaires décalés (marchés), addictions", "epi": "—", "epc": "Postes ergonomiques, ergonomie multi-écrans, soutien psy", "ref": "RPS Karasek/Siegrist"}, {"metier": "Agent immobilier", "secteur": "L. Immobilier", "suivi": "SI", "risques": "Déplacement, isolement (visites), agression, charge mentale", "epi": "—", "epc": "PTI, double accompagnement biens sensibles", "ref": "—"}, {"metier": "Gardien d'immeuble / Concierge", "secteur": "L. Immobilier", "suivi": "SIA", "risques": "Biomécanique (sortie poubelles, ménage), chimique (entretien), agression, isolement", "epi": "Gants, masque, lunettes selon produits", "epc": "Local technique aéré, formation chimie", "ref": "—"}, {"metier": "Architecte", "secteur": "M. Activités scientifiques, techniques", "suivi": "SI", "risques": "Écran, postures, chantier ponctuel", "epi": "Casque, chaussures S3 chantier", "epc": "Poste ergonomique", "ref": "—"}, {"metier": "Ingénieur d'études (bureau)", "secteur": "M. Activités scientifiques, techniques", "suivi": "SI", "risques": "Écran, charge mentale, déplacement", "epi": "EPI selon visite terrain", "epc": "Poste ergonomique", "ref": "R.4542-1"}, {"metier": "Vétérinaire", "secteur": "M. Activités scientifiques, techniques", "suivi": "SIR", "risques": "Biologique 2-3 (zoonoses, rage, leptospirose), morsures, RX, anesthésiques, AES", "epi": "Gants étanches, blouse, masque, lunettes, tablier plombé RX, dosimètre", "epc": "Cage contention, tablier plombé, ventilation, dosimétrie", "ref": "R.4421-3 ; R.4451-1 RX"}, {"metier": "Géomètre / Topographe", "secteur": "M. Activités scientifiques, techniques", "suivi": "SIA", "risques": "Déplacement, terrain, circulation, météo, chute", "epi": "Gilet HV, casque chantier, chaussures", "epc": "Signalisation routière, balisage", "ref": "—"}, {"metier": "Technicien laboratoire biologie médicale", "secteur": "M. Activités scientifiques, techniques", "suivi": "SIR", "risques": "Biologique 2-3 (sang, prélèvements TB, VHB, VHC), chimique, AES", "epi": "Blouse, gants nitrile, lunettes, masque selon manip, surblouse", "epc": "PSM type II, sorbonne, conteneur DASRI, douche/lave-œil", "ref": "R.4421-3 ; Tableaux MP 40, 45"}, {"metier": "Agent d'entretien / Nettoyage", "secteur": "N. Services administratifs, soutien", "suivi": "SIA", "risques": "Chimique (détergents, désinfectants, dermatoses), biomécanique (TMS), biologique, horaires décalés", "epi": "Gants nitrile, masque, lunettes, blouse, chaussures antidérapantes", "epc": "Chariot ergonomique, dosage automatique, formation chimie", "ref": "Tableau MP 65, 98"}, {"metier": "Agent de sécurité / Gardiennage", "secteur": "N. Services administratifs, soutien", "suivi": "SIA", "risques": "Travail de nuit, isolement, agression, charge mentale", "epi": "Gilet pare-balles selon poste, lampe, radio", "epc": "PTI, vidéoprotection, formation conflit", "ref": "L.3122-1 ; L.611-1 sécurité privée"}, {"metier": "Convoyeur de fonds", "secteur": "N. Services administratifs, soutien", "suivi": "SIR", "risques": "Port d'arme, agression, hold-up, charge mentale", "epi": "Gilet pare-balles classe IV, casque, arme, radio", "epc": "Véhicule blindé, valises sécurisées avec encrage, suivi GPS", "ref": "L.612-2 ; SIR port arme"}, {"metier": "Secrétaire / Assistant administratif", "secteur": "N. Services administratifs, soutien", "suivi": "SI", "risques": "Écran, TMS, charge mentale, sédentarité", "epi": "—", "epc": "Poste ergonomique normalisé, repose-poignets, double écran", "ref": "R.4542-1"}, {"metier": "Téléopérateur / Centre d'appels", "secteur": "N. Services administratifs, soutien", "suivi": "SIA", "risques": "Charge mentale (cadence), vocale (dysphonie), écran, agression verbale, horaires", "epi": "Casque audio binaural avec limiteur dB", "epc": "Pauses régulières, limitation bruit ambiant, formation voix", "ref": "Tableau MP 30 voix"}, {"metier": "Policier / Gendarme / Police municipale", "secteur": "O. Administration publique, sécurité", "suivi": "SIR", "risques": "Port d'arme, agression, travail de nuit, charge mentale, psychotraumatisme", "epi": "Gilet pare-balles, arme, casque ordre public, bouclier", "epc": "Formation tir, soutien psy (cellule d'urgence médico-psy)", "ref": "SIR port arme ; L.3122-1"}, {"metier": "Sapeur-pompier (SPP / SPV)", "secteur": "O. Administration publique, sécurité", "suivi": "SIR", "risques": "CMR (fumées d'incendie cancérogène groupe 1 CIRC 2022), thermique, biologique 2-3 (secours), chute, charge physique, RPS", "epi": "ARI, tenue feu F1 ignifugée, gants Kevlar, casque F1, bottes", "epc": "VSAV, équipement décontamination obligatoire au retour intervention", "ref": "R.4412-60 (CIRC 2022) ; Arrêté 6/05/2000"}, {"metier": "Surveillant pénitentiaire", "secteur": "O. Administration publique, sécurité", "suivi": "SIR", "risques": "Agression, biologique 3 (AES, TB), travail de nuit, charge mentale, psychotraumatisme", "epi": "Gilet pare-coups, équipement individuel, gants anti-coupure", "epc": "Vidéoprotection, alarmes, soutien psy", "ref": "L.3122-1"}, {"metier": "Enseignant 1er degré (maternelle, élémentaire)", "secteur": "P. Enseignement", "suivi": "SI", "risques": "Voix (dysphonie), charge mentale, biologique (épidémies), agression, postures", "epi": "—", "epc": "Sonorisation classe, formation voix, soutien psy", "ref": "Tableau MP 30 voix"}, {"metier": "Enseignant 2nd degré (collège, lycée)", "secteur": "P. Enseignement", "suivi": "SI", "risques": "Voix, charge mentale, agression, RPS", "epi": "—", "epc": "Sonorisation, formation gestion conflit", "ref": "Tableau MP 30"}, {"metier": "Enseignant labo (chimie, biotech, atelier)", "secteur": "P. Enseignement", "suivi": "SIR", "risques": "CMR (manipulations), biologique, chimique, mécanique", "epi": "Blouse, gants, lunettes, masque selon TP", "epc": "Sorbonne, PSM, ventilation labo", "ref": "R.4412-60"}, {"metier": "Animateur périscolaire / Petite enfance", "secteur": "P. Enseignement", "suivi": "SIA", "risques": "Biologique 2 (épidémies enfants), voix, charge mentale, biomécanique", "epi": "—", "epc": "Vaccination à jour, hygiène mains, formation", "ref": "R.4421-3"}, {"metier": "Médecin hospitalier", "secteur": "Q. Santé, action sociale", "suivi": "SIR", "risques": "Biologique 3 (TB, VIH, VHB, VHC, COVID), CMR (cytotox, anesthésiques), RI, RPS, AES, charge mentale", "epi": "Gants nitrile, masque chir/FFP2/FFP3, blouse, lunettes/visière, tablier plombé selon", "epc": "PSM, ventilation, conteneur DASRI, dispositifs sécurité aiguilles", "ref": "R.4421-3 ; R.4451-1"}, {"metier": "Infirmier diplômé d'État (IDE)", "secteur": "Q. Santé, action sociale", "suivi": "SIR", "risques": "Biologique 2-3 (AES, BMR, TB), CMR (cytotox), biomécanique, RPS, travail de nuit", "epi": "Gants nitrile, blouse, masque chir/FFP2, lunettes, surblouse, tablier", "epc": "Dispositifs aiguilles sécurisés, conteneur DASRI, lève-malade", "ref": "R.4421-3 ; Tableau MP 40, 45, 76"}, {"metier": "Infirmier de bloc opératoire (IBODE)", "secteur": "Q. Santé, action sociale", "suivi": "SIR", "risques": "Biologique 3, RI per-opératoire, CMR (formaldéhyde, anesthésiques), RPS, postures", "epi": "Tenue stérile, gants double pour orthopédie, masque chir, lunettes, tablier plombé selon", "epc": "Ventilation bloc à flux laminaire, dosimétrie RX peropératoire", "ref": "R.4451-1 ; R.4421-3"}, {"metier": "Infirmier anesthésiste (IADE)", "secteur": "Q. Santé, action sociale", "suivi": "SIR", "risques": "Chimique (gaz halogénés, N2O cancérogène 2B), biologique, AES, RPS", "epi": "Gants, masque, lunettes", "epc": "Aspiration gaz anesthésiques (SEGA), ventilation bloc", "ref": "R.4412-60 ; ED 6259"}, {"metier": "Aide-soignant", "secteur": "Q. Santé, action sociale", "suivi": "SIR", "risques": "Biologique 2-3, biomécanique (manutention patient), AES, RPS, charge mentale, agression", "epi": "Gants nitrile, blouse, masque chir/FFP2, surblouse", "epc": "Lève-malade, draps de glisse, verticalisateur, formation gestes", "ref": "Tableau MP 98 lombalgies ; R.4541"}, {"metier": "Auxiliaire de puériculture", "secteur": "Q. Santé, action sociale", "suivi": "SIR", "risques": "Biologique 2-3 (épidémies pédia), biomécanique, charge mentale", "epi": "Gants, blouse", "epc": "Vaccinations, hygiène mains", "ref": "R.4421-3"}, {"metier": "Sage-femme", "secteur": "Q. Santé, action sociale", "suivi": "SIR", "risques": "Biologique 2-3 (AES, VIH, hépatites), charge mentale, gardes", "epi": "Gants double, masque, blouse, lunettes", "epc": "DASRI, dispositifs sécurité", "ref": "R.4421-3"}, {"metier": "Manipulateur en électroradiologie médicale (MERM)", "secteur": "Q. Santé, action sociale", "suivi": "SIR", "risques": "Rayonnements ionisants cat. A ou B, biologique, charge mentale", "epi": "Tablier plombé, cache-thyroïde, lunettes plombées, dosimètre passif + opérationnel", "epc": "Pupitre plombé, paravents, salle blindée, dosimétrie ambiance", "ref": "R.4451-1 à R.4451-135"}, {"metier": "Pharmacien hospitalier / Préparateur UPCO (chimio)", "secteur": "Q. Santé, action sociale", "suivi": "SIR", "risques": "CMR cytotoxiques (cancérogène, mutagène, repro), AES", "epi": "Double gants nitrile (changés 30 min), combinaison étanche manches longues, masque P3, surchaussures", "epc": "Isolateur ou PSM type III, ventilation à dépression, kit déversement, transfert sécurisé (CSTD)", "ref": "R.4412-60 ; INRS ED 6253"}, {"metier": "Kinésithérapeute", "secteur": "Q. Santé, action sociale", "suivi": "SIR", "risques": "Biomécanique (manutention patient, postures), biologique, RPS", "epi": "Gants selon soins", "epc": "Tables hauteur variable, lève-malade, formation gestes", "ref": "R.4541-1 ; Tableau MP 98"}, {"metier": "Chirurgien-dentiste / Assistant dentaire", "secteur": "Q. Santé, action sociale", "suivi": "SIR", "risques": "Biologique 2-3 (AES, hépatites, COVID), chimique (mercure amalgames, résines composites, méthacrylates), RI (RX), bruit", "epi": "Gants nitrile, masque chir/FFP2, lunettes, sur-blouse, dosimètre RX", "epc": "Aspiration chirurgicale, séparateur amalgames, paravent plombé RX, ventilation", "ref": "R.4421-3 ; R.4451-1 ; Convention Minamata mercure"}, {"metier": "Brancardier", "secteur": "Q. Santé, action sociale", "suivi": "SIR", "risques": "Biomécanique (manutention), biologique 2-3, travail de nuit, RPS", "epi": "Gants, blouse, chaussures", "epc": "Brancards motorisés, draps de glisse, formation gestes", "ref": "R.4541-1"}, {"metier": "Agent de stérilisation (DM)", "secteur": "Q. Santé, action sociale", "suivi": "SIR", "risques": "CMR (oxyde d'éthylène, peroxyde d'hydrogène, formol), biologique, thermique", "epi": "Combinaison, gants nitrile résistants chaleur, masque ABEK-P3, lunettes", "epc": "Ventilation à dépression, isolateur, autoclave normes", "ref": "R.4412-60"}, {"metier": "Ambulancier (DEA)", "secteur": "Q. Santé, action sociale", "suivi": "SIR", "risques": "Biologique 2-3, biomécanique (brancard), conduite, AES, RPS, agression", "epi": "Gants nitrile, blouse, masque chir/FFP2, lunettes", "epc": "Brancard motorisé, chaise portoir, dispositifs sécurité aiguilles", "ref": "R.4421-3 ; FIMO santé"}, {"metier": "Agent de service hospitalier (ASH)", "secteur": "Q. Santé, action sociale", "suivi": "SIA", "risques": "Chimique (détergents, javel), biologique, biomécanique, AES occasionnel", "epi": "Gants nitrile, blouse, masque, lunettes", "epc": "Chariots ergonomiques, dosage auto", "ref": "Tableau MP 65"}, {"metier": "Auxiliaire de vie sociale / AVS / AESH domicile", "secteur": "Q. Santé, action sociale", "suivi": "SIR", "risques": "Biomécanique (manutention), biologique, isolement, RPS, agression, routier", "epi": "Gants nitrile, blouse", "epc": "Lève-personne, formation gestes, PTI possible", "ref": "R.4541-1 ; Tableau MP 98"}, {"metier": "Travailleur social / Éducateur spécialisé", "secteur": "Q. Santé, action sociale", "suivi": "SIA", "risques": "RPS, charge mentale, agression, psychotraumatisme, déplacement", "epi": "—", "epc": "Soutien psy, supervision, formation gestion conflit", "ref": "RPS Gollac"}, {"metier": "Psychologue / Psychothérapeute", "secteur": "Q. Santé, action sociale", "suivi": "SIA", "risques": "Charge mentale, traumatisme vicariant, isolement", "epi": "—", "epc": "Supervision, intervision", "ref": "RPS"}, {"metier": "Thanatopracteur / Pompes funèbres", "secteur": "Q. Santé, action sociale", "suivi": "SIR", "risques": "CMR (formaldéhyde - cancérogène 1A), biologique 3 (corps), charge mentale, biomécanique", "epi": "Masque ABEK-P3 ou ventilé, gants nitrile double, combinaison, lunettes", "epc": "Ventilation locale à dépression, captage à la source, locaux dédiés", "ref": "R.4412-60 ; Arrêté 28/01/2021 formaldéhyde thanato"}, {"metier": "Musicien d'orchestre / Pro de scène", "secteur": "R. Arts, spectacles, loisirs", "suivi": "SIR", "risques": "Bruit cat. 2 (> 100 dB), TMS (instrument), RPS", "epi": "Protections auditives sur-mesure type filtre musicien (ER, etc.)", "epc": "Écrans acoustiques sur scène, limitation dB", "ref": "R.4434-7 ; Décret 2017-1244"}, {"metier": "Maître-nageur sauveteur (MNS)", "secteur": "R. Arts, spectacles, loisirs", "suivi": "SIR", "risques": "Chimique (chlore, chloramines - asthme), aquatique (sauvetage), UV, charge mentale, voix", "epi": "—", "epc": "Ventilation hall, traitement air, dosage chlore conforme, contrôle qualité eau", "ref": "R.4412-60 ; Tableau MP 66"}, {"metier": "Pisteur secouriste / Moniteur ski", "secteur": "R. Arts, spectacles, loisirs", "suivi": "SIR", "risques": "Froid extrême, chute, biomécanique (secours), UV, isolement, avalanche", "epi": "Vêtement isolant, harnais, casque, ARVA, sonde, pelle", "epc": "Formation, équipement secours, communication", "ref": "R.4624-23"}, {"metier": "Cascadeur / Régisseur SFX", "secteur": "R. Arts, spectacles, loisirs", "suivi": "SIR", "risques": "Chute, mécanique (chocs, blessures), pyrotechnie", "epi": "Harnais, protections selon scène (genouillères, plastrons), casque", "epc": "Matelas, filets, doublage sécurisé", "ref": "R.4624-23"}, {"metier": "Coiffeur", "secteur": "S. Autres services", "suivi": "SIR", "risques": "CMR (PPD - paraphénylènediamine, persulfates - asthme, eczéma), biomécanique (bras levés), debout, dermatoses", "epi": "Gants nitrile (jamais latex), masque FFP2 si poudres, tablier", "epc": "Ventilation locale, bac shampouinage ergonomique, sièges hauteur variable", "ref": "R.4412-60 ; Tableaux MP 65, 66"}, {"metier": "Esthéticien(ne)", "secteur": "S. Autres services", "suivi": "SIA", "risques": "Chimique (parfums, cires, dépilatoires), biologique (lésions cutanées), postures", "epi": "Gants nitrile, masque selon prestation", "epc": "Ventilation, tables hauteur variable", "ref": "—"}, {"metier": "Prothésiste ongulaire (manucure semi-perm., gel, capsule)", "secteur": "S. Autres services", "suivi": "SIR", "risques": "CMR (méthacrylates de méthyle - asthme professionnel, formaldéhyde), allergisant, biologique", "epi": "Masque ABEK-P2 (obligatoire), gants nitrile, lunettes, blouse", "epc": "Aspiration à la source (obligatoire, table aspirante), ventilation forcée", "ref": "R.4412-60 ; Tableau MP 66"}, {"metier": "Tatoueur / Perceur", "secteur": "S. Autres services", "suivi": "SIR", "risques": "Biologique 2-3 (AES - VHB, VHC, VIH), chimique (encres), postures", "epi": "Gants nitrile, masque chir, lunettes, blouse", "epc": "Stérilisation matériel à usage unique, conteneur DASRI, point d'eau", "ref": "Arrêté 11/03/2009 ; R.4421-3"}, {"metier": "Toiletteur animalier", "secteur": "S. Autres services", "suivi": "SIA", "risques": "Biologique (allergies, zoonoses), morsures, biomécanique, bruit, dermatoses", "epi": "Gants, masque FFP2 (allergènes), tablier, lunettes", "epc": "Ventilation, tables hauteur variable, contention", "ref": "Tableaux MP 45, 65"}];
+
+let currentView = 'cards';
+
+function escapeHtml(t) {
+  return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function highlight(text, term) {
+  if (!term) return escapeHtml(text);
+  const escaped = escapeHtml(text);
+  const safeTerm = term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  return escaped.replace(new RegExp('(' + safeTerm + ')', 'gi'), '<mark>$1</mark>');
+}
+
+function renderCards(list, term) {
+  const container = document.getElementById('results-cards');
+  container.innerHTML = list.map(m => {
+    const cls = m.suivi.toLowerCase();
+    return `
+      <article class="card ${cls}">
+        <div class="card-head">
+          <h3 class="card-title">${highlight(m.metier, term)}</h3>
+          <span class="badge ${cls}">${m.suivi}</span>
+        </div>
+        <div class="sector">${highlight(m.secteur, term)}</div>
+
+        <div class="card-section">
+          <div class="lbl">⚠️ Risques associés</div>
+          <div class="content">${highlight(m.risques, term)}</div>
+        </div>
+        <div class="card-section">
+          <div class="lbl">🦺 EPI préconisés</div>
+          <div class="content">${highlight(m.epi, term)}</div>
+        </div>
+        <div class="card-section">
+          <div class="lbl">🏭 EPC préconisés</div>
+          <div class="content">${highlight(m.epc, term)}</div>
+        </div>
+        ${m.ref ? `<div class="card-section ref"><div class="lbl">📖 Références</div><div class="content">${highlight(m.ref, term)}</div></div>` : ''}
+      </article>`;
+  }).join('');
+}
+
+function renderTable(list, term) {
+  const tbody = document.getElementById('tbody');
+  tbody.innerHTML = list.map(m => `
+    <tr>
+      <td class="metier-name">${highlight(m.metier, term)}</td>
+      <td>${highlight(m.secteur, term)}</td>
+      <td class="suivi suivi-${m.suivi.toLowerCase()}">${m.suivi}</td>
+      <td>${highlight(m.risques, term)}</td>
+      <td>${highlight(m.epi, term)}</td>
+      <td>${highlight(m.epc, term)}</td>
+      <td>${highlight(m.ref || '—', term)}</td>
+    </tr>`).join('');
+}
+
+function applyFilters() {
+  const term = document.getElementById('search').value.trim().toLowerCase();
+  const secteur = document.getElementById('filter-secteur').value;
+  const suivi = document.getElementById('filter-suivi').value;
+
+  const filtered = METIERS.filter(m => {
+    if (secteur && m.secteur !== secteur) return false;
+    if (suivi && m.suivi !== suivi) return false;
+    if (term) {
+      const blob = (m.metier + ' ' + m.secteur + ' ' + m.suivi + ' ' + m.risques + ' ' + m.epi + ' ' + m.epc + ' ' + (m.ref || '')).toLowerCase();
+      if (!blob.includes(term)) return false;
+    }
+    return true;
+  });
+
+  document.getElementById('count').textContent = filtered.length;
+
+  const emptyEl = document.getElementById('empty');
+  const cardsEl = document.getElementById('results-cards');
+  const tableEl = document.getElementById('results-table');
+
+  if (filtered.length === 0) {
+    emptyEl.style.display = 'block';
+    cardsEl.style.display = 'none';
+    tableEl.style.display = 'none';
+    return;
+  }
+  emptyEl.style.display = 'none';
+
+  if (currentView === 'cards') {
+    cardsEl.style.display = 'grid';
+    tableEl.style.display = 'none';
+    renderCards(filtered, term);
+  } else {
+    cardsEl.style.display = 'none';
+    tableEl.style.display = 'block';
+    renderTable(filtered, term);
+  }
+}
+
+function setView(view) {
+  currentView = view;
+  document.getElementById('btn-cards').classList.toggle('active', view === 'cards');
+  document.getElementById('btn-table').classList.toggle('active', view === 'table');
+  applyFilters();
+}
+
+function resetFilters() {
+  document.getElementById('search').value = '';
+  document.getElementById('filter-secteur').value = '';
+  document.getElementById('filter-suivi').value = '';
+  applyFilters();
+}
+
+document.getElementById('search').addEventListener('input', applyFilters);
+document.getElementById('filter-secteur').addEventListener('change', applyFilters);
+document.getElementById('filter-suivi').addEventListener('change', applyFilters);
+
+applyFilters();
+</script>
+</body>
+</html>
