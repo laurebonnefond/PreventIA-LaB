@@ -554,6 +554,20 @@ function recompute(){
       +'Renseignez les bandes d\'octave 125 à 8000 Hz et un PICB valide pour lancer le calcul.</div></div>';
     return;
   }
+  if(parseInt($("picbtype").value,10)===0){
+
+    var leqA = calculLeqA(spec);
+    var leqC = calculLeqC(spec);
+
+    LAST = {
+       sansPICB:true,
+       leqA:leqA,
+       leqC:leqC
+    };
+
+    renderSansPICB();
+    return;
+}
   var res=computeOB(spec,picb.mf,picb.sf,formation);
   var diag=diagnostic(res.ref);
   var adq=adequation(res,picb,diag,formation);
