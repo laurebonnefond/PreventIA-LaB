@@ -297,6 +297,7 @@ footer.ft{margin-top:22px;text-align:center;font-size:11px;color:var(--soft);lin
           </select></div>
         <div><label class="lbl">Type de protecteur</label>
           <select class="fld" id="picbtype">
+            <option value="0">0 — Pas de PICB</option>
             <option value="1">1 — Serre-tête</option>
             <option value="2">2 — Serre-tête sur casque</option>
             <option value="3">3 — Bouchon standard</option>
@@ -347,7 +348,7 @@ footer.ft{margin-top:22px;text-align:center;font-size:11px;color:var(--soft);lin
 var FREQS=[63,125,250,500,1000,2000,4000,8000];
 var PA=[-26.2,-16.1,-8.6,-3.2,0,1.2,1.0,-1.1];
 var PC=[-0.8,-0.2,0.0,0.0,0.0,-0.2,-0.8,-3.0];
-var TYPE_LABEL={1:"Serre-tête",2:"Serre-tête sur casque",
+var TYPE_LABEL={0:"Pas de PICB",1:"Serre-tête",2:"Serre-tête sur casque",
   3:"Bouchon standard",4:"Bouchon moulé individualisé"};
 var CATALOGUE={
  "green-h":{nom:"QEOS Green H",marque:"Cotral",snr:17,type:4,profil:"uniforme",
