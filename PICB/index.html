@@ -846,12 +846,12 @@ function exportWord(){
       +(res.idx.indexOf(i)>=0?f1(spec[i]):"—")+'</td>';
   }
   specRow+='</tr>';
-  var obTable=freqHead
+ var obTable = noPicb ? "" : (freqHead
     +obRow("Lf mesuré",function(i){return spec[i];},false)
     +obRow("APV84",function(i){return res.apv84[i];},false)
     +obRow("APV98",function(i){return res.apv98[i];},true)
     +obRow("L'84 oreille",function(i){return spec[i]-res.apv84[i];},false)
-    +obRow("L'98 oreille",function(i){return spec[i]-res.apv98[i];},true);
+    +obRow("L'98 oreille",function(i){return spec[i]-res.apv98[i];},true));
   var seuils=[
     ["Valeur d'action inférieure","80 dB(A)","Information, formation, mise à disposition des PICB"],
     ["Valeur d'action supérieure","85 dB(A)","Port du PICB obligatoire, programme de réduction du bruit"],
