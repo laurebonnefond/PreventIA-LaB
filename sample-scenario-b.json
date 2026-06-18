@@ -1,0 +1,26 @@
+{
+  "token": "previa_vision_2026_xxx",
+  "payload": {
+    "model": "claude-sonnet-4-5",
+    "max_tokens": 2000,
+    "messages": [
+      {
+        "role": "user",
+        "content": [
+          {
+            "type": "image",
+            "source": {
+              "type": "base64",
+              "media_type": "image/png",
+              "data": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAC0lEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg=="
+            }
+          },
+          {
+            "type": "text",
+            "text": "Analyse cette image et extrais les bandes d'octave."
+          }
+        ]
+      }
+    ]
+  }
+}
