@@ -668,7 +668,21 @@ mark {
   <p>Outil de synthèse à adapter à l'évaluation des risques propre à chaque entreprise (DUERP). Décision du suivi sous responsabilité du médecin du travail.</p>
 </footer>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/docx/8.5.0/docx.umd.min.js"></script>
+<script>
+// Chargement robuste de docx avec retry
+(function loadDocxLib(attempt) {
+  if (window.docx) return;
+  if (attempt > 3) { console.warn('docx: abandon après 3 tentatives'); return; }
+  var s = document.createElement('script');
+  s.src = 'https://cdn.jsdelivr.net/npm/docx@9.1.1/build/index.umd.js';
+  s.onload = function() { console.log('✅ docx chargée:', typeof window.docx); };
+  s.onerror = function() {
+    console.warn('docx: tentative ' + attempt + ' échouée, retry...');
+    setTimeout(function() { loadDocxLib(attempt + 1); }, 2000);
+  };
+  document.head.appendChild(s);
+})(1);
+</script>
 <script>
 let METIERS = [];
 
@@ -838,10 +852,18 @@ document.getElementById('filter-suivi').addEventListener('change', applyFilters)
 function genererOrdonnance(idx) {
   const m = (window._currentList || METIERS)[idx];
   if (!m) return;
-  if (typeof docx === 'undefined') {
-    alert("La bibliothèque de génération Word charge encore. Réessayez dans 2 secondes.");
+  
+  // Retry automatique si la lib n'est pas encore prête
+  if (typeof docx === 'undefined' || !window.docx) {
+    const btn = event?.target;
+    if (btn) { btn.textContent = '⏳ Chargement...'; btn.disabled = true; }
+    setTimeout(() => {
+      if (btn) { btn.textContent = '📄 Ordonnance de prévention (Word)'; btn.disabled = false; }
+      genererOrdonnance(idx);
+    }, 2500);
     return;
   }
+  // ... suite du code existant
   const { Document, Packer, Paragraph, TextRun, HeadingLevel, AlignmentType,
           Table, TableRow, TableCell, WidthType, BorderStyle, ShadingType } = docx;
 
