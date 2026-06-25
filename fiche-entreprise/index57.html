@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Constructeur de Fiche d'Entreprise — PréventIA-LaB</title>
+<meta name="description" content="Base réglementaire d'aide à la rédaction de la fiche d'entreprise (Art. R.4624-46 du Code du travail) : éléments à intégrer selon le secteur, le type d'entreprise, les métiers et les unités de travail. Export Word." />
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet" />
+<style>
+* , *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --teal: oklch(0.65 0.13 192); --teal-light: oklch(0.80 0.10 192);
+  --teal-dark: oklch(0.35 0.10 220); --teal-pale: oklch(0.95 0.03 192);
+  --navy: oklch(0.22 0.07 240); --navy-deep: oklch(0.12 0.05 240);
+  --white: #fff; --off-white: oklch(0.97 0.006 210);
+  --text: oklch(0.18 0.04 240); --text-muted: oklch(0.50 0.03 220);
+  --border: oklch(0.90 0.01 220); --orange: #DC2626; --amber: oklch(0.70 0.15 60);
+  --green: oklch(0.60 0.13 150);
+  --shadow: 0 2px 16px oklch(0.22 0.07 240 / 0.08); --shadow-lg: 0 12px 48px oklch(0.22 0.07 240 / 0.16);
+}
+html { scroll-behavior: smooth; }
+body { font-family: 'DM Sans', sans-serif; color: var(--text); background: var(--off-white); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+a { color: var(--teal-dark); }
+.top { background: linear-gradient(135deg, var(--navy-deep), var(--navy)); color: var(--white); padding: 2.4rem 1.5rem 2.6rem; }
+.top-inner { max-width: 1180px; margin: 0 auto; }
+.top .eyebrow { font-size: 12px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--teal-light); display: flex; align-items: center; gap: 0.6rem; }
+.top .eyebrow::before { content: ''; width: 28px; height: 2px; background: var(--teal); }
+.top h1 { font-family: 'DM Serif Display', serif; font-weight: 400; font-size: clamp(1.8rem, 4vw, 2.6rem); margin: 0.7rem 0 0.6rem; letter-spacing: -0.02em; }
+.top h1 span { color: var(--teal); font-style: italic; }
+.top p { color: oklch(0.85 0.02 220); max-width: 720px; font-size: 1.02rem; }
+.top .legal { margin-top: 1rem; font-size: 12.5px; color: oklch(0.72 0.02 220); display: inline-block; padding: 0.3rem 0.8rem; border: 1px solid oklch(0.65 0.13 192 / 0.35); border-radius: 100px; }
+.back { display: inline-block; margin-bottom: 0.4rem; font-size: 13px; color: var(--teal-light); text-decoration: none; }
+.back:hover { color: var(--white); }
+.wrap { max-width: 1180px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+.grid2 { display: grid; grid-template-columns: 360px 1fr; gap: 1.8rem; align-items: start; }
+@media (max-width: 880px) { .grid2 { grid-template-columns: 1fr; } }
+.panel { background: var(--white); border: 1px solid var(--border); border-radius: 16px; padding: 1.5rem; box-shadow: var(--shadow); position: sticky; top: 1rem; }
+@media (max-width: 880px) { .panel { position: static; } }
+.panel h2 { font-family: 'DM Serif Display', serif; font-weight: 400; font-size: 1.3rem; color: var(--navy-deep); margin-bottom: 1.1rem; }
+.field { margin-bottom: 1.2rem; }
+.field > label { display: block; font-size: 12px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.45rem; }
+select, input[type=text] { width: 100%; padding: 0.6rem 0.7rem; font-family: inherit; font-size: 14px; border: 1px solid var(--border); border-radius: 10px; background: var(--white); color: var(--text); }
+select { cursor: pointer; }
+select:focus, input[type=text]:focus { outline: 2px solid var(--teal); border-color: var(--teal); }
+.chips { display: flex; flex-wrap: wrap; gap: 0.4rem; max-height: 260px; overflow-y: auto; padding: 0.2rem; }
+.chip { font-size: 12.5px; padding: 0.32rem 0.7rem; border-radius: 100px; cursor: pointer; border: 1px solid var(--border); background: var(--off-white); color: var(--text); user-select: none; transition: all 0.15s; line-height: 1.3; }
+.chip:hover { border-color: var(--teal); }
+.chip.on { background: var(--teal); border-color: var(--teal); color: var(--navy-deep); font-weight: 600; }
+.chip .src { font-size: 9px; opacity: 0.6; margin-left: 3px; }
+.hint { font-size: 11.5px; color: var(--text-muted); margin-top: 0.4rem; }
+.actions { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.5rem; }
+.btn { flex: 1 1 auto; min-width: 90px; padding: 0.7rem; font-family: inherit; font-size: 13.5px; font-weight: 600; border-radius: 10px; cursor: pointer; border: 1px solid var(--border); background: var(--white); color: var(--text); transition: all 0.15s; }
+.btn:hover { border-color: var(--teal); }
+.btn:disabled { opacity: 0.5; cursor: wait; }
+.btn.primary { background: var(--teal); border-color: var(--teal); color: var(--navy-deep); }
+.btn.primary:hover { background: var(--teal-dark); border-color: var(--teal-dark); color: var(--white); }
+.results { min-height: 300px; }
+.placeholder { background: var(--white); border: 1px dashed var(--border); border-radius: 16px; padding: 3rem 2rem; text-align: center; color: var(--text-muted); }
+.placeholder svg { opacity: 0.4; margin-bottom: 1rem; }
+.block { background: var(--white); border: 1px solid var(--border); border-radius: 16px; padding: 1.5rem 1.6rem; box-shadow: var(--shadow); margin-bottom: 1.3rem; }
+.block-title { font-family: 'DM Serif Display', serif; font-weight: 400; font-size: 1.25rem; color: var(--navy-deep); margin-bottom: 0.3rem; display: flex; align-items: center; gap: 0.6rem; }
+.block-title .ico { width: 30px; height: 30px; border-radius: 8px; background: var(--teal-pale); display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 16px; }
+.block-sub { font-size: 13px; color: var(--text-muted); margin-bottom: 1.1rem; }
+.summary-bar { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.3rem; }
+.tagsum { font-size: 12.5px; padding: 0.35rem 0.8rem; border-radius: 100px; background: var(--navy-deep); color: var(--white); }
+.tagsum b { color: var(--teal-light); font-weight: 600; }
+ul.clean { list-style: none; }
+ul.clean li { padding: 0.6rem 0; border-bottom: 1px solid var(--border); }
+ul.clean li:last-child { border-bottom: none; }
+.li-title { font-weight: 600; color: var(--navy-deep); font-size: 14.5px; }
+.li-detail { font-size: 13.5px; color: var(--text); margin-top: 0.15rem; }
+.ref { display: inline-block; margin-top: 0.35rem; font-size: 11.5px; font-weight: 500; color: var(--teal-dark); background: var(--teal-pale); padding: 0.15rem 0.55rem; border-radius: 6px; }
+.tbl-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+thead th { background: var(--navy-deep); color: var(--white); text-align: left; padding: 0.6rem 0.7rem; font-weight: 600; font-size: 12px; letter-spacing: 0.02em; }
+tbody td { padding: 0.6rem 0.7rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+tbody tr:nth-child(even) { background: var(--off-white); }
+.surv { font-size: 11px; font-weight: 700; padding: 0.12rem 0.5rem; border-radius: 6px; white-space: nowrap; }
+.surv.SIR { background: oklch(0.95 0.05 25); color: oklch(0.45 0.18 25); }
+.surv.SIA { background: oklch(0.96 0.06 60); color: oklch(0.45 0.14 60); }
+.surv.SI  { background: oklch(0.95 0.04 150); color: oklch(0.40 0.12 150); }
+.surv.none{ background: var(--off-white); color: var(--text-muted); }
+.fam { font-size: 11px; color: var(--text-muted); }
+.surv-legend { display: flex; flex-wrap: wrap; gap: 0.8rem; margin-top: 1rem; font-size: 12px; color: var(--text-muted); }
+.surv-legend span { display: inline-flex; align-items: center; gap: 0.35rem; }
+.callout { background: oklch(0.96 0.06 60); border-left: 3px solid var(--amber); padding: 0.8rem 1rem; border-radius: 8px; font-size: 13px; margin-top: 1rem; color: var(--text); }
+.foot-note { font-size: 12px; color: var(--text-muted); margin-top: 1.5rem; text-align: center; line-height: 1.7; }
+.loadinfo { font-size: 11.5px; color: var(--text-muted); margin-top: 0.3rem; }
+.loadinfo b { color: var(--teal-dark); }
+/* Onglets */
+.tabs { display: flex; gap: 0.4rem; margin-bottom: 1.3rem; flex-wrap: wrap; }
+.tab { padding: 0.55rem 1rem; font-size: 13.5px; font-weight: 600; border-radius: 10px; cursor: pointer; border: 1px solid var(--border); background: var(--white); color: var(--text-muted); transition: all 0.15s; }
+.tab:hover { border-color: var(--teal); color: var(--text); }
+.tab.on { background: var(--navy-deep); border-color: var(--navy-deep); color: var(--white); }
+/* Questionnaire */
+.q-section { margin-bottom: 1.2rem; }
+.q-section h4 { font-size: 13px; font-weight: 700; color: var(--navy-deep); text-transform: uppercase; letter-spacing: 0.04em; margin: 0.8rem 0 0.5rem; padding-bottom: 0.3rem; border-bottom: 2px solid var(--teal-pale); }
+.q-item { display: flex; gap: 0.6rem; padding: 0.4rem 0; font-size: 13.5px; border-bottom: 1px solid var(--border); }
+.q-item:last-child { border-bottom: none; }
+.q-item .num { color: var(--teal-dark); font-weight: 700; flex-shrink: 0; }
+.q-risk { background: var(--off-white); border: 1px solid var(--border); border-radius: 12px; padding: 0.9rem 1rem; margin-bottom: 0.8rem; }
+.q-risk-head { display: flex; align-items: center; justify-content: space-between; gap: 0.6rem; flex-wrap: wrap; margin-bottom: 0.5rem; }
+.q-risk-head .name { font-weight: 700; color: var(--navy-deep); font-size: 14px; }
+.maitrise { display: flex; gap: 0.3rem; flex-wrap: wrap; }
+.m-btn { font-size: 11.5px; font-weight: 600; padding: 0.25rem 0.6rem; border-radius: 100px; border: 1px solid var(--border); background: var(--white); cursor: pointer; color: var(--text-muted); }
+.m-btn:hover { border-color: var(--teal); }
+.m-btn.on[data-v="maitrise"] { background: oklch(0.95 0.04 150); border-color: var(--green); color: oklch(0.35 0.12 150); }
+.m-btn.on[data-v="partiel"]  { background: oklch(0.96 0.06 60); border-color: var(--amber); color: oklch(0.42 0.14 60); }
+.m-btn.on[data-v="non"]      { background: oklch(0.95 0.05 25); border-color: var(--orange); color: oklch(0.45 0.18 25); }
+.m-btn.on[data-v="nc"]       { background: var(--navy-deep); border-color: var(--navy-deep); color: var(--white); }
+.q-risk ul { list-style: none; margin-top: 0.3rem; }
+.q-risk ul li { font-size: 13px; color: var(--text); padding: 0.25rem 0 0.25rem 1rem; position: relative; }
+.q-risk ul li::before { content: '▸'; position: absolute; left: 0; color: var(--teal); }
+/* Radar */
+.radar-wrap { text-align: center; }
+.radar-wrap svg { max-width: 100%; height: auto; }
+.radar-legend { display: flex; justify-content: center; gap: 1.4rem; margin-top: 0.6rem; flex-wrap: wrap; font-size: 13px; }
+.radar-legend span { display: inline-flex; align-items: center; gap: 0.4rem; }
+.radar-legend i { width: 14px; height: 14px; border-radius: 3px; display: inline-block; }
+.radar-note { font-size: 12.5px; color: var(--text-muted); margin-top: 1rem; text-align: center; }
+.radar-tip { background: var(--teal-pale); border-radius: 10px; padding: 0.8rem 1rem; font-size: 13px; margin-top: 1rem; }
+@media print {
+  .panel, .top .back, .actions, .no-print, .tabs, .maitrise { display: none !important; }
+  .grid2 { grid-template-columns: 1fr; } body { background: #fff; }
+  .block { box-shadow: none; border: 1px solid #ccc; break-inside: avoid; }
+  .tab-pane { display: block !important; }
+  .tab-pane + .tab-pane { margin-top: 1rem; }
+  .top { background: var(--navy-deep) !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .radar-wrap svg, .surv, .m-btn.on { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="top-inner">
+    <a href="../index.html" class="back">← Retour à PréventIA-LaB</a>
+    <div class="eyebrow">Bases de connaissances</div>
+    <h1>Constructeur de <span>fiche d'entreprise</span></h1>
+    <p>Sélectionnez le secteur, le type d'entreprise, les métiers et les unités de travail :
+       l'outil compile les éléments réglementaires à intégrer dans la fiche d'entreprise,
+       avec les risques applicables, la surveillance médicale et les références du Code du travail.</p>
+    <span class="legal">Base légale : Art. R.4624-46 du Code du travail</span>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="grid2">
+
+    <aside class="panel">
+      <h2>Paramètres</h2>
+
+      <div class="field">
+        <label for="secteur">Secteur d'activité</label>
+        <select id="secteur"><option value="">— Choisir un secteur —</option></select>
+      </div>
+
+      <div class="field">
+        <label for="taille">Type / taille d'entreprise</label>
+        <select id="taille"><option value="">— Choisir une taille —</option></select>
+      </div>
+
+      <div class="field">
+        <label>Unités de travail <span style="text-transform:none;font-weight:400;color:var(--text-muted)">(plusieurs possibles)</span></label>
+        <div class="chips" id="unites"></div>
+      </div>
+
+      <div class="field">
+        <label for="search-metier">Métiers présents</label>
+        <input type="text" id="search-metier" placeholder="Rechercher un métier…" autocomplete="off" />
+        <div class="chips" id="metiers" style="margin-top:0.5rem"></div>
+        <div class="loadinfo" id="loadinfo">Chargement de la base métiers…</div>
+      </div>
+
+      <div class="actions">
+        <button class="btn" id="reset">Réinitialiser</button>
+        <button class="btn" id="print">Imprimer</button>
+        <button class="btn primary" id="word">📄 Word</button>
+      </div>
+    </aside>
+
+    <main class="results" id="results">
+      <div class="placeholder" id="placeholder">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3">
+          <rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/>
+        </svg>
+        <p>Choisissez au minimum un <strong>secteur</strong> pour générer les éléments réglementaires
+           de la fiche d'entreprise.</p>
+      </div>
+    </main>
+
+  </div>
+</div>
+
+<script>
+/* ── Chargement robuste de docx (triple CDN) ── */
+(function loadDocx(){
+  var SRC=['https://cdn.jsdelivr.net/npm/docx@8.5.0/build/index.umd.js',
+           'https://unpkg.com/docx@8.5.0/build/index.umd.js',
+           'https://cdn.jsdelivr.net/npm/docx@8.5.0/build/index.iife.js'];
+  var i=0;
+  (function next(){
+    if(window.docx) return;
+    if(i>=SRC.length){ console.error('docx: sources épuisées'); return; }
+    var s=document.createElement('script'); s.src=SRC[i++];
+    s.onload=function(){ if(!window.docx) next(); else console.log('✅ docx prête'); };
+    s.onerror=next; document.head.appendChild(s);
+  })();
+})();
+</script>
+
+<script>
+let DB = null;
+let METIERS_ALL = [];      // fusion : internes (ids) + base-metiers (mappés)
+const sel = { secteur:"", taille:"", unites:new Set(), metiers:new Set() };
+const answers = {};        // { riskId: 'maitrise'|'partiel'|'non'|'nc' } pour le radar
+let currentTab = "synthese";
+
+/* ── Moteur de mapping risques (texte → IDs normalisés) ── */
+const KEYWORD_MAP = [
+  { ids:["amiante"], kw:["amiante"] },
+  { ids:["plomb"], kw:["plomb","saturnisme"] },
+  { ids:["cmr"], kw:["cmr","cancérogène","cancerogene","cancérigène","mutagène","reprotoxique","fumée de soudage","fumées de soudage","phytosanitaire","phyto","benzène","formaldéhyde"] },
+  { ids:["poussieres"], kw:["poussière","poussiere","silice","poussières de bois","farine"] },
+  { ids:["chimique"], kw:["chimique","produit","solvant","désinfectant","desinfectant","détergent","fds","clp","vapeur","carburant","peinture","colle","résine"] },
+  { ids:["bruit"], kw:["bruit","sonore","acoustique","sono"] },
+  { ids:["vibrations_ce"], kw:["vibration corps","vibrations corps","corps entier","engin","vibration conduite"] },
+  { ids:["vibrations_mb"], kw:["vibration main","vibrations main","main-bras","mains-bras","vibration"] },
+  { ids:["chute_hauteur"], kw:["hauteur","chute de hauteur","échafaudage","echafaudage","toiture"] },
+  { ids:["electrique"], kw:["électrique","electrique","tension"] },
+  { ids:["incendie_atex"], kw:["incendie","explosion","atex","inflammable"] },
+  { ids:["chaleur"], kw:["chaleur","canicule","forte chaleur","ambiance chaude"] },
+  { ids:["froid"], kw:["froid","chambre froide","ambiance froide"] },
+  { ids:["ri"], kw:["ionisant","rayonnement ionisant","radioprotection","radiologie"] },
+  { ids:["roa"], kw:["rayonnement optique","optique artificiel","laser","soudage"] },
+  { ids:["cem"], kw:["électromagnétique","electromagnetique","champ magnétique","cem"] },
+  { ids:["hyperbare"], kw:["hyperbare","plongée","plongee"] },
+  { ids:["manutention"], kw:["manutention","port de charge","charge lourde","biomécanique","biomecanique","soulèvement"] },
+  { ids:["tms"], kw:["tms","posture","répétitif","repetitif","ergonomi","trouble musculo"] },
+  { ids:["ecran"], kw:["écran","ecran","bureautique"] },
+  { ids:["biologique_34"], kw:["biologique 3","groupe 3","groupe 4","tuberculose","hépatite","hepatite"] },
+  { ids:["biologique"], kw:["biologique","infectieux","aes","zoonose","groupe 2"] },
+  { ids:["routier"], kw:["routier","circulation","trajet","déplacement","deplacement","conduite"] },
+  { ids:["rps"], kw:["rps","psychosocial","stress","harcèlement","harcelement","violence","charge mentale","agression","incivilité"] },
+  { ids:["travail_isole"], kw:["isolé","isole","travail seul"] },
+  { ids:["travail_nuit"], kw:["travail de nuit","poste de nuit","horaire décalé","nuit"] },
+  { ids:["machines"], kw:["machine","mécanique","mecanique","couteau","hachoir","tranchant","coupure","scie"] },
+  { ids:["coactivite"], kw:["coactivité","coactivite","entreprise extérieure","sous-traitance"] },
+];
+function matchWord(text, kw){
+  if(kw.includes(" ")||kw.includes("-")||kw.length>=6) return text.includes(kw);
+  const esc=kw.replace(/[.*+?^${}()|[\]\\]/g,"\\$&");
+  return new RegExp("(^|[^a-zà-ÿ0-9])"+esc+"([^a-zà-ÿ0-9]|$)","i").test(text);
+}
+/* Correspondance directe entre les codes catégories de la base métiers (champ "categories")
+   et les IDs du référentiel fiche-entreprise. Voie prioritaire car fiable. */
+const CODE_MAP = {
+  CMR:["cmr"], AMIANTE:["amiante"], SILICE:["poussieres"], PLOMB:["plomb"], CHIMIQUE:["chimique"],
+  BIO_12:["biologique"], BIO_34:["biologique_34"], AES:["biologique"],
+  TMS:["tms","manutention"], BRUIT:["bruit"], VIBRATIONS:["vibrations_mb"], CHUTE:["chute_hauteur"],
+  THERM:["chaleur","froid"], RI_A:["ri"], RI_B:["ri"], RNI:["roa","cem"], HYPERBARE:["hyperbare"],
+  RPS:["rps"], NUIT:["travail_nuit"], ARME:["rps"], ECRAN:["ecran"], VOIX:["voix"],
+  MECA:["machines"], ELEC:["electrique"], CONDUITE:["routier"], ATEX:["incendie_atex"], CONFINE:["confine"]
+  /* GROSSESSE volontairement ignoré : vulnérabilité (SIA), pas un risque en soi */
+};
+function mapCategories(codes){
+  const found=new Set();
+  (codes||[]).forEach(c=>{ (CODE_MAP[c]||[]).forEach(id=>found.add(id)); });
+  return [...found];
+}
+function mapRisques(texte){
+  if(!texte) return [];
+  const t=texte.toLowerCase(); const found=new Set();
+  for(const rule of KEYWORD_MAP){
+    for(const k of rule.kw){
+      if(matchWord(t,k)){
+        if(rule.ids[0]==="vibrations_mb" && found.has("vibrations_ce") && k==="vibration") break;
+        if(rule.ids[0]==="biologique" && found.has("biologique_34") && k==="biologique") break;
+        rule.ids.forEach(id=>found.add(id)); break;
+      }
+    }
+  }
+  return [...found];
+}
+
+/* ── Chargement bases ── */
+async function loadDB(){
+  try{
+    DB = await (await fetch('fiche-entreprise-db.json')).json();
+  }catch(e){
+    document.getElementById('placeholder').innerHTML =
+      "<p style='color:var(--orange)'>Impossible de charger fiche-entreprise-db.json. "+
+      "Placez le JSON dans le même dossier et testez sur GitHub Pages.</p>";
+    return;
+  }
+  // métiers internes (déjà avec ids de risques)
+  METIERS_ALL = DB.metiers.map(m => ({ id:m.id, label:m.label, secteur:m.secteur, risques:m.risques, source:"interne" }));
+  initUI();
+  render();
+  await loadBaseMetiers();   // enrichissement asynchrone (119 métiers)
+}
+
+async function loadBaseMetiers(){
+  const info=document.getElementById('loadinfo');
+  try{
+    const raw = await (await fetch('../base-metiers/metiers.json')).json();
+    const arr = Array.isArray(raw) ? raw : (raw.metiers||raw.data||[]);
+    let added=0;
+    const existing = new Set(METIERS_ALL.map(m=>norm(m.label)));
+    arr.forEach((m,idx)=>{
+      const label = m.metier||m.nom||m.label||m.intitule||m.name;
+      if(!label) return;
+      if(existing.has(norm(label))) return;          // évite doublons avec les internes
+      // Voie prioritaire : champ "categories" (codes normalisés). Sinon, mapping du texte.
+      let ids = mapCategories(m.categories);
+      if(!ids.length){
+        let rtxt = m.risques||m.risque||m.risquesAssocies||m.risques_associes||"";
+        if(Array.isArray(rtxt)) rtxt = rtxt.join(", ");
+        ids = mapRisques(rtxt);
+      }
+      METIERS_ALL.push({ id:"bm_"+idx, label, secteur:m.secteur||"", risques:ids,
+                         suivi:m.suivi||m.surveillance||"", source:"base" });
+      existing.add(norm(label)); added++;
+    });
+    info.innerHTML = `<b>${METIERS_ALL.length}</b> métiers disponibles (dont ${added} importés de votre base métiers).`;
+  }catch(e){
+    info.innerHTML = `<b>${METIERS_ALL.length}</b> métiers (base interne). Pour fusionner vos 119 métiers, placez cet outil et le dossier <i>base-metiers</i> sur le même site.`;
+  }
+  renderMetiers();
+}
+const norm = s => (s||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]/g,"");
+
+/* ── UI ── */
+function initUI(){
+  const ssel=document.getElementById('secteur');
+  DB.secteurs.forEach(s=>ssel.add(new Option(s.label,s.id)));
+  const tsel=document.getElementById('taille');
+  DB.taillesEntreprise.forEach(t=>tsel.add(new Option(t.label,t.id)));
+  const ud=document.getElementById('unites');
+  DB.unitesTravail.forEach(u=>{
+    const c=document.createElement('span');
+    c.className='chip'; c.textContent=u.label; c.dataset.id=u.id;
+    c.onclick=()=>{ toggle(sel.unites,u.id,c); render(); };
+    ud.appendChild(c);
+  });
+  renderMetiers();
+  ssel.onchange=e=>{ sel.secteur=e.target.value; renderMetiers(); render(); };
+  tsel.onchange=e=>{ sel.taille=e.target.value; render(); };
+  document.getElementById('search-metier').oninput=renderMetiers;
+  document.getElementById('reset').onclick=resetAll;
+  document.getElementById('print').onclick=()=>window.print();
+  document.getElementById('word').onclick=exportWord;
+}
+
+function renderMetiers(){
+  const md=document.getElementById('metiers');
+  const q=norm(document.getElementById('search-metier').value);
+  md.innerHTML='';
+  let list;
+  if(q){
+    list = METIERS_ALL.filter(m=>norm(m.label).includes(q)).slice(0,40);
+  }else if(sel.secteur){
+    const inS = METIERS_ALL.filter(m=>m.secteur===sel.secteur || sel.metiers.has(m.id));
+    list = inS.length ? inS : METIERS_ALL.filter(m=>sel.metiers.has(m.id));
+  }else{
+    list = METIERS_ALL.filter(m=>m.source==="interne" || sel.metiers.has(m.id));
+  }
+  // toujours inclure les sélectionnés
+  sel.metiers.forEach(id=>{ if(!list.find(m=>m.id===id)){ const m=METIERS_ALL.find(x=>x.id===id); if(m) list.unshift(m); } });
+  if(!list.length){ md.innerHTML='<span class="hint">Aucun métier trouvé.</span>'; return; }
+  list.forEach(m=>{
+    const c=document.createElement('span');
+    c.className='chip'+(sel.metiers.has(m.id)?' on':'');
+    c.innerHTML = m.label + (m.source==="base"?'<span class="src">119</span>':'');
+    c.dataset.id=m.id;
+    c.onclick=()=>{ toggle(sel.metiers,m.id,c); render(); };
+    md.appendChild(c);
+  });
+}
+function toggle(set,id,el){ if(set.has(id)){set.delete(id);el.classList.remove('on');} else {set.add(id);el.classList.add('on');} }
+function resetAll(){
+  sel.secteur="";sel.taille="";sel.unites.clear();sel.metiers.clear();
+  document.getElementById('secteur').value="";
+  document.getElementById('taille').value="";
+  document.getElementById('search-metier').value="";
+  document.querySelectorAll('.chip.on').forEach(c=>c.classList.remove('on'));
+  renderMetiers();
+  document.getElementById('results').innerHTML=document.getElementById('placeholder').outerHTML;
+}
+
+/* ── Agrégation ── */
+function aggregate(){
+  const riskIds=new Set();
+  if(sel.secteur) DB.secteurs.find(x=>x.id===sel.secteur).risques.forEach(r=>riskIds.add(r));
+  sel.unites.forEach(uid=>DB.unitesTravail.find(u=>u.id===uid).risques.forEach(r=>riskIds.add(r)));
+  sel.metiers.forEach(mid=>{ const m=METIERS_ALL.find(x=>x.id===mid); if(m) m.risques.forEach(r=>riskIds.add(r)); });
+  const risks=[...riskIds].filter(id=>DB.risques[id]).map(id=>({id,...DB.risques[id]}))
+    .sort((a,b)=>{const o={SIR:0,SIA:1,SI:2,"-":3};return (o[a.surveillance]-o[b.surveillance])||a.label.localeCompare(b.label);});
+  return {
+    risks,
+    secteur: sel.secteur?DB.secteurs.find(x=>x.id===sel.secteur):null,
+    taille: sel.taille?DB.taillesEntreprise.find(x=>x.id===sel.taille):null,
+    unites: [...sel.unites].map(id=>DB.unitesTravail.find(u=>u.id===id)),
+    metiers: [...sel.metiers].map(id=>METIERS_ALL.find(m=>m.id===id)).filter(Boolean),
+  };
+}
+
+/* ── Rendu HTML ── */
+/* ── Normalisation des familles pour le radar ── */
+function familleRadar(f){
+  if(/cmr|chimique/i.test(f)) return "Chimique";
+  if(/biolog/i.test(f)) return "Biologique";
+  if(/biomécanique|ergonomie/i.test(f)) return "Biomécanique";
+  if(/organisationnel/i.test(f)) return "Organisationnel";
+  return "Physique";
+}
+const SURV_W = { SIR:4, SIA:3, SI:2, "-":1 };
+const MAIT_W = { maitrise:4, partiel:2.5, non:1 };
+
+/* ── Rendu principal : onglets ── */
+function render(){
+  const res=document.getElementById('results');
+  if(!sel.secteur && sel.unites.size===0 && sel.metiers.size===0){
+    res.innerHTML=document.getElementById('placeholder').outerHTML; return;
+  }
+  const A=aggregate();
+  const tabs=`<div class="tabs no-print">
+    <button class="tab ${currentTab==='synthese'?'on':''}" data-tab="synthese">Synthèse réglementaire</button>
+    <button class="tab ${currentTab==='questionnaire'?'on':''}" data-tab="questionnaire">Questionnaire de visite</button>
+    <button class="tab ${currentTab==='radar'?'on':''}" data-tab="radar">Diagramme radar</button>
+  </div>`;
+  const panes=`
+    <div class="tab-pane" data-pane="synthese" style="display:${currentTab==='synthese'?'block':'none'}">${renderSynthese(A)}</div>
+    <div class="tab-pane" data-pane="questionnaire" style="display:${currentTab==='questionnaire'?'block':'none'}">${renderQuestionnaire(A)}</div>
+    <div class="tab-pane" data-pane="radar" style="display:${currentTab==='radar'?'block':'none'}">${renderRadar(A)}</div>`;
+  res.innerHTML=tabs+panes;
+  // listeners onglets
+  res.querySelectorAll('.tab').forEach(t=>t.onclick=()=>{ currentTab=t.dataset.tab; render(); });
+  // listeners maîtrise (onglet questionnaire)
+  res.querySelectorAll('.m-btn').forEach(b=>b.onclick=()=>{
+    const rid=b.dataset.r, v=b.dataset.v;
+    answers[rid] = (answers[rid]===v) ? undefined : v;
+    render();
+    // rester sur l'onglet questionnaire après clic
+  });
+}
+
+function renderSynthese(A){
+  const cSIR=A.risks.filter(r=>r.surveillance==='SIR').length;
+  const cSIA=A.risks.filter(r=>r.surveillance==='SIA').length;
+  let html='';
+  html+='<div class="summary-bar">';
+  if(A.secteur) html+=`<span class="tagsum">Secteur : <b>${A.secteur.label}</b></span>`;
+  if(A.taille) html+=`<span class="tagsum">${A.taille.label}</span>`;
+  if(A.unites.length) html+=`<span class="tagsum"><b>${A.unites.length}</b> unité(s)</span>`;
+  if(A.metiers.length) html+=`<span class="tagsum"><b>${A.metiers.length}</b> métier(s)</span>`;
+  html+=`<span class="tagsum"><b>${A.risks.length}</b> risque(s)</span>`;
+  if(cSIR) html+=`<span class="tagsum">dont <b>${cSIR}</b> en SIR</span>`;
+  html+='</div>';
+  html+=block('📋',"Structure obligatoire de la fiche d'entreprise","Sections à faire figurer dans toute fiche d'entreprise.",
+    '<ul class="clean">'+DB.sectionsObligatoires.map(s=>`<li><div class="li-title">${s.titre}</div><div class="li-detail">${s.detail}</div><span class="ref">${s.ref}</span></li>`).join('')+'</ul>');
+  if(A.taille) html+=block('🏢',"Obligations selon le type d'entreprise",A.taille.label,
+    '<ul class="clean">'+A.taille.obligations.map(o=>`<li><div class="li-title">${o.o}</div>`+(o.ref!=='—'?`<span class="ref">${o.ref}</span>`:'')+`</li>`).join('')+'</ul>');
+  if(A.secteur && A.secteur.reglementations.length) html+=block('⚖️',"Réglementations spécifiques au secteur",A.secteur.label,
+    '<ul class="clean">'+A.secteur.reglementations.map(r=>`<li><div class="li-detail">${r}</div></li>`).join('')+'</ul>');
+  if(A.risks.length){
+    const rows=A.risks.map(r=>`<tr><td><div class="li-title" style="font-size:13.5px">${r.label}</div><span class="fam">${r.famille}</span></td><td><span class="surv ${r.surveillance==='-'?'none':r.surveillance}">${r.surveillance==='-'?'—':r.surveillance}</span></td><td>${r.ref}</td><td>${r.fe}</td></tr>`).join('');
+    html+=block('⚠️',"Risques applicables et éléments à documenter","Risques agrégés à partir du secteur, des unités de travail et des métiers sélectionnés.",
+      `<div class="tbl-wrap"><table><thead><tr><th>Risque</th><th>Suivi</th><th>Référence</th><th>À intégrer dans la FE</th></tr></thead><tbody>${rows}</tbody></table></div>
+       <div class="surv-legend"><span><span class="surv SIR">SIR</span> Suivi Individuel Renforcé</span><span><span class="surv SIA">SIA</span> Suivi Individuel Adapté</span><span><span class="surv SI">SI</span> Suivi Individuel simple</span></div>`);
+  }
+  let sn="";
+  if(cSIR) sn+=`<li><div class="li-title">Postes en Suivi Individuel Renforcé (SIR)</div><div class="li-detail">${cSIR} risque(s) déclenchent un SIR : liste nominative des salariés exposés, examen d'aptitude avant affectation, périodicité ≤ 4 ans avec visite intermédiaire à 2 ans.</div><span class="ref">Art. R.4624-22 et s. du Code du travail</span></li>`;
+  if(cSIA) sn+=`<li><div class="li-title">Postes en Suivi Individuel Adapté (SIA)</div><div class="li-detail">${cSIA} situation(s) relèvent d'un SIA (travail de nuit, CEM, vulnérabilités…) : adapter modalités et périodicité (≤ 3 ans).</div><span class="ref">Art. R.4624-17 du Code du travail</span></li>`;
+  sn+=`<li><div class="li-title">Autres salariés</div><div class="li-detail">Suivi Individuel (SI) : VIP initiale puis périodicité ≤ 5 ans par un professionnel de santé au travail.</div><span class="ref">Art. R.4624-10 et s. du Code du travail</span></li>`;
+  html+=block('🩺',"Surveillance médicale à mentionner","Modalités de suivi à reporter dans la fiche.",'<ul class="clean">'+sn+'</ul>');
+  html+=block('🔁',"Rappels transversaux (toutes entreprises)","Éléments à vérifier systématiquement.",
+    '<ul class="clean">'+
+    rappel("DUERP établi, daté et mis à jour (cohérence avec la fiche)","Art. L.4121-3, R.4121-1")+
+    rappel("Risque chaleur intense évalué et plan d'action canicule","Art. R.4463-1 à R.4463-8 (décret 2025-482)")+
+    rappel("Formation à la sécurité et accueil des nouveaux arrivants","Art. L.4141-2, R.4141-1")+
+    rappel("Vérifications périodiques (électricité, incendie, machines, EPI)","Art. R.4226-14, R.4224-17, R.4323-99")+
+    rappel("Affichage réglementaire et organisation des secours (SST)","Art. D.4711-1, R.4224-14 et s.")+
+    '</ul>'+
+    `<div class="callout"><strong>Astuce IPRP :</strong> la fiche d'entreprise doit rester cohérente avec le DUERP et le rapport de visite. Priorisez les préconisations (urgent / important / recommandé) avec référence réglementaire et échéance.</div>`);
+  html+=`<p class="foot-note">${DB.meta.avertissement}<br>Base réglementaire v${DB.meta.version} — ${DB.meta.base_legale} — mise à jour ${DB.meta.maj}.</p>`;
+  return html;
+}
+
+/* ── Questionnaire de visite ── */
+function renderQuestionnaire(A){
+  let html=block('📝',"Questionnaire de visite d'entreprise",
+    "Questions à poser pendant la visite pour renseigner la fiche. Évaluez le niveau de maîtrise de chaque risque : il alimente le diagramme radar.","");
+  // Tronc commun
+  let gen='';
+  (DB.questionnaireGeneral||[]).forEach(sec=>{
+    gen+=`<div class="q-section"><h4>${sec.titre}</h4>`;
+    sec.questions.forEach((q,i)=>{ gen+=`<div class="q-item"><span class="num">${i+1}.</span><span>${q}</span></div>`; });
+    gen+=`</div>`;
+  });
+  html+=`<section class="block"><div class="block-title"><span class="ico">🗂️</span>Tronc commun</div><div class="block-sub">Questions générales, quel que soit le secteur.</div>${gen}</section>`;
+
+  // Questions par risque + sélecteur de maîtrise
+  if(A.risks.length){
+    let rk='';
+    A.risks.forEach(r=>{
+      const a=answers[r.id];
+      const mbtn=(v,lbl)=>`<button class="m-btn ${a===v?'on':''}" data-r="${r.id}" data-v="${v}">${lbl}</button>`;
+      const qs=(r.q||[]).map(q=>`<li>${q}</li>`).join('');
+      rk+=`<div class="q-risk">
+        <div class="q-risk-head">
+          <span class="name">${r.label} <span class="surv ${r.surveillance==='-'?'none':r.surveillance}" style="margin-left:4px">${r.surveillance==='-'?'—':r.surveillance}</span></span>
+          <div class="maitrise">
+            ${mbtn('maitrise','Maîtrisé')}${mbtn('partiel','À renforcer')}${mbtn('non','Non maîtrisé')}${mbtn('nc','N/C')}
+          </div>
+        </div>
+        <ul>${qs}</ul>
+      </div>`;
+    });
+    html+=`<section class="block"><div class="block-title"><span class="ico">⚠️</span>Questions ciblées par risque</div><div class="block-sub">Cliquez sur le niveau de maîtrise constaté pour chaque risque.</div>${rk}</section>`;
+  }
+  // Conclusions
+  html+=`<section class="block"><div class="block-title"><span class="ico">✅</span>Conclusions de la visite</div>
+    <div class="q-section"><div class="q-item"><span class="num">1.</span><span>Points forts observés</span></div>
+    <div class="q-item"><span class="num">2.</span><span>Points de vigilance / non-conformités</span></div>
+    <div class="q-item"><span class="num">3.</span><span>Préconisations prioritaires (urgent / important / recommandé)</span></div>
+    <div class="q-item"><span class="num">4.</span><span>Date de la prochaine mise à jour de la fiche</span></div></div></section>`;
+  return html;
+}
+
+/* ── Calcul des données radar ── */
+function computeRadar(A){
+  const fam={}; // famille → {crit:[], mait:[]}
+  A.risks.forEach(r=>{
+    const f=familleRadar(r.famille);
+    if(!fam[f]) fam[f]={crit:[],mait:[]};
+    fam[f].crit.push(SURV_W[r.surveillance]||1);
+    const a=answers[r.id];
+    if(a && a!=='nc' && MAIT_W[a]!=null) fam[f].mait.push(MAIT_W[a]);
+  });
+  const order=["Chimique","Physique","Biologique","Biomécanique","Organisationnel"];
+  const axes=order.filter(f=>fam[f]).map(f=>({label:f}));
+  const crit=axes.map(a=>Math.max(...fam[a.label].crit));
+  const mait=axes.map(a=>{ const m=fam[a.label].mait; return m.length? (m.reduce((x,y)=>x+y,0)/m.length) : 0; });
+  const answered=A.risks.filter(r=>answers[r.id] && answers[r.id]!=='nc').length;
+  return { axes, crit, mait, answered, total:A.risks.length };
+}
+
+function renderRadar(A){
+  const R=computeRadar(A);
+  let body;
+  if(R.axes.length<3){
+    body=`<p class="radar-note">Le diagramme radar nécessite au moins 3 familles de risques. Sélectionnez davantage de paramètres (secteur, métiers, unités).</p>`;
+  }else{
+    const svg=drawRadar(R.axes,[
+      {label:"Criticité réglementaire",color:"#0E7C86",values:R.crit},
+      {label:"Maîtrise constatée",color:"#E0A23B",values:R.mait},
+    ]);
+    body=`<div class="radar-wrap">${svg}
+      <div class="radar-legend">
+        <span><i style="background:#0E7C86"></i> Criticité réglementaire</span>
+        <span><i style="background:#E0A23B"></i> Maîtrise constatée</span>
+      </div></div>
+      <p class="radar-note">Échelle 1 (faible) à 4 (élevé). La criticité reflète le niveau de surveillance médicale ; la maîtrise provient de vos réponses au questionnaire (${R.answered}/${R.total} risque(s) évalué(s)).</p>
+      <div class="radar-tip"><strong>Lecture :</strong> là où la zone orange (maîtrise) reste en deçà de la zone bleue (criticité), la prévention est à renforcer en priorité. Renseignez l'onglet <em>Questionnaire</em> pour faire apparaître la maîtrise.</div>`;
+  }
+  return block('🕸️',"Diagramme radar — criticité vs maîtrise","Synthèse visuelle par famille de risques.",body)
+    + `<p class="foot-note">Astuce : utilisez « Imprimer » pour exporter la synthèse, le questionnaire et le radar en PDF.</p>`;
+}
+
+/* ── Générateur de radar SVG ── */
+function drawRadar(axes,datasets,opts={}){
+  const W=opts.w||460,H=opts.h||400,cx=W/2,cy=H/2+6,Rr=opts.r||125,MAX=opts.max||4,n=axes.length;
+  if(n<3) return '';
+  const ang=i=>(-90+i*360/n)*Math.PI/180;
+  const pt=(i,val)=>{ const r=Rr*Math.max(0,Math.min(val,MAX))/MAX; return [cx+r*Math.cos(ang(i)),cy+r*Math.sin(ang(i))]; };
+  let s=`<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" font-family="DM Sans, sans-serif">`;
+  for(let ring=1;ring<=MAX;ring++){ s+=`<polygon points="${axes.map((_,i)=>pt(i,ring).join(',')).join(' ')}" fill="none" stroke="#dfe5ea" stroke-width="1"/>`; }
+  axes.forEach((a,i)=>{
+    const [x,y]=pt(i,MAX); s+=`<line x1="${cx}" y1="${cy}" x2="${x}" y2="${y}" stroke="#dfe5ea" stroke-width="1"/>`;
+    const [lx,ly]=pt(i,MAX+0.6); const anchor=Math.abs(lx-cx)<6?'middle':(lx<cx?'end':'start');
+    s+=`<text x="${lx}" y="${ly}" font-size="11.5" fill="#3a4654" text-anchor="${anchor}" dominant-baseline="middle">${a.label}</text>`;
+  });
+  datasets.forEach(ds=>{
+    const pts=ds.values.map((v,i)=>pt(i,v).join(',')).join(' ');
+    s+=`<polygon points="${pts}" fill="${ds.color}" fill-opacity="0.18" stroke="${ds.color}" stroke-width="2"/>`;
+    ds.values.forEach((v,i)=>{ const [x,y]=pt(i,v); s+=`<circle cx="${x}" cy="${y}" r="3.2" fill="${ds.color}"/>`; });
+  });
+  return s+`</svg>`;
+}
+function block(ico,title,sub,body){ return `<section class="block"><div class="block-title"><span class="ico">${ico}</span>${title}</div>${sub?`<div class="block-sub">${sub}</div>`:''}${body}</section>`; }
+function rappel(t,ref){ return `<li><div class="li-title">${t}</div><span class="ref">${ref}</span></li>`; }
+
+/* ── Export Word ── */
+function exportWord(){
+  if(!sel.secteur && sel.unites.size===0 && sel.metiers.size===0){
+    alert("Sélectionnez au moins un secteur, une unité de travail ou un métier avant de générer la trame Word."); return;
+  }
+  if(typeof docx==='undefined' || !window.docx){
+    const b=document.getElementById('word'); b.disabled=true; b.textContent='⏳ docx…';
+    setTimeout(()=>{ b.disabled=false; b.textContent='📄 Word'; exportWord(); }, 2500); return;
+  }
+  const A=aggregate();
+  const D=window.docx;
+  const { Document,Packer,Paragraph,TextRun,HeadingLevel,AlignmentType,Table,TableRow,TableCell,WidthType,BorderStyle } = D;
+  const NAVY="0B2240", TEAL="0E7C86";
+
+  const H=(t,lvl)=>new Paragraph({ heading:lvl||HeadingLevel.HEADING_2, spacing:{before:240,after:120},
+    children:[new TextRun({text:t,bold:true,color:NAVY})] });
+  const P=(t,o={})=>new Paragraph({ spacing:{after:80}, children:[new TextRun(Object.assign({text:t},o))] });
+  const REF=t=>new Paragraph({ spacing:{after:120}, children:[new TextRun({text:t,italics:true,size:18,color:TEAL})] });
+  const cell=(txt,opts={})=>new TableCell({
+    width:{size:opts.w||25,type:WidthType.PERCENTAGE},
+    shading: opts.head?{fill:NAVY}:undefined,
+    children:[new Paragraph({children:[new TextRun({text:txt,bold:!!opts.head,color:opts.head?"FFFFFF":"000000",size:opts.head?18:18})]})]
+  });
+  const line=()=>new Paragraph({border:{bottom:{color:"CCCCCC",space:1,style:BorderStyle.SINGLE,size:6}},spacing:{after:120}});
+
+  const kids=[];
+  kids.push(new Paragraph({alignment:AlignmentType.CENTER,spacing:{after:40},children:[new TextRun({text:"FICHE D'ENTREPRISE",bold:true,size:36,color:NAVY})]}));
+  kids.push(new Paragraph({alignment:AlignmentType.CENTER,spacing:{after:60},children:[new TextRun({text:"Trame réglementaire — Art. R.4624-46 du Code du travail",italics:true,size:18,color:TEAL})]}));
+  kids.push(new Paragraph({alignment:AlignmentType.CENTER,spacing:{after:200},children:[new TextRun({text:"Document généré par PréventIA-LaB — à compléter et adapter à l'entreprise",size:16,color:"888888"})]}));
+  kids.push(line());
+
+  // Paramètres
+  kids.push(H("Paramètres de la sélection"));
+  if(A.secteur) kids.push(P("Secteur d'activité : ",{bold:true})); if(A.secteur) kids.push(P(A.secteur.label));
+  if(A.taille) kids.push(P("Type / taille : "+A.taille.label));
+  if(A.unites.length) kids.push(P("Unités de travail : "+A.unites.map(u=>u.label).join(", ")));
+  if(A.metiers.length) kids.push(P("Métiers : "+A.metiers.map(m=>m.label).join(", ")));
+
+  // 1. Identification
+  kids.push(H("1. Identification de l'entreprise"));
+  ["Raison sociale : ……………………………………","SIRET : ……………………  Code NAF/APE : …………","Adresse : ……………………………………………","Convention collective : …………………………","Effectif total : ………   Date de la visite : …………"].forEach(t=>kids.push(P(t)));
+  kids.push(REF("Art. R.4624-46 du Code du travail"));
+
+  // 2. Effectifs
+  kids.push(H("2. Effectifs"));
+  kids.push(P("Répartition (H/F, âge, CDI/CDD/intérim/apprentis, temps partiel, RQTH, salariés en SIR) : ……"));
+  kids.push(REF("Art. R.4624-46 du Code du travail"));
+
+  // 3. Unités de travail
+  kids.push(H("3. Unités de travail / GHE"));
+  if(A.unites.length){ A.unites.forEach(u=>kids.push(P("• "+u.label+" : ……………………………………"))); }
+  else kids.push(P("• ……………………………………"));
+  kids.push(REF("Art. R.4624-46 ; cohérence avec le DUERP (R.4121-1)"));
+
+  // 4. Risques
+  kids.push(H("4. Risques professionnels identifiés"));
+  if(A.risks.length){
+    const rows=[ new TableRow({tableHeader:true,children:[cell("Risque",{w:24,head:true}),cell("Famille",{w:16,head:true}),cell("Suivi",{w:9,head:true}),cell("Référence",{w:24,head:true}),cell("À documenter",{w:27,head:true})]}) ];
+    A.risks.forEach(r=>rows.push(new TableRow({children:[
+      cell(r.label,{w:24}),cell(r.famille,{w:16}),cell(r.surveillance==='-'?'—':r.surveillance,{w:9}),cell(r.ref,{w:24}),cell(r.fe,{w:27})
+    ]})));
+    kids.push(new Table({width:{size:100,type:WidthType.PERCENTAGE},rows}));
+  } else kids.push(P("Aucun risque sélectionné."));
+
+  // 5. Surveillance
+  kids.push(H("5. Suivi individuel de l'état de santé"));
+  const cSIR=A.risks.filter(r=>r.surveillance==='SIR').length, cSIA=A.risks.filter(r=>r.surveillance==='SIA').length;
+  if(cSIR){ kids.push(P("Suivi Individuel Renforcé (SIR) — "+cSIR+" risque(s) : liste nominative des exposés, examen d'aptitude avant affectation, périodicité ≤ 4 ans (visite intermédiaire à 2 ans).")); kids.push(REF("Art. R.4624-22 et s.")); }
+  if(cSIA){ kids.push(P("Suivi Individuel Adapté (SIA) — "+cSIA+" situation(s) : modalités et périodicité adaptées (≤ 3 ans).")); kids.push(REF("Art. R.4624-17")); }
+  kids.push(P("Suivi Individuel (SI) — autres salariés : VIP initiale puis ≤ 5 ans.")); kids.push(REF("Art. R.4624-10 et s."));
+
+  // 6. Obligations taille
+  if(A.taille){ kids.push(H("6. Obligations liées au type d'entreprise")); kids.push(P(A.taille.label,{bold:true}));
+    A.taille.obligations.forEach(o=>{ kids.push(P("• "+o.o)); if(o.ref!=='—') kids.push(REF(o.ref)); }); }
+
+  // 7. Réglementations sectorielles
+  if(A.secteur && A.secteur.reglementations.length){ kids.push(H("7. Réglementations spécifiques au secteur"));
+    A.secteur.reglementations.forEach(r=>kids.push(P("• "+r))); }
+
+  // 8. Rappels
+  kids.push(H("8. Rappels transversaux"));
+  [["DUERP établi, daté et mis à jour","Art. L.4121-3, R.4121-1"],
+   ["Risque chaleur intense évalué et plan canicule","Art. R.4463-1 à R.4463-8"],
+   ["Formation sécurité et accueil des nouveaux arrivants","Art. L.4141-2, R.4141-1"],
+   ["Vérifications périodiques (électricité, incendie, machines, EPI)","Art. R.4226-14, R.4224-17, R.4323-99"],
+   ["Affichage réglementaire et organisation des secours","Art. D.4711-1, R.4224-14 et s."]].forEach(([t,r])=>{ kids.push(P("• "+t)); kids.push(REF(r)); });
+
+  // 9. Questionnaire de visite
+  kids.push(new Paragraph({pageBreakBefore:true,heading:HeadingLevel.HEADING_1,spacing:{after:160},children:[new TextRun({text:"Questionnaire de visite",bold:true,color:NAVY,size:30})]}));
+  (DB.questionnaireGeneral||[]).forEach(seco=>{
+    kids.push(H(seco.titre));
+    seco.questions.forEach(q=>{ kids.push(new Paragraph({spacing:{after:40},children:[new TextRun({text:"☐ "+q,size:18})]})); kids.push(P("…………………………………………………………")); });
+  });
+  if(A.risks.length){
+    kids.push(H("Questions ciblées par risque"));
+    const MLABEL={maitrise:"Maîtrisé",partiel:"À renforcer",non:"Non maîtrisé",nc:"N/C"};
+    A.risks.forEach(r=>{
+      const a=answers[r.id];
+      kids.push(new Paragraph({spacing:{before:120,after:40},children:[
+        new TextRun({text:r.label+"  ",bold:true,color:NAVY,size:20}),
+        new TextRun({text:"[Suivi "+(r.surveillance==='-'?'—':r.surveillance)+"]",size:16,color:TEAL}),
+        new TextRun({text:"   Maîtrise : "+(a?MLABEL[a]:"…………"),size:18,bold:!!a})
+      ]}));
+      (r.q||[]).forEach(q=>{ kids.push(new Paragraph({spacing:{after:30},children:[new TextRun({text:"☐ "+q,size:18})]})); kids.push(P("………………………………………………")); });
+    });
+  }
+  kids.push(H("Conclusions de la visite"));
+  ["Points forts observés : ……………………………","Points de vigilance / non-conformités : …………","Préconisations prioritaires : ……………………","Date de prochaine mise à jour : …………………"].forEach(t=>kids.push(P(t)));
+
+  kids.push(line());
+  kids.push(new Paragraph({spacing:{before:120},children:[new TextRun({text:DB.meta.avertissement,italics:true,size:16,color:"888888"})]}));
+  kids.push(new Paragraph({children:[new TextRun({text:"Conclusions et préconisations priorisées : ……………………………………",size:18})]}));
+  kids.push(new Paragraph({alignment:AlignmentType.RIGHT,spacing:{before:240},children:[new TextRun({text:"Fait à ……………, le …………  —  Équipe pluridisciplinaire SPSTI",size:18})]}));
+
+  const doc=new Document({ sections:[{properties:{},children:kids}] });
+  Packer.toBlob(doc).then(blob=>{
+    const url=URL.createObjectURL(blob); const a=document.createElement('a');
+    const slug=(A.secteur?A.secteur.label:'fiche').toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+    a.href=url; a.download='trame-fiche-entreprise-'+slug+'.docx'; a.click();
+    setTimeout(()=>URL.revokeObjectURL(url),1500);
+  }).catch(e=>{ console.error(e); alert("Erreur lors de la génération du document Word."); });
+}
+
+loadDB();
+</script>
+</body>
+</html>
