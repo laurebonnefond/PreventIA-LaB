@@ -1,0 +1,1153 @@
+{
+  "meta": {
+    "titre": "Base réglementaire — Fiche d'entreprise",
+    "version": "1.0",
+    "base_legale": "Art. R.4624-46 du Code du travail (décret 2022-679 du 26/04/2022)",
+    "maj": "2026-06",
+    "avertissement": "Outil d'aide à la décision. Les références sont indicatives et doivent être adaptées à la situation réelle de l'entreprise par l'équipe pluridisciplinaire. Ne se substitue pas au DUERP ni au jugement professionnel."
+  },
+  "sectionsObligatoires": [
+    {
+      "titre": "Identification de l'entreprise",
+      "detail": "Raison sociale, SIRET, code NAF/APE, adresse, activité, convention collective, coordonnées du SPSTI et de l'équipe pluridisciplinaire.",
+      "ref": "Art. R.4624-46 du Code du travail"
+    },
+    {
+      "titre": "Effectifs",
+      "detail": "Effectif total et répartition (sexe, âge, CDI/CDD/intérim/apprentis, temps partiel, travailleurs handicapés, salariés en SIR).",
+      "ref": "Art. R.4624-46 du Code du travail"
+    },
+    {
+      "titre": "Unités de travail / GHE",
+      "detail": "Description des unités de travail (ou groupes homogènes d'exposition) : locaux, postes, organisation, horaires.",
+      "ref": "Art. R.4624-46 ; cohérence avec le DUERP (R.4121-1)"
+    },
+    {
+      "titre": "Risques professionnels par unité de travail",
+      "detail": "Identification et appréciation des risques par unité, avec conditions d'exposition. Cohérent avec le DUERP.",
+      "ref": "Art. R.4624-46 ; R.4121-1 du Code du travail"
+    },
+    {
+      "titre": "Effectifs exposés",
+      "detail": "Nombre de salariés exposés à chaque risque identifié.",
+      "ref": "Art. R.4624-46 du Code du travail"
+    },
+    {
+      "titre": "Moyens de prévention en place",
+      "detail": "Mesures techniques (EPC), organisationnelles et individuelles (EPI), formations, vérifications périodiques.",
+      "ref": "Art. L.4121-2 (principes généraux de prévention)"
+    },
+    {
+      "titre": "Suivi individuel de l'état de santé",
+      "detail": "Modalités de suivi (SI / SIA / SIR), postes à risques particuliers, périodicité des visites.",
+      "ref": "Art. R.4624-22 et s. (SIR) ; R.4624-17 (SIA) du Code du travail"
+    },
+    {
+      "titre": "Conclusions et propositions",
+      "detail": "Synthèse, préconisations priorisées de l'équipe pluridisciplinaire, points de vigilance.",
+      "ref": "Art. R.4624-46 ; transmise à l'employeur et présentée au CSE"
+    }
+  ],
+  "risques": {
+    "chimique": {
+      "label": "Risque chimique",
+      "famille": "Chimique",
+      "ref": "Art. R.4412-1 et s. du Code du travail",
+      "surveillance": "SI",
+      "mp": "TMP 84, 65, 66 (selon agent)",
+      "seuil": "VLEP contraignantes/indicatives selon agent (annexe R.4412-149)",
+      "epi": "Gants adaptés, lunettes, protection respiratoire selon FDS",
+      "epc": "Captage à la source, ventilation/VMC, substitution",
+      "fe": "Lister produits, FDS à jour, conditions d'exposition, stockage, étiquetage CLP"
+    },
+    "cmr": {
+      "label": "Agents CMR (cancérogènes, mutagènes, reprotoxiques)",
+      "famille": "Chimique",
+      "ref": "Art. R.4412-59 et s. du Code du travail",
+      "surveillance": "SIR",
+      "mp": "Selon agent (TMP 4, 10, 15ter, 47, 81…)",
+      "seuil": "Substitution obligatoire si techniquement possible ; VLEP contraignantes",
+      "epi": "Protection respiratoire, gants, vêtements dédiés",
+      "epc": "Système clos, captage, mesurages réguliers, traçabilité des expositions",
+      "fe": "Identifier CMR, fiche d'exposition, attestation d'exposition, liste salariés exposés (SIR)"
+    },
+    "amiante": {
+      "label": "Amiante",
+      "famille": "Chimique / CMR",
+      "ref": "Art. R.4412-94 et s. du Code du travail",
+      "surveillance": "SIR",
+      "mp": "TMP 30 et 30bis",
+      "seuil": "VLEP 10 f/L sur 8 h ; sous-section 3 ou 4",
+      "epi": "Masque adapté (P3/ventilation assistée), combinaison jetable",
+      "epc": "Confinement, décontamination, plan de retrait/démolition",
+      "fe": "Repérage avant travaux, mode opératoire/plan de retrait, suivi SIR"
+    },
+    "plomb": {
+      "label": "Plomb et composés",
+      "famille": "Chimique / CMR",
+      "ref": "Art. R.4412-152 et s. du Code du travail",
+      "surveillance": "SIR",
+      "mp": "TMP 1",
+      "seuil": "VLEP 0,1 mg/m³ ; plombémie surveillée",
+      "epi": "Protection respiratoire, gants, hygiène renforcée",
+      "epc": "Captage, interdiction de fumer/manger, vestiaires séparés",
+      "fe": "Suivi plombémie, SIR, mesures d'hygiène spécifiques"
+    },
+    "poussieres": {
+      "label": "Poussières (silice, bois, farine…)",
+      "famille": "Chimique",
+      "ref": "Art. R.4412-149 (VLEP) du Code du travail",
+      "surveillance": "SIR",
+      "mp": "TMP 25 (silice), 47 (bois), 66 (farine)",
+      "seuil": "Silice cristalline = CMR (procédé) ; VLEP 0,1 mg/m³ (quartz)",
+      "epi": "Masque FFP2/FFP3 selon empoussièrement",
+      "epc": "Aspiration à la source, travail à l'humide, cloisonnement",
+      "fe": "Mesurages empoussièrement, silice/bois en CMR procédé → SIR"
+    },
+    "bruit": {
+      "label": "Bruit",
+      "famille": "Physique",
+      "ref": "Art. R.4431-1 et s. du Code du travail",
+      "surveillance": "SIR",
+      "mp": "TMP 42",
+      "seuil": "VA inf. 80 / VA sup. 85 dB(A) ; VLE 87 dB(A)",
+      "epi": "PICB (bouchons, casques) — méthode OB de l'INRS",
+      "epc": "Encoffrement, traitement acoustique, éloignement",
+      "fe": "Sonométrie, niveaux Lex,8h par GHE, SIR si exposition > VA sup."
+    },
+    "vibrations_mb": {
+      "label": "Vibrations main-bras",
+      "famille": "Physique",
+      "ref": "Art. R.4441-1 et s. du Code du travail",
+      "surveillance": "SI",
+      "mp": "TMP 69",
+      "seuil": "VA A(8) = 2,5 m/s² ; VLE A(8) = 5 m/s²",
+      "epi": "Gants antivibratiles (effet limité), rotation des tâches",
+      "epc": "Outils à vibrations réduites, maintenance, équilibrage",
+      "fe": "Évaluer A(8), outils concernés, durées d'usage"
+    },
+    "vibrations_ce": {
+      "label": "Vibrations corps entier",
+      "famille": "Physique",
+      "ref": "Art. R.4441-1 et s. du Code du travail",
+      "surveillance": "SI",
+      "mp": "TMP 97",
+      "seuil": "VA A(8) = 0,5 m/s² ; VLE A(8) = 1,15 m/s²",
+      "epi": "Siège suspendu, conduite adaptée",
+      "epc": "Entretien des sols/voies, suspension des engins",
+      "fe": "Évaluer A(8) conducteurs d'engins/chariots, état des sols"
+    },
+    "manutention": {
+      "label": "Manutention manuelle de charges",
+      "famille": "Biomécanique",
+      "ref": "Art. R.4541-1 et s. du Code du travail",
+      "surveillance": "SI",
+      "mp": "TMP 98 (lombalgies), 57 (membre sup.)",
+      "seuil": "Référence 55 kg (homme) ; 105 kg max si organisation le permet",
+      "epi": "Aides à la manutention, exosquelettes le cas échéant",
+      "epc": "Aménagement des postes, mécanisation, formation PRAP/gestes & postures",
+      "fe": "Évaluer charges/fréquences, formation gestes & postures, aides techniques"
+    },
+    "tms": {
+      "label": "TMS / postures contraignantes",
+      "famille": "Biomécanique",
+      "ref": "Art. L.4121-1 ; R.4541 du Code du travail",
+      "surveillance": "SI",
+      "mp": "TMP 57, 69, 79, 97, 98",
+      "seuil": "Cotation RULA/REBA recommandée",
+      "epi": "Aménagement ergonomique, sièges assis-debout",
+      "epc": "Reconception des postes, rotation, pauses",
+      "fe": "Cotation RULA/REBA par poste, plan d'action ergonomie"
+    },
+    "ecran": {
+      "label": "Travail sur écran",
+      "famille": "Ergonomie",
+      "ref": "Art. R.4542-1 et s. du Code du travail",
+      "surveillance": "SI",
+      "mp": "TMP 57 (membre sup.)",
+      "seuil": "Pauses/changements d'activité ; examen de la vue proposé",
+      "epi": "Siège réglable, support écran, repose-pieds",
+      "epc": "Aménagement poste, éclairage, anti-reflet",
+      "fe": "Évaluation des postes écran, organisation des pauses, examen visuel"
+    },
+    "biologique": {
+      "label": "Risque biologique (groupes 1-2)",
+      "famille": "Biologique",
+      "ref": "Art. R.4421-1 et s. du Code du travail",
+      "surveillance": "SI",
+      "mp": "TMP 76 et selon agent",
+      "seuil": "Classement en 4 groupes (R.4421-3)",
+      "epi": "Gants, blouse, protection respiratoire selon agent",
+      "epc": "Hygiène, désinfection, gestion des déchets DASRI",
+      "fe": "Identifier agents/groupes, vaccinations, conduite AES"
+    },
+    "biologique_34": {
+      "label": "Risque biologique (groupes 3-4)",
+      "famille": "Biologique",
+      "ref": "Art. R.4421-1 et s. du Code du travail",
+      "surveillance": "SIR",
+      "mp": "Selon agent (TMP 40, 45, 76…)",
+      "seuil": "Confinement L2/L3 selon agent",
+      "epi": "Protection renforcée adaptée à l'agent",
+      "epc": "Confinement, procédures spécifiques, traçabilité",
+      "fe": "Liste salariés exposés, SIR, vaccinations, protocole AES"
+    },
+    "chute_hauteur": {
+      "label": "Chute de hauteur",
+      "famille": "Physique",
+      "ref": "Art. R.4323-58 et s. du Code du travail",
+      "surveillance": "SIR",
+      "mp": "—",
+      "seuil": "Protection collective prioritaire ; SIR au montage/démontage d'échafaudage",
+      "epi": "Harnais antichute, longes, points d'ancrage",
+      "epc": "Garde-corps, échafaudages conformes, filets",
+      "fe": "Identifier postes en hauteur, vérifications échafaudages, SIR"
+    },
+    "electrique": {
+      "label": "Risque électrique",
+      "famille": "Physique",
+      "ref": "Art. R.4226-1 et s. du Code du travail ; NF C18-510",
+      "surveillance": "SI",
+      "mp": "—",
+      "seuil": "Habilitation électrique selon opérations",
+      "epi": "Gants isolants, écran facial, vêtements adaptés",
+      "epc": "Consignation, vérifications périodiques des installations",
+      "fe": "Habilitations à jour, vérifications électriques annuelles"
+    },
+    "incendie_atex": {
+      "label": "Incendie / explosion (ATEX)",
+      "famille": "Physique",
+      "ref": "Art. R.4227-1 et s. ; ATEX R.4227-42 et s. du Code du travail",
+      "surveillance": "SI",
+      "mp": "—",
+      "seuil": "DRPCE (document relatif à la protection contre les explosions)",
+      "epi": "Vêtements ignifugés selon zone",
+      "epc": "Détection, désenfumage, zonage ATEX, exercices d'évacuation",
+      "fe": "Moyens de secours, exercices évacuation, zonage ATEX si applicable"
+    },
+    "routier": {
+      "label": "Risque routier",
+      "famille": "Organisationnel",
+      "ref": "Art. L.4121-1 du Code du travail ; recommandations CNAM",
+      "surveillance": "SI",
+      "mp": "—",
+      "seuil": "Risque trajet et mission",
+      "epi": "Véhicule entretenu, équipements de sécurité",
+      "epc": "Plan de déplacements, protocole communication au volant",
+      "fe": "Intégrer le risque routier (trajet/mission) au DUERP, charte"
+    },
+    "rps": {
+      "label": "Risques psychosociaux (RPS)",
+      "famille": "Organisationnel",
+      "ref": "Art. L.4121-1 ; ANI 2008 (stress) et 2010 (harcèlement)",
+      "surveillance": "SI",
+      "mp": "—",
+      "seuil": "Évaluation des facteurs (charge, autonomie, relations…)",
+      "epi": "—",
+      "epc": "Organisation du travail, soutien managérial, prévention primaire",
+      "fe": "Évaluer les RPS, intégrer au DUERP, dispositif d'alerte/écoute"
+    },
+    "chaleur": {
+      "label": "Chaleur intense / canicule",
+      "famille": "Physique",
+      "ref": "Art. R.4463-1 à R.4463-8 (décret 2025-482 du 27/05/2025)",
+      "surveillance": "SI",
+      "mp": "—",
+      "seuil": "Évaluation obligatoire ; mesures dès vigilance jaune Météo-France",
+      "epi": "Vêtements adaptés, protection solaire",
+      "epc": "Eau fraîche, aménagement horaires, ombrage, pauses",
+      "fe": "Évaluer le risque chaleur (intérieur/extérieur), plan d'action canicule, signalement"
+    },
+    "froid": {
+      "label": "Travail au froid",
+      "famille": "Physique",
+      "ref": "Art. R.4223-13 et s. du Code du travail",
+      "surveillance": "SI",
+      "mp": "—",
+      "seuil": "Postes en chambre froide / extérieur hivernal",
+      "epi": "Vêtements chauds, gants thermiques",
+      "epc": "Chauffage des locaux de pause, rotation, limitation des durées",
+      "fe": "Identifier postes au froid, EPI thermiques, organisation des pauses"
+    },
+    "travail_isole": {
+      "label": "Travail isolé",
+      "famille": "Organisationnel",
+      "ref": "Art. L.4121-1 ; R.4512-13 (DATI en coactivité)",
+      "surveillance": "SI",
+      "mp": "—",
+      "seuil": "Procédure d'alerte et de secours",
+      "epi": "DATI (dispositif d'alarme du travailleur isolé)",
+      "epc": "Procédure de contrôle régulier, organisation des secours",
+      "fe": "Recenser postes isolés, DATI, procédure d'alerte/secours"
+    },
+    "travail_nuit": {
+      "label": "Travail de nuit",
+      "famille": "Organisationnel",
+      "ref": "Art. L.3122-1 et s. du Code du travail",
+      "surveillance": "SIA",
+      "mp": "—",
+      "seuil": "21 h–6 h (ou plage définie) ; SIA",
+      "epi": "—",
+      "epc": "Organisation des plannings, limitation, contreparties",
+      "fe": "Recenser travailleurs de nuit (SIA), organisation, contreparties"
+    },
+    "hyperbare": {
+      "label": "Travail en milieu hyperbare",
+      "famille": "Physique",
+      "ref": "Art. R.4461-1 et s. du Code du travail",
+      "surveillance": "SIR",
+      "mp": "TMP 29",
+      "seuil": "Certificat d'aptitude à l'hyperbarie (CAH)",
+      "epi": "Équipements de plongée/hyperbarie certifiés",
+      "epc": "Procédures de décompression, encadrement spécifique",
+      "fe": "CAH, SIR, procédures hyperbares"
+    },
+    "machines": {
+      "label": "Machines et équipements de travail",
+      "famille": "Physique",
+      "ref": "Art. R.4321-1 et s. ; R.4324-1 et s. du Code du travail",
+      "surveillance": "SI",
+      "mp": "—",
+      "seuil": "Conformité CE, vérifications périodiques",
+      "epi": "Protections selon machine",
+      "epc": "Protecteurs, dispositifs d'arrêt, consignation",
+      "fe": "Inventaire machines, vérifications périodiques, notices, formation"
+    },
+    "coactivite": {
+      "label": "Coactivité / intervention d'entreprises extérieures",
+      "famille": "Organisationnel",
+      "ref": "Art. R.4512-6 et s. du Code du travail",
+      "surveillance": "SI",
+      "mp": "—",
+      "seuil": "Plan de prévention écrit si > 400 h/an ou travaux dangereux",
+      "epi": "Selon co-activité",
+      "epc": "Plan de prévention, coordination, accueil",
+      "fe": "Plan(s) de prévention, protocole de sécurité chargement/déchargement"
+    },
+    "ri": {
+      "label": "Rayonnements ionisants",
+      "famille": "Physique",
+      "ref": "Art. R.4451-1 et s. du Code du travail",
+      "surveillance": "SIR",
+      "mp": "TMP 6",
+      "seuil": "Classement cat. A/B ; dosimétrie",
+      "epi": "Tablier plombé, dosimètre",
+      "epc": "Zonage, blindage, signalisation, PCR/CRP",
+      "fe": "Classement A/B, dosimétrie, SIR, conseiller en radioprotection"
+    },
+    "cem": {
+      "label": "Champs électromagnétiques",
+      "famille": "Physique",
+      "ref": "Art. R.4453-1 et s. du Code du travail",
+      "surveillance": "SIA",
+      "mp": "—",
+      "seuil": "VLE / valeurs déclenchant l'action ; SIA si dépassement VLE",
+      "epi": "Selon source",
+      "epc": "Distances de sécurité, signalisation, limitation d'accès",
+      "fe": "Évaluer l'exposition CEM, travailleurs à risques particuliers (PM, implants)"
+    },
+    "roa": {
+      "label": "Rayonnements optiques artificiels (soudage, UV…)",
+      "famille": "Physique",
+      "ref": "Art. R.4452-1 et s. du Code du travail",
+      "surveillance": "SI",
+      "mp": "—",
+      "seuil": "VLE selon longueur d'onde",
+      "epi": "Écran/masque de soudage, lunettes filtrantes, protection cutanée",
+      "epc": "Écrans/cabines, signalisation, balisage",
+      "fe": "Évaluer l'exposition ROA (soudage, UV), protections oculaires/cutanées"
+    },
+    "confine": {
+      "label": "Espaces confinés",
+      "famille": "Physique",
+      "ref": "Art. R.4222-23 et s. du Code du travail ; recommandation CNAM R.447",
+      "surveillance": "SI",
+      "mp": "—",
+      "seuil": "Procédure d'entrée, contrôle d'atmosphère, surveillance permanente",
+      "epi": "Détecteur de gaz, ventilation forcée, harnais, DATI",
+      "epc": "Consignation, ventilation, permis de pénétrer, équipe de secours",
+      "fe": "Recenser les espaces confinés, procédure d'entrée et de secours, contrôle d'atmosphère"
+    },
+    "voix": {
+      "label": "Sollicitation vocale",
+      "famille": "Organisationnel",
+      "ref": "Art. L.4121-1 du Code du travail",
+      "surveillance": "SI",
+      "mp": "—",
+      "seuil": "Usage intensif de la voix (enseignement, accueil, centres d'appels)",
+      "epi": "Sonorisation, micro, aménagement acoustique",
+      "epc": "Traitement acoustique des locaux, organisation des temps de parole",
+      "fe": "Identifier les postes à forte sollicitation vocale, moyens de sonorisation"
+    }
+  },
+  "taillesEntreprise": [
+    {
+      "id": "tpe",
+      "label": "TPE — moins de 11 salariés",
+      "obligations": [
+        {
+          "o": "DUERP établi et mis à jour",
+          "ref": "Art. L.4121-3, R.4121-1 et s."
+        },
+        {
+          "o": "Affichage obligatoire (consignes sécurité, coordonnées secours, inspection du travail)",
+          "ref": "Art. R.4227-37, D.4711-1"
+        },
+        {
+          "o": "Formation à la sécurité des salariés",
+          "ref": "Art. L.4141-2"
+        },
+        {
+          "o": "Désignation d'un salarié compétent (référent SST)",
+          "ref": "Art. L.4644-1, R.4644-1"
+        },
+        {
+          "o": "Organisation des secours (SST, trousse, conduite à tenir)",
+          "ref": "Art. R.4224-14 et s."
+        }
+      ]
+    },
+    {
+      "id": "pe",
+      "label": "Petite entreprise — 11 à 49 salariés",
+      "obligations": [
+        {
+          "o": "Toutes obligations TPE",
+          "ref": "—"
+        },
+        {
+          "o": "Mise en place du CSE",
+          "ref": "Art. L.2311-2"
+        },
+        {
+          "o": "Consultation du CSE sur la santé, sécurité et conditions de travail",
+          "ref": "Art. L.2312-5"
+        },
+        {
+          "o": "Conservation des versions successives du DUERP",
+          "ref": "Art. R.4121-1-1"
+        }
+      ]
+    },
+    {
+      "id": "me",
+      "label": "Moyenne entreprise — 50 à 299 salariés",
+      "obligations": [
+        {
+          "o": "Toutes obligations précédentes",
+          "ref": "—"
+        },
+        {
+          "o": "CSE avec attributions élargies SSCT",
+          "ref": "Art. L.2312-9"
+        },
+        {
+          "o": "Programme annuel de prévention (PAPRIPACT)",
+          "ref": "Art. L.2312-27"
+        },
+        {
+          "o": "Bilan annuel SSCT présenté au CSE",
+          "ref": "Art. L.2312-27"
+        },
+        {
+          "o": "Commission SSCT possible/recommandée",
+          "ref": "Art. L.2315-36"
+        }
+      ]
+    },
+    {
+      "id": "ge",
+      "label": "Grande entreprise — 300 salariés et plus",
+      "obligations": [
+        {
+          "o": "Toutes obligations précédentes",
+          "ref": "—"
+        },
+        {
+          "o": "Commission SSCT obligatoire",
+          "ref": "Art. L.2315-36"
+        },
+        {
+          "o": "Moyens renforcés du CSE (heures, experts)",
+          "ref": "Art. L.2315 et s."
+        }
+      ]
+    }
+  ],
+  "unitesTravail": [
+    {
+      "id": "bureau",
+      "label": "Bureau / administratif",
+      "risques": [
+        "ecran",
+        "rps",
+        "incendie_atex"
+      ]
+    },
+    {
+      "id": "atelier",
+      "label": "Atelier / production",
+      "risques": [
+        "machines",
+        "bruit",
+        "chimique",
+        "manutention",
+        "tms",
+        "vibrations_mb"
+      ]
+    },
+    {
+      "id": "entrepot",
+      "label": "Entrepôt / stockage / logistique",
+      "risques": [
+        "manutention",
+        "tms",
+        "vibrations_ce",
+        "chute_hauteur",
+        "routier",
+        "machines"
+      ]
+    },
+    {
+      "id": "chantier",
+      "label": "Chantier / travaux extérieurs",
+      "risques": [
+        "chute_hauteur",
+        "bruit",
+        "vibrations_mb",
+        "poussieres",
+        "manutention",
+        "chaleur",
+        "froid",
+        "coactivite",
+        "electrique"
+      ]
+    },
+    {
+      "id": "cuisine",
+      "label": "Cuisine / laboratoire alimentaire",
+      "risques": [
+        "machines",
+        "chimique",
+        "biologique",
+        "chaleur",
+        "manutention",
+        "tms",
+        "incendie_atex"
+      ]
+    },
+    {
+      "id": "accueil",
+      "label": "Accueil / vente / relation client",
+      "risques": [
+        "rps",
+        "manutention",
+        "travail_isole",
+        "ecran"
+      ]
+    },
+    {
+      "id": "conduite",
+      "label": "Conduite / déplacements",
+      "risques": [
+        "routier",
+        "vibrations_ce",
+        "manutention",
+        "travail_isole",
+        "rps"
+      ]
+    },
+    {
+      "id": "maintenance",
+      "label": "Local technique / maintenance",
+      "risques": [
+        "electrique",
+        "machines",
+        "chimique",
+        "bruit",
+        "chute_hauteur",
+        "coactivite"
+      ]
+    },
+    {
+      "id": "soins",
+      "label": "Soins / contact patient",
+      "risques": [
+        "biologique_34",
+        "manutention",
+        "tms",
+        "rps",
+        "travail_nuit",
+        "chimique"
+      ]
+    },
+    {
+      "id": "espaces_verts",
+      "label": "Espaces verts / extérieur agricole",
+      "risques": [
+        "machines",
+        "vibrations_mb",
+        "vibrations_ce",
+        "chimique",
+        "biologique",
+        "bruit",
+        "chaleur",
+        "manutention",
+        "tms"
+      ]
+    }
+  ],
+  "secteurs": [
+    {
+      "id": "btp",
+      "label": "BTP / Construction",
+      "risques": [
+        "chute_hauteur",
+        "manutention",
+        "tms",
+        "bruit",
+        "vibrations_mb",
+        "poussieres",
+        "amiante",
+        "chimique",
+        "chaleur",
+        "coactivite",
+        "electrique",
+        "machines"
+      ],
+      "reglementations": [
+        "Coordination SPS et PGC sur chantiers (Art. L.4532-2 et s.)",
+        "PPSPS pour les entreprises intervenantes (Art. R.4532-56 et s.)",
+        "Repérage amiante avant travaux (Art. R.4412-97)",
+        "Silice cristalline = procédé cancérogène → SIR (depuis 2021)",
+        "Chômage-intempéries et risque chaleur (Art. R.4463-1 et s.)"
+      ]
+    },
+    {
+      "id": "agroalimentaire",
+      "label": "Agroalimentaire / IAA",
+      "risques": [
+        "machines",
+        "froid",
+        "bruit",
+        "biologique",
+        "chimique",
+        "manutention",
+        "tms",
+        "travail_nuit",
+        "chute_hauteur"
+      ],
+      "reglementations": [
+        "Hygiène alimentaire (paquet hygiène) et risque biologique (R.4421)",
+        "Nettoyage/désinfection : risque chimique (R.4412)",
+        "Travail au froid et postes en chambre froide (R.4223-13)",
+        "Machines de découpe : protecteurs et consignation (R.4324)"
+      ]
+    },
+    {
+      "id": "sante",
+      "label": "Santé / médico-social (EHPAD, clinique…)",
+      "risques": [
+        "biologique_34",
+        "manutention",
+        "tms",
+        "rps",
+        "chimique",
+        "travail_nuit",
+        "ri"
+      ],
+      "reglementations": [
+        "Agents biologiques groupes 3-4 → SIR (R.4421, R.4424-7)",
+        "Prévention AES et vaccinations obligatoires (R.4426-6)",
+        "Manutention de personnes : aides techniques (R.4541)",
+        "Imagerie : rayonnements ionisants, PCR et SIR (R.4451)"
+      ]
+    },
+    {
+      "id": "commerce",
+      "label": "Commerce / distribution",
+      "risques": [
+        "manutention",
+        "tms",
+        "routier",
+        "rps",
+        "travail_isole",
+        "machines"
+      ],
+      "reglementations": [
+        "Manutention et port de charges (R.4541)",
+        "Risque routier (livraisons) : recommandations CNAM",
+        "RPS liés à la relation client / incivilités (L.4121-1)"
+      ]
+    },
+    {
+      "id": "metallurgie",
+      "label": "Métallurgie / industrie manufacturière",
+      "risques": [
+        "bruit",
+        "machines",
+        "cmr",
+        "chimique",
+        "vibrations_mb",
+        "manutention",
+        "tms",
+        "incendie_atex",
+        "ri",
+        "cem",
+        "chaleur"
+      ],
+      "reglementations": [
+        "Fumées de soudage : agents CMR → SIR (R.4412-59)",
+        "Bruit : sonométrie et SIR si > VA sup. (R.4431)",
+        "ATEX : zonage et DRPCE (R.4227-42)",
+        "Machines : vérifications périodiques (R.4324)"
+      ]
+    },
+    {
+      "id": "transport",
+      "label": "Transport / logistique",
+      "risques": [
+        "routier",
+        "vibrations_ce",
+        "manutention",
+        "tms",
+        "travail_nuit",
+        "travail_isole",
+        "chute_hauteur",
+        "machines"
+      ],
+      "reglementations": [
+        "Risque routier (mission) : enjeu majeur (L.4121-1, CNAM)",
+        "Vibrations corps entier conducteurs (R.4441)",
+        "Temps de conduite et travail de nuit → SIA (L.3122)"
+      ]
+    },
+    {
+      "id": "coiffure",
+      "label": "Coiffure / esthétique",
+      "risques": [
+        "chimique",
+        "cmr",
+        "tms",
+        "biologique",
+        "rps"
+      ],
+      "reglementations": [
+        "Produits capillaires : agents sensibilisants/CMR (R.4412)",
+        "Postures statiques prolongées : TMS (R.4541)",
+        "Ventilation des locaux (R.4222)"
+      ]
+    },
+    {
+      "id": "tertiaire",
+      "label": "Tertiaire / bureau / services",
+      "risques": [
+        "ecran",
+        "rps",
+        "incendie_atex",
+        "routier"
+      ],
+      "reglementations": [
+        "Travail sur écran : aménagement et pauses (R.4542)",
+        "RPS : évaluation et intégration au DUERP (L.4121-1)",
+        "Moyens de secours et évacuation (R.4227-28 et s.)"
+      ]
+    },
+    {
+      "id": "proprete",
+      "label": "Propreté / nettoyage",
+      "risques": [
+        "chimique",
+        "tms",
+        "biologique",
+        "travail_isole",
+        "manutention",
+        "routier"
+      ],
+      "reglementations": [
+        "Produits d'entretien : risque chimique (R.4412)",
+        "Travail isolé et horaires décalés (L.4121-1)",
+        "Coactivité chez les clients : plan de prévention (R.4512)"
+      ]
+    },
+    {
+      "id": "agriculture",
+      "label": "Agriculture / espaces verts / sylviculture",
+      "risques": [
+        "machines",
+        "vibrations_mb",
+        "vibrations_ce",
+        "chimique",
+        "cmr",
+        "biologique",
+        "bruit",
+        "chaleur",
+        "manutention",
+        "tms",
+        "chute_hauteur"
+      ],
+      "reglementations": [
+        "Produits phytosanitaires : CMR possibles → SIR (R.4412)",
+        "Zoonoses : risque biologique (R.4421)",
+        "Chaleur en extérieur : décret canicule (R.4463)",
+        "Régime agricole MSA pour le suivi santé"
+      ]
+    },
+    {
+      "id": "restauration",
+      "label": "Restauration / hôtellerie",
+      "risques": [
+        "chaleur",
+        "machines",
+        "tms",
+        "manutention",
+        "biologique",
+        "chimique",
+        "travail_nuit",
+        "rps"
+      ],
+      "reglementations": [
+        "Chaleur en cuisine (R.4223-13 ; R.4463 si canicule)",
+        "Coupures/brûlures : machines et organisation (R.4324)",
+        "Hygiène alimentaire et risque biologique (R.4421)"
+      ]
+    },
+    {
+      "id": "garage",
+      "label": "Garage / réparation automobile",
+      "risques": [
+        "chimique",
+        "cmr",
+        "bruit",
+        "manutention",
+        "tms",
+        "incendie_atex",
+        "machines",
+        "vibrations_mb"
+      ],
+      "reglementations": [
+        "Carburants, solvants, fumées d'échappement : CMR (R.4412-59)",
+        "Ventilation des ateliers (R.4222)",
+        "ATEX zones de stockage carburant (R.4227-42)"
+      ]
+    },
+    {
+      "id": "bois",
+      "label": "Bois / ameublement / menuiserie",
+      "risques": [
+        "poussieres",
+        "cmr",
+        "bruit",
+        "machines",
+        "manutention",
+        "tms",
+        "vibrations_mb",
+        "chimique"
+      ],
+      "reglementations": [
+        "Poussières de bois = CMR → SIR (R.4412-59, TMP 47)",
+        "Aspiration à la source obligatoire (R.4222-12)",
+        "Machines à bois : protecteurs (R.4324)"
+      ]
+    }
+  ],
+  "metiers": [
+    {
+      "id": "macon",
+      "label": "Maçon",
+      "secteur": "btp",
+      "risques": [
+        "chute_hauteur",
+        "manutention",
+        "poussieres",
+        "bruit",
+        "vibrations_mb",
+        "chaleur",
+        "tms"
+      ]
+    },
+    {
+      "id": "couvreur",
+      "label": "Couvreur",
+      "secteur": "btp",
+      "risques": [
+        "chute_hauteur",
+        "manutention",
+        "chaleur",
+        "amiante",
+        "tms"
+      ]
+    },
+    {
+      "id": "electricien",
+      "label": "Électricien",
+      "secteur": "btp",
+      "risques": [
+        "electrique",
+        "chute_hauteur",
+        "manutention",
+        "coactivite"
+      ]
+    },
+    {
+      "id": "peintre",
+      "label": "Peintre en bâtiment",
+      "secteur": "btp",
+      "risques": [
+        "chimique",
+        "cmr",
+        "chute_hauteur",
+        "tms",
+        "manutention"
+      ]
+    },
+    {
+      "id": "soudeur",
+      "label": "Soudeur",
+      "secteur": "metallurgie",
+      "risques": [
+        "cmr",
+        "chimique",
+        "bruit",
+        "roa",
+        "incendie_atex",
+        "tms"
+      ]
+    },
+    {
+      "id": "operateur_prod",
+      "label": "Opérateur de production",
+      "secteur": "metallurgie",
+      "risques": [
+        "machines",
+        "bruit",
+        "tms",
+        "manutention",
+        "chimique",
+        "travail_nuit"
+      ]
+    },
+    {
+      "id": "cariste",
+      "label": "Cariste / manutentionnaire",
+      "secteur": "transport",
+      "risques": [
+        "vibrations_ce",
+        "manutention",
+        "tms",
+        "routier",
+        "machines",
+        "bruit"
+      ]
+    },
+    {
+      "id": "chauffeur",
+      "label": "Conducteur routier / livreur",
+      "secteur": "transport",
+      "risques": [
+        "routier",
+        "vibrations_ce",
+        "manutention",
+        "travail_nuit",
+        "travail_isole",
+        "tms"
+      ]
+    },
+    {
+      "id": "aide_soignant",
+      "label": "Aide-soignant(e)",
+      "secteur": "sante",
+      "risques": [
+        "biologique_34",
+        "manutention",
+        "tms",
+        "rps",
+        "travail_nuit",
+        "chimique"
+      ]
+    },
+    {
+      "id": "infirmier",
+      "label": "Infirmier(ère)",
+      "secteur": "sante",
+      "risques": [
+        "biologique_34",
+        "manutention",
+        "tms",
+        "rps",
+        "travail_nuit",
+        "chimique"
+      ]
+    },
+    {
+      "id": "agent_entretien",
+      "label": "Agent d'entretien / propreté",
+      "secteur": "proprete",
+      "risques": [
+        "chimique",
+        "tms",
+        "biologique",
+        "travail_isole",
+        "manutention"
+      ]
+    },
+    {
+      "id": "cuisinier",
+      "label": "Cuisinier",
+      "secteur": "restauration",
+      "risques": [
+        "chaleur",
+        "machines",
+        "tms",
+        "manutention",
+        "biologique",
+        "chimique"
+      ]
+    },
+    {
+      "id": "serveur",
+      "label": "Serveur / personnel de salle",
+      "secteur": "restauration",
+      "risques": [
+        "tms",
+        "manutention",
+        "rps",
+        "travail_nuit"
+      ]
+    },
+    {
+      "id": "vendeur",
+      "label": "Vendeur / employé de commerce",
+      "secteur": "commerce",
+      "risques": [
+        "manutention",
+        "tms",
+        "rps",
+        "travail_isole"
+      ]
+    },
+    {
+      "id": "boucher",
+      "label": "Boucher / charcutier",
+      "secteur": "agroalimentaire",
+      "risques": [
+        "machines",
+        "froid",
+        "tms",
+        "biologique",
+        "manutention"
+      ]
+    },
+    {
+      "id": "coiffeur",
+      "label": "Coiffeur(euse)",
+      "secteur": "coiffure",
+      "risques": [
+        "chimique",
+        "cmr",
+        "tms",
+        "biologique"
+      ]
+    },
+    {
+      "id": "menuisier",
+      "label": "Menuisier",
+      "secteur": "bois",
+      "risques": [
+        "poussieres",
+        "cmr",
+        "bruit",
+        "machines",
+        "manutention",
+        "vibrations_mb",
+        "tms"
+      ]
+    },
+    {
+      "id": "mecanicien",
+      "label": "Mécanicien automobile",
+      "secteur": "garage",
+      "risques": [
+        "chimique",
+        "cmr",
+        "bruit",
+        "manutention",
+        "tms",
+        "machines"
+      ]
+    },
+    {
+      "id": "jardinier",
+      "label": "Jardinier / agent espaces verts",
+      "secteur": "agriculture",
+      "risques": [
+        "machines",
+        "vibrations_mb",
+        "chimique",
+        "biologique",
+        "bruit",
+        "chaleur",
+        "tms",
+        "manutention"
+      ]
+    },
+    {
+      "id": "agriculteur",
+      "label": "Exploitant / ouvrier agricole",
+      "secteur": "agriculture",
+      "risques": [
+        "machines",
+        "vibrations_ce",
+        "chimique",
+        "cmr",
+        "biologique",
+        "chaleur",
+        "manutention",
+        "tms"
+      ]
+    },
+    {
+      "id": "agent_admin",
+      "label": "Agent administratif / employé de bureau",
+      "secteur": "tertiaire",
+      "risques": [
+        "ecran",
+        "rps",
+        "tms"
+      ]
+    },
+    {
+      "id": "manager",
+      "label": "Manager / encadrant",
+      "secteur": "tertiaire",
+      "risques": [
+        "rps",
+        "ecran",
+        "routier"
+      ]
+    },
+    {
+      "id": "agent_accueil",
+      "label": "Agent d'accueil / standardiste",
+      "secteur": "tertiaire",
+      "risques": [
+        "ecran",
+        "rps",
+        "travail_isole"
+      ]
+    },
+    {
+      "id": "magasinier",
+      "label": "Magasinier / préparateur de commandes",
+      "secteur": "transport",
+      "risques": [
+        "manutention",
+        "tms",
+        "machines",
+        "chute_hauteur",
+        "vibrations_ce",
+        "froid"
+      ]
+    }
+  ]
+}
