@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>PréventIA-LaB — Outils IA de prévention santé au travail</title>
+<meta name="description" content="Suite d'outils open source d'aide à la décision en santé au travail : PICB, EPI/EPC, TMS, risque chimique, burn-out, base métiers et quiz pédagogiques. Conçue par Laure Bonnefond, IPRP & IST." />
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet" />
+<style>
+* , *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --teal:       oklch(0.65 0.13 192);
+  --teal-light: oklch(0.80 0.10 192);
+  --teal-dark:  oklch(0.35 0.10 220);
+  --teal-pale:  oklch(0.95 0.03 192);
+  --navy:       oklch(0.22 0.07 240);
+  --navy-deep:  oklch(0.12 0.05 240);
+  --white:      #fff;
+  --off-white:  oklch(0.97 0.006 210);
+  --text:       oklch(0.18 0.04 240);
+  --text-muted: oklch(0.50 0.03 220);
+  --border:     oklch(0.90 0.01 220);
+  --orange:     #DC2626;
+  --amber:      oklch(0.70 0.15 60);
+  --shadow:     0 2px 16px oklch(0.22 0.07 240 / 0.08);
+  --shadow-lg:  0 12px 48px oklch(0.22 0.07 240 / 0.16);
+}
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'DM Sans', sans-serif;
+  color: var(--text);
+  background: var(--off-white);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+.nav {
+  position: sticky; top: 0; z-index: 100;
+  background: oklch(0.12 0.05 240 / 0.92);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid oklch(0.65 0.13 192 / 0.2);
+  padding: 0.9rem 1.5rem;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.nav-brand { display: flex; align-items: center; gap: 0.7rem; }
+.nav-brand img { height: 34px; filter: drop-shadow(0 0 8px oklch(0.65 0.13 192 / 0.4)); }
+.nav-brand-name { font-size: 19px; font-weight: 700; color: var(--white); letter-spacing: -0.02em; }
+.nav-brand-name span { color: var(--teal); }
+.nav-links { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+.nav-links a {
+  font-size: 13px; color: oklch(0.85 0.03 220); text-decoration: none;
+  padding: 0.4rem 0.85rem; border-radius: 8px; transition: all 0.2s;
+}
+.nav-links a:hover { color: var(--white); background: oklch(0.65 0.13 192 / 0.18); }
+.hero {
+  position: relative;
+  background: linear-gradient(100deg, oklch(0.12 0.05 240 / 0.98) 0%, oklch(0.13 0.05 240 / 0.95) 42%, oklch(0.18 0.06 240 / 0.72) 70%, oklch(0.22 0.07 240 / 0.55) 100%), url('hero-bg.jpg');
+  background-size: cover;
+  background-position: 92% center;
+  color: var(--white);
+  padding: 5.5rem 1.5rem 5rem;
+  text-align: left;
+  overflow: hidden;
+}
+.hero-inner {
+  position: relative; z-index: 1;
+  max-width: 1180px; margin: 0 auto;
+}
+.hero-text { max-width: 620px; }
+.hero::after {
+  content: ''; position: absolute; inset: 0;
+  background:
+    linear-gradient(90deg, oklch(0.12 0.05 240 / 0.6) 0%, transparent 55%),
+    radial-gradient(circle at 85% 25%, oklch(0.65 0.13 192 / 0.16), transparent 55%);
+  pointer-events: none;
+}
+.hero-eyebrow {
+  position: relative; z-index: 1;
+  display: inline-block;
+  font-size: 12px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--teal-light);
+  padding: 0.35rem 0.9rem; margin-bottom: 1.4rem;
+  border: 1px solid oklch(0.65 0.13 192 / 0.4); border-radius: 100px;
+}
+.hero h1 {
+  position: relative; z-index: 1;
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(2.2rem, 5.5vw, 3.8rem);
+  line-height: 1.08; letter-spacing: -0.02em;
+  margin-bottom: 1.3rem; font-weight: 400;
+  text-shadow: 0 2px 20px oklch(0.12 0.05 240 / 0.7);
+}
+.hero h1 .accent { color: var(--teal); font-style: italic; }
+.hero p {
+  position: relative; z-index: 1;
+  font-size: clamp(1rem, 2vw, 1.2rem);
+  color: oklch(0.88 0.02 220);
+  max-width: 560px; margin: 0 0 2.2rem;
+  text-shadow: 0 1px 12px oklch(0.12 0.05 240 / 0.6);
+}
+.hero-cta {
+  position: relative; z-index: 1;
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  background: var(--teal); color: var(--navy-deep);
+  font-weight: 600; font-size: 15px;
+  padding: 0.85rem 1.8rem; border-radius: 100px;
+  text-decoration: none; transition: all 0.2s;
+  box-shadow: 0 4px 20px oklch(0.65 0.13 192 / 0.4);
+}
+.hero-cta:hover { transform: translateY(-2px); box-shadow: 0 8px 28px oklch(0.65 0.13 192 / 0.5); }
+.stats {
+  background: var(--navy-deep);
+  display: flex; justify-content: center; flex-wrap: wrap; gap: 2.5rem;
+  padding: 1.5rem; border-top: 1px solid oklch(0.65 0.13 192 / 0.15);
+}
+.stat { text-align: center; color: var(--white); }
+.stat-num { font-family: 'DM Serif Display', serif; font-size: 1.9rem; color: var(--teal); line-height: 1; }
+.stat-label { font-size: 11.5px; color: oklch(0.75 0.02 220); text-transform: uppercase; letter-spacing: 0.08em; margin-top: 0.3rem; }
+.section { max-width: 1180px; margin: 0 auto; padding: 4rem 1.5rem 1rem; }
+.section-head { margin-bottom: 2rem; }
+.section-eyebrow {
+  font-size: 12px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--teal); display: flex; align-items: center; gap: 0.6rem;
+}
+.section-eyebrow::before { content: ''; width: 28px; height: 2px; background: var(--teal); }
+.section-head h2 {
+  font-family: 'DM Serif Display', serif; font-weight: 400;
+  font-size: clamp(1.6rem, 3.5vw, 2.3rem); color: var(--navy-deep);
+  margin-top: 0.5rem; letter-spacing: -0.01em;
+}
+.section-head p { color: var(--text-muted); font-size: 15px; max-width: 620px; margin-top: 0.4rem; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.3rem; }
+.card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 1.6rem;
+  text-decoration: none; color: inherit;
+  display: flex; flex-direction: column;
+  transition: all 0.25s ease;
+  position: relative; overflow: hidden;
+}
+.card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: var(--accent, var(--teal)); transform: scaleX(0); transform-origin: left;
+  transition: transform 0.25s ease;
+}
+.card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); border-color: transparent; }
+.card:hover::before { transform: scaleX(1); }
+.card-icon {
+  width: 48px; height: 48px; border-radius: 12px;
+  background: var(--accent-pale, var(--teal-pale));
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 1.1rem; font-size: 24px;
+}
+.card-icon.img {
+  width: 72px; height: 72px; border-radius: 16px;
+  background: transparent; padding: 0;
+  margin-bottom: 1rem;
+}
+.card-icon.img img {
+  width: 100%; height: 100%;
+  object-fit: contain;
+  display: block;
+}
+.card h3 { font-size: 18px; font-weight: 600; color: var(--navy-deep); margin-bottom: 0.45rem; letter-spacing: -0.01em; }
+.card p { font-size: 13.5px; color: var(--text-muted); line-height: 1.55; flex: 1; }
+.card-tag {
+  display: inline-block; margin-top: 1rem; margin-right: 0.4rem;
+  font-size: 11px; font-weight: 600; letter-spacing: 0.04em;
+  color: var(--accent-dark, var(--teal-dark));
+  background: var(--accent-pale, var(--teal-pale));
+  padding: 0.25rem 0.7rem; border-radius: 100px; align-self: flex-start;
+}
+.card-tag + .card-tag { margin-top: 0.5rem; }
+.card-arrow { position: absolute; bottom: 1.6rem; right: 1.6rem; color: var(--accent, var(--teal)); opacity: 0; transition: all 0.25s; font-size: 18px; }
+.card:hover .card-arrow { opacity: 1; transform: translateX(3px); }
+.card.eval   { --accent: var(--teal);   --accent-pale: var(--teal-pale); --accent-dark: var(--teal-dark); }
+.card.vision { --accent: oklch(0.55 0.16 25); --accent-pale: oklch(0.95 0.03 25); --accent-dark: oklch(0.40 0.16 25); }
+.card.psy    { --accent: oklch(0.55 0.16 300); --accent-pale: oklch(0.95 0.03 300); --accent-dark: oklch(0.38 0.16 300); }
+.card.data   { --accent: oklch(0.55 0.13 240); --accent-pale: oklch(0.95 0.025 240); --accent-dark: oklch(0.35 0.13 240); }
+.card.quiz   { --accent: var(--amber); --accent-pale: oklch(0.96 0.04 60); --accent-dark: oklch(0.45 0.13 60); }
+
+/* ── ASSISTANT CARD (featured) ── */
+.assistant-card {
+  display: flex; align-items: center; gap: 1.8rem;
+  background: linear-gradient(135deg, var(--navy-deep), var(--navy) 80%, var(--teal-dark));
+  border-radius: 20px; padding: 2.2rem 2rem;
+  text-decoration: none; color: var(--white);
+  position: relative; overflow: hidden;
+  transition: all 0.25s ease;
+  box-shadow: var(--shadow);
+}
+.assistant-card::after {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(circle at 90% 20%, oklch(0.65 0.13 192 / 0.22), transparent 55%);
+  pointer-events: none;
+}
+.assistant-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+.assistant-robot {
+  font-size: 56px; flex-shrink: 0;
+  width: 92px; height: 92px; border-radius: 20px;
+  background: oklch(0.65 0.13 192 / 0.15); border: 1px solid oklch(0.65 0.13 192 / 0.35);
+  display: flex; align-items: center; justify-content: center;
+  animation: floaty 3s ease-in-out infinite;
+}
+@keyframes floaty { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+.assistant-txt { position: relative; z-index: 1; }
+.assistant-txt h3 { font-family: 'DM Serif Display', serif; font-weight: 400; font-size: 1.5rem; margin-bottom: 0.5rem; }
+.assistant-txt p { font-size: 14px; color: oklch(0.85 0.02 220); line-height: 1.6; margin-bottom: 0.9rem; max-width: 560px; }
+.assistant-cta { display: inline-block; font-size: 14px; font-weight: 600; color: var(--teal-light); }
+@media (max-width: 560px) {
+  .assistant-card { flex-direction: column; text-align: center; }
+}
+.footer {
+  background: var(--navy-deep); color: oklch(0.80 0.02 220);
+  padding: 3rem 1.5rem 2rem; margin-top: 4rem;
+}
+.footer-inner { max-width: 1180px; margin: 0 auto; display: flex; flex-wrap: wrap; gap: 2rem; justify-content: space-between; }
+.footer-brand { max-width: 320px; }
+.footer-brand .nav-brand-name { font-size: 17px; }
+.footer-brand p { font-size: 13px; margin-top: 0.7rem; color: oklch(0.70 0.02 220); line-height: 1.6; }
+.footer-col h4 { font-size: 12px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--teal); margin-bottom: 0.8rem; }
+.footer-col a { display: block; font-size: 13px; color: oklch(0.80 0.02 220); text-decoration: none; padding: 0.2rem 0; transition: color 0.2s; }
+.footer-col a:hover { color: var(--white); }
+.footer-bottom {
+  max-width: 1180px; margin: 2rem auto 0; padding-top: 1.5rem;
+  border-top: 1px solid oklch(0.65 0.13 192 / 0.15);
+  font-size: 12px; color: oklch(0.60 0.02 220); text-align: center;
+}
+.footer-bottom strong { color: oklch(0.85 0.02 220); font-weight: 600; }
+@media (max-width: 600px) {
+  .nav { flex-direction: column; gap: 0.7rem; }
+  .stats { gap: 1.5rem; }
+  .hero { background-position: 75% center; }
+  .hero::after {
+    background:
+      linear-gradient(90deg, oklch(0.12 0.05 240 / 0.85) 0%, oklch(0.12 0.05 240 / 0.55) 100%),
+      radial-gradient(circle at 85% 25%, oklch(0.65 0.13 192 / 0.16), transparent 55%);
+  }
+  .hero-text { max-width: 100%; }
+}
+
+/* ── Bandeau rappel déontologique ── */
+.confid-banner {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 1.6rem;
+  background: linear-gradient(135deg, oklch(0.98 0.025 60) 0%, oklch(0.96 0.04 50) 100%);
+  border: 1px solid oklch(0.78 0.12 65);
+  border-left: 6px solid var(--amber);
+  border-radius: 16px;
+  padding: 1.8rem 2rem;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+}
+.cb-icon {
+  width: 56px; height: 56px;
+  background: var(--amber);
+  color: #fff;
+  font-size: 1.7rem;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 14px;
+  flex-shrink: 0;
+}
+.cb-eyebrow {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: oklch(0.45 0.14 50);
+  margin-bottom: 0.5rem;
+}
+.cb-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.55rem;
+  line-height: 1.25;
+  color: var(--navy-deep);
+  margin: 0 0 0.8rem;
+  font-weight: 400;
+}
+.cb-lead {
+  font-size: 0.95rem;
+  line-height: 1.65;
+  color: var(--navy-deep);
+  margin-bottom: 1rem;
+}
+.cb-lead strong { color: oklch(0.40 0.16 30); }
+.cb-rules {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1rem;
+}
+.cb-rules li {
+  position: relative;
+  padding: 0.5rem 0 0.5rem 1.8rem;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: oklch(0.25 0.04 240);
+  border-bottom: 1px dashed oklch(0.85 0.04 60);
+}
+.cb-rules li:last-child { border-bottom: none; }
+.cb-rules li::before {
+  content: '⚠';
+  position: absolute;
+  left: 0;
+  top: 0.55rem;
+  color: var(--amber);
+  font-size: 1rem;
+  font-weight: 700;
+}
+.cb-rules strong { color: var(--navy-deep); }
+.cb-foot {
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: oklch(0.40 0.04 240);
+  background: oklch(0.99 0.01 60);
+  border-radius: 10px;
+  padding: 0.8rem 1rem;
+  margin-top: 0.8rem;
+  border-left: 3px solid oklch(0.78 0.12 65);
+}
+@media (max-width: 720px) {
+  .confid-banner { grid-template-columns: 1fr; padding: 1.4rem 1.2rem; gap: 1rem; }
+  .cb-icon { width: 48px; height: 48px; font-size: 1.4rem; }
+  .cb-title { font-size: 1.3rem; }
+}
+</style>
+</head>
+<body>
+<nav class="nav">
+  <div class="nav-brand">
+    <img src="logo.png" alt="PréventIA-LaB" onerror="this.style.display='none'" />
+    <span class="nav-brand-name">Prévent<span>IA</span>-LaB</span>
+  </div>
+  <div class="nav-links">
+    <a href="#evaluation">Évaluation</a>
+    <a href="#vision">Analyse photo</a>
+    <a href="#assistant">Assistant IA</a>
+    <a href="#connaissances">Connaissances</a>
+    <a href="#quiz">Quiz</a>
+  </div>
+</nav>
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-text">
+      <span class="hero-eyebrow">Santé au travail · Intelligence artificielle</span>
+      <h1>Des outils <span class="accent">augmentés par l'IA</span><br />au service de la prévention</h1>
+      <p>Une suite d'applications d'aide à la décision pour les préventeurs, infirmiers et médecins du travail. Évaluation des risques, analyse d'images, bases de connaissances et pédagogie.</p>
+      <a href="#evaluation" class="hero-cta">Découvrir les outils →</a>
+    </div>
+  </div>
+</header>
+<div class="stats">
+  <div class="stat"><div class="stat-num">9+</div><div class="stat-label">Outils</div></div>
+  <div class="stat"><div class="stat-num">119</div><div class="stat-label">Métiers référencés</div></div>
+  <div class="stat"><div class="stat-num">3</div><div class="stat-label">Quiz pédagogiques</div></div>
+  <div class="stat"><div class="stat-num">100%</div><div class="stat-label">Open source</div></div>
+</div>
+<section class="section" id="evaluation">
+  <div class="section-head">
+    <div class="section-eyebrow">Évaluation des risques</div>
+    <h2>Coter, calculer, documenter</h2>
+    <p>Des calculateurs conformes aux méthodes officielles (INRS, RULA/REBA, MBI) pour objectiver le risque et produire des livrables réglementaires.</p>
+  </div>
+  <div class="grid">
+    <a href="PICB/index.html" class="card eval">
+      <div class="card-icon img"><img src="icons/picb-bruit.png" alt="" loading="lazy"/></div>
+      <h3>Évaluation PICB</h3>
+      <p>Protections auditives selon la méthode OB de l'INRS : calcul APV, atténuation par bandes d'octave, conformité et rapport Word. Lecture automatique des relevés de sonomètre par IA.</p>
+      <span class="card-tag">Méthode OB · INRS</span>
+      <span class="card-tag">📷 Import sono IA</span>
+      <span class="card-arrow">→</span>
+    </a>
+    <a href="evaluation-tms/index.html" class="card eval">
+      <div class="card-icon img"><img src="icons/tms.png" alt="" loading="lazy"/></div>
+      <h3>Évaluation TMS</h3>
+      <p>Cotation posturale RULA et REBA avec détection automatique, recommandations sectorielles et tableaux de maladies professionnelles.</p>
+      <span class="card-tag">RULA · REBA</span>
+      <span class="card-arrow">→</span>
+    </a>
+    <a href="risque-chimique/index.html" class="card eval">
+      <div class="card-icon img"><img src="icons/risque-chimique.png" alt="" loading="lazy"/></div>
+      <h3>Risque chimique</h3>
+      <p>Recherche de fiches de données de sécurité, pictogrammes CLP/REACH, compatibilité de stockage et préconisations EPI/EPC.</p>
+      <span class="card-tag">FDS · CLP · REACH</span>
+      <span class="card-arrow">→</span>
+    </a>
+    <a href="burnout/index.html" class="card psy">
+      <div class="card-icon img"><img src="icons/burnout.png" alt="" loading="lazy"/></div>
+      <h3>Risque burn-out</h3>
+      <p>Questionnaire MBI de Maslach, 6 dimensions, scoring automatique, graphique radar et recommandations INRS/HAS ciblées.</p>
+      <span class="card-tag">MBI · RPS</span>
+      <span class="card-arrow">→</span>
+    </a>
+  </div>
+</section>
+<section class="section" id="vision">
+  <div class="section-head">
+    <div class="section-eyebrow">Analyse photo par IA</div>
+    <h2>Photographier, analyser, décider</h2>
+    <p>Importez une photo ou une capture : l'IA vision identifie, mesure et propose une analyse contextualisée en santé au travail.</p>
+  </div>
+  <div class="grid">
+    <a href="analyse-epi-epc/index.html" class="card vision">
+      <div class="card-icon img"><img src="icons/epi-epc.png" alt="" loading="lazy"/></div>
+      <h3>Analyse EPI / EPC</h3>
+      <p>Contrôle de conformité et détection de défauts des équipements de protection individuelle et collective par analyse d'image.</p>
+      <span class="card-tag">Vision IA</span>
+      <span class="card-arrow">→</span>
+    </a>
+    <a href="analyse-poste/index.html" class="card vision">
+      <div class="card-icon img"><img src="icons/analyse-poste.png" alt="" loading="lazy"/></div>
+      <h3>Analyse de poste de travail</h3>
+      <p>Importez une photo d'un poste (écran, atelier, ligne industrielle) : l'IA évalue l'ergonomie, repère les non-conformités et propose des préconisations d'aménagement.</p>
+      <span class="card-tag">Vision IA · Ergonomie</span>
+      <span class="card-arrow">→</span>
+    </a>
+  </div>
+</section>
+<section class="section" id="assistant">
+  <div class="section-head">
+    <div class="section-eyebrow">Assistant conversationnel</div>
+    <h2>Une question ? Demandez à l'IA</h2>
+    <p>Un assistant expert disponible à tout moment pour vos questions techniques en prévention et santé au travail.</p>
+  </div>
+  <a href="assistant/index.html" class="assistant-card">
+    <div class="assistant-robot">🤖</div>
+    <div class="assistant-txt">
+      <h3>Assistant PréventIA</h3>
+      <p>Réglementation, INRS, tableaux de maladies professionnelles, surveillance médicale, EPI, DUERP… Posez vos questions en langage naturel et obtenez des réponses structurées et sourcées.</p>
+      <span class="assistant-cta">Démarrer une conversation →</span>
+    </div>
+  </a>
+</section>
+<section class="section" id="connaissances">
+  <div class="section-head">
+    <div class="section-eyebrow">Bases de connaissances</div>
+    <h2>Le bon repère, au bon moment</h2>
+    <p>Des référentiels métiers et réglementaires pour préparer les visites, cibler la surveillance et argumenter les préconisations.</p>
+  </div>
+  <div class="grid">
+    <a href="base-metiers/index.html" class="card data">
+      <div class="card-icon img"><img src="icons/base-metiers.png" alt="" loading="lazy"/></div>
+      <h3>Base de données métiers</h3>
+      <p>119 professions, secteurs NAF, types de surveillance (SIR/SIA/SI), catégories de risque, groupes biologiques et filtres grossesse.</p>
+      <span class="card-tag">119 métiers</span>
+      <span class="card-arrow">→</span>
+    </a>
+    <a href="fiche-entreprise/index.html" class="card data">
+      <div class="card-icon img"><img src="icons/fiche-entreprise.png" alt="" loading="lazy"/></div>
+      <h3>Fiche d'entreprise</h3>
+      <p>Éléments réglementaires à intégrer selon le secteur, le type d'entreprise, les métiers et les unités de travail. Questionnaire de visite, diagramme radar et export Word.</p>
+      <span class="card-tag">Art. R.4624-46</span>
+      <span class="card-tag">🕸️ Radar · Word</span>
+      <span class="card-arrow">→</span>
+    </a>
+  </div>
+</section>
+<section class="section" id="quiz">
+  <div class="section-head">
+    <div class="section-eyebrow">Quiz pédagogiques</div>
+    <h2>Sensibiliser en s'amusant</h2>
+    <p>Des modules interactifs pour animer vos sensibilisations et ancrer les bons réflexes de prévention.</p>
+  </div>
+  <div class="grid">
+    <a href="quizz/quiz-bruit-industriel.html" class="card quiz">
+      <div class="card-icon img"><img src="icons/quiz-bruit.png" alt="" loading="lazy"/></div>
+      <h3>Bruit industriel</h3>
+      <p>13 questions interactives sur l'exposition au bruit, avec sons réels et glisser-déposer pour tester ses connaissances.</p>
+      <span class="card-tag">13 questions</span>
+      <span class="card-arrow">→</span>
+    </a>
+    <a href="quizz/quiz-risque-chimique.html" class="card quiz">
+      <div class="card-icon img"><img src="icons/quiz-chimique.png" alt="" loading="lazy"/></div>
+      <h3>Risque chimique</h3>
+      <p>16 questions sur les pictogrammes SGH/CLP et les bonnes pratiques de manipulation des produits dangereux.</p>
+      <span class="card-tag">16 questions</span>
+      <span class="card-arrow">→</span>
+    </a>
+    <a href="quizz/quiz-risques-metiers.html" class="card quiz">
+      <div class="card-icon img"><img src="icons/quiz-metiers.png" alt="" loading="lazy"/></div>
+      <h3>Risques métiers</h3>
+      <p>12 questions générées dynamiquement à partir de la base de données des professions et de leurs risques spécifiques.</p>
+      <span class="card-tag">12 questions</span>
+      <span class="card-arrow">→</span>
+    </a>
+  </div>
+</section>
+
+<!-- ═══ RAPPEL DÉONTOLOGIQUE ═══ -->
+<section class="section" id="deonto" aria-labelledby="deonto-title">
+  <div class="confid-banner">
+    <div class="cb-icon" aria-hidden="true">🔒</div>
+    <div class="cb-body">
+      <div class="cb-eyebrow">Secret professionnel · RGPD · Déontologie</div>
+      <h2 class="cb-title" id="deonto-title">Aucune donnée confidentielle ne doit être saisie dans ces outils</h2>
+      <p class="cb-lead">Les outils PréventIA-LaB sont des aides à la décision destinées aux professionnels de la santé au travail. Ils s'utilisent dans le strict respect du <strong>secret professionnel et médical</strong> (art. 226-13 du Code pénal, art. L.1110-4 du Code de la santé publique), du <strong>secret de fabrication</strong> et de l'<strong>obligation de discrétion professionnelle</strong> qui s'imposent à toute personne intervenant en entreprise.</p>
+      <ul class="cb-rules">
+        <li><strong>Aucune information nominative ni médicale</strong> ne doit être saisie : pas de nom, prénom, date de naissance, NIR, numéro de dossier, diagnostic, pathologie, plainte individuelle, résultat d'examen ni élément permettant d'identifier un salarié.</li>
+        <li><strong>Aucune information confidentielle sur l'entreprise</strong> ne doit être renseignée : raison sociale, SIRET, adresse précise, secrets industriels, procédés de fabrication, données économiques, organigrammes nominatifs.</li>
+        <li><strong>Capture d'écran et partage</strong> : avant toute capture, impression, copie ou diffusion d'un résultat (sur réseaux sociaux, supports de formation, échanges professionnels), vérifiez qu'aucune information nominative, médicale ou couverte par le secret n'apparaît à l'écran ni dans les champs saisis.</li>
+        <li><strong>Photographies</strong> (outils Analyse de poste, EPI/EPC) : flouter ou cadrer pour exclure les visages, badges nominatifs, écrans affichant des données personnelles, plans, documents internes. Recueillir l'accord du salarié photographié.</li>
+        <li><strong>Données générées</strong> : les analyses produites sont des supports d'aide. Toute restitution écrite (fiche d'entreprise, rapport) doit être anonymisée et conservée selon les règles du service de prévention et de santé au travail (durées de conservation, accès limité, RGPD).</li>
+      </ul>
+      <p class="cb-foot">Bon usage : utilisez des libellés génériques (« opérateur poste 1 », « atelier A », « secteur production ») et conservez les éléments nominatifs uniquement dans le dossier médical en santé au travail (DMST), hors de ces outils. Les outils PréventIA-LaB ne stockent aucune donnée saisie : tout reste dans votre navigateur, mais cela ne dispense pas du devoir de prudence avant toute capture ou diffusion.</p>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <span class="nav-brand-name">Prévent<span>IA</span>-LaB</span>
+      <p>Outils open source d'aide à la décision en santé au travail, conçus par une infirmière en santé au travail et IPRP. Données traitées localement, aucune donnée entreprise stockée.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Outils</h4>
+      <a href="PICB/index.html">Évaluation PICB</a>
+      <a href="evaluation-tms/index.html">Évaluation TMS</a>
+      <a href="risque-chimique/index.html">Risque chimique</a>
+      <a href="burnout/index.html">Risque burn-out</a>
+      <a href="analyse-epi-epc/index.html">Analyse EPI/EPC</a>
+      <a href="analyse-poste/index.html">Analyse de poste de travail</a>
+    </div>
+    <div class="footer-col">
+      <h4>Ressources</h4>
+      <a href="assistant/index.html">Assistant IA</a>
+      <a href="base-metiers/index.html">Base métiers</a>
+      <a href="quizz/index.html">Quiz pédagogiques</a>
+      <a href="https://www.inrs.fr" target="_blank" rel="noopener">INRS</a>
+      <a href="https://www.ameli.fr" target="_blank" rel="noopener">Ameli — Risques pro</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <strong>PréventIA-LaB</strong> — conçu par Laure Bonnefond, IPRP &amp; IST · SPSTI 23/87 · Master IA, Big Data &amp; Développement, IPSSI Bordeaux
+  </div>
+</footer>
+</body>
+</html>
