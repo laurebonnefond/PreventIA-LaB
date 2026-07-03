@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Veille réglementaire — PréventIA-LaB</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: oklch(20% 0.04 250);
+  --navy-soft: oklch(30% 0.05 250);
+  --teal: oklch(65% 0.14 195);
+  --orange: oklch(72% 0.17 55);
+  --bg: oklch(98% 0.005 250);
+  --card: oklch(100% 0 0);
+  --text: oklch(25% 0.02 250);
+  --muted: oklch(55% 0.02 250);
+  --border: oklch(90% 0.01 250);
+  --success: oklch(65% 0.15 145);
+  --warning: oklch(75% 0.15 75);
+  --critical: oklch(60% 0.2 25);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+.container { max-width: 1200px; margin: 0 auto; padding: 2rem 1.5rem; }
+
+header {
+  background: linear-gradient(135deg, var(--navy) 0%, var(--navy-soft) 100%);
+  color: white;
+  padding: 2.5rem 1.5rem;
+  text-align: center;
+}
+
+header h1 {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(1.8rem, 4vw, 2.5rem);
+  margin-bottom: 0.5rem;
+}
+
+header p { color: oklch(85% 0.02 250); font-size: 1rem; }
+
+.deonto-banner {
+  background: oklch(96% 0.03 55);
+  border-left: 4px solid var(--orange);
+  padding: 1rem 1.25rem;
+  border-radius: 0 8px 8px 0;
+  margin-bottom: 2rem;
+  font-size: 0.9rem;
+  color: var(--navy);
+}
+
+.status-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  background: var(--card);
+  padding: 1rem 1.25rem;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  margin-bottom: 1.5rem;
+}
+
+.status-info { font-size: 0.9rem; color: var(--muted); }
+.status-info strong { color: var(--navy); }
+
+.actions { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+
+.btn {
+  padding: 0.65rem 1.25rem;
+  border-radius: 8px;
+  border: none;
+  font-family: inherit;
+  font-weight: 500;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.btn-primary { background: var(--teal); color: white; }
+.btn-primary:hover { background: oklch(58% 0.14 195); }
+.btn-secondary { background: var(--card); color: var(--navy); border: 1px solid var(--border); }
+.btn-secondary:hover { background: var(--bg); }
+.btn-orange { background: var(--orange); color: white; }
+.btn-orange:hover { background: oklch(65% 0.17 55); }
+
+.filters {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 0.75rem;
+  background: var(--card);
+  padding: 1.25rem;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  margin-bottom: 1.5rem;
+}
+
+.filter-group label {
+  display: block;
+  font-size: 0.8rem;
+  color: var(--muted);
+  font-weight: 500;
+  margin-bottom: 0.3rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.filter-group select, .filter-group input {
+  width: 100%;
+  padding: 0.55rem 0.75rem;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  font-family: inherit;
+  font-size: 0.9rem;
+  background: var(--bg);
+  color: var(--text);
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.stat-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1rem;
+  text-align: center;
+}
+
+.stat-card .num {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.8rem;
+  color: var(--navy);
+  line-height: 1;
+}
+
+.stat-card .lbl {
+  font-size: 0.75rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-top: 0.3rem;
+}
+
+.item {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.25rem;
+  margin-bottom: 0.75rem;
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+
+.item:hover { box-shadow: 0 4px 12px oklch(0% 0 0 / 0.08); }
+
+.item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.5rem;
+}
+
+.item-badges { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+
+.badge {
+  display: inline-block;
+  padding: 0.2rem 0.6rem;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.badge-reglementaire { background: oklch(92% 0.05 25); color: oklch(45% 0.15 25); }
+.badge-doctrine { background: oklch(92% 0.05 195); color: oklch(35% 0.12 195); }
+.badge-actualite { background: oklch(92% 0.05 250); color: var(--navy); }
+.badge-source { background: var(--bg); color: var(--muted); border: 1px solid var(--border); }
+.badge-duerp { background: oklch(92% 0.05 55); color: oklch(45% 0.17 55); font-weight: 700; }
+
+.item-date { font-size: 0.8rem; color: var(--muted); white-space: nowrap; }
+
+.item-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.15rem;
+  color: var(--navy);
+  margin: 0.5rem 0;
+  line-height: 1.3;
+}
+
+.item-title a { color: inherit; text-decoration: none; }
+.item-title a:hover { color: var(--teal); }
+
+.item-desc { font-size: 0.9rem; color: var(--text); margin-bottom: 0.75rem; }
+
+.item-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+}
+
+.item-source { color: var(--muted); }
+.item-actions { display: flex; gap: 0.5rem; }
+.item-actions button {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--navy);
+  padding: 0.3rem 0.7rem;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  font-family: inherit;
+}
+.item-actions button:hover { background: var(--bg); border-color: var(--teal); color: var(--teal); }
+
+.empty, .loading {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: var(--muted);
+  background: var(--card);
+  border-radius: 12px;
+  border: 1px dashed var(--border);
+}
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: oklch(0% 0 0 / 0.5);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  padding: 1rem;
+}
+.modal-overlay.active { display: flex; }
+
+.modal {
+  background: var(--card);
+  border-radius: 16px;
+  max-width: 700px;
+  width: 100%;
+  max-height: 85vh;
+  overflow-y: auto;
+  padding: 2rem;
+  position: relative;
+}
+
+.modal-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: var(--muted);
+}
+
+.modal h2 {
+  font-family: 'DM Serif Display', serif;
+  color: var(--navy);
+  margin-bottom: 1rem;
+  padding-right: 2rem;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid var(--border);
+  border-top-color: var(--teal);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin: 2rem auto;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+footer {
+  text-align: center;
+  padding: 2rem 1rem;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+footer a { color: var(--teal); text-decoration: none; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Veille réglementaire SST</h1>
+  <p>Actualités santé au travail, prévention des risques professionnels et suivi médical</p>
+</header>
+
+<div class="container">
+
+  <div class="deonto-banner">
+    <strong>⚖️ Veille informative</strong> — Cet outil agrège des sources publiques officielles à visée informative.
+    Il ne se substitue pas à une analyse juridique individualisée. Les niveaux <em>Réglementaire</em> (Code du travail, décrets, arrêtés)
+    et <em>Doctrine</em> (INRS, HAS, ANACT) ont une portée juridique distincte.
+  </div>
+
+  <div class="status-bar">
+    <div class="status-info">
+      Dernière mise à jour : <strong id="lastUpdate">—</strong> ·
+      <span id="itemCount">0</span> items ·
+      <span id="sourceCount">0</span> sources
+    </div>
+    <div class="actions">
+      <button class="btn btn-secondary" onclick="loadData()">🔄 Actualiser</button>
+      <button class="btn btn-orange" onclick="openSynthese()">✨ Synthèse IA de la semaine</button>
+    </div>
+  </div>
+
+  <div class="filters">
+    <div class="filter-group">
+      <label>Recherche</label>
+      <input type="text" id="fSearch" placeholder="Mot-clé…" oninput="renderItems()">
+    </div>
+    <div class="filter-group">
+      <label>Source</label>
+      <select id="fSource" onchange="renderItems()"><option value="">Toutes</option></select>
+    </div>
+    <div class="filter-group">
+      <label>Thème</label>
+      <select id="fTheme" onchange="renderItems()">
+        <option value="">Tous</option>
+        <option value="DUERP">DUERP / PAPRIPACT</option>
+        <option value="CMR">Risque chimique / CMR</option>
+        <option value="TMS">TMS / ergonomie</option>
+        <option value="RPS">RPS / burn-out</option>
+        <option value="bruit">Bruit</option>
+        <option value="radon">Radon / radioprotection</option>
+        <option value="biologique">Risque biologique</option>
+        <option value="jeunes">Jeunes travailleurs</option>
+        <option value="MP">Maladies professionnelles</option>
+        <option value="SIR">Suivi médical / SIR-SIA</option>
+        <option value="MP-Reprise">Maintien en emploi</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <label>Niveau</label>
+      <select id="fLevel" onchange="renderItems()">
+        <option value="">Tous</option>
+        <option value="reglementaire">Réglementaire</option>
+        <option value="doctrine">Doctrine / INRS</option>
+        <option value="actualite">Actualité</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <label>Période</label>
+      <select id="fPeriod" onchange="renderItems()">
+        <option value="">Tout</option>
+        <option value="7">7 derniers jours</option>
+        <option value="30">30 derniers jours</option>
+        <option value="90">3 derniers mois</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="stats" id="stats"></div>
+
+  <div id="itemsContainer">
+    <div class="loading">Chargement de la veille…</div>
+  </div>
+
+</div>
+
+<!-- Modal Synthèse IA -->
+<div class="modal-overlay" id="syntheseModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeSynthese()">×</button>
+    <h2>Synthèse IA — Impacts SST de la semaine</h2>
+    <div id="syntheseContent"></div>
+  </div>
+</div>
+
+<footer>
+  <p>PréventIA-LaB · Veille alimentée quotidiennement via Make.com · Données publiques officielles</p>
+  <p><a href="../index.html">← Retour à l'accueil</a></p>
+</footer>
+
+<script>
+// ============================================================
+// CONFIG — À adapter
+// ============================================================
+const CONFIG = {
+  // URL vers ton veille.json versionné dans le repo GitHub
+  dataUrl: './veille.json',
+  // Webhook texte Make.com pour la synthèse IA (celui déjà existant)
+  syntheseWebhook: 'https://hook.eu2.make.com/qhvt4lylqgbykqljwd1sdybpdaoapedu',
+  syntheseToken: 'previa_text_2026_xxx',
+  // Mots-clés critiques déclenchant le flag DUERP
+  duerpKeywords: ['DUERP', 'document unique', 'évaluation des risques', 'PAPRIPACT', 'PPRP']
+};
+
+// Sources RSS (référence — traitées côté Make.com)
+const SOURCES_RSS = {
+  'INRS Actualités':        'https://www.inrs.fr/rss/actualites.xml',
+  'INRS Publications':      'https://www.inrs.fr/rss/publications.xml',
+  'Bulletin juridique INRS':'https://www.inrs.fr/rss/bulletin-juridique.xml',
+  'Légifrance (SST)':       'https://legifrss.org/latest?q=santé%20travail',
+  'Légifrance (Code trav.)':'https://legifrss.org/latest?q=code%20du%20travail',
+  'BO Santé/Travail':       'https://bulletins-officiels.social.gouv.fr/flux-rss',
+  'Ameli Risques Pro':      'https://www.ameli.fr/rss/entreprise.xml',
+  'ANSES':                  'https://www.anses.fr/fr/rss.xml',
+  'ANACT':                  'https://www.anact.fr/rss.xml',
+  'HAS Santé travail':      'https://www.has-sante.fr/rss/theme/sante-travail',
+  'Travail-emploi.gouv':    'https://travail-emploi.gouv.fr/rss/actualites.xml'
+};
+
+let allItems = [];
+
+// ============================================================
+// CHARGEMENT DES DONNÉES
+// ============================================================
+async function loadData() {
+  const container = document.getElementById('itemsContainer');
+  container.innerHTML = '<div class="loading"><div class="spinner"></div>Chargement de la veille…</div>';
+
+  try {
+    const res = await fetch(CONFIG.dataUrl + '?t=' + Date.now());
+    if (!res.ok) throw new Error('Fichier veille.json indisponible');
+    const data = await res.json();
+    allItems = data.items || [];
+
+    document.getElementById('lastUpdate').textContent = new Date(data.updated).toLocaleString('fr-FR');
+    document.getElementById('itemCount').textContent = allItems.length;
+
+    // Alimenter le filtre Source
+    const sources = [...new Set(allItems.map(i => i.source))].sort();
+    document.getElementById('sourceCount').textContent = sources.length;
+    const fSource = document.getElementById('fSource');
+    fSource.innerHTML = '<option value="">Toutes</option>' +
+      sources.map(s => `<option value="${s}">${s}</option>`).join('');
+
+    renderStats();
+    renderItems();
+  } catch (err) {
+    // Fallback : données de démonstration si veille.json pas encore généré
+    console.warn('Utilisation des données démo :', err.message);
+    allItems = getDemoData();
+    document.getElementById('lastUpdate').textContent = 'Démo (Make non branché)';
+    document.getElementById('itemCount').textContent = allItems.length;
+    document.getElementById('sourceCount').textContent = [...new Set(allItems.map(i => i.source))].length;
+    renderStats();
+    renderItems();
+  }
+}
+
+// ============================================================
+// RENDU
+// ============================================================
+function renderStats() {
+  const filtered = getFiltered();
+  const nbReg = filtered.filter(i => i.level === 'reglementaire').length;
+  const nbDoc = filtered.filter(i => i.level === 'doctrine').length;
+  const nbAct = filtered.filter(i => i.level === 'actualite').length;
+  const nbDuerp = filtered.filter(i => i.duerp).length;
+
+  document.getElementById('stats').innerHTML = `
+    <div class="stat-card"><div class="num">${filtered.length}</div><div class="lbl">Items affichés</div></div>
+    <div class="stat-card"><div class="num" style="color:var(--critical)">${nbReg}</div><div class="lbl">Réglementaire</div></div>
+    <div class="stat-card"><div class="num" style="color:var(--teal)">${nbDoc}</div><div class="lbl">Doctrine</div></div>
+    <div class="stat-card"><div class="num" style="color:var(--muted)">${nbAct}</div><div class="lbl">Actualités</div></div>
+    <div class="stat-card"><div class="num" style="color:var(--orange)">${nbDuerp}</div><div class="lbl">À intégrer DUERP</div></div>
+  `;
+}
+
+function getFiltered() {
+  const q = document.getElementById('fSearch').value.toLowerCase();
+  const src = document.getElementById('fSource').value;
+  const th = document.getElementById('fTheme').value;
+  const lv = document.getElementById('fLevel').value;
+  const pd = parseInt(document.getElementById('fPeriod').value) || 0;
+  const cutoff = pd ? Date.now() - pd * 86400000 : 0;
+
+  return allItems.filter(i => {
+    if (q && !(i.title + ' ' + (i.description || '')).toLowerCase().includes(q)) return false;
+    if (src && i.source !== src) return false;
+    if (th && !(i.themes || []).includes(th)) return false;
+    if (lv && i.level !== lv) return false;
+    if (cutoff && new Date(i.date).getTime() < cutoff) return false;
+    return true;
+  });
+}
+
+function renderItems() {
+  renderStats();
+  const filtered = getFiltered();
+  const container = document.getElementById('itemsContainer');
+
+  if (filtered.length === 0) {
+    container.innerHTML = '<div class="empty">Aucun résultat pour ces filtres.</div>';
+    return;
+  }
+
+  container.innerHTML = filtered.map(i => `
+    <article class="item">
+      <div class="item-header">
+        <div class="item-badges">
+          <span class="badge badge-${i.level}">${labelLevel(i.level)}</span>
+          ${(i.themes || []).map(t => `<span class="badge badge-source">${t}</span>`).join('')}
+          ${i.duerp ? '<span class="badge badge-duerp">⚠️ DUERP</span>' : ''}
+        </div>
+        <span class="item-date">${new Date(i.date).toLocaleDateString('fr-FR')}</span>
+      </div>
+      <h3 class="item-title"><a href="${i.url}" target="_blank" rel="noopener">${i.title}</a></h3>
+      ${i.description ? `<p class="item-desc">${i.description}</p>` : ''}
+      <div class="item-footer">
+        <span class="item-source">📰 ${i.source}</span>
+        <div class="item-actions">
+          <button onclick="analyzeImpact(${JSON.stringify(i).replace(/"/g, '&quot;')})">🎯 Impact FE</button>
+          <button onclick="window.open('${i.url}', '_blank')">🔗 Consulter</button>
+        </div>
+      </div>
+    </article>
+  `).join('');
+}
+
+function labelLevel(lv) {
+  return { reglementaire: 'Réglementaire', doctrine: 'Doctrine', actualite: 'Actualité' }[lv] || lv;
+}
+
+// ============================================================
+// SYNTHÈSE IA (webhook texte Make)
+// ============================================================
+async function openSynthese() {
+  const modal = document.getElementById('syntheseModal');
+  const content = document.getElementById('syntheseContent');
+  modal.classList.add('active');
+
+  const recent = allItems
+    .filter(i => new Date(i.date).getTime() > Date.now() - 7 * 86400000)
+    .slice(0, 30);
+
+  if (recent.length === 0) {
+    content.innerHTML = '<p>Aucun item récent à synthétiser.</p>';
+    return;
+  }
+
+  content.innerHTML = '<div class="spinner"></div><p style="text-align:center;color:var(--muted)">Synthèse en cours…</p>';
+
+  const prompt = `Tu es un expert en santé au travail et prévention des risques professionnels (SPSTI France).
+À partir des items de veille ci-dessous (7 derniers jours), produis une synthèse structurée en HTML sobre :
+
+1. **Textes réglementaires majeurs** (à surveiller pour DUERP/PAPRIPACT)
+2. **Nouvelles obligations employeur** identifiées
+3. **Actualités INRS/HAS/ANACT** utiles à la pratique
+4. **Recommandations d'action** pour l'infirmière SST / IPRP
+
+Ne mentionne QUE ce qui est présent dans les items. Reste factuelle. Cite les sources.
+
+ITEMS :
+${JSON.stringify(recent, null, 2)}`;
+
+  try {
+    const anthropicBody = {
+      model: 'claude-sonnet-4-5',
+      max_tokens: 2000,
+      messages: [{ role: 'user', content: prompt }]
+    };
+
+    const res = await fetch(CONFIG.syntheseWebhook, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain' },
+      body: JSON.stringify({
+        token: CONFIG.syntheseToken,
+        payload: JSON.stringify(anthropicBody)
+      })
+    });
+
+    const data = await res.json();
+    const text = data.content?.[0]?.text || data.response || 'Réponse vide.';
+    content.innerHTML = text;
+  } catch (err) {
+    content.innerHTML = `<p style="color:var(--critical)">Erreur : ${err.message}</p>`;
+  }
+}
+
+function closeSynthese() {
+  document.getElementById('syntheseModal').classList.remove('active');
+}
+
+// ============================================================
+// ANALYSE D'IMPACT SUR FICHE ENTREPRISE
+// ============================================================
+async function analyzeImpact(item) {
+  const modal = document.getElementById('syntheseModal');
+  const content = document.getElementById('syntheseContent');
+  modal.classList.add('active');
+  content.innerHTML = '<div class="spinner"></div><p style="text-align:center;color:var(--muted)">Analyse d\'impact en cours…</p>';
+
+  const prompt = `Tu es un expert en santé au travail (SPSTI France).
+Analyse l'item de veille suivant et produis en HTML sobre :
+1. **Résumé opérationnel** (3-5 lignes)
+2. **Impact sur DUERP** (oui/non + quels risques)
+3. **Impact sur fiche d'entreprise** (quelles rubriques à mettre à jour)
+4. **Actions concrètes** pour l'infirmière SST / IPRP
+5. **Références réglementaires** citées
+
+Item :
+${JSON.stringify(item, null, 2)}`;
+
+  try {
+    const res = await fetch(CONFIG.syntheseWebhook, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain' },
+      body: JSON.stringify({
+        token: CONFIG.syntheseToken,
+        payload: JSON.stringify({
+          model: 'claude-sonnet-4-5',
+          max_tokens: 1500,
+          messages: [{ role: 'user', content: prompt }]
+        })
+      })
+    });
+    const data = await res.json();
+    content.innerHTML = data.content?.[0]?.text || data.response || 'Réponse vide.';
+  } catch (err) {
+    content.innerHTML = `<p style="color:var(--critical)">Erreur : ${err.message}</p>`;
+  }
+}
+
+// ============================================================
+// DONNÉES DÉMO (fallback si veille.json absent)
+// ============================================================
+function getDemoData() {
+  return [
+    {
+      title: "Bulletin d'actualité juridique INRS n°03 — mars 2026",
+      url: "https://www.inrs.fr/publications.html",
+      source: "INRS",
+      date: "2026-06-25",
+      level: "doctrine",
+      themes: ["DUERP", "CMR"],
+      duerp: true,
+      description: "Sélection mensuelle des textes officiels intéressant la prévention des risques professionnels parus récemment en France et en Europe."
+    },
+    {
+      title: "Forte chaleur au travail — nouvelle étude INRS juin 2026",
+      url: "https://www.inrs.fr/",
+      source: "INRS",
+      date: "2026-06-20",
+      level: "doctrine",
+      themes: ["RPS"],
+      duerp: true,
+      description: "Profil des victimes et pistes pour améliorer la prévention en entreprise face au risque thermique."
+    },
+    {
+      title: "Table ronde Bruit dans le tertiaire — 2 juillet 2026",
+      url: "https://www.inrs.fr/",
+      source: "INRS",
+      date: "2026-06-15",
+      level: "actualite",
+      themes: ["bruit"],
+      duerp: false,
+      description: "Table ronde du magazine Travail & Sécurité sur le bruit en secteur tertiaire."
+    },
+    {
+      title: "Temps partiel thérapeutique — modalités de mise en œuvre",
+      url: "https://www.inrs.fr/",
+      source: "INRS",
+      date: "2026-06-10",
+      level: "doctrine",
+      themes: ["SIR", "MP-Reprise"],
+      duerp: false,
+      description: "Collaboration entre acteurs pour concilier activité professionnelle et préservation de la santé du salarié."
+    }
+  ];
+}
+
+// Init
+loadData();
+</script>
+
+</body>
+</html>
