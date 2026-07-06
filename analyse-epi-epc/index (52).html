@@ -1,0 +1,1241 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PréventIA-LaB — Analyse EPI / EPC</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=DM+Serif+Display&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: oklch(0.25 0.05 260);
+  --navy-light: oklch(0.30 0.05 260);
+  --teal: oklch(0.65 0.15 180);
+  --teal-light: oklch(0.85 0.08 180);
+  --teal-bg: oklch(0.95 0.03 180);
+  --orange: oklch(0.72 0.17 55);
+  --orange-light: oklch(0.90 0.06 55);
+  --red: oklch(0.60 0.20 25);
+  --red-light: oklch(0.92 0.05 25);
+  --green: oklch(0.65 0.18 145);
+  --green-light: oklch(0.92 0.05 145);
+  --yellow: oklch(0.82 0.15 85);
+  --yellow-light: oklch(0.95 0.05 85);
+  --bg: oklch(0.97 0.005 260);
+  --surface: #fff;
+  --text: oklch(0.20 0.02 260);
+  --text-muted: oklch(0.50 0.02 260);
+  --border: oklch(0.88 0.01 260);
+  --radius: 10px;
+  --radius-lg: 16px;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+  --shadow-lg: 0 8px 30px rgba(0,0,0,0.12);
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+/* ── NAV ── */
+.nav-bar {
+  background: var(--navy);
+  display: flex; align-items: center;
+  padding: 0 1.5rem; height: 52px; gap: 0.5rem;
+  position: sticky; top: 0; z-index: 100;
+}
+.nav-logo {
+  font-family: 'DM Serif Display', serif;
+  color: #fff; font-size: 1.25rem;
+  text-decoration: none; letter-spacing: -0.02em; flex-shrink: 0;
+}
+.nav-logo span { color: var(--teal); }
+.nav-sep { width:1px; height:24px; background: rgba(255,255,255,0.15); margin: 0 0.5rem; }
+.nav-link {
+  color: rgba(255,255,255,0.6); text-decoration: none;
+  font-size: 0.82rem; padding: 0.35rem 0.65rem;
+  border-radius: 6px; transition: all 0.2s; font-weight: 500;
+}
+.nav-link:hover { color: #fff; background: rgba(255,255,255,0.08); }
+.nav-link.active { color: #fff; background: var(--teal); }
+.nav-badge {
+  margin-left: auto;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.65rem; background: rgba(255,255,255,0.1);
+  color: var(--teal); padding: 0.2rem 0.55rem;
+  border-radius: 4px; font-weight: 500;
+  letter-spacing: 0.05em; text-transform: uppercase;
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+/* ── HERO ── */
+.hero {
+  background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+  color: #fff; padding: 2.5rem 2rem 2rem; text-align: center;
+}
+.hero h1 {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.8rem; margin-bottom: 0.4rem; letter-spacing: -0.02em;
+}
+.hero h1 em { font-style: normal; color: var(--teal); }
+.hero-sub { font-size: 0.95rem; opacity: 0.75; max-width: 600px; margin: 0 auto; }
+
+/* ── LAYOUT ── */
+.container { max-width: 1200px; margin: 0 auto; padding: 2rem 1.5rem; }
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+@media (max-width: 800px) {
+  .grid-2 { grid-template-columns: 1fr; }
+  .nav-link:not(.active) { display: none; }
+  .hero h1 { font-size: 1.4rem; }
+}
+
+/* ── CARDS ── */
+.card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius-lg); padding: 1.5rem; box-shadow: var(--shadow-sm);
+}
+.card-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.15rem; color: var(--navy); margin-bottom: 1rem;
+  display: flex; align-items: center; gap: 0.5rem;
+}
+.card-title .ico {
+  width: 28px; height: 28px; background: var(--teal-bg);
+  border-radius: 6px; display: flex; align-items: center;
+  justify-content: center; font-size: 0.95rem;
+}
+
+/* ── UPLOAD ── */
+.upload-zone {
+  border: 2px dashed var(--border); border-radius: var(--radius);
+  padding: 2.5rem 1.5rem; text-align: center; cursor: pointer;
+  transition: all 0.25s; position: relative; overflow: hidden;
+  min-height: 220px; display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+}
+.upload-zone:hover, .upload-zone.dragover { border-color: var(--teal); background: var(--teal-bg); }
+.upload-zone.has-image { padding: 0.5rem; border-style: solid; border-color: var(--teal); }
+.upload-icon { font-size: 2.5rem; margin-bottom: 0.5rem; }
+.upload-label { font-weight: 500; color: var(--navy); }
+.upload-hint { font-size: 0.82rem; color: var(--text-muted); margin-top: 0.3rem; }
+.upload-zone input[type="file"] { display: none; }
+.upload-actions { display: flex; gap: 0.6rem; margin-top: 0.8rem; }
+.upload-btn {
+  flex: 1; padding: 0.7rem 0.5rem; border-radius: 10px;
+  border: 1px solid var(--teal); background: var(--white);
+  color: var(--teal-dark); font-family: inherit; font-size: 13.5px; font-weight: 600;
+  cursor: pointer; transition: all 0.2s;
+}
+.upload-btn:hover { background: var(--teal-bg, oklch(0.95 0.03 192)); }
+.upload-btn.cam { background: var(--teal); color: #fff; border-color: var(--teal); }
+.upload-btn.cam:hover { filter: brightness(1.08); }
+.preview-wrap { display: none; width: 100%; position: relative; }
+.preview-wrap img { width: 100%; max-height: 350px; object-fit: contain; border-radius: 6px; }
+.preview-rm {
+  position: absolute; top: 8px; right: 8px;
+  width: 28px; height: 28px; background: var(--red); color: #fff;
+  border: none; border-radius: 50%; cursor: pointer;
+  font-size: 1rem; display: flex; align-items: center; justify-content: center;
+  box-shadow: var(--shadow-md);
+}
+.thumbs { display: flex; gap: 0.5rem; margin-top: 0.75rem; flex-wrap: wrap; }
+.thumbs .th {
+  width: 68px; height: 68px; border-radius: 6px;
+  object-fit: cover; border: 2px solid var(--border);
+  cursor: pointer; transition: border-color 0.2s;
+}
+.thumbs .th.on { border-color: var(--teal); }
+.thumbs .add-more {
+  width: 68px; height: 68px; border-radius: 6px;
+  border: 2px dashed var(--border); display: flex;
+  align-items: center; justify-content: center;
+  font-size: 1.5rem; color: var(--text-muted);
+  cursor: pointer; transition: all 0.2s;
+}
+.thumbs .add-more:hover { border-color: var(--teal); color: var(--teal); }
+
+/* ── FORM ── */
+label.fl {
+  display: block; font-size: 0.78rem; font-weight: 600;
+  color: var(--navy); margin-bottom: 0.3rem;
+  text-transform: uppercase; letter-spacing: 0.04em;
+  font-family: 'IBM Plex Mono', monospace;
+}
+select, input[type="text"], textarea {
+  width: 100%; padding: 0.6rem 0.8rem;
+  border: 1px solid var(--border); border-radius: var(--radius);
+  font-family: 'DM Sans', sans-serif; font-size: 0.92rem;
+  color: var(--text); background: var(--surface); transition: border-color 0.2s;
+}
+select:focus, input:focus, textarea:focus {
+  outline: none; border-color: var(--teal);
+  box-shadow: 0 0 0 3px oklch(0.65 0.15 180 / 0.15);
+}
+textarea { resize: vertical; min-height: 72px; }
+.fg { margin-bottom: 1rem; }
+.fr { display: flex; gap: 0.75rem; }
+.fr > .fg { flex: 1; }
+.chips { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.3rem; }
+.chip {
+  padding: 0.3rem 0.7rem; border-radius: 20px;
+  border: 1px solid var(--border); font-size: 0.82rem;
+  cursor: pointer; transition: all 0.2s; background: var(--surface); user-select: none;
+}
+.chip:hover { border-color: var(--teal); }
+.chip.on { background: var(--teal); color: #fff; border-color: var(--teal); }
+
+/* ── BUTTONS ── */
+.btn {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  padding: 0.75rem 1.5rem; border: none; border-radius: var(--radius);
+  font-family: 'DM Sans', sans-serif; font-size: 0.95rem;
+  font-weight: 600; cursor: pointer; transition: all 0.2s;
+}
+.btn-primary { background: var(--teal); color: #fff; box-shadow: var(--shadow-sm); }
+.btn-primary:hover { filter: brightness(0.92); box-shadow: var(--shadow-md); }
+.btn-primary:disabled { opacity: 0.5; cursor: not-allowed; filter: none; }
+.btn-sec { background: var(--surface); color: var(--navy); border: 1px solid var(--border); }
+.btn-sec:hover { background: var(--teal-bg); }
+.btn-full { width: 100%; justify-content: center; }
+
+/* ── RESULTS ── */
+.results { display: none; }
+.results.on { display: block; }
+.verdict-bar {
+  display: flex; align-items: center; gap: 1rem;
+  padding: 1rem 1.25rem; border-radius: var(--radius);
+  margin-bottom: 1.25rem; font-weight: 600;
+}
+.verdict-bar.conforme { background: var(--green-light); color: oklch(0.35 0.12 145); }
+.verdict-bar.non-conforme { background: var(--red-light); color: oklch(0.35 0.15 25); }
+.verdict-bar.a-verifier { background: var(--yellow-light); color: oklch(0.35 0.12 85); }
+.verdict-bar.vetuste { background: var(--orange-light); color: oklch(0.40 0.12 55); }
+.v-icon { font-size: 1.8rem; }
+.v-text { flex: 1; }
+.v-label { font-size: 1.1rem; }
+.v-sub { font-size: 0.82rem; font-weight: 400; opacity: 0.8; margin-top: 0.15rem; }
+.sh {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.78rem; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.06em;
+  color: var(--teal); margin-bottom: 0.6rem;
+  padding-bottom: 0.3rem; border-bottom: 1px solid var(--border);
+}
+.sb { margin-bottom: 1.25rem; }
+.dg { display: grid; grid-template-columns: 140px 1fr; gap: 0.3rem 1rem; font-size: 0.9rem; }
+.dk { font-weight: 500; color: var(--text-muted); }
+.defects { list-style: none; }
+.defects li {
+  padding: 0.5rem 0.75rem; margin-bottom: 0.4rem;
+  border-radius: 6px; font-size: 0.9rem;
+  display: flex; align-items: flex-start; gap: 0.5rem;
+}
+.defects li.crit { background: var(--red-light); }
+.defects li.warn { background: var(--yellow-light); }
+.defects li.info { background: var(--teal-bg); }
+.dbul { flex-shrink: 0; width: 8px; height: 8px; border-radius: 50%; margin-top: 0.45rem; }
+.crit .dbul { background: var(--red); }
+.warn .dbul { background: var(--orange); }
+.info .dbul { background: var(--teal); }
+.reco-box {
+  background: var(--teal-bg); border-left: 3px solid var(--teal);
+  padding: 1rem 1.25rem; border-radius: 0 var(--radius) var(--radius) 0;
+  font-size: 0.9rem; line-height: 1.7;
+}
+.export-bar { display: flex; gap: 0.75rem; margin-top: 1.25rem; flex-wrap: wrap; }
+
+/* ── LOADER ── */
+.loader-ov {
+  display: none; position: fixed; inset: 0;
+  background: rgba(0,0,0,0.45); z-index: 999;
+  align-items: center; justify-content: center;
+}
+.loader-ov.on { display: flex; }
+.loader-card {
+  background: var(--surface); border-radius: var(--radius-lg);
+  padding: 2.5rem 3rem; text-align: center;
+  box-shadow: var(--shadow-lg); max-width: 380px;
+}
+.spinner {
+  width: 48px; height: 48px;
+  border: 4px solid var(--border); border-top-color: var(--teal);
+  border-radius: 50%; animation: spin 0.8s linear infinite;
+  margin: 0 auto 1rem;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.loader-card .lt { font-weight: 500; color: var(--navy); }
+.loader-card .ls { font-size: 0.82rem; color: var(--text-muted); margin-top: 0.3rem; }
+.step-dots { display: flex; gap: 0.5rem; justify-content: center; margin-top: 1rem; }
+.step-dots .dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--border); transition: background 0.3s;
+}
+.step-dots .dot.on { background: var(--teal); }
+
+/* ── DEBUG ── */
+.debug-panel {
+  margin-top: 1.5rem; background: oklch(0.15 0.02 260);
+  border-radius: var(--radius); padding: 1rem; display: none;
+}
+.debug-panel.on { display: block; }
+.debug-panel pre {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.75rem; color: var(--teal-light);
+  white-space: pre-wrap; word-break: break-all;
+  max-height: 300px; overflow-y: auto;
+}
+.debug-toggle {
+  font-size: 0.75rem; color: var(--text-muted);
+  cursor: pointer; text-decoration: underline;
+  margin-top: 0.75rem; display: inline-block;
+}
+
+/* ── TOAST ── */
+.toast {
+  position: fixed; bottom: 2rem; left: 50%;
+  transform: translateX(-50%) translateY(100px);
+  background: var(--navy); color: #fff;
+  padding: 0.7rem 1.5rem; border-radius: var(--radius);
+  font-size: 0.9rem; box-shadow: var(--shadow-lg);
+  z-index: 9999; opacity: 0; transition: all 0.3s ease;
+}
+.toast.on { transform: translateX(-50%) translateY(0); opacity: 1; }
+</style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav class="nav-bar">
+  <a class="nav-logo" href="https://laurebonnefond.github.io/PreventIA-LaB/" title="Accueil PréventIA-LaB">Prévent<span>IA</span>-LaB</a>
+  <div class="nav-sep"></div>
+  <a class="nav-link" href="https://laurebonnefond.github.io/PreventIA-LaB/">Accueil</a>
+  <a class="nav-link active">Analyse EPI/EPC</a>
+  <a class="nav-link" href="https://laurebonnefond.github.io/PreventIA-LaB/evaluation-picb.html">PICB</a>
+  <a class="nav-link" href="https://laurebonnefond.github.io/PreventIA-LaB/evaluation-tms.html">TMS</a>
+  <a class="nav-link" href="https://laurebonnefond.github.io/PreventIA-LaB/burnout.html">Burn-out</a>
+  <div class="nav-badge">Scénario B · Vision</div>
+</nav>
+
+<!-- ── HERO ── -->
+<div class="hero">
+  <h1>Analyse <em>EPI / EPC</em> par Vision IA</h1>
+  <div class="hero-sub">Photographiez l'équipement, renseignez le contexte métier — l'IA identifie, évalue la conformité et l'adéquation au poste</div>
+</div>
+
+<!-- ── LOADER ── -->
+<div class="loader-ov" id="loader">
+  <div class="loader-card">
+    <div class="spinner"></div>
+    <div class="lt" id="loaderText">Envoi de l'image…</div>
+    <div class="ls">Analyse Vision IA via Scénario B</div>
+    <div class="step-dots">
+      <div class="dot on" id="dot1"></div>
+      <div class="dot" id="dot2"></div>
+      <div class="dot" id="dot3"></div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<!-- ── MAIN ── -->
+<div class="container">
+
+  <!-- ═══ INPUT ═══ -->
+  <div class="grid-2" id="inputSection">
+
+    <!-- LEFT: PHOTO -->
+    <div class="card">
+      <div class="card-title"><div class="ico">📷</div> Photo de l'équipement</div>
+
+      <div class="upload-zone" id="uploadZone">
+        <div class="upload-ph" id="uploadPh">
+          <div class="upload-icon">📸</div>
+          <div class="upload-label">Glisser une photo ou cliquer</div>
+          <div class="upload-hint">JPG, PNG, WebP · max 10 Mo · jusqu'à 4 photos</div>
+        </div>
+        <div class="preview-wrap" id="previewWrap">
+          <img id="previewImg" alt="Aperçu"/>
+          <button class="preview-rm" id="rmBtn" title="Supprimer">✕</button>
+        </div>
+        <input type="file" id="fileInput" accept="image/jpeg,image/png,image/webp" multiple/>
+        <input type="file" id="cameraInput" accept="image/*" capture="environment" style="display:none"/>
+      </div>
+      <div class="upload-actions" id="uploadActions">
+        <button type="button" class="upload-btn cam" id="btnCamera">📷 Prendre une photo</button>
+        <button type="button" class="upload-btn file" id="btnGallery">🖼️ Choisir un fichier</button>
+      </div>
+
+      <div class="thumbs" id="thumbs"></div>
+
+      <div style="margin-top:1rem;">
+        <label class="fl">Contexte visuel (facultatif)</label>
+        <textarea id="ctxVisuel" placeholder="Ex : usure visible sur la sangle, mousse écrasée, fissure sur la visière…"></textarea>
+      </div>
+    </div>
+
+    <!-- RIGHT: CONTEXT -->
+    <div class="card">
+      <div class="card-title"><div class="ico">📋</div> Contexte professionnel</div>
+
+      <div class="fg">
+        <label class="fl">Type d'équipement</label>
+        <select id="typeEq">
+          <option value="">— Sélectionner ou laisser l'IA identifier —</option>
+          <optgroup label="EPI — Protection individuelle">
+            <option value="EPI - Casque de chantier">Casque de chantier</option>
+            <option value="EPI - Lunettes / Écran facial">Lunettes / Écran facial</option>
+            <option value="EPI - Protection auditive (PICB)">Protection auditive (PICB)</option>
+            <option value="EPI - Masque respiratoire">Masque / Demi-masque respiratoire</option>
+            <option value="EPI - Gants de protection">Gants de protection</option>
+            <option value="EPI - Chaussures de sécurité">Chaussures de sécurité</option>
+            <option value="EPI - Vêtement / Combinaison">Vêtement de travail / Combinaison</option>
+            <option value="EPI - Harnais antichute">Harnais antichute</option>
+            <option value="EPI - Tablier / Protection corps">Tablier / Protection corps</option>
+            <option value="EPI - Autre">Autre EPI</option>
+          </optgroup>
+          <optgroup label="EPC — Protection collective">
+            <option value="EPC - Garde-corps / Rambarde">Garde-corps / Rambarde</option>
+            <option value="EPC - Aspiration / Ventilation">Aspiration à la source / Ventilation</option>
+            <option value="EPC - Écran de protection machine">Écran de protection machine</option>
+            <option value="EPC - Balisage / Signalisation">Balisage / Signalisation</option>
+            <option value="EPC - Extincteur / Sécurité incendie">Extincteur / Sécurité incendie</option>
+            <option value="EPC - Douche / Rince-œil">Douche / Rince-œil de sécurité</option>
+            <option value="EPC - Captage polluants">Captage de polluants</option>
+            <option value="EPC - Autre">Autre EPC</option>
+          </optgroup>
+        </select>
+      </div>
+
+      <div class="fr">
+        <div class="fg">
+          <label class="fl">Poste / Métier</label>
+          <input type="text" id="poste" placeholder="Ex : soudeur, aide-soignant…"/>
+        </div>
+        <div class="fg">
+          <label class="fl">Secteur</label>
+          <input type="text" id="secteur" placeholder="Ex : BTP, chimie, EHPAD…"/>
+        </div>
+      </div>
+
+      <div class="fg">
+        <label class="fl">Risques professionnels</label>
+        <div class="chips" id="risqChips">
+          <div class="chip" data-v="Bruit">🔊 Bruit</div>
+          <div class="chip" data-v="Chimique">🧪 Chimique</div>
+          <div class="chip" data-v="Mécanique">⚙️ Mécanique</div>
+          <div class="chip" data-v="Chute hauteur">🪜 Chute</div>
+          <div class="chip" data-v="Électrique">⚡ Électrique</div>
+          <div class="chip" data-v="Thermique">🔥 Thermique</div>
+          <div class="chip" data-v="Biologique">🦠 Biologique</div>
+          <div class="chip" data-v="Rayonnement">☢️ Rayonnement</div>
+          <div class="chip" data-v="Vibrations">📳 Vibrations</div>
+          <div class="chip" data-v="TMS">🦴 TMS</div>
+          <div class="chip" data-v="Projection">💥 Projection</div>
+          <div class="chip" data-v="Poussières">🌫️ Poussières</div>
+        </div>
+      </div>
+
+      <div class="fr">
+        <div class="fg">
+          <label class="fl">Marque / Modèle</label>
+          <input type="text" id="marque" placeholder="Ex : 3M Peltor X5A"/>
+        </div>
+        <div class="fg">
+          <label class="fl">Date achat / péremption</label>
+          <input type="text" id="dateInfo" placeholder="Ex : acheté 03/2022"/>
+        </div>
+      </div>
+
+      <div class="fg">
+        <label class="fl">Norme attendue</label>
+        <input type="text" id="normeAtt" placeholder="Ex : EN 166, EN 352-1, EN 388…"/>
+      </div>
+
+      <div class="fg">
+        <label class="fl">Observations terrain</label>
+        <textarea id="obs" placeholder="État général, plaintes salariés, fréquence d'utilisation, conditions d'entretien…"></textarea>
+      </div>
+
+      <button class="btn btn-primary btn-full" id="goBtn" disabled>
+        🔍 Lancer l'analyse Vision IA
+      </button>
+      <div class="debug-toggle" onclick="toggleDebug()">⚙ Debug Scénario B</div>
+    </div>
+  </div>
+
+  <!-- ═══ RESULTS ═══ -->
+  <div class="results" id="results">
+    <div class="grid-2">
+
+      <div class="card">
+        <div class="card-title"><div class="ico">📊</div> Verdict</div>
+        <div id="verdictBar" class="verdict-bar"></div>
+        <div id="photoRes" style="margin-bottom:1rem;">
+          <img id="resImg" style="width:100%;max-height:280px;object-fit:contain;border-radius:8px;border:1px solid var(--border);" alt=""/>
+        </div>
+        <div class="sb"><div class="sh">Identification de l'équipement</div><div class="dg" id="identG"></div></div>
+        <div class="sb"><div class="sh">Normes & Conformité</div><div class="dg" id="normeG"></div></div>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><div class="ico">⚠️</div> Défauts & Recommandations</div>
+        <div class="sb"><div class="sh">Défauts détectés</div><ul class="defects" id="defList"></ul></div>
+        <div class="sb"><div class="sh">Adéquation poste / risques</div><div id="adeqC" class="reco-box"></div></div>
+        <div class="sb"><div class="sh">Recommandations préventeur</div><div id="recoC" class="reco-box" style="border-left-color:var(--orange);"></div></div>
+        <div class="sb"><div class="sh">Références réglementaires</div><div id="refC" style="font-size:0.88rem;color:var(--text-muted);line-height:1.8;"></div></div>
+        <div class="export-bar">
+          <button class="btn btn-sec" onclick="copyReport()">📄 Copier le rapport</button>
+          <button class="btn btn-sec" onclick="exportWord()">📝 Export Word</button>
+          <button class="btn btn-sec" onclick="newAnalysis()">🔄 Nouvelle analyse</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ DEBUG ═══ -->
+  <div class="debug-panel" id="debugPanel">
+    <div style="font-family:'IBM Plex Mono',monospace;font-size:0.72rem;color:var(--teal);margin-bottom:0.5rem;font-weight:600;">SCÉNARIO B — PAYLOAD ENVOYÉ AU WEBHOOK</div>
+    <pre id="debugPayload">En attente d'analyse…</pre>
+    <div style="font-family:'IBM Plex Mono',monospace;font-size:0.72rem;color:var(--orange);margin-top:1rem;margin-bottom:0.5rem;font-weight:600;">RÉPONSE BRUTE DU WEBHOOK</div>
+    <pre id="debugResponse">—</pre>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/docx/8.5.0/docx.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+<script>
+/* ═══════════════════════════════════════════════════════════════
+   CONFIGURATION — Scénario B Make.com
+   ─────────────────────────────────────────────────────────────
+   Structure identique au sample-scenario-b.json :
+   {
+     "token": "previa_vision_2026_xxx",
+     "payload": {
+       "model": "...",
+       "max_tokens": ...,
+       "messages": [{ role, content: [image, text] }]
+     }
+   }
+   ═══════════════════════════════════════════════════════════════ */
+const MAKE_URL      = 'https://hook.eu1.make.com/y91ilwbt4jpfgt4m42gzurbbmolkxj2x';
+const MAKE_TOKEN    = 'previa_vision_2026_xxx';   // ← token filtré côté Make
+const CLAUDE_MODEL  = 'claude-sonnet-4-5';
+const MAX_TOKENS    = 4096;
+
+/* ═══ STATE ═══ */
+let imgs = [];      // [{file, dataUrl, base64, mime}]
+let activeIdx = 0;
+let lastAnalysis = null;
+
+/* ═══ DOM ═══ */
+const $ = id => document.getElementById(id);
+const uploadZone = $('uploadZone'), fileInput = $('fileInput');
+const previewWrap = $('previewWrap'), previewImg = $('previewImg');
+const rmBtn = $('rmBtn'), thumbsEl = $('thumbs');
+const goBtn = $('goBtn'), loader = $('loader'), toast = $('toast');
+const resultsEl = $('results'), inputEl = $('inputSection');
+
+/* ── Chips ── */
+document.querySelectorAll('#risqChips .chip').forEach(c =>
+  c.addEventListener('click', () => c.classList.toggle('on'))
+);
+const getRisques = () => [...document.querySelectorAll('#risqChips .chip.on')].map(c => c.dataset.v);
+
+/* ═══════════════════════════════════════════════
+   IMAGE HANDLING
+   ═══════════════════════════════════════════════ */
+uploadZone.addEventListener('click', e => {
+  if (e.target === rmBtn || rmBtn.contains(e.target)) return;
+  fileInput.click();
+});
+uploadZone.addEventListener('dragover', e => { e.preventDefault(); uploadZone.classList.add('dragover'); });
+uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('dragover'));
+uploadZone.addEventListener('drop', e => { e.preventDefault(); uploadZone.classList.remove('dragover'); addFiles(e.dataTransfer.files); });
+fileInput.addEventListener('change', e => addFiles(e.target.files));
+// Boutons mobile : appareil photo + galerie
+var cameraInput = document.getElementById('cameraInput');
+var btnCamera = document.getElementById('btnCamera');
+var btnGallery = document.getElementById('btnGallery');
+if (btnCamera && cameraInput) {
+  btnCamera.addEventListener('click', function(e){ e.stopPropagation(); cameraInput.click(); });
+  cameraInput.addEventListener('change', function(e){ addFiles(e.target.files); });
+}
+if (btnGallery) {
+  btnGallery.addEventListener('click', function(e){ e.stopPropagation(); fileInput.click(); });
+}
+
+/* ── Compression client : ramène l'image à ~1600px max / qualité 0.82
+   Objectif : payload webhook < 1 Mo pour éviter "Failed to fetch" côté Make.com.
+   Sortie forcée en JPEG (meilleur ratio taille/qualité pour photos d'EPI). ── */
+function compressImage(file, maxDim = 1600, quality = 0.82) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = ev => {
+      const img = new Image();
+      img.onload = () => {
+        const ratio = Math.min(maxDim / img.width, maxDim / img.height, 1);
+        const w = Math.round(img.width * ratio);
+        const h = Math.round(img.height * ratio);
+        const canvas = document.createElement('canvas');
+        canvas.width = w; canvas.height = h;
+        const ctx = canvas.getContext('2d');
+        // Fond blanc au cas où l'image source est un PNG transparent
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(0, 0, w, h);
+        ctx.drawImage(img, 0, 0, w, h);
+        canvas.toBlob(blob => {
+          if (!blob) return reject(new Error('Compression échouée'));
+          const r2 = new FileReader();
+          r2.onload = e2 => {
+            const dataUrl = e2.target.result;
+            resolve({
+              dataUrl,
+              base64: dataUrl.split(',')[1],
+              mime: 'image/jpeg',
+              sizeKo: Math.round(blob.size / 1024),
+              w, h
+            });
+          };
+          r2.onerror = reject;
+          r2.readAsDataURL(blob);
+        }, 'image/jpeg', quality);
+      };
+      img.onerror = () => reject(new Error('Image illisible'));
+      img.src = ev.target.result;
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+async function addFiles(files) {
+  for (const f of [...files]) {
+    if (!f.type.match(/image\/(jpeg|png|webp|heic|heif)/i)) continue;
+    if (f.size > 20*1024*1024) { showToast('Fichier trop lourd (max 20 Mo)'); continue; }
+    if (imgs.length >= 4) { showToast('Maximum 4 photos'); break; }
+    try {
+      const originalKo = Math.round(f.size / 1024);
+      const compressed = await compressImage(f);
+      imgs.push({
+        file: f,
+        dataUrl: compressed.dataUrl,
+        base64: compressed.base64,
+        mime: compressed.mime,
+        sizeKo: compressed.sizeKo
+      });
+      activeIdx = imgs.length - 1;
+      refreshUI();
+      showToast(`Image optimisée : ${originalKo} Ko → ${compressed.sizeKo} Ko`);
+    } catch (err) {
+      console.error(err);
+      showToast('Erreur lors de la compression : ' + err.message);
+    }
+  }
+}
+
+rmBtn.addEventListener('click', e => {
+  e.stopPropagation();
+  imgs.splice(activeIdx, 1);
+  activeIdx = Math.max(0, activeIdx - 1);
+  refreshUI();
+});
+
+function refreshUI() {
+  const has = imgs.length > 0;
+  uploadZone.classList.toggle('has-image', has);
+  previewWrap.style.display = has ? 'block' : 'none';
+  $('uploadPh').style.display = has ? 'none' : 'flex';
+  if (has) previewImg.src = imgs[activeIdx].dataUrl;
+  thumbsEl.innerHTML = '';
+  imgs.forEach((im, i) => {
+    const t = document.createElement('img');
+    t.src = im.dataUrl; t.className = 'th' + (i === activeIdx ? ' on' : '');
+    t.onclick = () => { activeIdx = i; refreshUI(); };
+    thumbsEl.appendChild(t);
+  });
+  if (imgs.length < 4) {
+    const ab = document.createElement('div');
+    ab.className = 'add-more'; ab.textContent = '+';
+    ab.onclick = () => fileInput.click();
+    thumbsEl.appendChild(ab);
+  }
+  goBtn.disabled = !has;
+}
+
+/* ═══════════════════════════════════════════════
+   BUILD PROMPT
+   ═══════════════════════════════════════════════ */
+function buildPrompt() {
+  const type     = $('typeEq').value;
+  const poste    = $('poste').value;
+  const secteur  = $('secteur').value;
+  const risques  = getRisques();
+  const marque   = $('marque').value;
+  const dateInfo = $('dateInfo').value;
+  const norme    = $('normeAtt').value;
+  const obs      = $('obs').value;
+  const ctxV     = $('ctxVisuel').value;
+
+  return `Tu es un expert IPRP en santé au travail et prévention des risques professionnels (réglementation française).
+
+Analyse cette/ces photo(s) d'équipement de protection (EPI ou EPC).
+
+CONTEXTE :
+- Type : ${type || 'Non précisé — identifie sur la photo'}
+- Poste/Métier : ${poste || 'Non précisé'}
+- Secteur : ${secteur || 'Non précisé'}
+- Risques identifiés : ${risques.length ? risques.join(', ') : 'Non précisés'}
+- Marque/Modèle : ${marque || 'À identifier si visible'}
+- Date achat/péremption : ${dateInfo || 'Non précisé'}
+- Norme attendue : ${norme || 'Non précisée'}
+- Observations terrain : ${obs || 'Aucune'}
+- Contexte visuel : ${ctxV || 'Aucun'}
+
+MISSION :
+1. IDENTIFIER précisément l'équipement (type, catégorie, marque si visible, état général)
+2. ÉVALUER la conformité : marquage CE, normes EN applicables, date de péremption, classe de protection
+3. DÉTECTER les défauts : usure, déformation, déchirure, pièce manquante, altération, vétusté
+4. JUGER l'adéquation au poste et aux risques réels : cet équipement protège-t-il effectivement contre les risques déclarés ? Est-il adapté à la morphologie, à la fréquence d'utilisation, au confort ?
+5. RECOMMANDER : remplacement, vérification périodique, formation, alternatives, passage en EPC
+
+Réponds UNIQUEMENT en JSON valide (sans markdown, sans backticks, sans commentaire) :
+{
+  "verdict": "CONFORME" | "NON_CONFORME" | "A_VERIFIER" | "VETUSTE",
+  "verdict_resume": "phrase courte",
+  "identification": {
+    "type_equipement": "",
+    "categorie": "",
+    "marque_modele": "",
+    "description": ""
+  },
+  "normes": {
+    "normes_applicables": "",
+    "marquage_CE": "",
+    "date_peremption": "",
+    "classe_protection": ""
+  },
+  "defauts": [
+    { "severite": "critique|avertissement|info", "description": "" }
+  ],
+  "adequation_poste": "",
+  "recommandations": "",
+  "references_reglementaires": ""
+}`;
+}
+
+/* ═══════════════════════════════════════════════
+   SCENARIO B — ENVOI AU WEBHOOK MAKE.COM
+   ─────────────────────────────────────────────
+   Solution B : payload pré-sérialisé en STRING.
+   Make reçoit :
+   {
+     token: "previa_vision_2026_xxx",
+     payload: "{\"model\":\"...\",\"max_tokens\":...,\"messages\":[...]}"
+   }
+   → Module HTTP Make : Body Raw, Content JSON,
+     Request content = {{2.payload}} (apres module Parse JSON)
+   Content-Type: text/plain → pas de preflight CORS
+   ═══════════════════════════════════════════════ */
+goBtn.addEventListener('click', runAnalysis);
+
+async function runAnalysis() {
+  if (!imgs.length) return;
+  goBtn.disabled = true;
+  loader.classList.add('on');
+  setStep(1, 'Envoi de l\'image au Scénario B…');
+
+  // ── Build content blocks (images + prompt) ──
+  const contentBlocks = [];
+
+  for (let i = 0; i < imgs.length; i++) {
+    contentBlocks.push({
+      type: "image",
+      source: {
+        type: "base64",
+        media_type: imgs[i].mime,
+        data: imgs[i].base64
+      }
+    });
+  }
+  contentBlocks.push({ type: "text", text: buildPrompt() });
+
+  // ── Solution B : payload pré-sérialisé en STRING ──
+  // Make.com reçoit payload comme une string JSON prête à relayer
+  // → module HTTP : Body Raw, Content JSON, Request content = {{2.payload}} (apres module Parse JSON)
+  const anthropicBody = {
+    model: CLAUDE_MODEL,
+    max_tokens: MAX_TOKENS,
+    messages: [{
+      role: "user",
+      content: contentBlocks
+    }]
+  };
+
+  const webhookBody = {
+    token: MAKE_TOKEN,
+    payload: JSON.stringify(anthropicBody)   // ← STRING, pas objet
+  };
+
+  // ── Debug ──
+  $('debugPayload').textContent = JSON.stringify({
+    token: MAKE_TOKEN,
+    payload_type: typeof webhookBody.payload,
+    payload_length: webhookBody.payload.length + ' chars',
+    model: CLAUDE_MODEL,
+    max_tokens: MAX_TOKENS,
+    images_count: imgs.length,
+    images_sizes: imgs.map(im => `${(im.base64.length * 0.75 / 1024).toFixed(0)} Ko`),
+    webhook: MAKE_URL
+  }, null, 2);
+
+  try {
+    setStep(2, 'Analyse Vision IA en cours…');
+
+    const resp = await fetch(MAKE_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain' },   // text/plain = pas de preflight CORS
+      body: JSON.stringify(webhookBody)
+    });
+
+    if (!resp.ok) {
+      const errText = await resp.text();
+      throw new Error(`HTTP ${resp.status} — ${errText.substring(0, 300)}`);
+    }
+
+    setStep(3, 'Traitement de la réponse…');
+
+    const raw = await resp.text();
+    $('debugResponse').textContent = raw.substring(0, 4000);
+
+    // ── Parse la réponse ──
+    let responseText = '';
+    try {
+      const data = JSON.parse(raw);
+      responseText = extractText(data);
+    } catch (_) {
+      responseText = raw;
+    }
+
+    if (!responseText) throw new Error('Réponse vide du webhook');
+
+    const analysis = parseJSON(responseText);
+    lastAnalysis = analysis;
+    showResults(analysis);
+
+  } catch (err) {
+    console.error('Erreur Scénario B:', err);
+    showToast('Erreur : ' + err.message);
+    $('debugResponse').textContent = 'ERREUR: ' + err.message;
+  } finally {
+    loader.classList.remove('on');
+    goBtn.disabled = false;
+  }
+}
+
+/* ── Extract text from various response shapes ── */
+function extractText(data) {
+  // Anthropic standard : { content: [{ type: 'text', text: '...' }] }
+  if (data.content && Array.isArray(data.content)) {
+    return data.content.filter(b => b.type === 'text').map(b => b.text).join('\n');
+  }
+  // Make wraps: data.data.content, data.result.content, data.body.content
+  for (const key of ['data', 'result', 'body']) {
+    const inner = data[key];
+    if (inner?.content && Array.isArray(inner.content)) {
+      return inner.content.filter(b => b.type === 'text').map(b => b.text).join('\n');
+    }
+  }
+  // String fields
+  for (const key of ['text', 'result', 'data', 'response', 'answer', 'message']) {
+    if (typeof data[key] === 'string') return data[key];
+  }
+  // body as string → re-parse
+  if (typeof data.body === 'string') {
+    try {
+      const inner = JSON.parse(data.body);
+      return extractText(inner);
+    } catch(_) { return data.body; }
+  }
+  return JSON.stringify(data);
+}
+
+function parseJSON(text) {
+  let clean = text.replace(/```json\s*/gi, '').replace(/```\s*/gi, '').trim();
+  try { return JSON.parse(clean); } catch(e) {}
+  const m = clean.match(/\{[\s\S]*\}/);
+  if (m) { try { return JSON.parse(m[0]); } catch(e2) {} }
+  return {
+    verdict: "A_VERIFIER",
+    verdict_resume: "Réponse non structurée — vérification manuelle requise",
+    identification: { type_equipement: "Voir debug", categorie: "-", marque_modele: "-", description: clean.substring(0, 500) },
+    normes: { normes_applicables: "-", marquage_CE: "-", date_peremption: "-", classe_protection: "-" },
+    defauts: [{ severite: "info", description: "Réponse non structurée. Consultez le debug Scénario B." }],
+    adequation_poste: clean.substring(0, 600),
+    recommandations: "Relancez l'analyse ou consultez la réponse brute (debug).",
+    references_reglementaires: "-"
+  };
+}
+
+/* ═══════════════════════════════════════════════
+   DISPLAY
+   ═══════════════════════════════════════════════ */
+function showResults(a) {
+  const vm = {
+    CONFORME:     { c:'conforme',     i:'✅', l:'Conforme' },
+    NON_CONFORME: { c:'non-conforme', i:'❌', l:'Non conforme' },
+    A_VERIFIER:   { c:'a-verifier',   i:'⚠️', l:'À vérifier' },
+    VETUSTE:      { c:'vetuste',      i:'🔶', l:'Vétuste' }
+  };
+  const v = vm[a.verdict] || vm.A_VERIFIER;
+  $('verdictBar').className = 'verdict-bar ' + v.c;
+  $('verdictBar').innerHTML = `<div class="v-icon">${v.i}</div><div class="v-text"><div class="v-label">${v.l}</div><div class="v-sub">${esc(a.verdict_resume||'')}</div></div>`;
+  $('resImg').src = imgs[0].dataUrl;
+
+  const id = a.identification || {};
+  $('identG').innerHTML = gRows({ 'Type': id.type_equipement, 'Catégorie': id.categorie, 'Marque/Modèle': id.marque_modele, 'Description': id.description });
+
+  const n = a.normes || {};
+  $('normeG').innerHTML = gRows({ 'Normes': n.normes_applicables, 'Marquage CE': n.marquage_CE, 'Péremption': n.date_peremption, 'Classe': n.classe_protection });
+
+  const dl = $('defList'); dl.innerHTML = '';
+  (a.defauts || []).forEach(d => {
+    const sMap = { critique:'crit', avertissement:'warn', info:'info' };
+    const li = document.createElement('li');
+    li.className = sMap[d.severite] || 'info';
+    li.innerHTML = `<div class="dbul"></div><div>${esc(d.description)}</div>`;
+    dl.appendChild(li);
+  });
+  if (!a.defauts?.length) dl.innerHTML = '<li class="info"><div class="dbul"></div><div>Aucun défaut visuel détecté</div></li>';
+
+  $('adeqC').innerHTML = esc(a.adequation_poste || 'Non évaluée');
+  $('recoC').innerHTML = esc(a.recommandations || 'Aucune');
+  $('refC').innerHTML = esc(a.references_reglementaires || '-').replace(/\n/g, '<br>');
+
+  resultsEl.classList.add('on');
+  inputEl.style.display = 'none';
+  resultsEl.scrollIntoView({ behavior: 'smooth' });
+}
+
+function gRows(obj) {
+  return Object.entries(obj).filter(([,v]) => v && v !== '-')
+    .map(([k,v]) => `<div class="dk">${k}</div><div>${esc(v)}</div>`).join('');
+}
+function esc(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+
+/* ═══ LOADER ═══ */
+function setStep(n, txt) {
+  $('loaderText').textContent = txt;
+  for (let i = 1; i <= 3; i++) $('dot' + i).classList.toggle('on', i <= n);
+}
+
+/* ═══ ACTIONS ═══ */
+function copyReport() {
+  if (!lastAnalysis) return;
+  const a = lastAnalysis;
+  const lines = [
+    '═══ RAPPORT ANALYSE EPI/EPC — PréventIA-LaB ═══',
+    'Date : ' + new Date().toLocaleDateString('fr-FR'),
+    '',
+    '▸ VERDICT : ' + (a.verdict||'') + ' — ' + (a.verdict_resume||''),
+    '',
+    '▸ IDENTIFICATION :',
+    '  Type : ' + (a.identification?.type_equipement||'-'),
+    '  Catégorie : ' + (a.identification?.categorie||'-'),
+    '  Marque/Modèle : ' + (a.identification?.marque_modele||'-'),
+    '  Description : ' + (a.identification?.description||'-'),
+    '',
+    '▸ NORMES & CONFORMITÉ :',
+    '  Normes : ' + (a.normes?.normes_applicables||'-'),
+    '  Marquage CE : ' + (a.normes?.marquage_CE||'-'),
+    '  Péremption : ' + (a.normes?.date_peremption||'-'),
+    '  Classe : ' + (a.normes?.classe_protection||'-'),
+    '',
+    '▸ DÉFAUTS DÉTECTÉS :',
+    ...(a.defauts||[]).map(d => `  [${d.severite}] ${d.description}`),
+    '',
+    '▸ ADÉQUATION POSTE/RISQUES :',
+    '  ' + (a.adequation_poste||'-'),
+    '',
+    '▸ RECOMMANDATIONS :',
+    '  ' + (a.recommandations||'-'),
+    '',
+    '▸ RÉFÉRENCES RÉGLEMENTAIRES :',
+    '  ' + (a.references_reglementaires||'-'),
+    '',
+    '═══ PréventIA-LaB · Analyse Vision IA · Scénario B ═══'
+  ];
+  navigator.clipboard.writeText(lines.join('\n'))
+    .then(() => showToast('Rapport copié ✓'))
+    .catch(() => showToast('Erreur copie'));
+}
+
+function newAnalysis() {
+  resultsEl.classList.remove('on');
+  inputEl.style.display = '';
+  imgs = []; activeIdx = 0; lastAnalysis = null;
+  refreshUI();
+  fileInput.value = '';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function toggleDebug() { $('debugPanel').classList.toggle('on'); }
+
+function showToast(msg) {
+  toast.textContent = msg;
+  toast.classList.add('on');
+  setTimeout(() => toast.classList.remove('on'), 3500);
+}
+
+/* ═══════════════════════════════════════════════
+   EXPORT WORD (.docx)
+   ─────────────────────────────────────────────
+   Structure adaptée EPI/EPC :
+   - En-tête PréventIA-LaB + date
+   - Photo analysée (embarquée)
+   - Verdict coloré
+   - Identification (tableau)
+   - Normes & conformité (tableau)
+   - Défauts détectés (liste avec sévérité colorée)
+   - Adéquation poste / risques
+   - Recommandations
+   - Références réglementaires
+   ═══════════════════════════════════════════════ */
+async function exportWord() {
+  if (!lastAnalysis) { showToast('Aucune analyse à exporter'); return; }
+  if (typeof window.docx === 'undefined' || typeof window.saveAs === 'undefined') {
+    showToast('Bibliothèque Word non chargée — vérifiez votre connexion');
+    return;
+  }
+
+  try {
+    const D = window.docx;
+    const a = lastAnalysis;
+    const dateStr = new Date().toLocaleDateString('fr-FR', { day:'2-digit', month:'long', year:'numeric' });
+
+    // ── Couleurs verdict ──
+    const verdictMap = {
+      CONFORME:     { label: 'CONFORME',     color: '2E7D32', bg: 'E8F5E9' },
+      NON_CONFORME: { label: 'NON CONFORME', color: 'C62828', bg: 'FFEBEE' },
+      A_VERIFIER:   { label: 'À VÉRIFIER',   color: 'F57C00', bg: 'FFF3E0' },
+      VETUSTE:      { label: 'VÉTUSTE',      color: 'E65100', bg: 'FFF3E0' }
+    };
+    const v = verdictMap[a.verdict] || verdictMap.A_VERIFIER;
+
+    // ── Sévérité défauts ──
+    const sevMap = {
+      critique:      { label: 'CRITIQUE',     color: 'C62828', bg: 'FFEBEE' },
+      avertissement: { label: 'AVERTISSEMENT',color: 'F57C00', bg: 'FFF3E0' },
+      info:          { label: 'INFO',         color: '1976D2', bg: 'E3F2FD' }
+    };
+
+    // ── Helpers ──
+    const P = (text, opts = {}) => new D.Paragraph({
+      children: [new D.TextRun({ text, ...opts })],
+      spacing: { after: 80 }
+    });
+    const H = (text, level = D.HeadingLevel.HEADING_2) => new D.Paragraph({
+      children: [new D.TextRun({ text, bold: true })],
+      heading: level,
+      spacing: { before: 240, after: 120 }
+    });
+
+    // ── Cellule de tableau ──
+    const cell = (text, opts = {}) => new D.TableCell({
+      children: [new D.Paragraph({
+        children: [new D.TextRun({ text: text || '—', ...opts.run })]
+      })],
+      width: { size: opts.width || 3000, type: D.WidthType.DXA },
+      shading: opts.bg ? { type: D.ShadingType.CLEAR, fill: opts.bg, color: 'auto' } : undefined
+    });
+
+    // ── Tableau clé/valeur ──
+    const kvTable = (obj) => {
+      const rows = Object.entries(obj)
+        .filter(([, val]) => val && val !== '-')
+        .map(([k, val]) => new D.TableRow({
+          children: [
+            cell(k, { width: 3200, bg: 'F5F5F5', run: { bold: true } }),
+            cell(String(val), { width: 6800 })
+          ]
+        }));
+      if (!rows.length) return null;
+      return new D.Table({
+        rows,
+        columnWidths: [3200, 6800],
+        width: { size: 10000, type: D.WidthType.DXA }
+      });
+    };
+
+    // ── Construction du document ──
+    const children = [];
+
+    // Titre principal
+    children.push(new D.Paragraph({
+      children: [new D.TextRun({ text: 'PréventIA-LaB', bold: true, size: 40, color: '0A2540' })],
+      alignment: D.AlignmentType.CENTER,
+      spacing: { after: 60 }
+    }));
+    children.push(new D.Paragraph({
+      children: [new D.TextRun({ text: 'Analyse EPI / EPC — Vision IA', size: 24, color: '008080' })],
+      alignment: D.AlignmentType.CENTER,
+      spacing: { after: 60 }
+    }));
+    children.push(new D.Paragraph({
+      children: [new D.TextRun({ text: dateStr, italics: true, size: 20, color: '666666' })],
+      alignment: D.AlignmentType.CENTER,
+      spacing: { after: 300 }
+    }));
+
+    // Photo
+    if (imgs[0] && imgs[0].base64) {
+      try {
+        const binary = atob(imgs[0].base64);
+        const arr = new Uint8Array(binary.length);
+        for (let i = 0; i < binary.length; i++) arr[i] = binary.charCodeAt(i);
+        children.push(new D.Paragraph({
+          children: [new D.ImageRun({
+            data: arr,
+            transformation: { width: 400, height: 300 },
+            type: 'jpg'
+          })],
+          alignment: D.AlignmentType.CENTER,
+          spacing: { after: 240 }
+        }));
+      } catch (e) { console.warn('Image non intégrée:', e); }
+    }
+
+    // Verdict
+    children.push(new D.Table({
+      rows: [new D.TableRow({
+        children: [new D.TableCell({
+          children: [
+            new D.Paragraph({
+              children: [new D.TextRun({ text: 'VERDICT : ' + v.label, bold: true, size: 28, color: v.color })],
+              alignment: D.AlignmentType.CENTER,
+              spacing: { after: 80 }
+            }),
+            new D.Paragraph({
+              children: [new D.TextRun({ text: a.verdict_resume || '', size: 22, color: v.color })],
+              alignment: D.AlignmentType.CENTER
+            })
+          ],
+          shading: { type: D.ShadingType.CLEAR, fill: v.bg, color: 'auto' },
+          width: { size: 10000, type: D.WidthType.DXA }
+        })]
+      })],
+      columnWidths: [10000],
+      width: { size: 10000, type: D.WidthType.DXA }
+    }));
+    children.push(new D.Paragraph({ children: [new D.TextRun({ text: '' })], spacing: { after: 200 } }));
+
+    // Identification
+    const id = a.identification || {};
+    const idTable = kvTable({
+      "Type d'équipement": id.type_equipement,
+      'Catégorie': id.categorie,
+      'Marque / Modèle': id.marque_modele,
+      'Description': id.description
+    });
+    if (idTable) {
+      children.push(H('Identification'));
+      children.push(idTable);
+    }
+
+    // Normes
+    const n = a.normes || {};
+    const normeTable = kvTable({
+      'Normes applicables': n.normes_applicables,
+      'Marquage CE': n.marquage_CE,
+      'Date de péremption': n.date_peremption,
+      'Classe de protection': n.classe_protection
+    });
+    if (normeTable) {
+      children.push(H('Normes & conformité'));
+      children.push(normeTable);
+    }
+
+    // Défauts
+    children.push(H('Défauts détectés'));
+    if (a.defauts && a.defauts.length) {
+      const defRows = a.defauts.map(d => {
+        const s = sevMap[d.severite] || sevMap.info;
+        return new D.TableRow({
+          children: [
+            cell(s.label, { width: 2500, bg: s.bg, run: { bold: true, color: s.color } }),
+            cell(d.description || '', { width: 7500 })
+          ]
+        });
+      });
+      children.push(new D.Table({
+        rows: defRows,
+        columnWidths: [2500, 7500],
+        width: { size: 10000, type: D.WidthType.DXA }
+      }));
+    } else {
+      children.push(P('Aucun défaut visuel détecté.', { italics: true, color: '2E7D32' }));
+    }
+
+    // Adéquation poste
+    children.push(H('Adéquation poste / risques'));
+    children.push(P(a.adequation_poste || 'Non évaluée.'));
+
+    // Recommandations
+    children.push(H('Recommandations'));
+    (a.recommandations || 'Aucune recommandation spécifique.')
+      .split(/\n+/).forEach(line => { if (line.trim()) children.push(P(line.trim())); });
+
+    // Références réglementaires
+    children.push(H('Références réglementaires'));
+    (a.references_reglementaires || '—')
+      .split(/\n+/).forEach(line => { if (line.trim()) children.push(P(line.trim(), { size: 20, color: '555555' })); });
+
+    // Pied de page
+    children.push(new D.Paragraph({
+      children: [new D.TextRun({ text: '', size: 4 })],
+      spacing: { before: 400 },
+      border: { top: { color: 'CCCCCC', space: 1, style: D.BorderStyle.SINGLE, size: 6 } }
+    }));
+    children.push(new D.Paragraph({
+      children: [new D.TextRun({
+        text: 'PréventIA-LaB · Analyse Vision IA · Document généré automatiquement — à valider par un professionnel de la prévention.',
+        size: 16, italics: true, color: '888888'
+      })],
+      alignment: D.AlignmentType.CENTER,
+      spacing: { before: 120 }
+    }));
+
+    // ── Document ──
+    const doc = new D.Document({
+      styles: {
+        default: {
+          document: { run: { font: 'Calibri', size: 22 } },
+          heading2: { run: { font: 'Calibri', size: 28, bold: true, color: '0A2540' }, paragraph: { spacing: { before: 240, after: 120 } } }
+        }
+      },
+      sections: [{
+        properties: {
+          page: {
+            margin: { top: 1134, bottom: 1134, left: 1134, right: 1134 },
+            size: { width: 11906, height: 16838 }
+          }
+        },
+        children
+      }]
+    });
+
+    const blob = await D.Packer.toBlob(doc);
+    const filename = 'Analyse_EPI_EPC_PréventIA_' + new Date().toISOString().slice(0, 10) + '.docx';
+    saveAs(blob, filename);
+    showToast('Rapport Word exporté ✓');
+  } catch (e) {
+    console.error('Export Word error:', e);
+    showToast('Erreur export Word — voir console');
+  }
+}
+</script>
+</body>
+</html>
