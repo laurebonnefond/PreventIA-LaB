@@ -160,7 +160,12 @@ table.rq td{padding:8px 6px;border-bottom:1px solid oklch(0.95 .005 250);vertica
   <div class="card">
     <div class="eyebrow">5 · Restitutions</div>
     <div id="pvxHost"></div>
-  </div>
+</div>
+
+<div class="card">
+  <div class="eyebrow">6 · Cockpit synthétique</div>
+  <div id="cockpitHost"></div>
+</div>
 
   <div class="mention">
     Fiche d'entreprise établie au titre de l'article R.4624-46 du Code du travail. L'attribution par l'INSEE d'un code APE, à des fins statistiques, ne saurait suffire à créer des droits ou des obligations (art. 5 du décret n° 2007-1888). Les scores et diagrammes sont des indicateurs d'aide à la décision (méthode PréventIA®), sans valeur réglementaire, à confirmer par une visite in situ et à valider par le médecin du travail.
@@ -369,4 +374,7 @@ function draw(){
   if(!A.risks.length){ document.getElementById('pvxHost').innerHTML='<p class="hint">Sélectionnez un code NAF et des métiers pour générer les restitutions (étude expert, synthèse A4, cockpit).</p>'; return; }
   PVX.render('pvxHost',{ A, S:computeScoring(A), answers, meta:M, doublons });
 }
-</script></body></html>
+372  </script>
+373  <script src="docx-safe-loader.js"></script>
+374  <script src="cockpit-synthetique.js"></script>
+375  </body></html>
