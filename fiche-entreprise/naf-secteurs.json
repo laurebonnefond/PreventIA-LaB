@@ -1,0 +1,305 @@
+{
+ "meta": {
+  "objet": "Table de rattachement NAF rév.2 → profils de risque PréventIA-LaB",
+  "principe": "Règles ordonnées : la PREMIÈRE règle qui matche gagne. 'overrides' est appliqué en dernier et écrase tout.",
+  "types_de_regle": {
+   "codes": "liste de sous-classes exactes (ex. 88.10A)",
+   "prefixe": "début de code (ex. 81.2 = tout le groupe)",
+   "division": "2 premiers chiffres (ex. 43)"
+  },
+  "editable": "Ce fichier est modifiable sans reparser le PDF INSEE. Ajouter une règle en haut = priorité maximale.",
+  "maj": "2026-07",
+  "defaut": "tertiaire"
+ },
+ "secteurs": [
+  {
+   "id": "agriculture",
+   "label": "Agriculture, sylviculture, pêche"
+  },
+  {
+   "id": "agroalim",
+   "label": "Agroalimentaire"
+  },
+  {
+   "id": "industrie",
+   "label": "Industrie / production"
+  },
+  {
+   "id": "dechets",
+   "label": "Eau, assainissement, déchets, dépollution"
+  },
+  {
+   "id": "btp",
+   "label": "Bâtiment et travaux publics"
+  },
+  {
+   "id": "commerce",
+   "label": "Commerce, réparation automobile"
+  },
+  {
+   "id": "transport",
+   "label": "Transport de personnes et de marchandises"
+  },
+  {
+   "id": "logistique",
+   "label": "Entreposage, logistique, courrier"
+  },
+  {
+   "id": "hcr",
+   "label": "Hôtellerie, café, restauration"
+  },
+  {
+   "id": "enseignement",
+   "label": "Enseignement"
+  },
+  {
+   "id": "petite_enfance",
+   "label": "Petite enfance"
+  },
+  {
+   "id": "sante",
+   "label": "Santé humaine et action sociale"
+  },
+  {
+   "id": "aide_domicile",
+   "label": "Aide et services à domicile"
+  },
+  {
+   "id": "proprete",
+   "label": "Propreté, nettoyage"
+  },
+  {
+   "id": "espaces_verts",
+   "label": "Espaces verts, paysage"
+  },
+  {
+   "id": "coiffure",
+   "label": "Coiffure, esthétique"
+  },
+  {
+   "id": "securite",
+   "label": "Sécurité privée, gardiennage"
+  },
+  {
+   "id": "tertiaire",
+   "label": "Tertiaire / bureau (par défaut)"
+  }
+ ],
+ "regles": [
+  {
+   "id": "r01",
+   "commentaire": "Aide et services à domicile — sous-classes ciblées",
+   "type": "codes",
+   "valeurs": [
+    "88.10A",
+    "88.10C",
+    "97.00Z",
+    "98.10Z",
+    "98.20Z"
+   ],
+   "secteur": "aide_domicile"
+  },
+  {
+   "id": "r02",
+   "commentaire": "Petite enfance — accueil de jeunes enfants + enseignement pré-primaire",
+   "type": "codes",
+   "valeurs": [
+    "88.91A",
+    "88.91B",
+    "85.10Z"
+   ],
+   "secteur": "petite_enfance"
+  },
+  {
+   "id": "r03",
+   "commentaire": "Services d'aménagement paysager",
+   "type": "codes",
+   "valeurs": [
+    "81.30Z"
+   ],
+   "secteur": "espaces_verts"
+  },
+  {
+   "id": "r04",
+   "commentaire": "Nettoyage (groupe 81.2)",
+   "type": "prefixe",
+   "valeurs": [
+    "81.2"
+   ],
+   "secteur": "proprete"
+  },
+  {
+   "id": "r05",
+   "commentaire": "Coiffure (classe 96.02)",
+   "type": "prefixe",
+   "valeurs": [
+    "96.02"
+   ],
+   "secteur": "coiffure"
+  },
+  {
+   "id": "r06",
+   "commentaire": "Enquêtes et sécurité (division 80)",
+   "type": "division",
+   "valeurs": [
+    "80"
+   ],
+   "secteur": "securite"
+  },
+  {
+   "id": "r07",
+   "commentaire": "Activités vétérinaires — exposition biologique / zoonoses",
+   "type": "codes",
+   "valeurs": [
+    "75.00Z"
+   ],
+   "secteur": "sante"
+  },
+  {
+   "id": "r08",
+   "commentaire": "Santé humaine et action sociale (sections Q)",
+   "type": "division",
+   "valeurs": [
+    "86",
+    "87",
+    "88"
+   ],
+   "secteur": "sante"
+  },
+  {
+   "id": "r09",
+   "commentaire": "Enseignement (division 85)",
+   "type": "division",
+   "valeurs": [
+    "85"
+   ],
+   "secteur": "enseignement"
+  },
+  {
+   "id": "r10",
+   "commentaire": "Eau, assainissement, déchets, dépollution (section E)",
+   "type": "division",
+   "valeurs": [
+    "36",
+    "37",
+    "38",
+    "39"
+   ],
+   "secteur": "dechets"
+  },
+  {
+   "id": "r11",
+   "commentaire": "Construction (section F)",
+   "type": "division",
+   "valeurs": [
+    "41",
+    "42",
+    "43"
+   ],
+   "secteur": "btp"
+  },
+  {
+   "id": "r12",
+   "commentaire": "Commerce et réparation automobile (section G)",
+   "type": "division",
+   "valeurs": [
+    "45",
+    "46",
+    "47"
+   ],
+   "secteur": "commerce"
+  },
+  {
+   "id": "r13",
+   "commentaire": "Entreposage et courrier",
+   "type": "division",
+   "valeurs": [
+    "52",
+    "53"
+   ],
+   "secteur": "logistique"
+  },
+  {
+   "id": "r14",
+   "commentaire": "Transports terrestres, par eau, aériens",
+   "type": "division",
+   "valeurs": [
+    "49",
+    "50",
+    "51"
+   ],
+   "secteur": "transport"
+  },
+  {
+   "id": "r15",
+   "commentaire": "Hébergement et restauration (section I)",
+   "type": "division",
+   "valeurs": [
+    "55",
+    "56"
+   ],
+   "secteur": "hcr"
+  },
+  {
+   "id": "r16",
+   "commentaire": "Industries alimentaires, boissons, tabac",
+   "type": "division",
+   "valeurs": [
+    "10",
+    "11",
+    "12"
+   ],
+   "secteur": "agroalim"
+  },
+  {
+   "id": "r17",
+   "commentaire": "Agriculture, sylviculture, pêche (section A)",
+   "type": "division",
+   "valeurs": [
+    "01",
+    "02",
+    "03"
+   ],
+   "secteur": "agriculture"
+  },
+  {
+   "id": "r18",
+   "commentaire": "Industries extractives et manufacturières + énergie",
+   "type": "division",
+   "valeurs": [
+    "05",
+    "06",
+    "07",
+    "08",
+    "09",
+    "13",
+    "14",
+    "15",
+    "16",
+    "17",
+    "18",
+    "19",
+    "20",
+    "21",
+    "22",
+    "23",
+    "24",
+    "25",
+    "26",
+    "27",
+    "28",
+    "29",
+    "30",
+    "31",
+    "32",
+    "33",
+    "35"
+   ],
+   "secteur": "industrie"
+  }
+ ],
+ "overrides": {
+  "__exemple__": "Renseigner ici les cas particuliers rencontrés en visite, ex. \"10.71C\": \"agroalim\""
+ },
+ "defaut": "tertiaire"
+}
