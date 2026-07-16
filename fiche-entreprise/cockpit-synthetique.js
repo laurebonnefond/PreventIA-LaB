@@ -1,17 +1,22 @@
 /* =====================================================================
-   PréventIA-LaB — Cockpit synthétique (axes cotés /4)
+   PréventIA-LaB — Cockpit synthétique v3
    ---------------------------------------------------------------------
-   S'insère APRÈS le scoring et le radar de la fiche d'entreprise.
-   Échelle native de l'outil (menus déroulants) :
-     0 — N/C (non concerné, exclu du calcul)
-     1 — Absent          → risque résiduel 100
-     2 — Partiel         → risque résiduel  50
-     3 — En place        → risque résiduel  25
-     4 — Optimisé        → risque résiduel   0
+   Inspiré des diagrammes SPSTI 23/87 :
+     • Radar à 8 macro-catégories (pas 26 axes individuels)
+     • Labels majuscules bold autour + pastilles de score colorées
+     • Score global de prévention avec jauge circulaire
+     • Points forts / actions prioritaires
+
+   Échelle 1–5 (fréquence × gravité) :
+     5 — Très important (rouge)    → risque résiduel 100
+     4 — Important (orange)        → risque résiduel  75
+     3 — Modéré (jaune)            → risque résiduel  50
+     2 — Faible (vert clair)       → risque résiduel  25
+     1 — Très faible (vert foncé)  → risque résiduel   0
+     0 — N/C (gris)                → exclu du calcul
 
    API :
      CockpitFE.render('hostId', axes, meta)
-     CockpitFE.fromDOM('#axesContainer')   // relit les <select> de la page
      axes  = [{ label:'TMS / Travail répétitif', score:3, note:'' }, …]
      meta  = { entreprise, naf, nafLib, date, preventeur }
    ===================================================================== */
@@ -19,103 +24,196 @@
   'use strict';
 
   const NIVEAUX = [
-    { v: 0, lab: 'N/C',      hex: '#9aa3b2' },
-    { v: 1, lab: 'Absent',   hex: '#d23f2f' },
-    { v: 2, lab: 'Partiel',  hex: '#e58a2a' },
-    { v: 3, lab: 'En place', hex: '#d6b400' },
-    { v: 4, lab: 'Optimisé', hex: '#1f9d55' }
+    { v: 0, lab: 'N/C',              hex: '#9aa3b2' },
+    { v: 1, lab: 'Très faible',      hex: '#1f9d55' },
+    { v: 2, lab: 'Faible',           hex: '#6bba45' },
+    { v: 3, lab: 'Modéré',           hex: '#e5a800' },
+    { v: 4, lab: 'Important',        hex: '#e58a2a' },
+    { v: 5, lab: 'Très important',   hex: '#d23f2f' }
   ];
-  const RESIDUEL = { 1: 100, 2: 50, 3: 25, 4: 0 };
+  /* Mapping ancien score 0–4 → nouveau 1–5 pour compatibilité */
+  const MAP_OLD = { 0: 0, 1: 5, 2: 3, 3: 2, 4: 1 };
+  const RESIDUEL = { 1: 0, 2: 25, 3: 50, 4: 75, 5: 100 };
   const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
-  const niv = v => NIVEAUX[Math.max(0, Math.min(4, v | 0))];
+  const niv = v => NIVEAUX[Math.max(0, Math.min(5, v | 0))];
 
+  /* ═══════════ MACRO-CATÉGORIES ═══════════
+     Chaque axe individuel est rattaché à l'une de ces 8 familles.
+     Le score de la famille = pire score parmi ses axes (approche prudente). */
+  const MACROS = [
+    { id: 'chimique',    lab: 'RISQUES\nCHIMIQUES',           kw: ['chimique','cmr','radon','amiante','poussiere'] },
+    { id: 'biologique',  lab: 'RISQUES\nBIOLOGIQUES',         kw: ['biologique','aes','vaccination','sang'] },
+    { id: 'tms',         lab: 'TMS /\nERGONOMIE',             kw: ['tms','manutention','posture','répétitif','ergon','ecran','contraignant'] },
+    { id: 'psycho',      lab: 'RISQUES\nPSYCHOSOCIAUX',       kw: ['rps','psycho','contact public','harcelement','stress','addiction','isolé','nuit','atypique'] },
+    { id: 'securite',    lab: 'SÉCURITÉ /\nACCIDENTS',         kw: ['plain-pied','hauteur','machine','electrique','vibration','coactiv','chute'] },
+    { id: 'incendie',    lab: 'INCENDIE /\nURGENCES',          kw: ['incendie','explosion','secours','sst','evacuation','extincteur'] },
+    { id: 'orga',        lab: 'ORGANISATION /\nRÉGLEMENTAIRE', kw: ['duerp','document unique','affichage','vestiaire','sanitaire','locaux sociaux','dechet','routier','thermique'] },
+    { id: 'travecran',   lab: 'TRAVAIL\nSUR ÉCRAN',            kw: ['écran','informatique','bureautique','teletravail'] }
+  ];
+
+  function classifyAxes(axes) {
+    const groups = MACROS.map(m => ({ ...m, axes: [], score: 0 }));
+    const unclassified = [];
+    axes.forEach(a => {
+      const n = a.label.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+      let found = false;
+      for (const g of groups) {
+        if (g.kw.some(k => n.includes(k.normalize('NFD').replace(/[\u0300-\u036f]/g, '')))) {
+          g.axes.push(a); found = true; break;
+        }
+      }
+      if (!found) unclassified.push(a);
+    });
+    /* Unclassified → « Organisation / Réglementaire » par défaut */
+    const orga = groups.find(g => g.id === 'orga');
+    unclassified.forEach(a => orga.axes.push(a));
+
+    /* Score = pire des axes (le plus défavorable, càd le plus élevé en nouveau barème 1–5) */
+    groups.forEach(g => {
+      if (!g.axes.length) { g.score = 0; return; }
+      const scores = g.axes.map(a => {
+        const s = Math.max(0, Math.min(4, a.score | 0));
+        return MAP_OLD[s] || 0;
+      });
+      g.score = Math.max(...scores);
+    });
+    return groups.filter(g => g.axes.length > 0);
+  }
+
+  /* ═══════════ RADAR SVG ═══════════ */
+  function radar(groups) {
+    const n = groups.length;
+    if (n < 3) return '<div style="font-size:12px;color:#9aa3b2">3 catégories minimum.</div>';
+    const cx = 300, cy = 280, R = 170;
+    const ang = i => (-90 + i * 360 / n) * Math.PI / 180;
+    const pt = (i, r) => [cx + Math.cos(ang(i)) * r, cy + Math.sin(ang(i)) * r];
+    const gridCol = '#c0cad855';
+    const axisCol = '#6b7e9444';
+    let g = '';
+    /* Grille concentrique + échelle */
+    [1, 2, 3, 4, 5].forEach(l => {
+      g += `<polygon points="${groups.map((_, i) => pt(i, R * l / 5).join(',')).join(' ')}" fill="none" stroke="${gridCol}" stroke-width="${l === 5 ? 1.5 : 0.7}" stroke-dasharray="${l === 5 ? '0' : '4,3'}"/>`;
+      if (l <= 5) g += `<text x="${cx + 6}" y="${cy - R * l / 5 + 4}" font-size="11" font-weight="600" fill="#8ba0b8">${l}</text>`;
+    });
+    /* Axes */
+    groups.forEach((_, i) => { const [x, y] = pt(i, R + 6); g += `<line x1="${cx}" y1="${cy}" x2="${x}" y2="${y}" stroke="${axisCol}" stroke-width="1"/>`; });
+    /* Référence (niveau 3 = moyen) */
+    const ref = groups.map((_, i) => pt(i, R * 3 / 5).join(',')).join(' ');
+    g += `<polygon points="${ref}" fill="none" stroke="#8ba0b888" stroke-width="1.5" stroke-dasharray="6,4"/>`;
+    /* Polygone entreprise */
+    const poly = groups.map((gr, i) => pt(i, R * Math.max(gr.score, 0) / 5).join(',')).join(' ');
+    g += `<polygon points="${poly}" fill="rgba(23,66,143,0.18)" stroke="#17428F" stroke-width="2.5"/>`;
+    /* Points */
+    groups.forEach((gr, i) => {
+      const [x, y] = pt(i, R * Math.max(gr.score, 0) / 5);
+      g += `<circle cx="${x}" cy="${y}" r="5" fill="#17428F" stroke="#fff" stroke-width="2"/>`;
+    });
+    /* Labels multilignes + pastilles de score */
+    groups.forEach((gr, i) => {
+      const labDist = R + 55;
+      const badgeDist = R + 25;
+      const [lx, ly] = pt(i, labDist);
+      const [bx, by] = pt(i, badgeDist);
+      const anchor = Math.abs(lx - cx) < 30 ? 'middle' : (lx < cx ? 'end' : 'start');
+      const lines = gr.lab.split('\n');
+      const lineH = 16;
+      const yOff = -(lines.length - 1) * lineH / 2;
+      lines.forEach((line, j) => {
+        g += `<text x="${lx}" y="${ly + yOff + j * lineH}" font-size="12.5" font-weight="700" fill="#17428F" text-anchor="${anchor}" dominant-baseline="middle" font-family="Arial,sans-serif">${esc(line)}</text>`;
+      });
+      /* Pastille de score colorée */
+      const n5 = niv(gr.score);
+      g += `<circle cx="${bx}" cy="${by}" r="14" fill="#fff" stroke="${n5.hex}" stroke-width="2.5"/>`;
+      g += `<text x="${bx}" y="${by}" font-size="14" font-weight="700" fill="${n5.hex}" text-anchor="middle" dominant-baseline="central" font-family="Arial,sans-serif">${gr.score || '–'}</text>`;
+    });
+    /* Légende sous le radar */
+    const legY = cy + R + 70;
+    g += `<line x1="${cx - 60}" y1="${legY - 18}" x2="${cx - 30}" y2="${legY - 18}" stroke="#17428F" stroke-width="2"/>`;
+    g += `<text x="${cx - 25}" y="${legY - 14}" font-size="10" fill="#8ba0b8" font-family="Arial">Niveau de risque de l'entreprise</text>`;
+    g += `<line x1="${cx - 60}" y1="${legY}" x2="${cx - 30}" y2="${legY}" stroke="#8ba0b888" stroke-width="1.5" stroke-dasharray="6,4"/>`;
+    g += `<text x="${cx - 25}" y="${legY + 4}" font-size="10" fill="#8ba0b8" font-family="Arial">Référence (niveau moyen)</text>`;
+
+    return `<svg viewBox="0 0 600 ${legY + 20}" width="100%" preserveAspectRatio="xMidYMid meet" style="display:block;max-width:600px;margin:0 auto" xmlns="http://www.w3.org/2000/svg">${g}</svg>`;
+  }
+
+  /* ═══════════ SCORE GLOBAL (jauge circulaire) ═══════════ */
+  function scoreGlobal(groups) {
+    const actifs = groups.filter(g => g.score > 0);
+    if (!actifs.length) return { pct: 0, label: '—', hex: '#9aa3b2' };
+    /* Score = % de maîtrise = 100 - moyenne résiduel */
+    const moy = actifs.reduce((s, g) => s + (RESIDUEL[g.score] || 0), 0) / actifs.length;
+    const pct = Math.round(100 - moy);
+    let label, hex;
+    if (pct >= 80) { label = 'MAÎTRISÉ'; hex = '#1f9d55'; }
+    else if (pct >= 60) { label = 'À AMÉLIORER'; hex = '#e5a800'; }
+    else if (pct >= 40) { label = 'INSUFFISANT'; hex = '#e58a2a'; }
+    else { label = 'CRITIQUE'; hex = '#d23f2f'; }
+    return { pct, label, hex };
+  }
+
+  function gaugeCircle(sg) {
+    const r = 54, cx = 70, cy = 70, circ = 2 * Math.PI * r;
+    const dash = circ * sg.pct / 100;
+    return `<svg viewBox="0 0 140 140" width="130" height="130" style="display:block;margin:0 auto">
+      <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="#e0e6ed" stroke-width="10"/>
+      <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${sg.hex}" stroke-width="10"
+        stroke-dasharray="${dash} ${circ - dash}" stroke-dashoffset="${circ / 4}"
+        stroke-linecap="round" transform="rotate(0 ${cx} ${cy})"/>
+      <text x="${cx}" y="${cy - 4}" text-anchor="middle" font-size="28" font-weight="700" fill="${sg.hex}" font-family="Arial">${sg.pct}%</text>
+      <text x="${cx}" y="${cy + 14}" text-anchor="middle" font-size="8.5" font-weight="600" fill="#44546A" font-family="Arial">${sg.label}</text>
+    </svg>`;
+  }
+
+  /* ═══════════ CSS ═══════════ */
   const CSS = `
-.cfe{background:oklch(0.22 0.05 252);border-radius:16px;padding:20px;color:oklch(0.92 0.01 250);
-  font-family:"DM Sans",system-ui,sans-serif;margin-top:18px}
-.cfe-head{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:16px}
-.cfe-head .t{font-family:"DM Serif Display",Georgia,serif;font-size:21px;color:#fff}
-.cfe-chip{background:oklch(0.35 0.04 250);padding:4px 10px;border-radius:20px;font-size:11px;margin-left:6px;display:inline-block}
-.cfe-kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:14px}
-.cfe-kpi{background:oklch(0.28 0.04 250);border:1px solid oklch(0.38 0.04 250);border-radius:12px;padding:12px 14px}
-.cfe-kpi .l{font-size:10.5px;text-transform:uppercase;letter-spacing:.6px;color:oklch(0.72 0.02 250)}
-.cfe-kpi .v{font:700 26px/1.1 "DM Sans",sans-serif;color:#fff;margin:5px 0 2px}
-.cfe-kpi .v small{font-size:12px;font-weight:500;color:oklch(0.75 0.02 250)}
-.cfe-kpi .g{font-size:11px}
-.cfe-grid{display:grid;grid-template-columns:2fr 1fr;gap:12px}
-@media(max-width:900px){.cfe-grid{grid-template-columns:1fr}}
-.cfe-panel{background:oklch(0.28 0.04 250);border:1px solid oklch(0.38 0.04 250);border-radius:12px;padding:14px}
-.cfe-panel.wide{grid-column:1/-1}
-.cfe-panel h4{font-size:12px;text-transform:uppercase;letter-spacing:.7px;color:oklch(0.78 0.03 200);margin:0 0 10px}
-.cfe-radar-panel{padding:18px 22px}
-.cfe-rag-panel{max-height:520px;overflow-y:auto}
-.cfe-kpi-risk{grid-column:span 2}
-.cfe-bar{height:8px;background:oklch(0.35 0.03 250);border-radius:6px;overflow:hidden;margin:8px 0 6px}
-.cfe-bar > div{height:100%;border-radius:6px;transition:width .35s ease}
-.cfe-echelle{margin-top:12px;padding:8px 12px;background:oklch(0.30 0.04 250 /.55);border-radius:8px;font-size:11.5px;color:oklch(0.85 0.02 250);line-height:1.5}
-.cfe-echelle b{color:#fff}
-.cfe-rag{display:flex;align-items:center;gap:9px;padding:6px 0;font-size:12.5px;border-bottom:1px solid oklch(0.35 0.03 250)}
-.cfe-rag:last-child{border-bottom:0}
-.cfe-rag .d{width:9px;height:9px;border-radius:50%;flex:none}
-.cfe-rag .n{flex:1}
-.cfe-rag .s{font-weight:700}
-.cfe-act{font-size:12.5px;padding:7px 0;border-bottom:1px solid oklch(0.35 0.03 250);display:flex;gap:8px}
-.cfe-act:last-child{border-bottom:0}
-.cfe-legend{display:flex;gap:12px;flex-wrap:wrap;font-size:10.5px;color:oklch(0.75 0.02 250);margin-top:8px}
-.cfe-legend i{display:inline-block;width:9px;height:9px;border-radius:3px;margin-right:4px}
-.cfe-note{margin-top:14px;padding:11px 14px;background:oklch(0.30 0.04 250 /.55);border-radius:12px;font-size:12.5px;line-height:1.55}
-@media print{.cfe{background:#fff;color:#222;border:1px solid #ccc}.cfe-panel,.cfe-kpi{background:#f7f9fb;border-color:#dde3ea}
-  .cfe-head .t,.cfe-kpi .v{color:#12303f}}
+.cfe{background:#fff;border-radius:16px;border:2px solid #17428F;padding:0;color:#222;font-family:Arial,Helvetica,sans-serif;overflow:hidden}
+.cfe-header{background:#17428F;color:#fff;padding:14px 20px;display:flex;justify-content:space-between;align-items:center}
+.cfe-header .t{font-size:18px;font-weight:700;letter-spacing:.5px}
+.cfe-header .chips{display:flex;gap:8px}
+.cfe-header .chip{background:rgba(255,255,255,.15);padding:3px 10px;border-radius:20px;font-size:11px}
+.cfe-body{padding:20px}
+.cfe-cols{display:grid;grid-template-columns:1fr 280px;gap:20px;align-items:start}
+@media(max-width:900px){.cfe-cols{grid-template-columns:1fr}}
+.cfe-right{display:flex;flex-direction:column;gap:14px}
+.cfe-box{border:1.5px solid #17428F;border-radius:12px;overflow:hidden}
+.cfe-box-head{background:#17428F;color:#fff;padding:7px 12px;font-size:11px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;text-align:center}
+.cfe-box-body{padding:12px 14px}
+.cfe-echelle{display:flex;flex-wrap:wrap;gap:6px 12px;font-size:11px}
+.cfe-echelle span{display:flex;align-items:center;gap:5px}
+.cfe-echelle i{display:inline-block;width:18px;height:18px;border-radius:50%;text-align:center;line-height:18px;font-style:normal;font-weight:700;color:#fff;font-size:10px}
+.cfe-forts{list-style:none;padding:0;margin:0}
+.cfe-forts li{display:flex;align-items:flex-start;gap:6px;padding:4px 0;font-size:12px;border-bottom:1px solid #f0f0f0}
+.cfe-forts li:last-child{border-bottom:0}
+.cfe-forts .check{color:#1f9d55;font-size:16px;flex:none}
+.cfe-actions{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-top:16px}
+.cfe-prio{border-radius:10px;padding:12px 14px;font-size:12px}
+.cfe-prio.p1{background:#fbe9e7;border-left:4px solid #d23f2f}
+.cfe-prio.p2{background:#fff3e0;border-left:4px solid #e5a800}
+.cfe-prio.p3{background:#e8f5e9;border-left:4px solid #1f9d55}
+.cfe-prio h5{margin:0 0 6px;font-size:11.5px;text-transform:uppercase;letter-spacing:.5px}
+.cfe-prio.p1 h5{color:#d23f2f} .cfe-prio.p2 h5{color:#e5a800} .cfe-prio.p3 h5{color:#1f9d55}
+.cfe-prio ul{margin:0;padding-left:16px} .cfe-prio li{margin:2px 0}
+.cfe-footer{margin-top:16px;padding:10px 14px;background:#f5f7fa;border-radius:8px;font-size:11px;color:#44546A;line-height:1.5}
+@media print{.cfe{border:1px solid #ccc;page-break-inside:avoid}.cfe-header{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
 `;
+
   function injectCSS() {
     if (document.getElementById('cfe-style')) return;
     const s = document.createElement('style'); s.id = 'cfe-style'; s.textContent = CSS; document.head.appendChild(s);
   }
 
-  /* ---------- Radar sur échelle 0–4 (« radar en 4 ») ---------- */
-  function radar4(axes) {
-    const n = axes.length;
-    if (n < 3) return '<div style="font-size:12px;color:#9aa3b2">Radar : 3 axes minimum.</div>';
-    /* viewBox élargi + rayon plus grand pour lisibilité et export PNG */
-    const cx = 280, cy = 250, R = 165;
-    const ang = i => (-90 + i * 360 / n) * Math.PI / 180;
-    const pt = (i, r) => [cx + Math.cos(ang(i)) * r, cy + Math.sin(ang(i)) * r];
-    const grid = 'oklch(0.45 0.03 250)';
-    let g = '';
-    [1, 2, 3, 4].forEach(l => {
-      g += `<polygon points="${axes.map((_, i) => pt(i, R * l / 4).join(',')).join(' ')}" fill="none" stroke="${grid}" stroke-width="${l === 4 ? 1.6 : 0.9}"/>`;
-      g += `<text x="${cx + 5}" y="${cy - R * l / 4 + 4}" font-size="10" fill="oklch(0.6 0.02 250)">${l}</text>`;
-    });
-    axes.forEach((_, i) => { const [x, y] = pt(i, R); g += `<line x1="${cx}" y1="${cy}" x2="${x}" y2="${y}" stroke="${grid}"/>`; });
-    const poly = axes.map((a, i) => pt(i, R * Math.max(a.score, 0) / 4).join(',')).join(' ');
-    g += `<polygon points="${poly}" fill="oklch(0.66 0.10 195 / .32)" stroke="oklch(0.72 0.10 195)" stroke-width="2.2"/>`;
-    axes.forEach((a, i) => { const [x, y] = pt(i, R * Math.max(a.score, 0) / 4); g += `<circle cx="${x}" cy="${y}" r="4.2" fill="${niv(a.score).hex}" stroke="#fff" stroke-width="1.3"/>`; });
-    /* Labels : plus grands, non tronqués (35 caractères) */
-    axes.forEach((a, i) => {
-      const [x, y] = pt(i, R + 30);
-      const anchor = Math.abs(x - cx) < 20 ? 'middle' : (x < cx ? 'end' : 'start');
-      const lab = a.label.length > 34 ? a.label.slice(0, 33) + '…' : a.label;
-      g += `<text x="${x}" y="${y}" font-size="12" font-weight="500" fill="oklch(0.85 0.02 250)" text-anchor="${anchor}" dominant-baseline="middle">${esc(lab)}</text>`;
-    });
-    return `<svg viewBox="0 0 560 500" width="100%" style="max-width:100%;display:block" preserveAspectRatio="xMidYMid meet">${g}</svg>`;
-  }
-
-  /* ---------- Jauge de risque résiduel ---------- */
-  function gauge(score) {
-    const b = bande(score), cx = 110, cy = 118, r = 88;
-    const arc = (f, t, c) => {
-      const p1 = [cx + r * Math.cos(f * Math.PI / 180), cy - r * Math.sin(f * Math.PI / 180)];
-      const p2 = [cx + r * Math.cos(t * Math.PI / 180), cy - r * Math.sin(t * Math.PI / 180)];
-      return `<path d="M ${p1[0]} ${p1[1]} A ${r} ${r} 0 0 1 ${p2[0]} ${p2[1]}" fill="none" stroke="${c}" stroke-width="13" stroke-linecap="round"/>`;
+  /* ═══════════ CALCULS ═══════════ */
+  function calc(axes) {
+    const actifs = axes.filter(a => a.score >= 1);
+    const nc = axes.length - actifs.length;
+    const residuel = actifs.length ? Math.round(actifs.reduce((s, a) => s + (RESIDUEL[MAP_OLD[a.score]] || 0), 0) / actifs.length) : 0;
+    const maitrise = actifs.length ? Math.round(actifs.reduce((s, a) => s + a.score, 0) / (actifs.length * 4) * 100) : null;
+    return {
+      actifs, nc, residuel, maitrise,
+      critiques: actifs.filter(a => a.score <= 1),
+      renforcer: actifs.filter(a => a.score === 2),
+      forts: actifs.filter(a => a.score >= 3)
     };
-    let g = '';
-    [[0, 20, '#1f9d55'], [20, 40, '#d6b400'], [40, 60, '#e58a2a'], [60, 80, '#d23f2f'], [80, 100, '#4a2320']]
-      .forEach(s => g += arc(180 - s[0] * 1.8, 180 - s[1] * 1.8, s[2]));
-    const a = (180 - score * 1.8) * Math.PI / 180;
-    g += `<line x1="${cx}" y1="${cy}" x2="${cx + (r - 18) * Math.cos(a)}" y2="${cy - (r - 18) * Math.sin(a)}" stroke="#fff" stroke-width="3" stroke-linecap="round"/>`;
-    g += `<circle cx="${cx}" cy="${cy}" r="6" fill="#fff"/>`;
-    g += `<text x="${cx}" y="${cy - 20}" text-anchor="middle" font-family="DM Serif Display,serif" font-size="34" fill="${b.hex}">${score}</text>`;
-    g += `<text x="${cx}" y="${cy + 2}" text-anchor="middle" font-size="10" fill="oklch(0.7 0.02 250)">/ 100</text>`;
-    return `<svg viewBox="0 0 220 138" width="100%" style="max-width:230px">${g}</svg>`;
   }
   function bande(s) {
     if (s <= 20) return { lab: 'Maîtrise satisfaisante', hex: '#1f9d55' };
@@ -125,21 +223,7 @@
     return { lab: 'Situation critique', hex: '#4a2320' };
   }
 
-  /* ---------- Calculs ---------- */
-  function calc(axes) {
-    const actifs = axes.filter(a => a.score >= 1);
-    const nc = axes.length - actifs.length;
-    const residuel = actifs.length ? Math.round(actifs.reduce((s, a) => s + RESIDUEL[a.score], 0) / actifs.length) : 0;
-    const maitrise = actifs.length ? Math.round(actifs.reduce((s, a) => s + a.score, 0) / (actifs.length * 4) * 100) : null;
-    return {
-      actifs, nc, residuel, maitrise,
-      critiques: actifs.filter(a => a.score <= 1),
-      renforcer: actifs.filter(a => a.score === 2),
-      forts: actifs.filter(a => a.score >= 3)
-    };
-  }
-
-  /* ---------- Rendu ---------- */
+  /* ═══════════ RENDU PRINCIPAL ═══════════ */
   function render(host, axes, meta) {
     injectCSS();
     const el = typeof host === 'string' ? document.getElementById(host.replace('#', '')) : host;
@@ -147,73 +231,95 @@
     axes = (axes || []).filter(a => a && a.label).map(a => ({ label: a.label, score: Math.max(0, Math.min(4, +a.score || 0)), note: a.note || '' }));
     if (!axes.length) { el.innerHTML = '<p style="font-size:13px;color:#7a8598">Cotez au moins un axe pour générer le cockpit.</p>'; return; }
     meta = meta || {};
-    const c = calc(axes), b = bande(c.residuel);
+    const c = calc(axes);
     const date = meta.date || new Date().toISOString().slice(0, 10);
 
-    /* KPI standard */
-    const kpi = (l, v, u, g, col) => `<div class="cfe-kpi"><div class="l">${l}</div>
-      <div class="v">${v}${u ? `<small>${u}</small>` : ''}</div><div class="g" style="color:${col || '#9fb4c8'}">${g || ''}</div></div>`;
-    /* KPI risque résiduel enrichi d'une mini-barre + libellé de bande */
-    const kpiRisque = (v, u, g, col) => `<div class="cfe-kpi cfe-kpi-risk">
-      <div class="l">Risque résiduel</div>
-      <div class="v" style="color:${col}">${v}${u ? `<small>${u}</small>` : ''}</div>
-      <div class="cfe-bar"><div style="width:${Math.min(100,v)}%;background:${col}"></div></div>
-      <div class="g" style="color:${col};font-weight:600">${g}</div></div>`;
+    /* Classification en macro-catégories */
+    const groups = classifyAxes(axes);
+    const sg = scoreGlobal(groups);
 
-    const rag = c.actifs.slice().sort((a, b2) => a.score - b2.score).map(a => {
-      const n = niv(a.score);
-      return `<div class="cfe-rag"><span class="d" style="background:${n.hex}"></span>
-        <span class="n">${esc(a.label)}</span><span class="s" style="color:${n.hex}">${a.score}/4 · ${n.lab}</span></div>`;
-    }).join('');
-
-    const actions = c.actifs.filter(a => a.score <= 2).sort((a, b2) => a.score - b2.score).slice(0, 5).map(a => {
-      const urgent = a.score <= 1;
-      return `<div class="cfe-act"><span>${urgent ? '🔴' : '🟠'}</span>
-        <span style="flex:1">${esc(a.label)}<br><small style="color:oklch(0.7 0.02 250)">
-        ${urgent ? 'Mesure absente — action sous 3 mois' : 'Mesure partielle — consolider sous 6 mois'}</small></span></div>`;
-    }).join('') || '<div class="cfe-act">✅ <span>Aucun axe sous le seuil : maintenir les mesures en place et tracer les vérifications périodiques.</span></div>';
-
-    const concl = `Indice de maîtrise : ${c.maitrise != null ? c.maitrise + '/100' : '—'} sur ${c.actifs.length} axe(s) coté(s)`
-      + (c.nc ? ` (${c.nc} axe(s) non concerné(s) exclu(s) du calcul)` : '') + '. '
-      + `Risque résiduel pondéré : ${c.residuel}/100 — ${b.lab.toLowerCase()}. `
-      + (c.critiques.length ? `Axes critiques : ${c.critiques.map(a => a.label).join(', ')}. ` : 'Aucun axe critique. ')
-      + (c.renforcer.length ? `À consolider : ${c.renforcer.map(a => a.label).join(', ')}. ` : '')
-      + `Document d'aide à la décision — à valider par le médecin du travail après visite (art. R.4624-46).`;
+    /* Points forts (score 1 = très faible risque = point fort) */
+    const forts = axes.filter(a => a.score >= 4).slice(0, 8);
+    /* Actions : axes mal cotés, classés par urgence */
+    const p1 = axes.filter(a => a.score <= 1 && a.score > 0);
+    const p2 = axes.filter(a => a.score === 2);
+    const p3 = axes.filter(a => a.score >= 3);
 
     el.innerHTML = `<div class="cfe">
-      <div class="cfe-head">
-        <div class="t">Cockpit synthétique — ${esc(meta.entreprise || 'entreprise')}</div>
-        <div>${meta.naf ? `<span class="cfe-chip">NAF ${esc(meta.naf)}</span>` : ''}
-          <span class="cfe-chip">${axes.length} axes</span><span class="cfe-chip">${esc(date)}</span></div>
+      <div class="cfe-header">
+        <div class="t">SYNTHÈSE DES RISQUES PROFESSIONNELS</div>
+        <div class="chips">
+          ${meta.naf ? `<span class="chip">NAF ${esc(meta.naf)}</span>` : ''}
+          <span class="chip">${axes.length} risques évalués</span>
+          <span class="chip">${esc(date)}</span>
+        </div>
       </div>
+      <div class="cfe-body">
+        <div style="text-align:center;font-size:14px;font-weight:700;color:#17428F;margin-bottom:4px">
+          DIAGRAMME EN ARAIGNÉE DES RISQUES
+        </div>
+        <div style="text-align:center;font-size:12px;color:#44546A;margin-bottom:14px">
+          Évaluation de l'importance des risques pour l'entreprise — ${esc(meta.entreprise || '')}
+        </div>
 
-      <div class="cfe-kpis">
-        ${kpiRisque(c.residuel, '/100', b.lab, b.hex)}
-        ${kpi('Indice de maîtrise', c.maitrise != null ? c.maitrise : '—', '/100', 'moyenne des axes cotés', '#8fd0e0')}
-        ${kpi('Points critiques', c.critiques.length, '', 'axes 0–1', c.critiques.length ? '#d23f2f' : '#4fbf7a')}
-        ${kpi('À renforcer', c.renforcer.length, '', 'axes 2', c.renforcer.length ? '#e58a2a' : '#4fbf7a')}
-        ${kpi('Points forts', c.forts.length, '', 'axes 3–4', '#4fbf7a')}
-        ${kpi('Non concernés', c.nc, '', 'exclus du calcul', '#9aa3b2')}
-      </div>
-
-      <div class="cfe-grid">
-        <div class="cfe-panel cfe-radar-panel">
-          <h4>Radar de maîtrise (échelle 0–4)</h4>
-          ${radar4(axes)}
-          <div class="cfe-legend">${NIVEAUX.map(n => `<span><i style="background:${n.hex}"></i>${n.v} — ${n.lab}</span>`).join('')}</div>
-          <div class="cfe-echelle">
-            <b>Échelle de risque résiduel :</b> 1 Absent = 100 · 2 Partiel = 50 · 3 En place = 25 · 4 Optimisé = 0
+        <div class="cfe-cols">
+          <div>${radar(groups)}</div>
+          <div class="cfe-right">
+            <div class="cfe-box">
+              <div class="cfe-box-head">Score global de prévention</div>
+              <div class="cfe-box-body" style="text-align:center">
+                ${gaugeCircle(sg)}
+                <div style="font-size:11px;color:#44546A;margin-top:6px;line-height:1.4">
+                  ${sg.pct >= 60
+                    ? 'Les risques sont identifiés et en partie maîtrisés. Des actions prioritaires sont à mettre en œuvre pour renforcer la prévention.'
+                    : 'Le niveau de maîtrise est insuffisant. Des actions correctives urgentes sont nécessaires.'}
+                </div>
+              </div>
+            </div>
+            <div class="cfe-box">
+              <div class="cfe-box-head">Échelle d'évaluation</div>
+              <div class="cfe-box-body">
+                <div class="cfe-echelle">
+                  ${NIVEAUX.slice(1).reverse().map(n => `<span><i style="background:${n.hex}">${n.v}</i>${n.lab}</span>`).join('')}
+                </div>
+                <div style="font-size:10px;color:#8ba0b8;margin-top:6px">Évaluation basée sur la fréquence et la gravité du risque</div>
+              </div>
+            </div>
+            ${forts.length ? `<div class="cfe-box">
+              <div class="cfe-box-head" style="background:#1f9d55">Points forts déjà en place</div>
+              <div class="cfe-box-body">
+                <ul class="cfe-forts">${forts.map(a => `<li><span class="check">✅</span>${esc(a.label)}</li>`).join('')}</ul>
+              </div>
+            </div>` : ''}
           </div>
         </div>
-        <div class="cfe-panel cfe-rag-panel"><h4>Indicateurs RAG par axe</h4>${rag}</div>
-        <div class="cfe-panel wide"><h4>Actions prioritaires</h4>${actions}</div>
-      </div>
 
-      <div class="cfe-note"><b style="color:#fff">Avis de synthèse —</b> ${esc(concl)}</div>
+        <div style="text-align:center;font-size:14px;font-weight:700;color:#17428F;margin-top:20px;margin-bottom:10px;text-transform:uppercase">
+          Plan d'actions — Priorisation des risques
+        </div>
+        <div class="cfe-actions">
+          ${p1.length ? `<div class="cfe-prio p1">
+            <h5>🔴 Priorité 1 — à traiter en priorité</h5>
+            <ul>${p1.map(a => `<li>${esc(a.label)}</li>`).join('')}</ul>
+          </div>` : ''}
+          ${p2.length ? `<div class="cfe-prio p2">
+            <h5>🟡 Priorité 2 — à planifier</h5>
+            <ul>${p2.map(a => `<li>${esc(a.label)}</li>`).join('')}</ul>
+          </div>` : ''}
+          ${p3.length ? `<div class="cfe-prio p3">
+            <h5>✅ Priorité 3 — à maintenir</h5>
+            <ul>${p3.map(a => `<li>${esc(a.label)}</li>`).join('')}</ul>
+          </div>` : ''}
+        </div>
+
+        <div class="cfe-footer">
+          Ce diagramme synthétique permet d'identifier en un coup d'œil les risques prioritaires et de piloter efficacement votre démarche de prévention.<br>
+          Document établi le ${esc(date)} — ${esc(meta.entreprise || 'Établissement')} · ${esc(meta.preventeur || 'Préventeur')} · Fiche d'entreprise (art. R.4624-46)
+        </div>
+      </div>
     </div>`;
   }
 
-  /* ---------- Relecture des <select> déjà présents dans la page ---------- */
   function fromDOM(sel) {
     const root = document.querySelector(sel);
     if (!root) return [];
@@ -224,5 +330,5 @@
     }).filter(a => a.label);
   }
 
-  global.CockpitFE = { render, fromDOM, calc, bande, radar4, gauge, NIVEAUX, RESIDUEL };
+  global.CockpitFE = { render, fromDOM, calc, bande, classifyAxes, scoreGlobal, radar, gaugeCircle, NIVEAUX, RESIDUEL };
 })(window);
