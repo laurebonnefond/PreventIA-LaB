@@ -153,6 +153,7 @@ table.rq td{padding:8px 6px;border-bottom:1px solid oklch(0.95 .005 250);vertica
         <button class="btn" onclick="ameDemo()">📄 Charger un exemple</button>
         <div style="flex:1"></div>
         <button class="btn accent" id="ameDlBtn" onclick="ameExportDocx()">📥 Télécharger le .docx amélioré</button>
+        <button class="btn accent" onclick="exportSPSTI()">📄 Export SPSTI + Conclusions</button>
       </div>
       <div class="hint" id="ameFileStatus">L'analyse démarre automatiquement dès l'import : la fiche améliorée s'affiche ci-dessous et reste entièrement modifiable avant téléchargement.</div>
 
@@ -445,4 +446,6 @@ async function downloadCockpitPNG(){
 <script src="docx-safe-loader.js"></script>
 <script src="cockpit-synthetique.js"></script>
 <script src="fe-ameliorateur.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/pizzip@3.1.6/dist/pizzip.js"></script>
+<script src="./spsti-export.js"></script>
 </body></html>
