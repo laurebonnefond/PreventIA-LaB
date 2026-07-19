@@ -1,0 +1,595 @@
+{
+  "meta": {
+    "source": "CONCLUSION_FE_2026.docx",
+    "version": "1.0.0",
+    "generated_at": "2026-07-18",
+    "auteur_validation": "Modèle SPSTI 23/87 — Dr RM",
+    "usage": "Base de blocs réglementaires à insérer en fin de fiche d'entreprise, conditionnellement à la liste des risques identifiés. Les clés de 'risques' sont alignées sur la nomenclature PréventIA-LaB (cf. bloc 'mapping' pour la table de correspondance)."
+  },
+  "commun": {
+    "installations_generales": {
+      "titre": "Je vous rappelle que :",
+      "paragraphes": [
+        "\\- Les vestiaires : pourvus d'un nombre suffisant de sièges et d'armoires individuelles ininflammables, munies d'une serrure ou d'un cadenas, ils doivent être installés dans un local spécial de surface convenable, isolés des locaux de travail et de stockage et placés à proximité du passage des travailleurs.",
+        "- Les lavabos sont à eau potable. L'eau est à température réglable et est distribuée à raison d'un lavabo pour dix travailleurs au plus. Art R4228-7 du code du travail",
+        "Des moyens de nettoyage et de séchage ou d'essuyage appropriés sont mis à la disposition des travailleurs. Ils sont entretenus ou changés chaque fois que cela est nécessaire.",
+        "\\- Les cabinets d'aisance : au moins un cabinet et un urinoir pour 20 hommes et deux cabinets pour 20 femmes. Des installations séparées doivent être prévues pour les travailleurs masculins et féminins."
+      ]
+    },
+    "eclairage_secours": {
+      "titre": "Eclairage de secours",
+      "paragraphes": [
+        "L'éclairage de sécurité est désormais obligatoire à l'intérieur de tous les établissements recevant du public et/ou des travailleurs. Voici toutes les règles à savoir sur l'installation et la maintenance de ces équipements qui assurent la protection des personnes et permettent de sauver des vies.",
+        "L'éclairage d'évacuation permet à toute personne d'accéder à l'extérieur par l'éclairage des cheminements, des sorties, de la signalisation de sécurité, des obstacles et des indications de changements de direction.\\ Il doit être mis en œuvre dans les dégagements et dans tout local pour lequel les conditions suivantes ne sont pas réunies :",
+        "- Le local débouche directement, de plain-pied, sur un dégagement commun équipé d'un éclairage d'évacuation, ou à l'extérieur (condition non remplie)",
+        "- L'effectif du local est inférieur à 20 personnes ;",
+        "- Toute personne se trouvant à l'intérieur dudit local doit avoir moins de trente mètres à parcourir.\\",
+        "- Renseignez -vous sur l'obligation d'installer un BAES (bloc autonome sécurité éclairage)",
+        "Plan d'intervention : regroupe la totalité de l'établissement",
+        "Plan d'évacuation : sur un niveau",
+        "Des dispositifs d'alarme, de surveillance et des équipements de secours contre l'incendie doivent être mis en place dans tous les ERP de façon appropriée à leur taille et aux risques encourus : extincteurs (1 pour 200 à 300 m²), éclairage de sécurité, antivols, etc.",
+        "Le plan d'évacuation des locaux, accompagné des consignes de sécurité, doit être affiché :",
+        "- À chaque niveau desservi par une cage d'escalier ;",
+        "- Dans chaque salle pouvant contenir au moins 5 personnes ;",
+        "- Dans les vestiaires et les salles de repos du personnel.",
+        "Il doit indiquer :",
+        "- Les itinéraires d'évacuation vers l'extérieur ;",
+        "- Les barrages (ou robinet de coupure) du gaz, de l'eau et de l'électricité ;",
+        "- L'emplacement des extincteurs et des trappes de désenfumage\\...",
+        "art. R. 4227-29 + vérification annuelle art. R. 4227-38"
+      ]
+    },
+    "premiers_secours": {
+      "titre": "Matériel de premiers secours",
+      "paragraphes": [
+        "Le Code du travail rend obligatoire la présence d'un matériel de premiers secours sur le lieu de travail. Il est adapté à la nature des risques existants dans l'entreprise, facilement accessible et fait l'objet d'une signalisation par panneaux.",
+        "Il n'existe pas de liste type pour la composition de la trousse de secours. L'employeur doit définir le contenu de cette dernière après avoir sollicité l'avis du médecin du travail. Il est conseillé que le contenu de la trousse de secours tienne compte de l'évaluation des risques menée dans l'entreprise et de la formation de la personne qui l'utilisera (sauveteur secouriste du travail, infirmier, médecin...).",
+        "Ce matériel doit être vérifié périodiquement et signalé. Veillez à la mise à jour de votre trousse de secours",
+        "De plus, cette personne doit être informée de son contenu et de toute nouvelle modification.",
+        "- Veuillez trouver en pièce jointe un exemple de trousse de secours",
+        "- Veuillez trouver en pièce jointe la fiche pratique « Conduite à tenir en cas d'urgence 1^er^ secours »",
+        "Au regard des risques professionnels, il peut être intéressant d'avoir à disposition une trousse de secours spécifique à la récupération et au transport de doigts ou membres sectionnés.",
+        "Tous les médicaments délivrés sur ordonnance et en général, tous types de médicaments ne doivent en aucun cas se trouver dans une trousse de premiers secours. Un médicament n'est jamais totalement inoffensif, il peut avoir des effets secondaires imprévisibles."
+      ]
+    },
+    "sst": {
+      "titre": "Formation Sauveteur Secouriste du Travail",
+      "paragraphes": [
+        "La formation sauveteur secouriste du travail (SST) a pour missions de porter les premiers secours à toute victime d'un accident du travail, mais aussi de participer à la prévention des risques professionnels dans son entreprise.",
+        "Pour cela, il doit acquérir des compétences spécifiques dans le cadre d'une formation initiale, puis de suivre régulièrement une formation de maintien actualisation des compétences.",
+        "- Veuillez trouver en pièce jointe une plaquette formation SST proposée par STL",
+        "*Jurisprudence & réglementation :SST = recyclage MAC 24 mois + Passeport Prévention (loi 2021)*"
+      ]
+    },
+    "duerp": {
+      "titre": "Document Unique d'Evaluation des Risques Professionnels",
+      "paragraphes": [
+        "Afin de prévenir les risques professionnels de l'entreprise, il est nécessaire de réaliser le Document Unique d'Évaluation des Risques Professionnels, et profiter de tout changement pour le faire évoluer. Il doit être tenu à disposition des personnes internes à l'entreprise, notamment les salariés, les membres du CSE, mais également externes telles que les inspecteurs du travail ou Médecins du Travail.",
+        "Le DUERP et ses versions successives devront être conservés, et tenus à la disposition des travailleurs, des anciens travailleurs, ainsi que de toute personne ou instance pouvant justifier d'y avoir accès durant 40 ans minimum.",
+        "*Jurisprudence & réglementation :DUERP enrichi avec loi 2021, PAPRIPACT, seuil 11 salariés, conservation 40 ans, transmission SPST*",
+        "Pour vous aider dans cette démarche vous pouvez en faire la demande auprès de votre médecin du travail.",
+        "Pour en savoir plus : <https://www.sante-travail-limousin.org/actualite/loi-sante-travail-de-nouvelles-modalites-pour-le-duerp/>",
+        "- Vous possédez ce document, pensez à sa mise à jour annuelle",
+        "- Veillez à sa réalisation. Il doit être accessible et à la > disposition des salariés. Je reste à votre disposition si vous > souhaitez que je vous accompagne pour l'élaboration de ce > document."
+      ]
+    },
+    "entretien_pro": {
+      "titre": "L'entretien professionnel",
+      "paragraphes": [
+        "L'entretien professionnel est un échange obligatoire pour toutes les entreprises, quel que soit leur effectif, entre le salarié et le manager.",
+        "L'objectif étant de permettre aux collaborateurs de faire le point sur leurs compétences, leurs souhaits d'évolution et les moyens pour y arriver tels que les formations.",
+        "Tous les 2 ans, c'est l'obligation légale minimum de récurrence des entretiens professionnels.",
+        "- Veuillez trouver une trame d'entretien professionnel en pièce jointe"
+      ]
+    },
+    "referent_ss": {
+      "titre": "Référent santé sécurité",
+      "paragraphes": [
+        "Depuis le 1er juillet 2012, l'employeur, quelle que soit la taille et le secteur de son entreprise, doit désigner un référent en santé et sécurité du travail.",
+        "La mission de ce référent en santé et sécurité du travail est notamment de participer à la rédaction du Document Unique de Sécurité d'évaluation des risques, de diffuser les consignes de sécurité, d'informer les nouveaux embauchés, intérimaires, saisonniers sur les dangers auxquels ils peuvent être confrontés, de s'assurer que les vérifications périodiques obligatoires du matériel et des équipements sont faites.",
+        "Attention :\\ Cette désignation ne remet pas en cause le principe de la responsabilité de l'employeur vis-à-vis de la santé et de la sécurité de ses salariés.",
+        "Pour en savoir plus : <https://www.inrs.fr/demarche/salarie-competent/ce-qu-il-faut-retenir.html>",
+        "*Jurisprudence & réglementation : ajout art. L. 4644-1 / R. 4644-1 + notion IPRP*"
+      ]
+    },
+    "affichage": {
+      "titre": "Affichage",
+      "paragraphes": [
+        "Toute entreprise quelle que soit sa taille, est tenue au respect d'un certain nombre d'affichages de documents règlementaires visant à garantir le droit à l'information et à la sécurité des travailleurs :",
+        "- Les coordonnées de l'inspection du travail et le nom de l'inspecteur,",
+        "- Adresse et numéro d'appel du service de santé au travail,",
+        "- Les coordonnées des secours d'urgence,",
+        "- Les consignes incendie sont des documents affichés qui donnent des mesures de prévention et de conduite à tenir, en cas de sinistre, par les occupants du local ou de l'établissement.",
+        "- Vous trouverez ci-joint un exemple d'affichage obligatoire",
+        "Pour votre information je vous joins :",
+        "- Une affiche \\@learning",
+        "Pour toutes informations concernant la prévention, la formation, la réglementation et les obligations employeur vous pouvez consulter le site de votre service de Santé au travail",
+        "(SPSTI 23-87) sur : <https://spsti2387.fr/>",
+        "> Votre service Formations STL Limousin : > > Tél : 05 55 20 75 30 Email : > formation@stlim.org (mailto:formation@stlim.org)"
+      ]
+    }
+  },
+  "risques": {
+    "bruit": {
+      "titre": "Risques liés au bruit",
+      "paragraphes": [
+        "L'employeur évalue et, si nécessaire, mesure les niveaux de bruit auxquels les travailleurs sont exposés.",
+        "Ils sont réalisés à des intervalles appropriés, notamment lorsqu'une modification des installations ou des modes de travail est susceptible d'entraîner une élévation des niveaux de bruit. En cas de mesurage, celui-ci est renouvelé au moins tous les cinq ans.",
+        "L'équipe pluridisciplinaire se tient à votre disposition pour effectuer ces mesurages.",
+        "OU",
+        "Certains postes de travail nécessitent le port d'équipement de protection individuel. Nous vous conseillons d'établir des mesures de bruit dans votre entreprise afin de déterminer les zones de dépassement ou non des valeurs limites d'exposition professionnelle.",
+        "Pour cela nos équipes se tiennent à votre disposition pour toute aide complémentaire.",
+        "Pour en savoir plus : <https://www.inrs.fr/risques/bruit/ce-qu-il-faut-retenir.html>"
+      ]
+    },
+    "lumineuses": {
+      "titre": "Risques liés aux ambiances lumineuses",
+      "paragraphes": [
+        "L'éclairage doit être conçu de manière à éviter toute fatigue visuelle, ainsi que les affections de la vue qui en résultent. Les locaux de travail doivent disposer d'une lumière suffisante.",
+        "Les risques d'une mauvaise ambiance lumineuse sur le lieu de travail sont multiples. Un éclairage mal adapté, trop faible ou au contraire trop fort, peut entrainer :",
+        "- Des troubles de la vision",
+        "- De la fatigue",
+        "- Des douleurs liées à la mauvaise posture",
+        "- Etc...",
+        "Une bonne ambiance visuelle permet d'éviter tous ces désagréments et surtout prévenir les risques d'accidents.",
+        "L'équipe pluridisciplinaire se tient à votre disposition pour effectuer ces mesurages.",
+        "Pour en savoir plus : <https://www.inrs.fr/media.html?refINRS=ED%2085>"
+      ]
+    },
+    "thermique": {
+      "titre": "Risques liés aux ambiances thermiques",
+      "paragraphes": [
+        "C'est une source d'inconfort, qui peut conduire à une baisse de vigilance ou de précision des gestes qui augmente le risque d'accident, certaines pathologies pulmonaires, le risque de survenue de troubles musculosquelettiques.",
+        "Plusieurs paramètres sont à prendre en compte, qu'il s'agisse de travail en extérieur ou à l'intérieur de locaux. Ils peuvent être liés à la température (extérieure ou générée par un procédé de travail) mais aussi aux caractéristiques de l'environnement de travail (présence de rayonnement, vitesse et humidité de l'air), à la tâche à effectuer, à l'organisation du travail et à l'aménagement des locaux.",
+        "Organisation du travail :",
+        "- Limiter les temps d'exposition à la chaleur ou effectuer une rotation des tâches lorsque des postes moins exposés en donnent la possibilité.",
+        "- Limiter le travail physique intense et le port de charge répétitif.",
+        "- Permettre une période d'acclimatation suffisante avant d'assurer des activités physiques intenses",
+        "- Éviter le travail isolé et privilégier le travail d'équipe.",
+        "- Augmenter la fréquence des pauses de récupération.",
+        "- Aménager des aires de repos climatisées.",
+        "- Fournir une source d'eau fraîche et inciter les salariés à boire souvent.",
+        "- Établir une procédure d'urgence en cas de malaise lié à l'exposition à la chaleur.",
+        "- Modifier les horaires de travail lors des périodes caniculaires...",
+        "Pour en savoir plus : <https://www.inrs.fr/risques/chaleur/mesures-prevention.html>",
+        "De nombreuses situations professionnelles exposent les salariés au froid, et cela peut engendrer des risques pour leur santé, notamment :",
+        "- Le risque le plus important est l'hypothermie (potentiellement mortelle) dont les signes d'alerte sont :",
+        "- Symptômes généraux : frissons, atonie (manque d'énergie) ou fatigue",
+        "- Symptômes cutanés : peau froide",
+        "- Symptômes neurosensoriels : désorientation, confusion, voire perte de conscience.",
+        "- Simple engourdissement -- picotements de la peau, voire gelure (« brûlure » par le froid nécessitant des soins urgents)",
+        "Lorsque la température ambiante est inférieure à 5° C, la vigilance s'impose.",
+        "En cas de risque d'exposition, il convient :",
+        "- D'organiser le travail pour éviter, sinon limiter le temps de travail au froid",
+        "- De fournir des équipements de travail adaptés.",
+        "> NB : L'INRS précise qu'Il est préférable de porter plusieurs couches > de vêtements qu'un seul vêtement épais ; la tête et les mains doivent > être protégées.",
+        "- D'aménager les temps de pause : locaux de pause chauffés et prévoir des temps de récupération supplémentaires",
+        "- De prévenir le risque de glissade : choisir des revêtements de sol permettant de limiter ce risque et de fournir des chaussures antidérapantes",
+        "- D'éviter les situations de travail isolé en ambiance froide (sinon assurer un dispositif de protection du travailleur isolé)",
+        "- D'informer vos salariés sur les risques associés au travail au froid",
+        "*Jurisprudence & réglementation :Ambiances thermiques : norme NF EN 12464-1 + guide INRS ED 6532 (nov. 2024)*"
+      ]
+    },
+    "vibrations_corps": {
+      "titre": "Risques liés aux vibrations corps entier",
+      "paragraphes": [
+        "La conduite régulière d'un véhicule ou d'un engin de chantier, de transport ou de manutention peut exposer les salariés à des niveaux élevés de vibrations. Transmises à l'ensemble du corps, ces vibrations peuvent favoriser la survenue de douleurs particulièrement au niveau du dos. Pour prévenir ces risques, la réglementation définit des valeurs seuils au-delà desquelles des actions de prévention doivent être mises en œuvre.",
+        "L'employeur est tenu d'évaluer les niveaux de vibrations mécaniques auxquels les salariés sont exposés et de mettre en œuvre des mesures de prévention visant à supprimer ou à réduire les risques résultant de cette exposition (réduire les vibrations à la source, diminuer la transmission des vibrations au travailleur, réduire l'effet de transmission des vibrations et former les opérateurs).",
+        "Les pathologies associées aux vibrations corps entier sont reconnues comme maladie professionnelle (tableau 97 du RG).",
+        "Il existe pour vous aider à évaluer le risque vibratoire l'outil OSEV que propose l'INRS, cet outil vous proposera des pistes d'amélioration :",
+        "Lien outil cliquable: *OSEV - CORPS ENTIER* (https://www.inrs.fr/publications/outils/Osev-Corps-Entier/outilOsevCorpsEntier.html)",
+        "La réglementation française définit des valeurs limite d'exposition."
+      ]
+    },
+    "vibrations_membres": {
+      "titre": "Risques liés aux vibrations membres supérieurs",
+      "paragraphes": [
+        "Les vibrations générées par certaines machines portatives ou guidées à la main peuvent être à l'origine d'affections invalidantes au niveau des mains et des bras.",
+        "Le Code du travail oblige les employeurs à prévenir le risque vibratoire. Il fixe notamment pour une exposition quotidienne une valeur déclenchant l'action de prévention et une valeur limite d'exposition. Il précise en outre les actions à entreprendre en cas de dépassement de ces valeurs. De nombreuses mesures permettent en effet de réduire l'exposition aux vibrations transmises aux membres supérieurs : choix du matériel et des conditions d'utilisation, information et formation des salariés...",
+        "Les pathologies associées à ce risque sont reconnues comme maladie professionnelle (tableau 69 du RG).",
+        "Il existe pour vous aider à évaluer le risque vibratoire l'outil OSEV que propose l'INRS, cet outil vous proposera des pistes d'amélioration :",
+        "Cliquez ici (https://www.inrs.fr/publications/outils/Osev-membres-superieurs/outilOsevMembresSuperieurs.html): OSEV - MEMBRES SUPERIEURS (https://www.inrs.fr/publications/outils/Osev-membres-superieurs/outilOsevMembresSuperieurs.html)",
+        "Pour en savoir plus : <https://www.inrs.fr/risques/vibrations/ce-qu-il-faut-retenir.html>"
+      ]
+    },
+    "radon": {
+      "titre": "Risques liés au radon",
+      "paragraphes": [
+        "Le RADON est un gaz radioactif naturel qui émane du sol. Il peut s'accumuler dans les bâtiments. L'exposition à des niveaux importants peut entraîner, à long terme, une augmentation du risque de développer un cancer du poumon.",
+        "Depuis le décret n°2018-437 relatif à la protection des travailleurs contre les risques dus aux rayonnements ionisants, le radon représente un risque professionnel qui doit être appréhendé de la même manière que les autres risques.",
+        "Tout employeur est dans l'obligation de procéder à une évaluation du risque radon dans le lieu de travail : au moins en sous-sol ou en rez-de-chaussée des bâtiments et/ou dans des lieux de travail spécifiques (se référer à la réglementation en vigueur) comme des cavités souterraines (carrières, mines, grottes, caves agricoles...) ou des ouvrages enterrés (barrages, égouts, tunnels...).",
+        "- Le guide pratique pour la prévention du risque radon (https://travail-emploi.gouv.fr/IMG/pdf/guide_dgt_-_prevention_du_risque_radon_-_edition2020.pdf) en milieu professionnel a vocation à accompagner les employeurs dans la prévention du risque et la mise en œuvre de la réglementation applicable aux lieux de travail.",
+        "- Le classement des communes est consultable sur la carte interactive (<https://www.irsn.fr/carte-radon>).",
+        "La Carsat Centre Ouest propose une aide financière régionale pour maîtriser le risque RADON.",
+        "Cette subvention TPE RADON s'adresse aux entreprises de moins de 50 salariés (TPE) des départements du Limousin et Poitou-Charentes désirant mettre en œuvre des plans d'action visant à réduire l'exposition au RADON dans ses locaux de travail.",
+        "Notre toxicologue se tient à votre entière disposition pour toute information complémentaire."
+      ]
+    },
+    "rayonnements_ionisants": {
+      "titre": "Risques liés aux rayonnements ionisants",
+      "paragraphes": [
+        "Le code du travail prévoit que tout travailleur, salarié ou non, exposé aux rayonnements ionisants bénéficie d'une surveillance médicale renforcée sous la responsabilité du médecin du travail.",
+        "Sa mise en œuvre repose sur un suivi dosimétrique individuel au cours de l'activité professionnelle.",
+        "Un travailleur est classé en catégorie A ou B, suivant la nature du poste. Ce classement radiologique par l'employeur après avis du médecin du travail, est effectué sur la base d'une estimation prévisionnelle des doses susceptibles d'être reçues :",
+        "- En catégorie A. Les travailleurs susceptibles d'être exposés professionnellement à une dose efficace supérieure à 6 millisievert (mSv) sur 12 mois glissants ou une dose équivalente supérieure à 3/10e des limites d'exposition ;",
+        "- En catégorie B. Les travailleurs susceptibles de dépasser la limite de dose efficace du public de 1mSv. Peuvent être inclus dans cette catégorie les mineurs de 16 à 18 ans exposés aux rayonnements dans le cadre de leur formation ;",
+        "- Les travailleurs qui ne sont pas classés en catégories A ou B sont considérés comme non exposés aux rayonnements ionisants dans le cadre de leur métier.",
+        "L'employeur est dans l'obligation de mettre en place une organisation de la radioprotection",
+        "L'organisation de la radioprotection repose sur la désignation d'un Conseiller en radioprotection.",
+        "Ce conseiller peut être :",
+        "− soit une personne physique salariée de l'établissement ou à défaut de l'entreprise, et qui sera dénommée « personne compétente en radioprotection » ;",
+        "− soit une personne morale, dénommée « organisme compétent en radioprotection ».",
+        "Pour en savoir plus :"
+      ]
+    },
+    "champs_electromagnetiques": {
+      "titre": "Risques liés aux champs électromagnétiques",
+      "paragraphes": [
+        "Les champs électromagnétiques peuvent entraîner des conséquences sur la santé du travailleur.",
+        "Leurs effets à court terme peuvent être directs (échauffement des tissus biologiques\\...) ou indirects (incendie, explosion, dysfonctionnement de dispositifs électroniques en particulier les dispositifs médicaux actifs (pace maker, pompe à insuline...).",
+        "Il est donc important d'identifier les sources émettrices.",
+        "Comme pour les autres risques professionnels, l'employeur doit évaluer le risque lié aux champs électromagnétiques.",
+        "Pour estimer l'exposition de vos salariés, vous pouvez utiliser l'outil d'évaluation simplifié de l'INRS « OSERAY » (<http://www.inrs.fr/media.html?refINRS=outil61>).",
+        "Risques liés aux rayonnements optiques (UV, rayonnement solaire, laser)",
+        "Les rayonnements optiques auxquels peuvent être exposés les travailleurs sont parfois nocifs pour les yeux et pour la peau. Une démarche de prévention adaptée permet de réduire les risques pour la santé et la sécurité.",
+        "Les rayonnements optiques sont classés selon leurs longueurs d'onde et comprennent l'ultraviolet, la lumière visible - seul domaine perceptible par l'œil humain - et l'infrarouge.",
+        "!Spectre lumineux (media/image1.jpeg){width=\"6.25in\" height=\"1.6041666666666667in\"}",
+        "L'exposition prolongée à des rayonnements optiques de forte intensité peut présenter des dangers pour la peau et les yeux. Les effets sont d'ordres aigus ou chroniques et sont liés à la longueur d'onde, à l'intensité du rayonnement et à la durée d'exposition. Les atteintes de la peau peuvent se manifester sous forme d'érythème (coup de soleil), de vieillissement de la peau et de cancer. Pour l'œil, les effets directs immédiats se traduisent par des lésions de la cornée, de la conjonctive, voire de la rétine. A long terme l'exposition chronique peut entraîner une opacification du cristallin (cataracte).",
+        "L'exposition au rayonnement solaire n'est pas prise en compte dans les textes réglementaires cités. L'employeur reste néanmoins soumis à l'obligation de prendre les mesures nécessaires pour protéger la santé physique des travailleurs.",
+        "L'INRS a conçu le logiciel CatRayon (https://www.inrs.fr/media.html?refINRS=outil03) pour évaluer l'exposition aux rayonnements optiques dans les locaux de travail, déterminer les risques et proposer des moyens de prévention.",
+        "Pour en savoir plus : <https://www.inrs.fr/risques/rayonnements-optiques/ce-qu-il-faut-retenir.html>",
+        "Le laser produit et amplifie une onde lumineuse. La lumière qu'il produit est monochromatique, c'est-à-dire d'une couleur correspondant à une seule longueur d'onde définie, qui peut être dans l'infrarouge, le visible ou l'ultraviolet.",
+        "Chaque laser a une classe, indiquée par le constructeur, qui donne une idée de sa dangerosité. La norme EN60825-1 « Sécurité des appareils laser » précise les mentions à apposer sur les appareils pour chaque classe de laser.",
+        "Chaque appareil laser comprend des mécanismes techniques intégrés, par exemple un capot de protection associé à un organe de coupure du faisceau, visant à prévenir l'exposition accidentelle. Cependant, il faut porter des lunettes de protection adaptées à la longueur d'onde émise lorsqu'on utilise un laser d'une classe élevée et si le faisceau n'est pas confiné.\\ \\ S'il y a un risque d'approcher les mains de zones non protégées du parcours d'un faisceau laser puissant, il faut porter des gants de protection ininflammables.",
+        "L'employeur doit respecter les principes généraux de prévention du Code du travail, ainsi que les dispositions spécifiques à la prévention des risques d'exposition aux rayonnements optiques artificiels.",
+        "Pour procéder à l'évaluation des risques et mettre en place des mesures de prévention adaptées, l'employeur peut se baser sur les règles de prévention établies pour les rayonnements lasers présentées dans la brochure ED 6071 (https://www.inrs.fr/media.html?refINRS=ED%206071) ainsi que sur la documentation fournie par le (ou les) fabricant(s) des équipements lasers."
+      ]
+    },
+    "laser": {
+      "titre": "Risques laser",
+      "paragraphes": [
+        "Les lasers sont utilisés dans de nombreux secteurs d'activité.",
+        "Les yeux sont les organes les plus vulnérables. Les équipements de travail utilisant des lasers sont classés selon leur dangerosité, et les mesures de prévention à respecter sont fonction de cette dangerosité.",
+        "Le port de lunettes de protection et de gants ininflammables est indispensable lors de l'emploi d'un laser de classe élevée."
+      ]
+    },
+    "poussieres": {
+      "titre": "Risques liés aux poussières",
+      "paragraphes": [
+        "Les poussières peuvent provoquer différents effets sur la santé comme à court terme des irritations respiratoires et à long terme, des atteintes respiratoires. Elles sont de plus susceptibles d'engendrer des risques d'explosion lorsqu'elles sont combustibles.",
+        "- Mettre en place des aspirations à la source,",
+        "- Réduire ou proscrire l'utilisation de la soufflette,",
+        "- Organisez le nettoyage au sol des ateliers « à l'humide »,",
+        "- Créez un flux d'air, aérez",
+        "- Portez vos EPI....",
+        "Veiller à :",
+        "- Réduire l'utilisation de la soufflette, contrôler et réduire la pression d'air",
+        "- Créez un flux d'air"
+      ]
+    },
+    "chimique": {
+      "titre": "Risques Chimiques",
+      "paragraphes": [
+        "(Démarche de prévention)",
+        "1- L'identification, la suppression / substitution des produits les plus toxiques",
+        "La première étape consiste à repérer en particulier les agents chimiques cancérogènes ou dangereux dans le cadre de l'évaluation des risques du Document Unique d'Evaluation des Risques.",
+        "Les fiches de données sécurité doivent toutes être fournies par les fournisseurs et transmises au Médecin du Travail. Lors de l'évaluation des risques, toutes les activités doivent être analysées, y compris l'entretien.",
+        "2- Employer des systèmes clos pour acheminer les matières premières sèches (convoyeurs ou conduites fermées, distributeurs à vis clos\\...) et effectuer les opérations de glaçure dans des cabines.",
+        "3- Information sur les risques",
+        "4- Bonne aération des locaux",
+        "5- Ventilation générale de l'atelier adaptée",
+        "6- Très bonne hygiène individuelle et collective : nettoyage régulier des machines et des parois de l'atelier à l'aide d'un aspirateur industriel adapté avec un filtre absolu de haute efficacité pour les particules (HEPA) qui ne disperse pas les poussières dans l'air (pas de soufflette à l'air comprimé, ni balayage).\\ Des lavabos, postes de rinçage oculaire et des douches de sécurité doivent se trouver à proximité des postes de travail. Celles-ci permettent les mesures d'hygiène générale : lavage des mains fréquent avec moyens adaptés, douche en fin de poste, ne pas avoir les mains sales afin de ne pas ingérer par inadvertance un produit toxique et ne pas manger sur le lieu de travail.\\ 7- Fermeture des contenants des solvants, bacs de rétention spécifiques pour le stockage des produits chimiques pour recueillir les fuites et déversements accidentels.",
+        "8- Mettre les EPI adaptés : masque à cartouche, gants, combinaison, bottes ...",
+        "9- Information sur le risque et la conduite à tenir en cas d'exposition (urgences, travaux d'entretien...)",
+        "CLP/REACH + art. R. 4412-38"
+      ]
+    },
+    "tms": {
+      "titre": "Risques de Troubles musculosquelettiques",
+      "paragraphes": [
+        "L'expression « troubles musculosquelettiques » TMS regroupe un ensemble de maladies localisées au niveau ou autour des articulations : poignets, coudes épaules, rachis ou encore genoux.",
+        "Ces pathologies concernent les muscles, tendons et gaines tendineuses, les nerfs, les bourses séreuses, les articulations, les ligaments, à la périphérie des articulations des membres supérieurs, de la colonne vertébrale et des membres inférieurs.",
+        "Ces troubles musculo-squelettiques peuvent être reconnus comme maladie professionnelle.",
+        "En tant qu'employeur, le premier acte à initier est un état des lieux. L'objectif est de prendre connaissance de la situation de l'entreprise pour entrer dans une démarche de prévention des troubles musculo-squelettiques. Comment ?",
+        "> Il suffit de quelques actions simples :",
+        "- Mobiliser et impliquer l'encadrement au plus tôt pour faire de la lutte contre les troubles musculo-squelettiques un sujet à part entière dans l'entreprise ;",
+        "- Discuter avec les salariés directement concernés ;",
+        "- Observer les chiffres de turn-over, d'absentéisme, d'arrêts maladie, de plaintes ou de passages à l'infirmerie, d'accidents du travail ;",
+        "- Discuter avec le médecin du travail de votre entreprise",
+        "- Échanger avec les délégués du personnel, les institutions représentatives du personnel comme la commission santé, sécurité et conditions de travail du Conseil social et économique ou encore avec un conseiller en prévention.",
+        "> Une sensibilisation aux échauffements et étirements peut être > proposée aux salariés afin de limiter ces TMS. Vous pouvez en faire la > demande auprès du Médecin du travail."
+      ]
+    },
+    "manutention_manuelle": {
+      "titre": "Risques liés aux activités manuelles",
+      "paragraphes": [
+        "(TMS/PORT DE CHARGE)",
+        "Les troubles musculosquelettiques regroupent un grand nombre d'affections chroniques concernant les muscles, les tendons et les nerfs au niveau des membres supérieurs (épaules, coudes, poignets), et les articulations de la colonne vertébrale. La posture debout prolongée, le piétinement, les bras levés au- dessus du plan des épaules par exemple peuvent entraîner diverses pathologies ostéo -articulaires.",
+        "Il est possible d'agir en s'appuyant sur la démarche de prévention des TMS développée par l'Assurance Maladie - Risques professionnels « TMS pros » : une démarche efficace et reconnue pour aider les entreprises à réduire l'impact des TMS et du mal de dos.",
+        "Il existe également la formation PRAP (Prévention des Risques liés à l'Activité Physique) pour prévenir les risques liés aux manutentions manuelles.",
+        "Risques liés à la manutention mécanique et aux déplacements dans l'entreprise",
+        "Le protocole de sécurité est obligatoire dès qu'une entreprise d'accueil fait entrer un véhicule d'une entreprise de transport de marchandises (quelle que soit sa taille) en vue d'une opération de chargement ou de déchargement (entrée dans l'entreprise, circulation, stationnement, manutention...)"
+      ]
+    },
+    "ecran": {
+      "titre": "Risques liés au travail sur écran",
+      "paragraphes": [
+        "Les mesures de prévention essentielles résident dans une saine organisation, des aménagements ergonomiques et des espaces de travail adaptés pour des postes sédentaires, une formation à la gestion du stress et du temps de travail.",
+        "Il convient d'évaluer les risques professionnels dans les bureaux et de rédiger ou mettre à jour régulièrement le Document Unique en appréciant à la fois l'environnement matériel et technique, l'environnement managérial et organisationnel.",
+        "La retranscription de cet état des lieux doit conduire à l'élaboration d'un plan de prévention correspondant aux risques identifiés, y compris pour les aspects psychosociaux qui sont importants et parfois négligés : ils font partie intégrante des risques professionnels et doivent donc figurer dans ce document.",
+        "La position statique assise prolongée, l'utilisation constante du clavier, de la souris et de l'écran de l'ordinateur, le travail permanent au téléphone, génèrent des contraintes posturales au niveau du rachis (cervicalgies, lombalgies) et des membres supérieurs (syndrome du canal carpien, tendinite du coude ou de l'épaule)."
+      ]
+    },
+    "routier": {
+      "titre": "Risques liés à la circulation routière",
+      "paragraphes": [
+        "La prévention du risque routier consiste à agir sur différentes dimensions : les déplacements, les communications, l'état des véhicules et les compétences des salariés à la conduite.",
+        "L'évaluation des risques professionnels constitue le point de départ de la démarche de prévention qui incombe à tout employeur dans le cadre de son obligation générale de sécurité. Les résultats de cette évaluation doivent être transcrits dans le document unique d'évaluation des risques professionnels (DUERP).",
+        "Les principales étapes de l'évaluation :",
+        "- Réaliser un état des lieux des déplacements, en tenant compte des conditions réelles de conduite (durée de déplacement, amplitudes horaires de travail, types et caractéristiques des véhicules, état du trafic, conditions météo...).",
+        "- Analyser les déplacements (planification, organisation...).",
+        "- Identifier les salariés exposés.",
+        "- Examiner les motifs et caractéristiques des déplacements.",
+        "- Analyser des accidents de mission survenus au cours des dernières années (accidents matériels et corporels, coûts directs ou indirects)."
+      ]
+    },
+    "rps": {
+      "titre": "Risques psychosociaux",
+      "paragraphes": [
+        "S'il est relativement aisé de repérer et d'évaluer les risques liés à l'activité physique, les risques psychosociaux sont également présents et doivent être pris en considération.",
+        "Les sources sont nombreuses : surcharge de travail, interruptions incessantes des activités en cours, relations tendues avec la clientèle, risques liés à un manque de formation du personnel, problèmes de reconnaissance professionnelle...",
+        "Il n'existe pas de définition communément admise des risques psychosociaux en France. D'après le ministère du travail, les risques psychosociaux recouvrent « des risques professionnels » qui portent atteinte à l'intégrité physique et mentale des salariés.",
+        "Les risques psychosociaux recouvrent des facteurs professionnels d'origine et de nature variées.",
+        "Le rapport GOLLAC distingue 6 dimensions de facteurs de risques psychosociaux au travail :",
+        "Intensité et temps de travail",
+        "Exigences émotionnelles",
+        "L'autonomie au travail",
+        "Les conflits de valeurs",
+        "Mauvais rapports sociaux et relation de travail",
+        "L'insécurité de la situation de travail.",
+        "Au même titre que les autres risques professionnels, les RPS impactent réellement le bon fonctionnement des entreprises et mettent en jeu à la fois l'intégrité physique et la santé mentale des salariés.",
+        "Veuillez trouver le lien vers l'outil <https://www.inrs.fr/publications/outils/methodesRPS.html>"
+      ]
+    },
+    "contact_public": {
+      "titre": "Risque au contact avec le public/client",
+      "paragraphes": [
+        "Un nombre croissant de salariés est confronté à des actes de violences et d'incivilités commis par des clients ou usagers.",
+        "En cas d'incivilité ou d'actes de violences, il faut faire une déclaration d'accident du travail à la CPAM. Cela nécessite de consulter le médecin traitant qui jugera si un suivi médical est nécessaire.",
+        "- Veuillez trouver en pièce jointe une plaquette sur le « risque agression »",
+        "Une psychologue spécialisée dans la gestion post traumatique d'un évènement peut intervenir si besoin. Vous pouvez vous rapprocher de votre médecin du travail pour en faire la demande.",
+        "Pour en savoir plus :",
+        "<https://www.inrs.fr/risques/agressions-violences-externes/ce-qu-il-faut-retenir.html>"
+      ]
+    },
+    "addictions": {
+      "titre": "Risque addictions :",
+      "paragraphes": [
+        "La prévention des pratiques addictives nécessite l'élaboration d'une démarche de prévention collective, associée à la prise en charge des cas individuels. La réglementation définit les droits et devoirs des acteurs de l'entreprise. Elle définit également les moyens de contrôle dont dispose l'employeur.",
+        "- Veuillez trouver en PJ le pack « addictions ».",
+        "- Veuillez trouver également la fiche pratique « comportement anormal ou inhabituel d'un salarié en entreprise, que faire ? »",
+        "Addictions France 87 - Limoges",
+        "5 avenue Garibaldi, LIMOGES",
+        "87000, Haute-Vienne",
+        "05 55 34 46 00",
+        "<na87@addictions-france.org>",
+        "Ireps et Coreadd"
+      ]
+    },
+    "isole": {
+      "titre": "Risques liés au travail isolé",
+      "paragraphes": [
+        "En l'absence de définition réglementaire du travail isolé, c'est l'évaluation des risques qu'est tenu de mener l'employeur qui doit permettre d'identifier les situations d'isolement prolongé ou ponctuel, habituel ou fortuit, et les risques associés.",
+        "Le travail isolé n'est pas un risque en soi, mais c'est un facteur aggravant d'autres risques professionnels par contribution à leur probabilité de survenue et/ou à la gravité des conséquences.",
+        "En raison notamment de la grande diversité de situations rencontrées, le code du travail confère à l'employeur le pouvoir et la responsabilité :",
+        "- d'identifier les situations d'isolement physique,",
+        "- d'apprécier l'opportunité de prendre en considération ces situations et d'y remédier,",
+        "- de déterminer les mesures appropriées à leur prévention.",
+        "Cette approche conduira à rechercher des mesures organisationnelles, des mesures de protection collective, des moyens de protection individuelle (ex : DATI), mais aussi des mesures de formation et d'information des travailleurs appropriés aux problèmes spécifiques liés à l'isolement.",
+        "http://www.inrs.fr/risques/travail-isole/dispositif-alarme-travailleur-isole-DATI.html (http://www.inrs.fr/risques/travail-isole/dispositif-alarme-travailleur-isole-DATI.html)"
+      ]
+    },
+    "cpp": {
+      "titre": "Risques liés aux chutes de plain-pied :",
+      "paragraphes": [
+        "Les chutes de plain-pied sont des glissades, trébuchements, faux pas et autres pertes d'équilibre sur une surface plane. Les chutes de plain-pied, qui représentent la deuxième cause d'accidents du travail sont souvent perçues comme inévitables et bénignes. Néanmoins, il est nécessaire d'identifier les facteurs de risque et de définir et mettre en œuvre les mesures de prévention adaptées.",
+        "<https://www.inrs.fr/risques/chutes-de-plain-pied/ce-qu-il-faut-retenir.html>",
+        "- Prévoir une zone de stockage",
+        "- Optimiser les commandes pour limiter le nombre de palettes reçues"
+      ]
+    },
+    "cdh": {
+      "titre": "Risques liés aux travaux de hauteur :",
+      "paragraphes": [
+        "La réglementation ne donne pas de définition du travail en hauteur, mais c'est à l'employeur, responsable de la sécurité et de la santé de ses salariés de rechercher l'existence d'un risque de chute en procédant à l'évaluation des risques professionnels conformément à la réglementation.",
+        "- Toujours garder à l'esprit que les escaliers et les marches, ainsi que l'utilisation d'un escabeau peuvent être dangereux.",
+        "Les accidents par chute de hauteur peuvent avoir des conséquences particulièrement graves.",
+        "Il faudrait veiller à :",
+        "- Installer une main courante sur l'escalier",
+        "- Sécuriser la mezzanine par un garde-corps",
+        "- Un escabeau avec garde-corps vous garantirait une certaine sécurité",
+        "Le travail en hauteur peut désigner plusieurs situations de travail résultant :",
+        "- de l'emplacement du travail (toitures, passerelles, charpentes...)",
+        "- de l'utilisation de certains équipements (échelles, échafaudages, plates-formes de travail).",
+        "Le risque de chute de hauteur, comme tout risque auquel un salarié peut être exposé dans le cadre de son activité, est en premier lieu réglementé par les dispositions générales du code du travail et notamment les principes généraux de prévention en accordant la priorité :",
+        "- aux installations permanentes",
+        "- aux mesures de protection collectives.",
+        "> Pour aller plus loin : > <https://www.inrs.fr/risques/chutes-hauteur/ce-qu-il-faut-retenir.html>"
+      ]
+    },
+    "machine": {
+      "titre": "Risques liés aux équipements de travail",
+      "paragraphes": [
+        "Les outillages et les processus opératoires peuvent conduire à la survenue d'accidents tels que coupures, écrasements, corps étranger dans l'œil... si les consignes de sécurité ne sont pas respectées ou si la machine est mal entretenue ou que l'opérateur en maîtrise mal le fonctionnement",
+        "- Procéder à la vérification par un organisme agréé de la bonne conformité des machines dont les sécurités auraient été modifiées.",
+        "- Ayez des équipements conformes à la réglementation",
+        "- Formez le personnel......",
+        "- Veillez au port des EPI"
+      ]
+    },
+    "electrique": {
+      "titre": "Risques électriques",
+      "paragraphes": [
+        "L'habilitation électrique est une exigence règlementaire pour toute personne effectuant des opérations sur les installations électriques et dans leur voisinage.",
+        "Cette obligation concerne tout salarié (électricien et non électricien) qui intervient dans les enceintes et armoires électriques (par exemple, remplacement d'un fusible dans un coffret, réarmement de protection électrique (disjoncteur), entretien et dépannage de l'installation électrique, etc.)."
+      ]
+    },
+    "incendie": {
+      "titre": "Risque d'incendie",
+      "paragraphes": [
+        "Le Code du travail précise qu'il existe au moins un extincteur portatif à eau pulvérisée d'une capacité minimale de 6 litres pour 200 m2 de plancher. Il existe au moins un appareil par niveau. Lorsque les locaux présentent des risques d'incendie particuliers, \\[...\\], ils sont dotés d'extincteurs dont le nombre et le type sont appropriés aux risques.",
+        "- Ils doivent être placés sur des piliers ou sur les murs, en des endroits bien dégagés, de préférence à l'entrée des ateliers ou des locaux. Ils sont signalés par une inscription visible de loin.",
+        "- Une vérification annuelle des installations doit être réalisée par un organisme accrédité.",
+        "- Le simple affichage d'une consigne de sécurité ne suffit pas. Pour son application, il faut veiller à ce que celle-ci soit diffusée et expliquée aux salariés. L'improvisation peut sérieusement aggraver le danger, d'où l'intérêt de former régulièrement les travailleurs à l'utilisation des moyens d'extinction."
+      ]
+    },
+    "explosion": {
+      "titre": "Risque d'explosion",
+      "paragraphes": [
+        "(ATEX)",
+        "Le risque d'explosion d'Atex (atmosphère explosive) est méconnu et souvent sous-estimé en entreprise. Agir sur les composantes de l'explosion, les appareils et l'organisation du travail permet de mettre en place des mesures de prévention et de protection adaptées.",
+        "En France, un accident de type « explosion » se produit chaque jour. Ces explosions sont principalement provoquées par des accumulations de gaz, vapeurs, poussières ou brouillards inflammables. Une des causes principales de l'inflammation de ces nuages explosifs est la présence de matériels (électriques et non électriques) non adaptés au risque et capables d'apporter une énergie d'inflammation suffisante.",
+        "Réaliser une analyse de risque, un zonage ATEX, adapter l'environnement de travail et les équipements utilisés et former le personnel sont les axes clés de la prévention des risques d'explosion.",
+        "Le résultat de la démarche doit être consigné dans le document relatif à la protection contre les explosions (DRPCE), annexé au document unique."
+      ]
+    },
+    "biologique_grossesse": {
+      "titre": "Risque biologique — grossesse",
+      "paragraphes": [
+        "(Grossesse) :",
+        "Certaines situations professionnelles pouvant exposer au risque infectieux (listériose, fièvre Q, toxoplasmose, varicelle...) sont susceptibles de poser des problèmes spécifiques en cas de grossesse ou de projet de grossesse.",
+        "Tout projet de grossesse doit faire l'objet d'une attention particulière dans les situations professionnelles d'exposition aux risques biologiques.",
+        "Il est fortement recommandé aux femmes enceintes, mais également à celles qui ont un projet de grossesse, d'en informer rapidement leur médecin du travail. Dans le respect du secret médical, celui-ci peut procéder à une étude de la situation de travail et, le cas échéant, contribuer à mettre en place des mesures de prévention adaptées. Il peut proposer en fonction de l'état de santé et du poste occupé des adaptations du travail ou demander une affectation à un autre poste."
+      ]
+    },
+    "biologique_petite_enfance": {
+      "titre": "Risque biologique — petite enfance",
+      "paragraphes": [
+        "(Secteur de la petite enfance):",
+        "Les agents biologiques (bactéries, champignons, virus...) peuvent être à l'origine de maladies chez l'homme : infections, intoxications, allergies et parfois cancers.",
+        "Les activités de la petite enfance exposent au risque de contracter fréquemment des affections de la sphère oto-rhino-laryngologique et des gastro-entérites, des maladies comme la rubéole, la toxoplasmose, la varicelle, les infections à cytomégalovirus et parvovirus B19, les hépatites virales etc.",
+        "Pour la femme enceinte, ces postes exposent à des germes susceptibles de contaminer le fœtus ou plus virulents pour elles en l'absence d'immunité satisfaisante.",
+        "La transmission des agents infectieux véhiculés par les liquides biologiques lors des soins (sang) ou de nursing ou d'allaitement (selles et urine des couches, linge souillé par des vomissures et régurgitations \\...), les griffures, sont des situations fréquentes à risque infectieux.",
+        "La contamination peut se faire également par contact direct avec l'enfant par voie respiratoire ou cutanée (notamment affections rhino-pharyngées et bronchiques, gastroentérite, hépatites, staphylococcie...).",
+        "Tout contact avec du sang ou un liquide biologique sur une peau lésée par une effraction cutanée (piqûre ou coupure) ou une projection sur une muqueuse (œil, bouche) est potentiellement contaminant.",
+        "- Les vaccinations obligatoires (tétanos, diphtérie, poliomyélite, > hépatite B) peuvent être complétées par des vaccinations > recommandées :",
+        "- Hépatite A",
+        "- Coqueluche",
+        "- La vaccination contre la rubéole (ROR) est conseillée, sous contraception, en cas de sérologie négative chez les femmes en âge de procréer, pour lesquelles il convient également d'effectuer un contrôle sérologique de la toxoplasmose, de l'infection au cytomégalovirus.",
+        "- La vaccination contre la varicelle est aussi recommandée, sous contraception, pour les personnes sans antécédent de varicelle (ou dont l'histoire est douteuse) et dont la sérologie est négative",
+        "Des mesures de prévention existent et permettent d'éviter ou de réduire ce risque. L'objectif étant de construire une démarche de prévention des risques professionnels.",
+        "Pour en savoir plus : <https://www.inrs.fr/media.html?refINRS=ED%206495>"
+      ]
+    },
+    "biologique_zoonoses": {
+      "titre": "Risque biologique — zoonoses",
+      "paragraphes": [
+        "(Zoonoses) :",
+        "Les zoonoses sont des maladies infectieuses transmissibles de l'animal à l'homme, qui peuvent être causées par des bactéries, des virus, des parasites, des prions ou des champignons.",
+        "Par exemple :",
+        "\\- La maladie de Lyme est causée par une bactérie qui se transmet par la piqûre d'une tique infectée. Tous les travailleurs pratiquant des métiers comportant des tâches extérieures, par exemple les bûcherons, sylviculteurs, gardes forestiers, gardes-chasse, gardes-pêche, jardiniers, paysagistes, éleveurs, présentent un risque de contact avec des tiques.",
+        "Les fiches zoonoses (cf. lien ci-dessous) ont pour objectif d'aider à l'évaluation des risques et de présenter les mesures de prévention applicables, y compris les principales consignes d'hygiène. Elles concernent ceux qui travaillent au contact d'animaux ou de leur environnement. Ces fiches reprennent les modes de transmission, les principaux symptômes chez l'animal et chez l'homme et les mesures de prévention recommandées. Elles sont destinées aux travailleurs, aux acteurs de prévention mais aussi à tout médecin suspectant chez un patient un lien possible entre une pathologie et son activité professionnelle.",
+        "*Pour en savoir plus :*https://www.inrs.fr/risques/zoonoses/fiches-zoonoses.html (https://www.inrs.fr/risques/zoonoses/fiches-zoonoses.html)"
+      ]
+    },
+    "biologique_aes": {
+      "titre": "Risque biologique — aes",
+      "paragraphes": [
+        "(Accident d'exposition au sang) :",
+        "Un accident exposant au sang (AES) est défini comme tout contact avec du sang ou un liquide biologique contenant du sang et comportant soit une effraction cutanée (piqûre ou coupure) soit une projection sur une muqueuse (oeil, bouche) ou sur une peau lésée.",
+        "Sont assimilés à des AES les accidents survenus dans les mêmes circonstances avec d'autres liquides biologiques tels que : sécrétions génitales, liquide cérébro-spinal (LCS), synovial, pleural, péritonéal, péricardique, amniotique...",
+        "La conduite à tenir en cas d'AES doit être établie et connue de tous vos salariés exposés à ce risque.",
+        "- Nous vous joignons un exemple de protocole AES"
+      ]
+    },
+    "biologique": {
+      "titre": "Risques biologiques",
+      "paragraphes": [
+        "Les agents biologiques, qui regroupent les bactéries, les champignons microscopiques, les virus et les parasites, sont présents dans de nombreux secteurs d'activité.",
+        "Au contact des travailleurs, certains de ces agents biologiques peuvent engendrer différents risques :",
+        "- Infectieux, le plus fréquemment (ex : viroses, infections bactériennes, mycoses)",
+        "- Allergique (ex : acariens, poumon du fermier)",
+        "- Toxinique (ex : tétanos)",
+        "- Cancérogène, rarement (ex : hépatite B et cancer du foie)",
+        "Les agents biologiques sont classés en quatre groupes en fonction de l'importance du risque d'infection qu'ils présentent :",
+        "----------------------------------------------------------------------------- NATURE DU RISQUE GROUPE 1 GROUPE 2 GROUPE 3 GROUPE 4 ---------------- ---------- --------------- ----------------- --------------- Susceptible de Non Oui Grave Grave provoquer une maladie chez l'homme",
+        "Constitue un -- Oui Sérieux Sérieux danger pour les travailleurs",
+        "Propagation dans -- Peu probable Possible Risque élevé la collectivité",
+        "Existence d'une -- Généralement\\ Généralement\\ Généralement\\ prophylaxie ou oui oui non d'un traitement efficace -----------------------------------------------------------------------------",
+        "Afin de mettre en place les mesures de prévention adaptées, l'évaluation des risques nécessite de repérer ces réservoirs, puis d'étudier la possibilité d'une transmission dans le milieu de travail.",
+        "La prévention doit être intégrée le plus en amont possible dès la conception des lieux et des situations de travail et lors de la mise en place des procédures de travail, en intervenant sur les mesures d'organisation du travail, sur la mise en place de moyens de protections collectives et la mise à disposition d'équipements de protection individuelle. Elle comporte également des étapes d'information et de formation du personnel."
+      ]
+    }
+  },
+  "mapping": {
+    "bruit": [
+      "bruit"
+    ],
+    "thermique": [
+      "thermique"
+    ],
+    "vibrations": [
+      "vibrations_corps",
+      "vibrations_membres"
+    ],
+    "chimique": [
+      "chimique",
+      "radon",
+      "poussieres"
+    ],
+    "biologique": [
+      "biologique"
+    ],
+    "tms": [
+      "tms",
+      "manutention_manuelle"
+    ],
+    "manutention": [
+      "manutention_manuelle"
+    ],
+    "postures": [
+      "tms"
+    ],
+    "ecran": [
+      "ecran"
+    ],
+    "routier": [
+      "routier"
+    ],
+    "rps": [
+      "rps",
+      "contact_public"
+    ],
+    "addictions": [
+      "addictions"
+    ],
+    "isole": [
+      "isole"
+    ],
+    "cpp": [
+      "cpp"
+    ],
+    "cdh": [
+      "cdh"
+    ],
+    "machine": [
+      "machine"
+    ],
+    "electrique": [
+      "electrique"
+    ],
+    "incendie": [
+      "incendie",
+      "explosion"
+    ],
+    "nuit": [],
+    "coactivite": []
+  },
+  "toujours_inclure": [
+    "installations_generales",
+    "sst",
+    "duerp",
+    "referent_ss",
+    "affichage"
+  ]
+}
