@@ -19,7 +19,7 @@
   'use strict';
 
   // Chemins relatifs au dossier fiche-entreprise/
-  const TEMPLATE_URL     = './fiche-spsti-template.docx';
+  const TEMPLATE_URL     = './fiche-entreprise-spsti-template.docx';
   const CONCLUSIONS_URL  = './conclusions-fe.json';
 
   // Cache mémoire pour éviter de re-télécharger à chaque export
