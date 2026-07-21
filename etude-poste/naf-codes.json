@@ -1,0 +1,4490 @@
+{
+"meta": {
+"source": "INSEE — NAF rév. 2 (via @socialgouv/codes-naf)",
+"niveau": "sous-classes (codes APE, niveau 5)",
+"nb_codes": 732,
+"version": "2026",
+"note": "Nomenclature d'activités française. Chaque code APE est rattaché à sa section (A-U).",
+"synonymes_metier": 70
+},
+"sections": [
+{
+"s": "A",
+"label": "Agriculture, sylviculture, pêche"
+},
+{
+"s": "B",
+"label": "Industries extractives"
+},
+{
+"s": "C",
+"label": "Industrie manufacturière"
+},
+{
+"s": "D",
+"label": "Production/distribution d'énergie"
+},
+{
+"s": "E",
+"label": "Eau, assainissement, déchets"
+},
+{
+"s": "F",
+"label": "Construction / BTP"
+},
+{
+"s": "G",
+"label": "Commerce"
+},
+{
+"s": "H",
+"label": "Transports, logistique"
+},
+{
+"s": "I",
+"label": "Hébergement, restauration"
+},
+{
+"s": "J",
+"label": "Information, communication"
+},
+{
+"s": "K",
+"label": "Finance, assurance"
+},
+{
+"s": "L",
+"label": "Immobilier"
+},
+{
+"s": "M",
+"label": "Activités scientifiques et techniques"
+},
+{
+"s": "N",
+"label": "Services administratifs et de soutien"
+},
+{
+"s": "O",
+"label": "Administration publique, sécurité"
+},
+{
+"s": "P",
+"label": "Enseignement"
+},
+{
+"s": "Q",
+"label": "Santé humaine et action sociale"
+},
+{
+"s": "R",
+"label": "Arts, spectacles, loisirs"
+},
+{
+"s": "S",
+"label": "Autres services"
+},
+{
+"s": "T",
+"label": "Services aux ménages"
+},
+{
+"s": "U",
+"label": "Extraterritoriaux"
+}
+],
+"codes": [
+{
+"c": "0111Z",
+"l": "Culture de céréales (à l'exception du riz), de légumineuses et de graines oléagineuses",
+"s": "A",
+"kw": "culture cereales riz legumineuses graines oleagineuses agriculteur cerealier exploitant agricole ferme"
+},
+{
+"c": "0112Z",
+"l": "Culture du riz",
+"s": "A",
+"kw": "culture riz"
+},
+{
+"c": "0113Z",
+"l": "Culture de légumes, de melons, de racines et de tubercules",
+"s": "A",
+"kw": "culture legumes melons racines tubercules maraicher maraichage legume primeur"
+},
+{
+"c": "0114Z",
+"l": "Culture de la canne à sucre",
+"s": "A",
+"kw": "culture canne sucre"
+},
+{
+"c": "0115Z",
+"l": "Culture du tabac",
+"s": "A",
+"kw": "culture tabac"
+},
+{
+"c": "0116Z",
+"l": "Culture de plantes à fibres",
+"s": "A",
+"kw": "culture plantes fibres"
+},
+{
+"c": "0119Z",
+"l": "Autres cultures non permanentes",
+"s": "A",
+"kw": "cultures non permanentes"
+},
+{
+"c": "0121Z",
+"l": "Culture de la vigne",
+"s": "A",
+"kw": "culture vigne viticulture vignoble viticulteur raisin cave"
+},
+{
+"c": "0122Z",
+"l": "Culture de fruits tropicaux et subtropicaux",
+"s": "A",
+"kw": "culture fruits tropicaux subtropicaux"
+},
+{
+"c": "0123Z",
+"l": "Culture d'agrumes",
+"s": "A",
+"kw": "culture agrumes"
+},
+{
+"c": "0124Z",
+"l": "Culture de fruits à pépins et à noyau",
+"s": "A",
+"kw": "culture fruits pepins noyau"
+},
+{
+"c": "0125Z",
+"l": "Culture d'autres fruits d'arbres ou d'arbustes et de fruits à coque",
+"s": "A",
+"kw": "culture fruits arbres arbustes coque"
+},
+{
+"c": "0126Z",
+"l": "Culture de fruits oléagineux",
+"s": "A",
+"kw": "culture fruits oleagineux"
+},
+{
+"c": "0127Z",
+"l": "Culture de plantes à boissons",
+"s": "A",
+"kw": "culture plantes boissons"
+},
+{
+"c": "0128Z",
+"l": "Culture de plantes à épices, aromatiques, médicinales et pharmaceutiques",
+"s": "A",
+"kw": "culture plantes epices aromatiques medicinales pharmaceutiques"
+},
+{
+"c": "0129Z",
+"l": "Autres cultures permanentes",
+"s": "A",
+"kw": "cultures permanentes"
+},
+{
+"c": "0130Z",
+"l": "Reproduction de plantes",
+"s": "A",
+"kw": "reproduction plantes"
+},
+{
+"c": "0141Z",
+"l": "Élevage de vaches laitières",
+"s": "A",
+"kw": "elevage vaches laitieres eleveur bovin laitier vache ferme agriculteur"
+},
+{
+"c": "0142Z",
+"l": "Élevage d'autres bovins et de buffles",
+"s": "A",
+"kw": "elevage bovins buffles"
+},
+{
+"c": "0143Z",
+"l": "Élevage de chevaux et d'autres équidés",
+"s": "A",
+"kw": "elevage chevaux equides"
+},
+{
+"c": "0144Z",
+"l": "Élevage de chameaux et d'autres camélidés",
+"s": "A",
+"kw": "elevage chameaux camelides"
+},
+{
+"c": "0145Z",
+"l": "Élevage d'ovins et de caprins",
+"s": "A",
+"kw": "elevage ovins caprins"
+},
+{
+"c": "0146Z",
+"l": "Élevage de porcins",
+"s": "A",
+"kw": "elevage porcins"
+},
+{
+"c": "0147Z",
+"l": "Élevage de volailles",
+"s": "A",
+"kw": "elevage volailles aviculture volaille poule poulet eleveur"
+},
+{
+"c": "0149Z",
+"l": "Élevage d'autres animaux",
+"s": "A",
+"kw": "elevage animaux"
+},
+{
+"c": "0150Z",
+"l": "Culture et élevage associés",
+"s": "A",
+"kw": "culture elevage associes"
+},
+{
+"c": "0161Z",
+"l": "Activités de soutien aux cultures",
+"s": "A",
+"kw": "soutien cultures"
+},
+{
+"c": "0162Z",
+"l": "Activités de soutien à la production animale",
+"s": "A",
+"kw": "soutien production animale"
+},
+{
+"c": "0163Z",
+"l": "Traitement primaire des récoltes",
+"s": "A",
+"kw": "traitement primaire recoltes"
+},
+{
+"c": "0164Z",
+"l": "Traitement des semences",
+"s": "A",
+"kw": "traitement semences"
+},
+{
+"c": "0170Z",
+"l": "Chasse, piégeage et services annexes",
+"s": "A",
+"kw": "chasse piegeage services annexes"
+},
+{
+"c": "0210Z",
+"l": "Sylviculture et autres activités forestières",
+"s": "A",
+"kw": "sylviculture forestieres foret bucheron sylviculteur exploitant forestier abattage bois"
+},
+{
+"c": "0220Z",
+"l": "Exploitation forestière",
+"s": "A",
+"kw": "exploitation forestiere"
+},
+{
+"c": "0230Z",
+"l": "Récolte de produits forestiers non ligneux poussant à l'état sauvage",
+"s": "A",
+"kw": "recolte produits forestiers non ligneux poussant etat sauvage"
+},
+{
+"c": "0240Z",
+"l": "Services de soutien à l'exploitation forestière",
+"s": "A",
+"kw": "services soutien exploitation forestiere"
+},
+{
+"c": "0311Z",
+"l": "Pêche en mer",
+"s": "A",
+"kw": "peche mer"
+},
+{
+"c": "0312Z",
+"l": "Pêche en eau douce",
+"s": "A",
+"kw": "peche eau douce"
+},
+{
+"c": "0321Z",
+"l": "Aquaculture en mer",
+"s": "A",
+"kw": "aquaculture mer"
+},
+{
+"c": "0322Z",
+"l": "Aquaculture en eau douce",
+"s": "A",
+"kw": "aquaculture eau douce"
+},
+{
+"c": "0510Z",
+"l": "Extraction de houille",
+"s": "B",
+"kw": "extraction houille"
+},
+{
+"c": "0520Z",
+"l": "Extraction de lignite",
+"s": "B",
+"kw": "extraction lignite"
+},
+{
+"c": "0610Z",
+"l": "Extraction de pétrole brut",
+"s": "B",
+"kw": "extraction petrole brut"
+},
+{
+"c": "0620Z",
+"l": "Extraction de gaz naturel",
+"s": "B",
+"kw": "extraction gaz naturel"
+},
+{
+"c": "0710Z",
+"l": "Extraction de minerais de fer",
+"s": "B",
+"kw": "extraction minerais fer"
+},
+{
+"c": "0721Z",
+"l": "Extraction de minerais d'uranium et de thorium",
+"s": "B",
+"kw": "extraction minerais uranium thorium"
+},
+{
+"c": "0729Z",
+"l": "Extraction d'autres minerais de métaux non ferreux",
+"s": "B",
+"kw": "extraction minerais metaux non ferreux"
+},
+{
+"c": "0811Z",
+"l": "Extraction de pierres ornementales et de construction, de calcaire industriel, de gypse, de craie et d'ardoise",
+"s": "B",
+"kw": "extraction pierres ornementales construction calcaire industriel gypse craie ardoise"
+},
+{
+"c": "0812Z",
+"l": "Exploitation de gravières et sablières, extraction d’argiles et de kaolin",
+"s": "B",
+"kw": "exploitation gravieres sablieres extraction argiles kaolin"
+},
+{
+"c": "0891Z",
+"l": "Extraction des minéraux chimiques et d'engrais minéraux",
+"s": "B",
+"kw": "extraction mineraux chimiques engrais"
+},
+{
+"c": "0892Z",
+"l": "Extraction de tourbe",
+"s": "B",
+"kw": "extraction tourbe"
+},
+{
+"c": "0893Z",
+"l": "Production de sel",
+"s": "B",
+"kw": "production sel"
+},
+{
+"c": "0899Z",
+"l": "Autres activités extractives n.c.a.",
+"s": "B",
+"kw": "extractives"
+},
+{
+"c": "0910Z",
+"l": "Activités de soutien à l'extraction d'hydrocarbures",
+"s": "B",
+"kw": "soutien extraction hydrocarbures"
+},
+{
+"c": "0990Z",
+"l": "Activités de soutien aux autres industries extractives",
+"s": "B",
+"kw": "soutien industries extractives"
+},
+{
+"c": "1011Z",
+"l": "Transformation et conservation de la viande de boucherie",
+"s": "C",
+"kw": "transformation conservation viande boucherie"
+},
+{
+"c": "1012Z",
+"l": "Transformation et conservation de la viande de volaille",
+"s": "C",
+"kw": "transformation conservation viande volaille"
+},
+{
+"c": "1013A",
+"l": "Préparation industrielle de produits à base de viande",
+"s": "C",
+"kw": "preparation industrielle produits base viande charcutier charcuterie salaison"
+},
+{
+"c": "1013B",
+"l": "Charcuterie",
+"s": "C",
+"kw": "charcuterie"
+},
+{
+"c": "1020Z",
+"l": "Transformation et conservation de poisson, de crustacés et de mollusques",
+"s": "C",
+"kw": "transformation conservation poisson crustaces mollusques"
+},
+{
+"c": "1031Z",
+"l": "Transformation et conservation de pommes de terre",
+"s": "C",
+"kw": "transformation conservation pommes terre"
+},
+{
+"c": "1032Z",
+"l": "Préparation de jus de fruits et légumes",
+"s": "C",
+"kw": "preparation jus fruits legumes"
+},
+{
+"c": "1039A",
+"l": "Autre transformation et conservation de légumes",
+"s": "C",
+"kw": "transformation conservation legumes"
+},
+{
+"c": "1039B",
+"l": "Transformation et conservation de fruits",
+"s": "C",
+"kw": "transformation conservation fruits"
+},
+{
+"c": "1041A",
+"l": "Fabrication d'huiles et graisses brutes",
+"s": "C",
+"kw": "fabrication huiles graisses brutes"
+},
+{
+"c": "1041B",
+"l": "Fabrication d'huiles et graisses raffinées",
+"s": "C",
+"kw": "fabrication huiles graisses raffinees"
+},
+{
+"c": "1042Z",
+"l": "Fabrication de margarine et graisses comestibles similaires",
+"s": "C",
+"kw": "fabrication margarine graisses comestibles similaires"
+},
+{
+"c": "1051A",
+"l": "Fabrication de lait liquide et de produits frais",
+"s": "C",
+"kw": "fabrication lait liquide produits frais"
+},
+{
+"c": "1051B",
+"l": "Fabrication de beurre",
+"s": "C",
+"kw": "fabrication beurre"
+},
+{
+"c": "1051C",
+"l": "Fabrication de fromage",
+"s": "C",
+"kw": "fabrication fromage"
+},
+{
+"c": "1051D",
+"l": "Fabrication d'autres produits laitiers",
+"s": "C",
+"kw": "fabrication produits laitiers"
+},
+{
+"c": "1052Z",
+"l": "Fabrication de glaces et sorbets",
+"s": "C",
+"kw": "fabrication glaces sorbets"
+},
+{
+"c": "1061A",
+"l": "Meunerie",
+"s": "C",
+"kw": "meunerie"
+},
+{
+"c": "1061B",
+"l": "Autres activités du travail des grains",
+"s": "C",
+"kw": "travail grains"
+},
+{
+"c": "1062Z",
+"l": "Fabrication de produits amylacés",
+"s": "C",
+"kw": "fabrication produits amylaces"
+},
+{
+"c": "1071A",
+"l": "Fabrication industrielle de pain et de pâtisserie fraîche",
+"s": "C",
+"kw": "fabrication industrielle pain patisserie fraiche"
+},
+{
+"c": "1071B",
+"l": "Cuisson de produits de boulangerie",
+"s": "C",
+"kw": "cuisson produits boulangerie"
+},
+{
+"c": "1071C",
+"l": "Boulangerie et boulangerie-pâtisserie",
+"s": "C",
+"kw": "boulangerie patisserie boulanger fournil pain viennoiserie"
+},
+{
+"c": "1071D",
+"l": "Pâtisserie",
+"s": "C",
+"kw": "patisserie patissier gateau chocolatier"
+},
+{
+"c": "1072Z",
+"l": "Fabrication de biscuits, biscottes et pâtisseries de conservation",
+"s": "C",
+"kw": "fabrication biscuits biscottes patisseries conservation"
+},
+{
+"c": "1073Z",
+"l": "Fabrication de pâtes alimentaires",
+"s": "C",
+"kw": "fabrication pates alimentaires"
+},
+{
+"c": "1081Z",
+"l": "Fabrication de sucre",
+"s": "C",
+"kw": "fabrication sucre"
+},
+{
+"c": "1082Z",
+"l": "Fabrication de cacao, chocolat et de produits de confiserie",
+"s": "C",
+"kw": "fabrication cacao chocolat produits confiserie"
+},
+{
+"c": "1083Z",
+"l": "Transformation du thé et du café",
+"s": "C",
+"kw": "transformation cafe"
+},
+{
+"c": "1084Z",
+"l": "Fabrication de condiments et assaisonnements",
+"s": "C",
+"kw": "fabrication condiments assaisonnements"
+},
+{
+"c": "1085Z",
+"l": "Fabrication de plats préparés",
+"s": "C",
+"kw": "fabrication plats prepares"
+},
+{
+"c": "1086Z",
+"l": "Fabrication d'aliments homogénéisés et diététiques",
+"s": "C",
+"kw": "fabrication aliments homogeneises dietetiques"
+},
+{
+"c": "1089Z",
+"l": "Fabrication d'autres produits alimentaires n.c.a.",
+"s": "C",
+"kw": "fabrication produits alimentaires"
+},
+{
+"c": "1091Z",
+"l": "Fabrication d'aliments pour animaux de ferme",
+"s": "C",
+"kw": "fabrication aliments animaux ferme"
+},
+{
+"c": "1092Z",
+"l": "Fabrication d'aliments pour animaux de compagnie",
+"s": "C",
+"kw": "fabrication aliments animaux compagnie"
+},
+{
+"c": "1101Z",
+"l": "Production de boissons alcooliques distillées",
+"s": "C",
+"kw": "production boissons alcooliques distillees"
+},
+{
+"c": "1102A",
+"l": "Fabrication de vins effervescents",
+"s": "C",
+"kw": "fabrication vins effervescents"
+},
+{
+"c": "1102B",
+"l": "Vinification",
+"s": "C",
+"kw": "vinification"
+},
+{
+"c": "1103Z",
+"l": "Fabrication de cidre et de vins de fruits",
+"s": "C",
+"kw": "fabrication cidre vins fruits"
+},
+{
+"c": "1104Z",
+"l": "Production d'autres boissons fermentées non distillées",
+"s": "C",
+"kw": "production boissons fermentees non distillees"
+},
+{
+"c": "1105Z",
+"l": "Fabrication de bière",
+"s": "C",
+"kw": "fabrication biere"
+},
+{
+"c": "1106Z",
+"l": "Fabrication de malt",
+"s": "C",
+"kw": "fabrication malt"
+},
+{
+"c": "1107A",
+"l": "Industrie des eaux de table",
+"s": "C",
+"kw": "industrie eaux table"
+},
+{
+"c": "1107B",
+"l": "Production de boissons rafraîchissantes",
+"s": "C",
+"kw": "production boissons rafraichissantes"
+},
+{
+"c": "1200Z",
+"l": "Fabrication de produits à base de tabac",
+"s": "C",
+"kw": "fabrication produits base tabac"
+},
+{
+"c": "1310Z",
+"l": "Préparation de fibres textiles et filature",
+"s": "C",
+"kw": "preparation fibres textiles filature"
+},
+{
+"c": "1320Z",
+"l": "Tissage",
+"s": "C",
+"kw": "tissage"
+},
+{
+"c": "1330Z",
+"l": "Ennoblissement textile",
+"s": "C",
+"kw": "ennoblissement textile"
+},
+{
+"c": "1391Z",
+"l": "Fabrication d'étoffes à mailles",
+"s": "C",
+"kw": "fabrication etoffes mailles"
+},
+{
+"c": "1392Z",
+"l": "Fabrication d'articles textiles, sauf habillement",
+"s": "C",
+"kw": "fabrication articles textiles sauf habillement"
+},
+{
+"c": "1393Z",
+"l": "Fabrication de tapis et moquettes",
+"s": "C",
+"kw": "fabrication tapis moquettes"
+},
+{
+"c": "1394Z",
+"l": "Fabrication de ficelles, cordes et filets",
+"s": "C",
+"kw": "fabrication ficelles cordes filets"
+},
+{
+"c": "1395Z",
+"l": "Fabrication de non-tissés, sauf habillement",
+"s": "C",
+"kw": "fabrication non tisses sauf habillement"
+},
+{
+"c": "1396Z",
+"l": "Fabrication d'autres textiles techniques et industriels",
+"s": "C",
+"kw": "fabrication textiles techniques industriels"
+},
+{
+"c": "1399Z",
+"l": "Fabrication d'autres textiles n.c.a.",
+"s": "C",
+"kw": "fabrication textiles"
+},
+{
+"c": "1411Z",
+"l": "Fabrication de vêtements en cuir",
+"s": "C",
+"kw": "fabrication vetements cuir"
+},
+{
+"c": "1412Z",
+"l": "Fabrication de vêtements de travail",
+"s": "C",
+"kw": "fabrication vetements travail"
+},
+{
+"c": "1413Z",
+"l": "Fabrication de vêtements de dessus",
+"s": "C",
+"kw": "fabrication vetements dessus"
+},
+{
+"c": "1414Z",
+"l": "Fabrication de vêtements de dessous",
+"s": "C",
+"kw": "fabrication vetements dessous"
+},
+{
+"c": "1419Z",
+"l": "Fabrication d'autres vêtements et accessoires",
+"s": "C",
+"kw": "fabrication vetements accessoires"
+},
+{
+"c": "1420Z",
+"l": "Fabrication d'articles en fourrure",
+"s": "C",
+"kw": "fabrication articles fourrure"
+},
+{
+"c": "1431Z",
+"l": "Fabrication d'articles chaussants à mailles",
+"s": "C",
+"kw": "fabrication articles chaussants mailles"
+},
+{
+"c": "1439Z",
+"l": "Fabrication d'autres articles à mailles",
+"s": "C",
+"kw": "fabrication articles mailles"
+},
+{
+"c": "1511Z",
+"l": "Apprêt et tannage des cuirs ; préparation et teinture des fourrures",
+"s": "C",
+"kw": "appret tannage cuirs preparation teinture fourrures"
+},
+{
+"c": "1512Z",
+"l": "Fabrication d'articles de voyage, de maroquinerie et de sellerie",
+"s": "C",
+"kw": "fabrication articles voyage maroquinerie sellerie"
+},
+{
+"c": "1520Z",
+"l": "Fabrication de chaussures",
+"s": "C",
+"kw": "fabrication chaussures"
+},
+{
+"c": "1610A",
+"l": "Sciage et rabotage du bois, hors imprégnation",
+"s": "C",
+"kw": "sciage rabotage bois hors impregnation"
+},
+{
+"c": "1610B",
+"l": "Imprégnation du bois",
+"s": "C",
+"kw": "impregnation bois"
+},
+{
+"c": "1621Z",
+"l": "Fabrication de placage et de panneaux de bois",
+"s": "C",
+"kw": "fabrication placage panneaux bois"
+},
+{
+"c": "1622Z",
+"l": "Fabrication de parquets assemblés",
+"s": "C",
+"kw": "fabrication parquets assembles"
+},
+{
+"c": "1623Z",
+"l": "Fabrication de charpentes et d'autres menuiseries",
+"s": "C",
+"kw": "fabrication charpentes menuiseries"
+},
+{
+"c": "1624Z",
+"l": "Fabrication d'emballages en bois",
+"s": "C",
+"kw": "fabrication emballages bois"
+},
+{
+"c": "1629Z",
+"l": "Fabrication d'objets divers en bois ; fabrication d'objets en liège, vannerie et sparterie",
+"s": "C",
+"kw": "fabrication objets divers bois liege vannerie sparterie"
+},
+{
+"c": "1711Z",
+"l": "Fabrication de pâte à papier",
+"s": "C",
+"kw": "fabrication pate papier"
+},
+{
+"c": "1712Z",
+"l": "Fabrication de papier et de carton",
+"s": "C",
+"kw": "fabrication papier carton"
+},
+{
+"c": "1721A",
+"l": "Fabrication de carton ondulé",
+"s": "C",
+"kw": "fabrication carton ondule"
+},
+{
+"c": "1721B",
+"l": "Fabrication de cartonnages",
+"s": "C",
+"kw": "fabrication cartonnages"
+},
+{
+"c": "1721C",
+"l": "Fabrication d'emballages en papier",
+"s": "C",
+"kw": "fabrication emballages papier"
+},
+{
+"c": "1722Z",
+"l": "Fabrication d'articles en papier à usage sanitaire ou domestique",
+"s": "C",
+"kw": "fabrication articles papier usage sanitaire domestique"
+},
+{
+"c": "1723Z",
+"l": "Fabrication d'articles de papeterie",
+"s": "C",
+"kw": "fabrication articles papeterie"
+},
+{
+"c": "1724Z",
+"l": "Fabrication de papiers peints",
+"s": "C",
+"kw": "fabrication papiers peints"
+},
+{
+"c": "1729Z",
+"l": "Fabrication d'autres articles en papier ou en carton",
+"s": "C",
+"kw": "fabrication articles papier carton"
+},
+{
+"c": "1811Z",
+"l": "Imprimerie de journaux",
+"s": "C",
+"kw": "imprimerie journaux"
+},
+{
+"c": "1812Z",
+"l": "Autre imprimerie (labeur)",
+"s": "C",
+"kw": "imprimerie labeur"
+},
+{
+"c": "1813Z",
+"l": "Activités de pré-presse",
+"s": "C",
+"kw": "pre presse"
+},
+{
+"c": "1814Z",
+"l": "Reliure et activités connexes",
+"s": "C",
+"kw": "reliure connexes"
+},
+{
+"c": "1820Z",
+"l": "Reproduction d'enregistrements",
+"s": "C",
+"kw": "reproduction enregistrements"
+},
+{
+"c": "1910Z",
+"l": "Cokéfaction",
+"s": "C",
+"kw": "cokefaction"
+},
+{
+"c": "1920Z",
+"l": "Raffinage du pétrole",
+"s": "C",
+"kw": "raffinage petrole"
+},
+{
+"c": "2011Z",
+"l": "Fabrication de gaz industriels",
+"s": "C",
+"kw": "fabrication gaz industriels"
+},
+{
+"c": "2012Z",
+"l": "Fabrication de colorants et de pigments",
+"s": "C",
+"kw": "fabrication colorants pigments"
+},
+{
+"c": "2013A",
+"l": "Enrichissement et  retraitement de matières nucléaires",
+"s": "C",
+"kw": "enrichissement retraitement matieres nucleaires"
+},
+{
+"c": "2013B",
+"l": "Fabrication d'autres produits chimiques inorganiques de base n.c.a.",
+"s": "C",
+"kw": "fabrication produits chimiques inorganiques base"
+},
+{
+"c": "2014Z",
+"l": "Fabrication d'autres produits chimiques organiques de base",
+"s": "C",
+"kw": "fabrication produits chimiques organiques base"
+},
+{
+"c": "2015Z",
+"l": "Fabrication de produits azotés et d'engrais",
+"s": "C",
+"kw": "fabrication produits azotes engrais"
+},
+{
+"c": "2016Z",
+"l": "Fabrication de matières plastiques de base",
+"s": "C",
+"kw": "fabrication matieres plastiques base"
+},
+{
+"c": "2017Z",
+"l": "Fabrication de caoutchouc synthétique",
+"s": "C",
+"kw": "fabrication caoutchouc synthetique"
+},
+{
+"c": "2020Z",
+"l": "Fabrication de pesticides et d’autres produits agrochimiques",
+"s": "C",
+"kw": "fabrication pesticides produits agrochimiques"
+},
+{
+"c": "2030Z",
+"l": "Fabrication de peintures, vernis, encres et mastics",
+"s": "C",
+"kw": "fabrication peintures vernis encres mastics"
+},
+{
+"c": "2041Z",
+"l": "Fabrication de savons, détergents et produits d'entretien",
+"s": "C",
+"kw": "fabrication savons detergents produits entretien"
+},
+{
+"c": "2042Z",
+"l": "Fabrication de parfums et de produits pour la toilette",
+"s": "C",
+"kw": "fabrication parfums produits toilette"
+},
+{
+"c": "2051Z",
+"l": "Fabrication de produits explosifs",
+"s": "C",
+"kw": "fabrication produits explosifs"
+},
+{
+"c": "2052Z",
+"l": "Fabrication de colles",
+"s": "C",
+"kw": "fabrication colles"
+},
+{
+"c": "2053Z",
+"l": "Fabrication d'huiles essentielles",
+"s": "C",
+"kw": "fabrication huiles essentielles"
+},
+{
+"c": "2059Z",
+"l": "Fabrication d'autres produits chimiques n.c.a.",
+"s": "C",
+"kw": "fabrication produits chimiques"
+},
+{
+"c": "2060Z",
+"l": "Fabrication de fibres artificielles ou synthétiques",
+"s": "C",
+"kw": "fabrication fibres artificielles synthetiques"
+},
+{
+"c": "2110Z",
+"l": "Fabrication de produits pharmaceutiques de base",
+"s": "C",
+"kw": "fabrication produits pharmaceutiques base"
+},
+{
+"c": "2120Z",
+"l": "Fabrication de préparations pharmaceutiques",
+"s": "C",
+"kw": "fabrication preparations pharmaceutiques"
+},
+{
+"c": "2211Z",
+"l": "Fabrication et rechapage de pneumatiques",
+"s": "C",
+"kw": "fabrication rechapage pneumatiques"
+},
+{
+"c": "2219Z",
+"l": "Fabrication d'autres articles en caoutchouc",
+"s": "C",
+"kw": "fabrication articles caoutchouc"
+},
+{
+"c": "2221Z",
+"l": "Fabrication de plaques, feuilles, tubes et profilés en matières plastiques",
+"s": "C",
+"kw": "fabrication plaques feuilles tubes profiles matieres plastiques"
+},
+{
+"c": "2222Z",
+"l": "Fabrication d'emballages en matières plastiques",
+"s": "C",
+"kw": "fabrication emballages matieres plastiques"
+},
+{
+"c": "2223Z",
+"l": "Fabrication d'éléments en matières plastiques pour la construction",
+"s": "C",
+"kw": "fabrication elements matieres plastiques construction"
+},
+{
+"c": "2229A",
+"l": "Fabrication de pièces techniques à base de matières plastiques",
+"s": "C",
+"kw": "fabrication pieces techniques base matieres plastiques"
+},
+{
+"c": "2229B",
+"l": "Fabrication de produits de consommation courante en matières plastiques",
+"s": "C",
+"kw": "fabrication produits consommation courante matieres plastiques"
+},
+{
+"c": "2311Z",
+"l": "Fabrication de verre plat",
+"s": "C",
+"kw": "fabrication verre plat"
+},
+{
+"c": "2312Z",
+"l": "Façonnage et transformation du verre plat",
+"s": "C",
+"kw": "faconnage transformation verre plat"
+},
+{
+"c": "2313Z",
+"l": "Fabrication de verre creux",
+"s": "C",
+"kw": "fabrication verre creux"
+},
+{
+"c": "2314Z",
+"l": "Fabrication de fibres de verre",
+"s": "C",
+"kw": "fabrication fibres verre"
+},
+{
+"c": "2319Z",
+"l": "Fabrication et façonnage d'autres articles en verre, y compris verre technique",
+"s": "C",
+"kw": "fabrication faconnage articles verre compris technique"
+},
+{
+"c": "2320Z",
+"l": "Fabrication de produits réfractaires",
+"s": "C",
+"kw": "fabrication produits refractaires"
+},
+{
+"c": "2331Z",
+"l": "Fabrication de carreaux en céramique",
+"s": "C",
+"kw": "fabrication carreaux ceramique"
+},
+{
+"c": "2332Z",
+"l": "Fabrication de briques, tuiles et produits de construction, en terre cuite",
+"s": "C",
+"kw": "fabrication briques tuiles produits construction terre cuite"
+},
+{
+"c": "2341Z",
+"l": "Fabrication d'articles céramiques à usage domestique ou ornemental",
+"s": "C",
+"kw": "fabrication articles ceramiques usage domestique ornemental"
+},
+{
+"c": "2342Z",
+"l": "Fabrication d'appareils sanitaires en céramique",
+"s": "C",
+"kw": "fabrication appareils sanitaires ceramique"
+},
+{
+"c": "2343Z",
+"l": "Fabrication d'isolateurs et pièces isolantes en céramique",
+"s": "C",
+"kw": "fabrication isolateurs pieces isolantes ceramique"
+},
+{
+"c": "2344Z",
+"l": "Fabrication d'autres produits céramiques à usage technique",
+"s": "C",
+"kw": "fabrication produits ceramiques usage technique"
+},
+{
+"c": "2349Z",
+"l": "Fabrication d'autres produits céramiques",
+"s": "C",
+"kw": "fabrication produits ceramiques"
+},
+{
+"c": "2351Z",
+"l": "Fabrication de ciment",
+"s": "C",
+"kw": "fabrication ciment"
+},
+{
+"c": "2352Z",
+"l": "Fabrication de chaux et plâtre",
+"s": "C",
+"kw": "fabrication chaux platre"
+},
+{
+"c": "2361Z",
+"l": "Fabrication d'éléments en béton pour la construction",
+"s": "C",
+"kw": "fabrication elements beton construction"
+},
+{
+"c": "2362Z",
+"l": "Fabrication d'éléments en plâtre pour la construction",
+"s": "C",
+"kw": "fabrication elements platre construction"
+},
+{
+"c": "2363Z",
+"l": "Fabrication de béton prêt à l'emploi",
+"s": "C",
+"kw": "fabrication beton pret emploi"
+},
+{
+"c": "2364Z",
+"l": "Fabrication de mortiers et bétons secs",
+"s": "C",
+"kw": "fabrication mortiers betons secs"
+},
+{
+"c": "2365Z",
+"l": "Fabrication d'ouvrages en fibre-ciment",
+"s": "C",
+"kw": "fabrication ouvrages fibre ciment"
+},
+{
+"c": "2369Z",
+"l": "Fabrication d'autres ouvrages en béton, en ciment ou en plâtre",
+"s": "C",
+"kw": "fabrication ouvrages beton ciment platre"
+},
+{
+"c": "2370Z",
+"l": "Taille, façonnage et finissage de pierres",
+"s": "C",
+"kw": "taille faconnage finissage pierres"
+},
+{
+"c": "2391Z",
+"l": "Fabrication de produits abrasifs",
+"s": "C",
+"kw": "fabrication produits abrasifs"
+},
+{
+"c": "2399Z",
+"l": "Fabrication d'autres produits minéraux non métalliques n.c.a.",
+"s": "C",
+"kw": "fabrication produits mineraux non metalliques"
+},
+{
+"c": "2410Z",
+"l": "Sidérurgie",
+"s": "C",
+"kw": "siderurgie"
+},
+{
+"c": "2420Z",
+"l": "Fabrication de tubes, tuyaux, profilés creux et accessoires correspondants en acier",
+"s": "C",
+"kw": "fabrication tubes tuyaux profiles creux accessoires correspondants acier"
+},
+{
+"c": "2431Z",
+"l": "Étirage à froid de barres",
+"s": "C",
+"kw": "etirage froid barres"
+},
+{
+"c": "2432Z",
+"l": "Laminage à froid de feuillards",
+"s": "C",
+"kw": "laminage froid feuillards"
+},
+{
+"c": "2433Z",
+"l": "Profilage à froid par formage ou pliage",
+"s": "C",
+"kw": "profilage froid formage pliage"
+},
+{
+"c": "2434Z",
+"l": "Tréfilage à froid",
+"s": "C",
+"kw": "trefilage froid"
+},
+{
+"c": "2441Z",
+"l": "Production de métaux précieux",
+"s": "C",
+"kw": "production metaux precieux"
+},
+{
+"c": "2442Z",
+"l": "Métallurgie de l'aluminium",
+"s": "C",
+"kw": "metallurgie aluminium"
+},
+{
+"c": "2443Z",
+"l": "Métallurgie du plomb, du zinc ou de l'étain",
+"s": "C",
+"kw": "metallurgie plomb zinc etain"
+},
+{
+"c": "2444Z",
+"l": "Métallurgie du cuivre",
+"s": "C",
+"kw": "metallurgie cuivre"
+},
+{
+"c": "2445Z",
+"l": "Métallurgie des autres métaux non ferreux",
+"s": "C",
+"kw": "metallurgie metaux non ferreux"
+},
+{
+"c": "2446Z",
+"l": "Élaboration et transformation de matières nucléaires",
+"s": "C",
+"kw": "elaboration transformation matieres nucleaires"
+},
+{
+"c": "2451Z",
+"l": "Fonderie de fonte",
+"s": "C",
+"kw": "fonderie fonte"
+},
+{
+"c": "2452Z",
+"l": "Fonderie d'acier",
+"s": "C",
+"kw": "fonderie acier"
+},
+{
+"c": "2453Z",
+"l": "Fonderie de métaux légers",
+"s": "C",
+"kw": "fonderie metaux legers"
+},
+{
+"c": "2454Z",
+"l": "Fonderie d'autres métaux non ferreux",
+"s": "C",
+"kw": "fonderie metaux non ferreux"
+},
+{
+"c": "2511Z",
+"l": "Fabrication de structures métalliques et de parties de structures",
+"s": "C",
+"kw": "fabrication structures metalliques parties"
+},
+{
+"c": "2512Z",
+"l": "Fabrication de portes et fenêtres en métal",
+"s": "C",
+"kw": "fabrication portes fenetres metal"
+},
+{
+"c": "2521Z",
+"l": "Fabrication de radiateurs et de chaudières pour le chauffage central",
+"s": "C",
+"kw": "fabrication radiateurs chaudieres chauffage central"
+},
+{
+"c": "2529Z",
+"l": "Fabrication d'autres réservoirs, citernes et conteneurs métalliques",
+"s": "C",
+"kw": "fabrication reservoirs citernes conteneurs metalliques"
+},
+{
+"c": "2530Z",
+"l": "Fabrication de générateurs de vapeur, à l'exception des chaudières pour le chauffage central",
+"s": "C",
+"kw": "fabrication generateurs vapeur chaudieres chauffage central"
+},
+{
+"c": "2540Z",
+"l": "Fabrication d'armes et de munitions",
+"s": "C",
+"kw": "fabrication armes munitions"
+},
+{
+"c": "2550A",
+"l": "Forge, estampage, matriçage ; métallurgie des poudres",
+"s": "C",
+"kw": "forge estampage matricage metallurgie poudres"
+},
+{
+"c": "2550B",
+"l": "Découpage, emboutissage",
+"s": "C",
+"kw": "decoupage emboutissage"
+},
+{
+"c": "2561Z",
+"l": "Traitement et revêtement des métaux",
+"s": "C",
+"kw": "traitement revetement metaux"
+},
+{
+"c": "2562A",
+"l": "Décolletage",
+"s": "C",
+"kw": "decolletage"
+},
+{
+"c": "2562B",
+"l": "Mécanique industrielle",
+"s": "C",
+"kw": "mecanique industrielle"
+},
+{
+"c": "2571Z",
+"l": "Fabrication de coutellerie",
+"s": "C",
+"kw": "fabrication coutellerie"
+},
+{
+"c": "2572Z",
+"l": "Fabrication de serrures et de ferrures",
+"s": "C",
+"kw": "fabrication serrures ferrures"
+},
+{
+"c": "2573A",
+"l": "Fabrication de moules et modèles",
+"s": "C",
+"kw": "fabrication moules modeles"
+},
+{
+"c": "2573B",
+"l": "Fabrication d'autres outillages",
+"s": "C",
+"kw": "fabrication outillages"
+},
+{
+"c": "2591Z",
+"l": "Fabrication de fûts et emballages métalliques similaires",
+"s": "C",
+"kw": "fabrication futs emballages metalliques similaires"
+},
+{
+"c": "2592Z",
+"l": "Fabrication d'emballages métalliques légers",
+"s": "C",
+"kw": "fabrication emballages metalliques legers"
+},
+{
+"c": "2593Z",
+"l": "Fabrication d'articles en fils métalliques, de chaînes et de ressorts",
+"s": "C",
+"kw": "fabrication articles fils metalliques chaines ressorts"
+},
+{
+"c": "2594Z",
+"l": "Fabrication de vis et de boulons",
+"s": "C",
+"kw": "fabrication vis boulons"
+},
+{
+"c": "2599A",
+"l": "Fabrication d'articles métalliques ménagers",
+"s": "C",
+"kw": "fabrication articles metalliques menagers"
+},
+{
+"c": "2599B",
+"l": "Fabrication d'autres articles métalliques",
+"s": "C",
+"kw": "fabrication articles metalliques"
+},
+{
+"c": "2611Z",
+"l": "Fabrication de composants électroniques",
+"s": "C",
+"kw": "fabrication composants electroniques"
+},
+{
+"c": "2612Z",
+"l": "Fabrication de cartes électroniques assemblées",
+"s": "C",
+"kw": "fabrication cartes electroniques assemblees"
+},
+{
+"c": "2620Z",
+"l": "Fabrication d'ordinateurs et d'équipements périphériques",
+"s": "C",
+"kw": "fabrication ordinateurs equipements peripheriques"
+},
+{
+"c": "2630Z",
+"l": "Fabrication d'équipements de communication",
+"s": "C",
+"kw": "fabrication equipements communication"
+},
+{
+"c": "2640Z",
+"l": "Fabrication de produits électroniques grand public",
+"s": "C",
+"kw": "fabrication produits electroniques grand public"
+},
+{
+"c": "2651A",
+"l": "Fabrication d'équipements d'aide à la navigation",
+"s": "C",
+"kw": "fabrication equipements aide navigation"
+},
+{
+"c": "2651B",
+"l": "Fabrication d'instrumentation scientifique et technique",
+"s": "C",
+"kw": "fabrication instrumentation scientifique technique"
+},
+{
+"c": "2652Z",
+"l": "Horlogerie",
+"s": "C",
+"kw": "horlogerie"
+},
+{
+"c": "2660Z",
+"l": "Fabrication d'équipements d'irradiation médicale, d'équipements électromédicaux et électrothérapeutiques",
+"s": "C",
+"kw": "fabrication equipements irradiation medicale electromedicaux electrotherapeutiques"
+},
+{
+"c": "2670Z",
+"l": "Fabrication de matériels optique et photographique",
+"s": "C",
+"kw": "fabrication materiels optique photographique"
+},
+{
+"c": "2680Z",
+"l": "Fabrication de supports magnétiques et optiques",
+"s": "C",
+"kw": "fabrication supports magnetiques optiques"
+},
+{
+"c": "2711Z",
+"l": "Fabrication de moteurs, génératrices et transformateurs électriques",
+"s": "C",
+"kw": "fabrication moteurs generatrices transformateurs electriques"
+},
+{
+"c": "2712Z",
+"l": "Fabrication de matériel de distribution et de commande électrique",
+"s": "C",
+"kw": "fabrication materiel distribution commande electrique"
+},
+{
+"c": "2720Z",
+"l": "Fabrication de piles et d'accumulateurs électriques",
+"s": "C",
+"kw": "fabrication piles accumulateurs electriques"
+},
+{
+"c": "2731Z",
+"l": "Fabrication de câbles de fibres optiques",
+"s": "C",
+"kw": "fabrication cables fibres optiques"
+},
+{
+"c": "2732Z",
+"l": "Fabrication d'autres fils et câbles électroniques ou électriques",
+"s": "C",
+"kw": "fabrication fils cables electroniques electriques"
+},
+{
+"c": "2733Z",
+"l": "Fabrication de matériel d'installation électrique",
+"s": "C",
+"kw": "fabrication materiel installation electrique"
+},
+{
+"c": "2740Z",
+"l": "Fabrication d'appareils d'éclairage électrique",
+"s": "C",
+"kw": "fabrication appareils eclairage electrique"
+},
+{
+"c": "2751Z",
+"l": "Fabrication d'appareils électroménagers",
+"s": "C",
+"kw": "fabrication appareils electromenagers"
+},
+{
+"c": "2752Z",
+"l": "Fabrication d'appareils ménagers non électriques",
+"s": "C",
+"kw": "fabrication appareils menagers non electriques"
+},
+{
+"c": "2790Z",
+"l": "Fabrication d'autres matériels électriques",
+"s": "C",
+"kw": "fabrication materiels electriques"
+},
+{
+"c": "2811Z",
+"l": "Fabrication de moteurs et turbines, à l'exception des moteurs d’avions et de véhicules",
+"s": "C",
+"kw": "fabrication moteurs turbines avions vehicules"
+},
+{
+"c": "2812Z",
+"l": "Fabrication d'équipements hydrauliques et pneumatiques",
+"s": "C",
+"kw": "fabrication equipements hydrauliques pneumatiques"
+},
+{
+"c": "2813Z",
+"l": "Fabrication d'autres pompes et compresseurs",
+"s": "C",
+"kw": "fabrication pompes compresseurs"
+},
+{
+"c": "2814Z",
+"l": "Fabrication d'autres articles de robinetterie",
+"s": "C",
+"kw": "fabrication articles robinetterie"
+},
+{
+"c": "2815Z",
+"l": "Fabrication d'engrenages et d'organes mécaniques de transmission",
+"s": "C",
+"kw": "fabrication engrenages organes mecaniques transmission"
+},
+{
+"c": "2821Z",
+"l": "Fabrication de fours et brûleurs",
+"s": "C",
+"kw": "fabrication fours bruleurs"
+},
+{
+"c": "2822Z",
+"l": "Fabrication de matériel de levage et de manutention",
+"s": "C",
+"kw": "fabrication materiel levage manutention"
+},
+{
+"c": "2823Z",
+"l": "Fabrication de machines et d'équipements de bureau (à l'exception des ordinateurs et équipements périphériques)",
+"s": "C",
+"kw": "fabrication machines equipements bureau ordinateurs peripheriques"
+},
+{
+"c": "2824Z",
+"l": "Fabrication d'outillage portatif à moteur incorporé",
+"s": "C",
+"kw": "fabrication outillage portatif moteur incorpore"
+},
+{
+"c": "2825Z",
+"l": "Fabrication d'équipements aérauliques et frigorifiques industriels",
+"s": "C",
+"kw": "fabrication equipements aerauliques frigorifiques industriels"
+},
+{
+"c": "2829A",
+"l": "Fabrication d'équipements d'emballage, de conditionnement et de pesage",
+"s": "C",
+"kw": "fabrication equipements emballage conditionnement pesage"
+},
+{
+"c": "2829B",
+"l": "Fabrication d'autres machines d'usage général",
+"s": "C",
+"kw": "fabrication machines usage general"
+},
+{
+"c": "2830Z",
+"l": "Fabrication de machines agricoles et forestières",
+"s": "C",
+"kw": "fabrication machines agricoles forestieres"
+},
+{
+"c": "2841Z",
+"l": "Fabrication de machines-outils pour le travail des métaux",
+"s": "C",
+"kw": "fabrication machines outils travail metaux"
+},
+{
+"c": "2849Z",
+"l": "Fabrication d'autres machines-outils",
+"s": "C",
+"kw": "fabrication machines outils"
+},
+{
+"c": "2891Z",
+"l": "Fabrication de machines pour la métallurgie",
+"s": "C",
+"kw": "fabrication machines metallurgie"
+},
+{
+"c": "2892Z",
+"l": "Fabrication de machines pour l'extraction ou la construction",
+"s": "C",
+"kw": "fabrication machines extraction construction"
+},
+{
+"c": "2893Z",
+"l": "Fabrication de machines pour l'industrie agro-alimentaire",
+"s": "C",
+"kw": "fabrication machines industrie agro alimentaire"
+},
+{
+"c": "2894Z",
+"l": "Fabrication de machines pour les industries textiles",
+"s": "C",
+"kw": "fabrication machines industries textiles"
+},
+{
+"c": "2895Z",
+"l": "Fabrication de machines pour les industries du papier et du carton",
+"s": "C",
+"kw": "fabrication machines industries papier carton"
+},
+{
+"c": "2896Z",
+"l": "Fabrication de machines pour le travail du caoutchouc ou des plastiques",
+"s": "C",
+"kw": "fabrication machines travail caoutchouc plastiques"
+},
+{
+"c": "2899A",
+"l": "Fabrication de machines d'imprimerie",
+"s": "C",
+"kw": "fabrication machines imprimerie"
+},
+{
+"c": "2899B",
+"l": "Fabrication d'autres machines spécialisées",
+"s": "C",
+"kw": "fabrication machines specialisees"
+},
+{
+"c": "2910Z",
+"l": "Construction de véhicules automobiles",
+"s": "C",
+"kw": "construction vehicules automobiles"
+},
+{
+"c": "2920Z",
+"l": "Fabrication de carrosseries et remorques",
+"s": "C",
+"kw": "fabrication carrosseries remorques"
+},
+{
+"c": "2931Z",
+"l": "Fabrication d'équipements électriques et électroniques automobiles",
+"s": "C",
+"kw": "fabrication equipements electriques electroniques automobiles"
+},
+{
+"c": "2932Z",
+"l": "Fabrication d'autres équipements automobiles",
+"s": "C",
+"kw": "fabrication equipements automobiles"
+},
+{
+"c": "3011Z",
+"l": "Construction de navires et de structures flottantes",
+"s": "C",
+"kw": "construction navires structures flottantes"
+},
+{
+"c": "3012Z",
+"l": "Construction de bateaux de plaisance",
+"s": "C",
+"kw": "construction bateaux plaisance"
+},
+{
+"c": "3020Z",
+"l": "Construction de locomotives et d'autre matériel ferroviaire roulant",
+"s": "C",
+"kw": "construction locomotives materiel ferroviaire roulant"
+},
+{
+"c": "3030Z",
+"l": "Construction aéronautique et spatiale",
+"s": "C",
+"kw": "construction aeronautique spatiale"
+},
+{
+"c": "3040Z",
+"l": "Construction de véhicules militaires de combat",
+"s": "C",
+"kw": "construction vehicules militaires combat"
+},
+{
+"c": "3091Z",
+"l": "Fabrication de motocycles",
+"s": "C",
+"kw": "fabrication motocycles"
+},
+{
+"c": "3092Z",
+"l": "Fabrication de bicyclettes et de véhicules pour invalides",
+"s": "C",
+"kw": "fabrication bicyclettes vehicules invalides"
+},
+{
+"c": "3099Z",
+"l": "Fabrication d’autres équipements de transport n.c.a.",
+"s": "C",
+"kw": "fabrication equipements transport"
+},
+{
+"c": "3101Z",
+"l": "Fabrication de meubles de bureau et de magasin",
+"s": "C",
+"kw": "fabrication meubles bureau magasin"
+},
+{
+"c": "3102Z",
+"l": "Fabrication de meubles de cuisine",
+"s": "C",
+"kw": "fabrication meubles cuisine"
+},
+{
+"c": "3103Z",
+"l": "Fabrication de matelas",
+"s": "C",
+"kw": "fabrication matelas"
+},
+{
+"c": "3109A",
+"l": "Fabrication de sièges d'ameublement d'intérieur",
+"s": "C",
+"kw": "fabrication sieges ameublement interieur"
+},
+{
+"c": "3109B",
+"l": "Fabrication d’autres meubles et industries connexes de l’ameublement",
+"s": "C",
+"kw": "fabrication meubles industries connexes ameublement"
+},
+{
+"c": "3211Z",
+"l": "Frappe de monnaie",
+"s": "C",
+"kw": "frappe monnaie"
+},
+{
+"c": "3212Z",
+"l": "Fabrication d’articles de joaillerie et bijouterie",
+"s": "C",
+"kw": "fabrication articles joaillerie bijouterie"
+},
+{
+"c": "3213Z",
+"l": "Fabrication d’articles de bijouterie fantaisie et articles similaires",
+"s": "C",
+"kw": "fabrication articles bijouterie fantaisie similaires"
+},
+{
+"c": "3220Z",
+"l": "Fabrication d'instruments de musique",
+"s": "C",
+"kw": "fabrication instruments musique"
+},
+{
+"c": "3230Z",
+"l": "Fabrication d'articles de sport",
+"s": "C",
+"kw": "fabrication articles sport"
+},
+{
+"c": "3240Z",
+"l": "Fabrication de jeux et jouets",
+"s": "C",
+"kw": "fabrication jeux jouets"
+},
+{
+"c": "3250A",
+"l": "Fabrication de matériel médico-chirurgical et dentaire",
+"s": "C",
+"kw": "fabrication materiel medico chirurgical dentaire"
+},
+{
+"c": "3250B",
+"l": "Fabrication de lunettes",
+"s": "C",
+"kw": "fabrication lunettes"
+},
+{
+"c": "3291Z",
+"l": "Fabrication d’articles de brosserie",
+"s": "C",
+"kw": "fabrication articles brosserie"
+},
+{
+"c": "3299Z",
+"l": "Autres activités manufacturières n.c.a.",
+"s": "C",
+"kw": "manufacturieres"
+},
+{
+"c": "3311Z",
+"l": "Réparation d'ouvrages en métaux",
+"s": "C",
+"kw": "reparation ouvrages metaux"
+},
+{
+"c": "3312Z",
+"l": "Réparation de machines et équipements mécaniques",
+"s": "C",
+"kw": "reparation machines equipements mecaniques"
+},
+{
+"c": "3313Z",
+"l": "Réparation de matériels électroniques et optiques",
+"s": "C",
+"kw": "reparation materiels electroniques optiques"
+},
+{
+"c": "3314Z",
+"l": "Réparation d'équipements électriques",
+"s": "C",
+"kw": "reparation equipements electriques"
+},
+{
+"c": "3315Z",
+"l": "Réparation et maintenance navale",
+"s": "C",
+"kw": "reparation maintenance navale"
+},
+{
+"c": "3316Z",
+"l": "Réparation et maintenance d'aéronefs et d'engins spatiaux",
+"s": "C",
+"kw": "reparation maintenance aeronefs engins spatiaux"
+},
+{
+"c": "3317Z",
+"l": "Réparation et maintenance d'autres équipements de transport",
+"s": "C",
+"kw": "reparation maintenance equipements transport"
+},
+{
+"c": "3319Z",
+"l": "Réparation d'autres équipements",
+"s": "C",
+"kw": "reparation equipements"
+},
+{
+"c": "3320A",
+"l": "Installation de structures métalliques, chaudronnées et de tuyauterie",
+"s": "C",
+"kw": "installation structures metalliques chaudronnees tuyauterie"
+},
+{
+"c": "3320B",
+"l": "Installation de machines et équipements mécaniques",
+"s": "C",
+"kw": "installation machines equipements mecaniques"
+},
+{
+"c": "3320C",
+"l": "Conception d'ensemble et assemblage sur site industriel d'équipements de contrôle des processus industriels",
+"s": "C",
+"kw": "conception ensemble assemblage site industriel equipements controle processus industriels"
+},
+{
+"c": "3320D",
+"l": "Installation d'équipements électriques, de matériels électroniques et optiques ou d'autres matériels",
+"s": "C",
+"kw": "installation equipements electriques materiels electroniques optiques"
+},
+{
+"c": "3511Z",
+"l": "Production d'électricité",
+"s": "D",
+"kw": "production electricite"
+},
+{
+"c": "3512Z",
+"l": "Transport d'électricité",
+"s": "D",
+"kw": "transport electricite"
+},
+{
+"c": "3513Z",
+"l": "Distribution d'électricité",
+"s": "D",
+"kw": "distribution electricite"
+},
+{
+"c": "3514Z",
+"l": "Commerce d'électricité",
+"s": "D",
+"kw": "commerce electricite"
+},
+{
+"c": "3521Z",
+"l": "Production de combustibles gazeux",
+"s": "D",
+"kw": "production combustibles gazeux"
+},
+{
+"c": "3522Z",
+"l": "Distribution de combustibles gazeux par conduites",
+"s": "D",
+"kw": "distribution combustibles gazeux conduites"
+},
+{
+"c": "3523Z",
+"l": "Commerce de combustibles gazeux par conduites",
+"s": "D",
+"kw": "commerce combustibles gazeux conduites"
+},
+{
+"c": "3530Z",
+"l": "Production et distribution de vapeur et d'air conditionné",
+"s": "D",
+"kw": "production distribution vapeur air conditionne"
+},
+{
+"c": "3600Z",
+"l": "Captage, traitement et distribution d'eau",
+"s": "E",
+"kw": "captage traitement distribution eau"
+},
+{
+"c": "3700Z",
+"l": "Collecte et traitement des eaux usées",
+"s": "E",
+"kw": "collecte traitement eaux usees"
+},
+{
+"c": "3811Z",
+"l": "Collecte des déchets non dangereux",
+"s": "E",
+"kw": "collecte dechets non dangereux eboueur ripeur ordures benne"
+},
+{
+"c": "3812Z",
+"l": "Collecte des déchets dangereux",
+"s": "E",
+"kw": "collecte dechets dangereux"
+},
+{
+"c": "3821Z",
+"l": "Traitement et élimination des déchets non dangereux",
+"s": "E",
+"kw": "traitement elimination dechets non dangereux"
+},
+{
+"c": "3822Z",
+"l": "Traitement et élimination des déchets dangereux",
+"s": "E",
+"kw": "traitement elimination dechets dangereux"
+},
+{
+"c": "3831Z",
+"l": "Démantèlement d'épaves",
+"s": "E",
+"kw": "demantelement epaves"
+},
+{
+"c": "3832Z",
+"l": "Récupération de déchets triés",
+"s": "E",
+"kw": "recuperation dechets tries"
+},
+{
+"c": "3900Z",
+"l": "Dépollution et autres services de gestion des déchets",
+"s": "E",
+"kw": "depollution services gestion dechets"
+},
+{
+"c": "4110A",
+"l": "Promotion immobilière de logements",
+"s": "F",
+"kw": "promotion immobiliere logements"
+},
+{
+"c": "4110B",
+"l": "Promotion immobilière de bureaux",
+"s": "F",
+"kw": "promotion immobiliere bureaux"
+},
+{
+"c": "4110C",
+"l": "Promotion immobilière d'autres bâtiments",
+"s": "F",
+"kw": "promotion immobiliere batiments"
+},
+{
+"c": "4110D",
+"l": "Supports juridiques de programmes",
+"s": "F",
+"kw": "supports juridiques programmes"
+},
+{
+"c": "4120A",
+"l": "Construction de maisons individuelles",
+"s": "F",
+"kw": "construction maisons individuelles macon maconnerie maison gros oeuvre batiment"
+},
+{
+"c": "4120B",
+"l": "Construction d'autres bâtiments",
+"s": "F",
+"kw": "construction batiments"
+},
+{
+"c": "4211Z",
+"l": "Construction de routes et autoroutes",
+"s": "F",
+"kw": "construction routes autoroutes"
+},
+{
+"c": "4212Z",
+"l": "Construction de voies ferrées de surface et souterraines",
+"s": "F",
+"kw": "construction voies ferrees surface souterraines"
+},
+{
+"c": "4213A",
+"l": "Construction d'ouvrages d'art",
+"s": "F",
+"kw": "construction ouvrages art"
+},
+{
+"c": "4213B",
+"l": "Construction et entretien de tunnels",
+"s": "F",
+"kw": "construction entretien tunnels"
+},
+{
+"c": "4221Z",
+"l": "Construction de réseaux pour fluides",
+"s": "F",
+"kw": "construction reseaux fluides"
+},
+{
+"c": "4222Z",
+"l": "Construction de réseaux électriques et de télécommunications",
+"s": "F",
+"kw": "construction reseaux electriques telecommunications"
+},
+{
+"c": "4291Z",
+"l": "Construction d'ouvrages maritimes et fluviaux",
+"s": "F",
+"kw": "construction ouvrages maritimes fluviaux"
+},
+{
+"c": "4299Z",
+"l": "Construction d'autres ouvrages de génie civil n.c.a.",
+"s": "F",
+"kw": "construction ouvrages genie civil"
+},
+{
+"c": "4311Z",
+"l": "Travaux de démolition",
+"s": "F",
+"kw": "travaux demolition"
+},
+{
+"c": "4312A",
+"l": "Travaux de terrassement courants et travaux préparatoires",
+"s": "F",
+"kw": "travaux terrassement courants preparatoires"
+},
+{
+"c": "4312B",
+"l": "Travaux de terrassement spécialisés ou de grande masse",
+"s": "F",
+"kw": "travaux terrassement specialises grande masse"
+},
+{
+"c": "4313Z",
+"l": "Forages et sondages",
+"s": "F",
+"kw": "forages sondages"
+},
+{
+"c": "4321A",
+"l": "Travaux d'installation électrique dans tous locaux",
+"s": "F",
+"kw": "travaux installation electrique dans tous locaux electricien batiment cablage domotique"
+},
+{
+"c": "4321B",
+"l": "Travaux d'installation électrique sur la voie publique",
+"s": "F",
+"kw": "travaux installation electrique voie publique"
+},
+{
+"c": "4322A",
+"l": "Travaux d'installation d'eau et de gaz en tous locaux",
+"s": "F",
+"kw": "travaux installation eau gaz tous locaux plombier plomberie sanitaire chauffagiste installateur"
+},
+{
+"c": "4322B",
+"l": "Travaux d'installation d'équipements thermiques et de climatisation",
+"s": "F",
+"kw": "travaux installation equipements thermiques climatisation chauffagiste cvc pompe chaleur froid"
+},
+{
+"c": "4329A",
+"l": "Travaux d'isolation",
+"s": "F",
+"kw": "travaux isolation"
+},
+{
+"c": "4329B",
+"l": "Autres travaux d'installation n.c.a.",
+"s": "F",
+"kw": "travaux installation"
+},
+{
+"c": "4331Z",
+"l": "Travaux de plâtrerie",
+"s": "F",
+"kw": "travaux platrerie"
+},
+{
+"c": "4332A",
+"l": "Travaux de menuiserie bois et PVC",
+"s": "F",
+"kw": "travaux menuiserie bois pvc"
+},
+{
+"c": "4332B",
+"l": "Travaux de menuiserie métallique et serrurerie",
+"s": "F",
+"kw": "travaux menuiserie metallique serrurerie"
+},
+{
+"c": "4332C",
+"l": "Agencement de lieux de vente",
+"s": "F",
+"kw": "agencement lieux vente"
+},
+{
+"c": "4333Z",
+"l": "Travaux de revêtement des sols et des murs",
+"s": "F",
+"kw": "travaux revetement sols murs"
+},
+{
+"c": "4334Z",
+"l": "Travaux de peinture et vitrerie",
+"s": "F",
+"kw": "travaux peinture vitrerie"
+},
+{
+"c": "4339Z",
+"l": "Autres travaux de finition",
+"s": "F",
+"kw": "travaux finition"
+},
+{
+"c": "4391A",
+"l": "Travaux de charpente",
+"s": "F",
+"kw": "travaux charpente"
+},
+{
+"c": "4391B",
+"l": "Travaux de couverture par éléments",
+"s": "F",
+"kw": "travaux couverture elements couvreur toiture zingueur charpente"
+},
+{
+"c": "4399A",
+"l": "Travaux d'étanchéification",
+"s": "F",
+"kw": "travaux etancheification"
+},
+{
+"c": "4399B",
+"l": "Travaux de montage de structures métalliques",
+"s": "F",
+"kw": "travaux montage structures metalliques"
+},
+{
+"c": "4399C",
+"l": "Travaux de maçonnerie générale et gros œuvre de bâtiment",
+"s": "F",
+"kw": "travaux maconnerie generale gros uvre batiment"
+},
+{
+"c": "4399D",
+"l": "Autres travaux spécialisés de construction",
+"s": "F",
+"kw": "travaux specialises construction"
+},
+{
+"c": "4399E",
+"l": "Location avec opérateur de matériel de construction",
+"s": "F",
+"kw": "location avec operateur materiel construction"
+},
+{
+"c": "4511Z",
+"l": "Commerce de voitures et de véhicules automobiles légers",
+"s": "G",
+"kw": "commerce voitures vehicules automobiles legers"
+},
+{
+"c": "4519Z",
+"l": "Commerce d'autres véhicules automobiles",
+"s": "G",
+"kw": "commerce vehicules automobiles"
+},
+{
+"c": "4520A",
+"l": "Entretien et réparation de véhicules automobiles légers",
+"s": "G",
+"kw": "entretien reparation vehicules automobiles legers garage mecanicien automobile carrossier voiture"
+},
+{
+"c": "4520B",
+"l": "Entretien et réparation d'autres véhicules automobiles",
+"s": "G",
+"kw": "entretien reparation vehicules automobiles"
+},
+{
+"c": "4531Z",
+"l": "Commerce de gros d'équipements automobiles",
+"s": "G",
+"kw": "commerce gros equipements automobiles"
+},
+{
+"c": "4532Z",
+"l": "Commerce de détail d'équipements automobiles",
+"s": "G",
+"kw": "commerce detail equipements automobiles"
+},
+{
+"c": "4540Z",
+"l": "Commerce et réparation de motocycles",
+"s": "G",
+"kw": "commerce reparation motocycles"
+},
+{
+"c": "4611Z",
+"l": "Intermédiaires du commerce en matières premières agricoles, animaux vivants, matières premières textiles et produits semi-finis",
+"s": "G",
+"kw": "intermediaires commerce matieres premieres agricoles animaux vivants textiles produits semi finis"
+},
+{
+"c": "4612A",
+"l": "Centrales d'achat de carburant",
+"s": "G",
+"kw": "centrales achat carburant"
+},
+{
+"c": "4612B",
+"l": "Autres intermédiaires du commerce en combustibles, métaux, minéraux et produits chimiques",
+"s": "G",
+"kw": "intermediaires commerce combustibles metaux mineraux produits chimiques"
+},
+{
+"c": "4613Z",
+"l": "Intermédiaires du commerce en bois et matériaux de construction",
+"s": "G",
+"kw": "intermediaires commerce bois materiaux construction"
+},
+{
+"c": "4614Z",
+"l": "Intermédiaires du commerce en machines, équipements industriels, navires et avions",
+"s": "G",
+"kw": "intermediaires commerce machines equipements industriels navires avions"
+},
+{
+"c": "4615Z",
+"l": "Intermédiaires du commerce en meubles, articles de ménage et quincaillerie",
+"s": "G",
+"kw": "intermediaires commerce meubles articles menage quincaillerie"
+},
+{
+"c": "4616Z",
+"l": "Intermédiaires du commerce en textiles, habillement, fourrures, chaussures et articles en cuir",
+"s": "G",
+"kw": "intermediaires commerce textiles habillement fourrures chaussures articles cuir"
+},
+{
+"c": "4617A",
+"l": "Centrales d'achat alimentaires",
+"s": "G",
+"kw": "centrales achat alimentaires"
+},
+{
+"c": "4617B",
+"l": "Autres intermédiaires du commerce en denrées, boissons et tabac",
+"s": "G",
+"kw": "intermediaires commerce denrees boissons tabac"
+},
+{
+"c": "4618Z",
+"l": "Intermédiaires spécialisés dans le commerce d'autres produits spécifiques",
+"s": "G",
+"kw": "intermediaires specialises dans commerce produits specifiques"
+},
+{
+"c": "4619A",
+"l": "Centrales d'achat non alimentaires",
+"s": "G",
+"kw": "centrales achat non alimentaires"
+},
+{
+"c": "4619B",
+"l": "Autres intermédiaires du commerce en produits divers",
+"s": "G",
+"kw": "intermediaires commerce produits divers"
+},
+{
+"c": "4621Z",
+"l": "Commerce de gros (commerce interentreprises) de céréales, de tabac non manufacturé, de semences et d'aliments pour le bétail",
+"s": "G",
+"kw": "commerce gros interentreprises cereales tabac non manufacture semences aliments betail"
+},
+{
+"c": "4622Z",
+"l": "Commerce de gros (commerce interentreprises) de fleurs et plantes",
+"s": "G",
+"kw": "commerce gros interentreprises fleurs plantes"
+},
+{
+"c": "4623Z",
+"l": "Commerce de gros (commerce interentreprises) d'animaux vivants",
+"s": "G",
+"kw": "commerce gros interentreprises animaux vivants"
+},
+{
+"c": "4624Z",
+"l": "Commerce de gros (commerce interentreprises) de cuirs et peaux",
+"s": "G",
+"kw": "commerce gros interentreprises cuirs peaux"
+},
+{
+"c": "4631Z",
+"l": "Commerce de gros (commerce interentreprises) de fruits et légumes",
+"s": "G",
+"kw": "commerce gros interentreprises fruits legumes"
+},
+{
+"c": "4632A",
+"l": "Commerce de gros (commerce interentreprises) de viandes de boucherie",
+"s": "G",
+"kw": "commerce gros interentreprises viandes boucherie"
+},
+{
+"c": "4632B",
+"l": "Commerce de gros (commerce interentreprises) de produits à base de viande",
+"s": "G",
+"kw": "commerce gros interentreprises produits base viande"
+},
+{
+"c": "4632C",
+"l": "Commerce de gros (commerce interentreprises) de volailles et gibier",
+"s": "G",
+"kw": "commerce gros interentreprises volailles gibier"
+},
+{
+"c": "4633Z",
+"l": "Commerce de gros (commerce interentreprises) de produits laitiers, œufs, huiles et matières grasses comestibles",
+"s": "G",
+"kw": "commerce gros interentreprises produits laitiers ufs huiles matieres grasses comestibles"
+},
+{
+"c": "4634Z",
+"l": "Commerce de gros (commerce interentreprises) de boissons",
+"s": "G",
+"kw": "commerce gros interentreprises boissons"
+},
+{
+"c": "4635Z",
+"l": "Commerce de gros (commerce interentreprises) de produits à base de tabac",
+"s": "G",
+"kw": "commerce gros interentreprises produits base tabac"
+},
+{
+"c": "4636Z",
+"l": "Commerce de gros (commerce interentreprises) de sucre, chocolat et confiserie",
+"s": "G",
+"kw": "commerce gros interentreprises sucre chocolat confiserie"
+},
+{
+"c": "4637Z",
+"l": "Commerce de gros (commerce interentreprises) de café, thé, cacao et épices",
+"s": "G",
+"kw": "commerce gros interentreprises cafe cacao epices"
+},
+{
+"c": "4638A",
+"l": "Commerce de gros (commerce interentreprises) de poissons, crustacés et mollusques",
+"s": "G",
+"kw": "commerce gros interentreprises poissons crustaces mollusques"
+},
+{
+"c": "4638B",
+"l": "Commerce de gros (commerce interentreprises) alimentaire spécialisé divers",
+"s": "G",
+"kw": "commerce gros interentreprises alimentaire specialise divers"
+},
+{
+"c": "4639A",
+"l": "Commerce de gros (commerce interentreprises) de produits surgelés",
+"s": "G",
+"kw": "commerce gros interentreprises produits surgeles"
+},
+{
+"c": "4639B",
+"l": "Commerce de gros (commerce interentreprises) alimentaire non spécialisé",
+"s": "G",
+"kw": "commerce gros interentreprises alimentaire non specialise"
+},
+{
+"c": "4641Z",
+"l": "Commerce de gros (commerce interentreprises) de textiles",
+"s": "G",
+"kw": "commerce gros interentreprises textiles"
+},
+{
+"c": "4642Z",
+"l": "Commerce de gros (commerce interentreprises) d'habillement et de chaussures",
+"s": "G",
+"kw": "commerce gros interentreprises habillement chaussures"
+},
+{
+"c": "4643Z",
+"l": "Commerce de gros (commerce interentreprises) d'appareils électroménagers",
+"s": "G",
+"kw": "commerce gros interentreprises appareils electromenagers"
+},
+{
+"c": "4644Z",
+"l": "Commerce de gros (commerce interentreprises) de vaisselle, verrerie et produits d'entretien",
+"s": "G",
+"kw": "commerce gros interentreprises vaisselle verrerie produits entretien"
+},
+{
+"c": "4645Z",
+"l": "Commerce de gros (commerce interentreprises) de parfumerie et de produits de beauté",
+"s": "G",
+"kw": "commerce gros interentreprises parfumerie produits beaute"
+},
+{
+"c": "4646Z",
+"l": "Commerce de gros (commerce interentreprises) de produits pharmaceutiques",
+"s": "G",
+"kw": "commerce gros interentreprises produits pharmaceutiques"
+},
+{
+"c": "4647Z",
+"l": "Commerce de gros (commerce interentreprises) de meubles, de tapis et d'appareils d'éclairage",
+"s": "G",
+"kw": "commerce gros interentreprises meubles tapis appareils eclairage"
+},
+{
+"c": "4648Z",
+"l": "Commerce de gros (commerce interentreprises) d'articles d'horlogerie et de bijouterie",
+"s": "G",
+"kw": "commerce gros interentreprises articles horlogerie bijouterie"
+},
+{
+"c": "4649Z",
+"l": "Commerce de gros (commerce interentreprises) d'autres biens domestiques",
+"s": "G",
+"kw": "commerce gros interentreprises biens domestiques"
+},
+{
+"c": "4651Z",
+"l": "Commerce de gros (commerce interentreprises) d'ordinateurs, d'équipements informatiques périphériques et de logiciels",
+"s": "G",
+"kw": "commerce gros interentreprises ordinateurs equipements informatiques peripheriques logiciels"
+},
+{
+"c": "4652Z",
+"l": "Commerce de gros (commerce interentreprises) de composants et d'équipements électroniques et de télécommunication",
+"s": "G",
+"kw": "commerce gros interentreprises composants equipements electroniques telecommunication"
+},
+{
+"c": "4661Z",
+"l": "Commerce de gros (commerce interentreprises) de matériel agricole",
+"s": "G",
+"kw": "commerce gros interentreprises materiel agricole"
+},
+{
+"c": "4662Z",
+"l": "Commerce de gros (commerce interentreprises) de machines-outils",
+"s": "G",
+"kw": "commerce gros interentreprises machines outils"
+},
+{
+"c": "4663Z",
+"l": "Commerce de gros (commerce interentreprises) de machines pour l'extraction, la construction et le génie civil",
+"s": "G",
+"kw": "commerce gros interentreprises machines extraction construction genie civil"
+},
+{
+"c": "4664Z",
+"l": "Commerce de gros (commerce interentreprises) de machines pour l'industrie textile et l'habillement",
+"s": "G",
+"kw": "commerce gros interentreprises machines industrie textile habillement"
+},
+{
+"c": "4665Z",
+"l": "Commerce de gros (commerce interentreprises) de mobilier de bureau",
+"s": "G",
+"kw": "commerce gros interentreprises mobilier bureau"
+},
+{
+"c": "4666Z",
+"l": "Commerce de gros (commerce interentreprises) d'autres machines et équipements de bureau",
+"s": "G",
+"kw": "commerce gros interentreprises machines equipements bureau"
+},
+{
+"c": "4669A",
+"l": "Commerce de gros (commerce interentreprises) de matériel électrique",
+"s": "G",
+"kw": "commerce gros interentreprises materiel electrique"
+},
+{
+"c": "4669B",
+"l": "Commerce de gros (commerce interentreprises) de fournitures et équipements industriels divers",
+"s": "G",
+"kw": "commerce gros interentreprises fournitures equipements industriels divers"
+},
+{
+"c": "4669C",
+"l": "Commerce de gros (commerce interentreprises) de fournitures et équipements divers pour le commerce et les services",
+"s": "G",
+"kw": "commerce gros interentreprises fournitures equipements divers services"
+},
+{
+"c": "4671Z",
+"l": "Commerce de gros (commerce interentreprises) de combustibles et de produits annexes",
+"s": "G",
+"kw": "commerce gros interentreprises combustibles produits annexes"
+},
+{
+"c": "4672Z",
+"l": "Commerce de gros (commerce interentreprises) de minerais et métaux",
+"s": "G",
+"kw": "commerce gros interentreprises minerais metaux"
+},
+{
+"c": "4673A",
+"l": "Commerce de gros (commerce interentreprises) de bois et de matériaux de construction",
+"s": "G",
+"kw": "commerce gros interentreprises bois materiaux construction"
+},
+{
+"c": "4673B",
+"l": "Commerce de gros (commerce interentreprises) d'appareils sanitaires et de produits de décoration",
+"s": "G",
+"kw": "commerce gros interentreprises appareils sanitaires produits decoration"
+},
+{
+"c": "4674A",
+"l": "Commerce de gros (commerce interentreprises) de quincaillerie",
+"s": "G",
+"kw": "commerce gros interentreprises quincaillerie"
+},
+{
+"c": "4674B",
+"l": "Commerce de gros (commerce interentreprises) de fournitures pour la plomberie et le chauffage",
+"s": "G",
+"kw": "commerce gros interentreprises fournitures plomberie chauffage"
+},
+{
+"c": "4675Z",
+"l": "Commerce de gros (commerce interentreprises) de produits chimiques",
+"s": "G",
+"kw": "commerce gros interentreprises produits chimiques"
+},
+{
+"c": "4676Z",
+"l": "Commerce de gros (commerce interentreprises) d'autres produits intermédiaires",
+"s": "G",
+"kw": "commerce gros interentreprises produits intermediaires"
+},
+{
+"c": "4677Z",
+"l": "Commerce de gros (commerce interentreprises) de déchets et débris",
+"s": "G",
+"kw": "commerce gros interentreprises dechets debris"
+},
+{
+"c": "4690Z",
+"l": "Commerce de gros (commerce interentreprises) non spécialisé",
+"s": "G",
+"kw": "commerce gros interentreprises non specialise"
+},
+{
+"c": "4711A",
+"l": "Commerce de détail de produits surgelés",
+"s": "G",
+"kw": "commerce detail produits surgeles"
+},
+{
+"c": "4711B",
+"l": "Commerce d'alimentation générale",
+"s": "G",
+"kw": "commerce alimentation generale"
+},
+{
+"c": "4711C",
+"l": "Supérettes",
+"s": "G",
+"kw": "superettes"
+},
+{
+"c": "4711D",
+"l": "Supermarchés",
+"s": "G",
+"kw": "supermarches supermarche caissier employe libre service grande surface"
+},
+{
+"c": "4711E",
+"l": "Magasins multi-commerces",
+"s": "G",
+"kw": "magasins multi commerces"
+},
+{
+"c": "4711F",
+"l": "Hypermarchés",
+"s": "G",
+"kw": "hypermarches hypermarche caissier grande distribution employe"
+},
+{
+"c": "4719A",
+"l": "Grands magasins",
+"s": "G",
+"kw": "grands magasins"
+},
+{
+"c": "4719B",
+"l": "Autres commerces de détail en magasin non spécialisé",
+"s": "G",
+"kw": "commerces detail magasin non specialise"
+},
+{
+"c": "4721Z",
+"l": "Commerce de détail de fruits et légumes en magasin spécialisé",
+"s": "G",
+"kw": "commerce detail fruits legumes magasin specialise"
+},
+{
+"c": "4722Z",
+"l": "Commerce de détail de viandes et de produits à base de viande en magasin spécialisé",
+"s": "G",
+"kw": "commerce detail viandes produits base viande magasin specialise"
+},
+{
+"c": "4723Z",
+"l": "Commerce de détail de poissons, crustacés et mollusques en magasin spécialisé",
+"s": "G",
+"kw": "commerce detail poissons crustaces mollusques magasin specialise"
+},
+{
+"c": "4724Z",
+"l": "Commerce de détail de pain, pâtisserie et confiserie en magasin spécialisé",
+"s": "G",
+"kw": "commerce detail pain patisserie confiserie magasin specialise"
+},
+{
+"c": "4725Z",
+"l": "Commerce de détail de boissons en magasin spécialisé",
+"s": "G",
+"kw": "commerce detail boissons magasin specialise"
+},
+{
+"c": "4726Z",
+"l": "Commerce de détail de produits à base de tabac en magasin spécialisé",
+"s": "G",
+"kw": "commerce detail produits base tabac magasin specialise"
+},
+{
+"c": "4729Z",
+"l": "Autres commerces de détail alimentaires en magasin spécialisé",
+"s": "G",
+"kw": "commerces detail alimentaires magasin specialise"
+},
+{
+"c": "4730Z",
+"l": "Commerce de détail de carburants en magasin spécialisé",
+"s": "G",
+"kw": "commerce detail carburants magasin specialise station service pompiste carburant essence"
+},
+{
+"c": "4741Z",
+"l": "Commerce de détail d'ordinateurs, d'unités périphériques et de logiciels en magasin spécialisé",
+"s": "G",
+"kw": "commerce detail ordinateurs unites peripheriques logiciels magasin specialise"
+},
+{
+"c": "4742Z",
+"l": "Commerce de détail de matériels de télécommunication en magasin spécialisé",
+"s": "G",
+"kw": "commerce detail materiels telecommunication magasin specialise"
+},
+{
+"c": "4743Z",
+"l": "Commerce de détail de matériels audio et vidéo en magasin spécialisé",
+"s": "G",
+"kw": "commerce detail materiels audio video magasin specialise"
+},
+{
+"c": "4751Z",
+"l": "Commerce de détail de textiles en magasin spécialisé",
+"s": "G",
+"kw": "commerce detail textiles magasin specialise"
+},
+{
+"c": "4752A",
+"l": "Commerce de détail de quincaillerie, peintures et verres en petites surfaces (moins de 400 m2)",
+"s": "G",
+"kw": "commerce detail quincaillerie peintures verres petites surfaces moins 400"
+},
+{
+"c": "4752B",
+"l": "Commerce de détail de quincaillerie, peintures et verres en grandes surfaces (400 m2et plus)",
+"s": "G",
+"kw": "commerce detail quincaillerie peintures verres grandes surfaces 400 m2et plus"
+},
+{
+"c": "4753Z",
+"l": "Commerce de détail de tapis, moquettes et revêtements de murs et de sols en magasin spécialisé",
+"s": "G",
+"kw": "commerce detail tapis moquettes revetements murs sols magasin specialise"
+},
+{
+"c": "4754Z",
+"l": "Commerce de détail d'appareils électroménagers en magasin spécialisé",
+"s": "G",
+"kw": "commerce detail appareils electromenagers magasin specialise"
+},
+{
+"c": "4759A",
+"l": "Commerce de détail de meubles",
+"s": "G",
+"kw": "commerce detail meubles"
+},
+{
+"c": "4759B",
+"l": "Commerce de détail d'autres équipements du foyer",
+"s": "G",
+"kw": "commerce detail equipements foyer"
+},
+{
+"c": "4761Z",
+"l": "Commerce de détail de livres en magasin spécialisé",
+"s": "G",
+"kw": "commerce detail livres magasin specialise"
+},
+{
+"c": "4762Z",
+"l": "Commerce de détail de journaux et papeterie en magasin spécialisé",
+"s": "G",
+"kw": "commerce detail journaux papeterie magasin specialise"
+},
+{
+"c": "4763Z",
+"l": "Commerce de détail d'enregistrements musicaux et vidéo en magasin spécialisé",
+"s": "G",
+"kw": "commerce detail enregistrements musicaux video magasin specialise"
+},
+{
+"c": "4764Z",
+"l": "Commerce de détail d'articles de sport en magasin spécialisé",
+"s": "G",
+"kw": "commerce detail articles sport magasin specialise"
+},
+{
+"c": "4765Z",
+"l": "Commerce de détail de jeux et jouets en magasin spécialisé",
+"s": "G",
+"kw": "commerce detail jeux jouets magasin specialise"
+},
+{
+"c": "4771Z",
+"l": "Commerce de détail d'habillement en magasin spécialisé",
+"s": "G",
+"kw": "commerce detail habillement magasin specialise"
+},
+{
+"c": "4772A",
+"l": "Commerce de détail de la chaussure",
+"s": "G",
+"kw": "commerce detail chaussure"
+},
+{
+"c": "4772B",
+"l": "Commerce de détail de maroquinerie et d'articles de voyage",
+"s": "G",
+"kw": "commerce detail maroquinerie articles voyage"
+},
+{
+"c": "4773Z",
+"l": "Commerce de détail de produits pharmaceutiques en magasin spécialisé",
+"s": "G",
+"kw": "commerce detail produits pharmaceutiques magasin specialise pharmacie pharmacien preparateur officine"
+},
+{
+"c": "4774Z",
+"l": "Commerce de détail d'articles médicaux et orthopédiques en magasin spécialisé",
+"s": "G",
+"kw": "commerce detail articles medicaux orthopediques magasin specialise"
+},
+{
+"c": "4775Z",
+"l": "Commerce de détail de parfumerie et de produits de beauté en magasin spécialisé",
+"s": "G",
+"kw": "commerce detail parfumerie produits beaute magasin specialise"
+},
+{
+"c": "4776Z",
+"l": "Commerce de détail de fleurs, plantes, graines, engrais, animaux de compagnie et aliments pour ces animaux en magasin spécialisé",
+"s": "G",
+"kw": "commerce detail fleurs plantes graines engrais animaux compagnie aliments ces magasin specialise"
+},
+{
+"c": "4777Z",
+"l": "Commerce de détail d'articles d'horlogerie et de bijouterie en magasin spécialisé",
+"s": "G",
+"kw": "commerce detail articles horlogerie bijouterie magasin specialise"
+},
+{
+"c": "4778A",
+"l": "Commerces de détail d'optique",
+"s": "G",
+"kw": "commerces detail optique"
+},
+{
+"c": "4778B",
+"l": "Commerces de détail de charbons et combustibles",
+"s": "G",
+"kw": "commerces detail charbons combustibles"
+},
+{
+"c": "4778C",
+"l": "Autres commerces de détail spécialisés divers",
+"s": "G",
+"kw": "commerces detail specialises divers"
+},
+{
+"c": "4779Z",
+"l": "Commerce de détail de biens d'occasion en magasin",
+"s": "G",
+"kw": "commerce detail biens occasion magasin"
+},
+{
+"c": "4781Z",
+"l": "Commerce de détail alimentaire sur éventaires et marchés",
+"s": "G",
+"kw": "commerce detail alimentaire eventaires marches"
+},
+{
+"c": "4782Z",
+"l": "Commerce de détail de textiles, d'habillement et de chaussures sur éventaires et marchés",
+"s": "G",
+"kw": "commerce detail textiles habillement chaussures eventaires marches"
+},
+{
+"c": "4789Z",
+"l": "Autres commerces de détail sur éventaires et marchés",
+"s": "G",
+"kw": "commerces detail eventaires marches"
+},
+{
+"c": "4791A",
+"l": "Vente à distance sur catalogue général",
+"s": "G",
+"kw": "vente distance catalogue general"
+},
+{
+"c": "4791B",
+"l": "Vente à distance sur catalogue spécialisé",
+"s": "G",
+"kw": "vente distance catalogue specialise"
+},
+{
+"c": "4799A",
+"l": "Vente à domicile",
+"s": "G",
+"kw": "vente domicile"
+},
+{
+"c": "4799B",
+"l": "Vente par automates et autres commerces de détail hors magasin, éventaires ou marchés n.c.a.",
+"s": "G",
+"kw": "vente automates commerces detail hors magasin eventaires marches"
+},
+{
+"c": "4910Z",
+"l": "Transport ferroviaire interurbain de voyageurs",
+"s": "H",
+"kw": "transport ferroviaire interurbain voyageurs"
+},
+{
+"c": "4920Z",
+"l": "Transports ferroviaires de fret",
+"s": "H",
+"kw": "transports ferroviaires fret"
+},
+{
+"c": "4931Z",
+"l": "Transports urbains et suburbains de voyageurs",
+"s": "H",
+"kw": "transports urbains suburbains voyageurs"
+},
+{
+"c": "4932Z",
+"l": "Transports de voyageurs par taxis",
+"s": "H",
+"kw": "transports voyageurs taxis taxi vtc chauffeur voiture transport personne"
+},
+{
+"c": "4939A",
+"l": "Transports routiers réguliers de voyageurs",
+"s": "H",
+"kw": "transports routiers reguliers voyageurs"
+},
+{
+"c": "4939B",
+"l": "Autres transports routiers de voyageurs",
+"s": "H",
+"kw": "transports routiers voyageurs autocar autobus car conducteur transport scolaire"
+},
+{
+"c": "4939C",
+"l": "Téléphériques et remontées mécaniques",
+"s": "H",
+"kw": "telepheriques remontees mecaniques"
+},
+{
+"c": "4941A",
+"l": "Transports routiers de fret interurbains",
+"s": "H",
+"kw": "transports routiers fret interurbains transport routier camion poids lourd chauffeur routier"
+},
+{
+"c": "4941B",
+"l": "Transports routiers de fret de proximité",
+"s": "H",
+"kw": "transports routiers fret proximite livraison messagerie chauffeur livreur colis"
+},
+{
+"c": "4941C",
+"l": "Location de camions avec chauffeur",
+"s": "H",
+"kw": "location camions avec chauffeur"
+},
+{
+"c": "4942Z",
+"l": "Services de déménagement",
+"s": "H",
+"kw": "services demenagement"
+},
+{
+"c": "4950Z",
+"l": "Transports par conduites",
+"s": "H",
+"kw": "transports conduites"
+},
+{
+"c": "5010Z",
+"l": "Transports maritimes et côtiers de passagers",
+"s": "H",
+"kw": "transports maritimes cotiers passagers"
+},
+{
+"c": "5020Z",
+"l": "Transports maritimes et côtiers de fret",
+"s": "H",
+"kw": "transports maritimes cotiers fret"
+},
+{
+"c": "5030Z",
+"l": "Transports fluviaux de passagers",
+"s": "H",
+"kw": "transports fluviaux passagers"
+},
+{
+"c": "5040Z",
+"l": "Transports fluviaux de fret",
+"s": "H",
+"kw": "transports fluviaux fret"
+},
+{
+"c": "5110Z",
+"l": "Transports aériens de passagers",
+"s": "H",
+"kw": "transports aeriens passagers"
+},
+{
+"c": "5121Z",
+"l": "Transports aériens de fret",
+"s": "H",
+"kw": "transports aeriens fret"
+},
+{
+"c": "5122Z",
+"l": "Transports spatiaux",
+"s": "H",
+"kw": "transports spatiaux"
+},
+{
+"c": "5210A",
+"l": "Entreposage et stockage frigorifique",
+"s": "H",
+"kw": "entreposage stockage frigorifique"
+},
+{
+"c": "5210B",
+"l": "Entreposage et stockage non frigorifique",
+"s": "H",
+"kw": "entreposage stockage non frigorifique"
+},
+{
+"c": "5221Z",
+"l": "Services auxiliaires des transports terrestres",
+"s": "H",
+"kw": "services auxiliaires transports terrestres"
+},
+{
+"c": "5222Z",
+"l": "Services auxiliaires des transports par eau",
+"s": "H",
+"kw": "services auxiliaires transports eau"
+},
+{
+"c": "5223Z",
+"l": "Services auxiliaires des transports aériens",
+"s": "H",
+"kw": "services auxiliaires transports aeriens"
+},
+{
+"c": "5224A",
+"l": "Manutention portuaire",
+"s": "H",
+"kw": "manutention portuaire"
+},
+{
+"c": "5224B",
+"l": "Manutention non portuaire",
+"s": "H",
+"kw": "manutention non portuaire"
+},
+{
+"c": "5229A",
+"l": "Messagerie, fret express",
+"s": "H",
+"kw": "messagerie fret express"
+},
+{
+"c": "5229B",
+"l": "Affrètement et organisation des transports",
+"s": "H",
+"kw": "affretement organisation transports"
+},
+{
+"c": "5310Z",
+"l": "Activités de poste dans le cadre d'une obligation de service universel",
+"s": "H",
+"kw": "poste dans cadre obligation service universel"
+},
+{
+"c": "5320Z",
+"l": "Autres activités de poste et de courrier",
+"s": "H",
+"kw": "poste courrier"
+},
+{
+"c": "5510Z",
+"l": "Hôtels et hébergement similaire",
+"s": "I",
+"kw": "hotels hebergement similaire hotel hotelier reception femme chambre gouvernante"
+},
+{
+"c": "5520Z",
+"l": "Hébergement touristique et autre hébergement de courte durée",
+"s": "I",
+"kw": "hebergement touristique courte duree camping gite chambre hote"
+},
+{
+"c": "5530Z",
+"l": "Terrains de camping et parcs pour caravanes ou véhicules de loisirs",
+"s": "I",
+"kw": "terrains camping parcs caravanes vehicules loisirs"
+},
+{
+"c": "5590Z",
+"l": "Autres hébergements",
+"s": "I",
+"kw": "hebergements"
+},
+{
+"c": "5610A",
+"l": "Restauration traditionnelle",
+"s": "I",
+"kw": "restauration traditionnelle restaurant serveur cuisinier chef commis brasserie"
+},
+{
+"c": "5610B",
+"l": "Cafétérias et autres libres-services",
+"s": "I",
+"kw": "cafeterias libres services"
+},
+{
+"c": "5610C",
+"l": "Restauration de type rapide",
+"s": "I",
+"kw": "restauration type rapide fast food snack sandwich food truck kebab"
+},
+{
+"c": "5621Z",
+"l": "Services des traiteurs",
+"s": "I",
+"kw": "services traiteurs traiteur reception banquet evenementiel"
+},
+{
+"c": "5629A",
+"l": "Restauration collective sous contrat",
+"s": "I",
+"kw": "restauration collective sous contrat"
+},
+{
+"c": "5629B",
+"l": "Autres services de restauration n.c.a.",
+"s": "I",
+"kw": "services restauration"
+},
+{
+"c": "5630Z",
+"l": "Débits de boissons",
+"s": "I",
+"kw": "debits boissons bar cafe brasserie barman pub debit boisson serveur"
+},
+{
+"c": "5811Z",
+"l": "Édition de livres",
+"s": "J",
+"kw": "edition livres"
+},
+{
+"c": "5812Z",
+"l": "Édition de répertoires et de fichiers d'adresses",
+"s": "J",
+"kw": "edition repertoires fichiers adresses"
+},
+{
+"c": "5813Z",
+"l": "Édition de journaux",
+"s": "J",
+"kw": "edition journaux"
+},
+{
+"c": "5814Z",
+"l": "Édition de revues et périodiques",
+"s": "J",
+"kw": "edition revues periodiques"
+},
+{
+"c": "5819Z",
+"l": "Autres activités d'édition",
+"s": "J",
+"kw": "edition"
+},
+{
+"c": "5821Z",
+"l": "Édition de jeux électroniques",
+"s": "J",
+"kw": "edition jeux electroniques"
+},
+{
+"c": "5829A",
+"l": "Édition de logiciels système et de réseau",
+"s": "J",
+"kw": "edition logiciels systeme reseau"
+},
+{
+"c": "5829B",
+"l": "Edition de logiciels outils de développement et de langages",
+"s": "J",
+"kw": "edition logiciels outils developpement langages"
+},
+{
+"c": "5829C",
+"l": "Edition de logiciels applicatifs",
+"s": "J",
+"kw": "edition logiciels applicatifs"
+},
+{
+"c": "5911A",
+"l": "Production de films et de programmes pour la télévision",
+"s": "J",
+"kw": "production films programmes television"
+},
+{
+"c": "5911B",
+"l": "Production de films institutionnels et publicitaires",
+"s": "J",
+"kw": "production films institutionnels publicitaires"
+},
+{
+"c": "5911C",
+"l": "Production de films pour le cinéma",
+"s": "J",
+"kw": "production films cinema"
+},
+{
+"c": "5912Z",
+"l": "Post-production de films cinématographiques, de vidéo et de programmes de télévision",
+"s": "J",
+"kw": "post production films cinematographiques video programmes television"
+},
+{
+"c": "5913A",
+"l": "Distribution de films cinématographiques",
+"s": "J",
+"kw": "distribution films cinematographiques"
+},
+{
+"c": "5913B",
+"l": "Edition et distribution vidéo",
+"s": "J",
+"kw": "edition distribution video"
+},
+{
+"c": "5914Z",
+"l": "Projection de films cinématographiques",
+"s": "J",
+"kw": "projection films cinematographiques"
+},
+{
+"c": "5920Z",
+"l": "Enregistrement sonore et édition musicale",
+"s": "J",
+"kw": "enregistrement sonore edition musicale"
+},
+{
+"c": "6010Z",
+"l": "Édition et diffusion de programmes radio",
+"s": "J",
+"kw": "edition diffusion programmes radio"
+},
+{
+"c": "6020A",
+"l": "Edition de chaînes généralistes",
+"s": "J",
+"kw": "edition chaines generalistes"
+},
+{
+"c": "6020B",
+"l": "Edition de chaînes thématiques",
+"s": "J",
+"kw": "edition chaines thematiques"
+},
+{
+"c": "6110Z",
+"l": "Télécommunications filaires",
+"s": "J",
+"kw": "telecommunications filaires"
+},
+{
+"c": "6120Z",
+"l": "Télécommunications sans fil",
+"s": "J",
+"kw": "telecommunications sans fil"
+},
+{
+"c": "6130Z",
+"l": "Télécommunications par satellite",
+"s": "J",
+"kw": "telecommunications satellite"
+},
+{
+"c": "6190Z",
+"l": "Autres activités de télécommunication",
+"s": "J",
+"kw": "telecommunication"
+},
+{
+"c": "6201Z",
+"l": "Programmation informatique",
+"s": "J",
+"kw": "programmation informatique developpeur informaticien programmeur code logiciel dev"
+},
+{
+"c": "6202A",
+"l": "Conseil en systèmes et logiciels informatiques",
+"s": "J",
+"kw": "conseil systemes logiciels informatiques consultant informatique ssii esn ingenieur"
+},
+{
+"c": "6202B",
+"l": "Tierce maintenance de systèmes et d’applications informatiques",
+"s": "J",
+"kw": "tierce maintenance systemes applications informatiques"
+},
+{
+"c": "6203Z",
+"l": "Gestion d'installations informatiques",
+"s": "J",
+"kw": "gestion installations informatiques"
+},
+{
+"c": "6209Z",
+"l": "Autres activités informatiques",
+"s": "J",
+"kw": "informatiques"
+},
+{
+"c": "6311Z",
+"l": "Traitement de données, hébergement et activités connexes",
+"s": "J",
+"kw": "traitement donnees hebergement connexes"
+},
+{
+"c": "6312Z",
+"l": "Portails Internet",
+"s": "J",
+"kw": "portails internet"
+},
+{
+"c": "6391Z",
+"l": "Activités des agences de presse",
+"s": "J",
+"kw": "agences presse"
+},
+{
+"c": "6399Z",
+"l": "Autres services d'information n.c.a.",
+"s": "J",
+"kw": "services information"
+},
+{
+"c": "6411Z",
+"l": "Activités de banque centrale",
+"s": "K",
+"kw": "banque centrale"
+},
+{
+"c": "6419Z",
+"l": "Autres intermédiations monétaires",
+"s": "K",
+"kw": "intermediations monetaires"
+},
+{
+"c": "6420Z",
+"l": "Activités des sociétés holding",
+"s": "K",
+"kw": "societes holding"
+},
+{
+"c": "6430Z",
+"l": "Fonds de placement et entités financières similaires",
+"s": "K",
+"kw": "fonds placement entites financieres similaires"
+},
+{
+"c": "6491Z",
+"l": "Crédit-bail",
+"s": "K",
+"kw": "credit bail"
+},
+{
+"c": "6492Z",
+"l": "Autre distribution de crédit",
+"s": "K",
+"kw": "distribution credit"
+},
+{
+"c": "6499Z",
+"l": "Autres activités des services financiers, hors assurance et caisses de retraite, n.c.a.",
+"s": "K",
+"kw": "services financiers hors assurance caisses retraite"
+},
+{
+"c": "6511Z",
+"l": "Assurance vie",
+"s": "K",
+"kw": "assurance vie"
+},
+{
+"c": "6512Z",
+"l": "Autres assurances",
+"s": "K",
+"kw": "assurances"
+},
+{
+"c": "6520Z",
+"l": "Réassurance",
+"s": "K",
+"kw": "reassurance"
+},
+{
+"c": "6530Z",
+"l": "Caisses de retraite",
+"s": "K",
+"kw": "caisses retraite"
+},
+{
+"c": "6611Z",
+"l": "Administration de marchés financiers",
+"s": "K",
+"kw": "administration marches financiers"
+},
+{
+"c": "6612Z",
+"l": "Courtage de valeurs mobilières et de marchandises",
+"s": "K",
+"kw": "courtage valeurs mobilieres marchandises"
+},
+{
+"c": "6619A",
+"l": "Supports juridiques de gestion de patrimoine mobilier",
+"s": "K",
+"kw": "supports juridiques gestion patrimoine mobilier"
+},
+{
+"c": "6619B",
+"l": "Autres activités auxiliaires de services financiers, hors assurance et caisses de retraite, n.c.a.",
+"s": "K",
+"kw": "auxiliaires services financiers hors assurance caisses retraite"
+},
+{
+"c": "6621Z",
+"l": "Évaluation des risques et dommages",
+"s": "K",
+"kw": "evaluation risques dommages"
+},
+{
+"c": "6622Z",
+"l": "Activités des agents et courtiers d'assurances",
+"s": "K",
+"kw": "agents courtiers assurances"
+},
+{
+"c": "6629Z",
+"l": "Autres activités auxiliaires d'assurance et de caisses de retraite",
+"s": "K",
+"kw": "auxiliaires assurance caisses retraite"
+},
+{
+"c": "6630Z",
+"l": "Gestion de fonds",
+"s": "K",
+"kw": "gestion fonds"
+},
+{
+"c": "6810Z",
+"l": "Activités des marchands de biens immobiliers",
+"s": "L",
+"kw": "marchands biens immobiliers"
+},
+{
+"c": "6820A",
+"l": "Location de logements",
+"s": "L",
+"kw": "location logements"
+},
+{
+"c": "6820B",
+"l": "Location de terrains et d'autres biens immobiliers",
+"s": "L",
+"kw": "location terrains biens immobiliers"
+},
+{
+"c": "6831Z",
+"l": "Agences immobilières",
+"s": "L",
+"kw": "agences immobilieres"
+},
+{
+"c": "6832A",
+"l": "Administration d'immeubles et autres biens immobiliers",
+"s": "L",
+"kw": "administration immeubles biens immobiliers"
+},
+{
+"c": "6832B",
+"l": "Supports juridiques de gestion de patrimoine immobilier",
+"s": "L",
+"kw": "supports juridiques gestion patrimoine immobilier"
+},
+{
+"c": "6910Z",
+"l": "Activités juridiques",
+"s": "M",
+"kw": "juridiques avocat notaire juriste huissier cabinet juridique droit"
+},
+{
+"c": "6920Z",
+"l": "Activités comptables",
+"s": "M",
+"kw": "comptables comptable expert comptable cabinet comptabilite paie"
+},
+{
+"c": "7010Z",
+"l": "Activités des sièges sociaux",
+"s": "M",
+"kw": "sieges sociaux"
+},
+{
+"c": "7021Z",
+"l": "Conseil en relations publiques et communication",
+"s": "M",
+"kw": "conseil relations publiques communication"
+},
+{
+"c": "7022Z",
+"l": "Conseil pour les affaires et autres conseils de gestion",
+"s": "M",
+"kw": "conseil affaires conseils gestion"
+},
+{
+"c": "7111Z",
+"l": "Activités d'architecture",
+"s": "M",
+"kw": "architecture"
+},
+{
+"c": "7112A",
+"l": "Activité des géomètres",
+"s": "M",
+"kw": "geometres"
+},
+{
+"c": "7112B",
+"l": "Ingénierie, études techniques",
+"s": "M",
+"kw": "ingenierie etudes techniques bureau ingenieur technicien"
+},
+{
+"c": "7120A",
+"l": "Contrôle technique automobile",
+"s": "M",
+"kw": "controle technique automobile"
+},
+{
+"c": "7120B",
+"l": "Analyses, essais et inspections techniques",
+"s": "M",
+"kw": "analyses essais inspections techniques"
+},
+{
+"c": "7211Z",
+"l": "Recherche-développement en biotechnologie",
+"s": "M",
+"kw": "recherche developpement biotechnologie"
+},
+{
+"c": "7219Z",
+"l": "Recherche-développement en autres sciences physiques et naturelles",
+"s": "M",
+"kw": "recherche developpement sciences physiques naturelles"
+},
+{
+"c": "7220Z",
+"l": "Recherche-développement en sciences humaines et sociales",
+"s": "M",
+"kw": "recherche developpement sciences humaines sociales"
+},
+{
+"c": "7311Z",
+"l": "Activités des agences de publicité",
+"s": "M",
+"kw": "agences publicite"
+},
+{
+"c": "7312Z",
+"l": "Régie publicitaire de médias",
+"s": "M",
+"kw": "regie publicitaire medias"
+},
+{
+"c": "7320Z",
+"l": "Études de marché et sondages",
+"s": "M",
+"kw": "etudes marche sondages"
+},
+{
+"c": "7410Z",
+"l": "Activités spécialisées de design",
+"s": "M",
+"kw": "specialisees design"
+},
+{
+"c": "7420Z",
+"l": "Activités photographiques",
+"s": "M",
+"kw": "photographiques photographe studio photo reportage"
+},
+{
+"c": "7430Z",
+"l": "Traduction et interprétation",
+"s": "M",
+"kw": "traduction interpretation"
+},
+{
+"c": "7490A",
+"l": "Activité des économistes de la construction",
+"s": "M",
+"kw": "economistes construction"
+},
+{
+"c": "7490B",
+"l": "Activités spécialisées, scientifiques et techniques diverses",
+"s": "M",
+"kw": "specialisees scientifiques techniques diverses"
+},
+{
+"c": "7500Z",
+"l": "Activités vétérinaires",
+"s": "M",
+"kw": "veterinaires veterinaire clinique asv auxiliaire veterinaire animal"
+},
+{
+"c": "7711A",
+"l": "Location de courte durée de voitures et de véhicules automobiles légers",
+"s": "N",
+"kw": "location courte duree voitures vehicules automobiles legers"
+},
+{
+"c": "7711B",
+"l": "Location de longue durée de voitures et de véhicules automobiles légers",
+"s": "N",
+"kw": "location longue duree voitures vehicules automobiles legers"
+},
+{
+"c": "7712Z",
+"l": "Location et location-bail de camions",
+"s": "N",
+"kw": "location bail camions"
+},
+{
+"c": "7721Z",
+"l": "Location et location-bail d'articles de loisirs et de sport",
+"s": "N",
+"kw": "location bail articles loisirs sport"
+},
+{
+"c": "7722Z",
+"l": "Location de vidéocassettes et disques vidéo",
+"s": "N",
+"kw": "location videocassettes disques video"
+},
+{
+"c": "7729Z",
+"l": "Location et location-bail d'autres biens personnels et domestiques",
+"s": "N",
+"kw": "location bail biens personnels domestiques"
+},
+{
+"c": "7731Z",
+"l": "Location et location-bail de machines et équipements agricoles",
+"s": "N",
+"kw": "location bail machines equipements agricoles"
+},
+{
+"c": "7732Z",
+"l": "Location et location-bail de machines et équipements pour la construction",
+"s": "N",
+"kw": "location bail machines equipements construction"
+},
+{
+"c": "7733Z",
+"l": "Location et location-bail de machines de bureau et de matériel informatique",
+"s": "N",
+"kw": "location bail machines bureau materiel informatique"
+},
+{
+"c": "7734Z",
+"l": "Location et location-bail de matériels de transport par eau",
+"s": "N",
+"kw": "location bail materiels transport eau"
+},
+{
+"c": "7735Z",
+"l": "Location et location-bail de matériels de transport aérien",
+"s": "N",
+"kw": "location bail materiels transport aerien"
+},
+{
+"c": "7739Z",
+"l": "Location et location-bail d'autres machines, équipements et biens matériels n.c.a.",
+"s": "N",
+"kw": "location bail machines equipements biens materiels"
+},
+{
+"c": "7740Z",
+"l": "Location-bail de propriété intellectuelle et de produits similaires, à l'exception des œuvres soumises à copyright",
+"s": "N",
+"kw": "location bail propriete intellectuelle produits similaires uvres soumises copyright"
+},
+{
+"c": "7810Z",
+"l": "Activités des agences de placement de main-d'œuvre",
+"s": "N",
+"kw": "agences placement main uvre"
+},
+{
+"c": "7820Z",
+"l": "Activités des agences de travail temporaire",
+"s": "N",
+"kw": "agences travail temporaire"
+},
+{
+"c": "7830Z",
+"l": "Autre mise à disposition de ressources humaines",
+"s": "N",
+"kw": "mise disposition ressources humaines"
+},
+{
+"c": "7911Z",
+"l": "Activités des agences de voyage",
+"s": "N",
+"kw": "agences voyage"
+},
+{
+"c": "7912Z",
+"l": "Activités des voyagistes",
+"s": "N",
+"kw": "voyagistes"
+},
+{
+"c": "7990Z",
+"l": "Autres services de réservation et activités connexes",
+"s": "N",
+"kw": "services reservation connexes"
+},
+{
+"c": "8010Z",
+"l": "Activités de sécurité privée",
+"s": "N",
+"kw": "securite privee gardiennage agent surveillance vigile videosurveillance"
+},
+{
+"c": "8020Z",
+"l": "Activités liées aux systèmes de sécurité",
+"s": "N",
+"kw": "liees systemes securite"
+},
+{
+"c": "8030Z",
+"l": "Activités d'enquête",
+"s": "N",
+"kw": "enquete"
+},
+{
+"c": "8110Z",
+"l": "Activités combinées de soutien lié aux bâtiments",
+"s": "N",
+"kw": "combinees soutien lie batiments multiservices facility management gardien immeuble"
+},
+{
+"c": "8121Z",
+"l": "Nettoyage courant des bâtiments",
+"s": "N",
+"kw": "nettoyage courant batiments proprete agent entretien menage femme homme menage"
+},
+{
+"c": "8122Z",
+"l": "Autres activités de nettoyage des bâtiments et nettoyage industriel",
+"s": "N",
+"kw": "nettoyage batiments industriel"
+},
+{
+"c": "8129A",
+"l": "Désinfection, désinsectisation, dératisation",
+"s": "N",
+"kw": "desinfection desinsectisation deratisation"
+},
+{
+"c": "8129B",
+"l": "Autres activités de nettoyage n.c.a.",
+"s": "N",
+"kw": "nettoyage"
+},
+{
+"c": "8130Z",
+"l": "Services d'aménagement paysager",
+"s": "N",
+"kw": "services amenagement paysager paysagiste jardinier espaces verts elagage tonte entretien jardin"
+},
+{
+"c": "8211Z",
+"l": "Services administratifs combinés de bureau",
+"s": "N",
+"kw": "services administratifs combines bureau"
+},
+{
+"c": "8219Z",
+"l": "Photocopie, préparation de documents et autres activités spécialisées de soutien de bureau",
+"s": "N",
+"kw": "photocopie preparation documents specialisees soutien bureau"
+},
+{
+"c": "8220Z",
+"l": "Activités de centres d'appels",
+"s": "N",
+"kw": "centres appels"
+},
+{
+"c": "8230Z",
+"l": "Organisation de foires, salons professionnels et congrès",
+"s": "N",
+"kw": "organisation foires salons professionnels congres"
+},
+{
+"c": "8291Z",
+"l": "Activités des agences de recouvrement de factures et des sociétés d'information financière sur la clientèle",
+"s": "N",
+"kw": "agences recouvrement factures societes information financiere clientele"
+},
+{
+"c": "8292Z",
+"l": "Activités de conditionnement",
+"s": "N",
+"kw": "conditionnement"
+},
+{
+"c": "8299Z",
+"l": "Autres activités de soutien aux entreprises n.c.a.",
+"s": "N",
+"kw": "soutien entreprises"
+},
+{
+"c": "8411Z",
+"l": "Administration publique générale",
+"s": "O",
+"kw": "administration publique generale mairie commune collectivite agent territorial locale"
+},
+{
+"c": "8412Z",
+"l": "Administration publique (tutelle) de la santé, de la formation, de la culture et des services sociaux, autre que sécurité sociale",
+"s": "O",
+"kw": "administration publique tutelle sante formation culture services sociaux que securite sociale"
+},
+{
+"c": "8413Z",
+"l": "Administration publique (tutelle) des activités économiques",
+"s": "O",
+"kw": "administration publique tutelle economiques"
+},
+{
+"c": "8421Z",
+"l": "Affaires étrangères",
+"s": "O",
+"kw": "affaires etrangeres"
+},
+{
+"c": "8422Z",
+"l": "Défense",
+"s": "O",
+"kw": "defense"
+},
+{
+"c": "8423Z",
+"l": "Justice",
+"s": "O",
+"kw": "justice"
+},
+{
+"c": "8424Z",
+"l": "Activités d’ordre public et de sécurité",
+"s": "O",
+"kw": "ordre public securite"
+},
+{
+"c": "8425Z",
+"l": "Services du feu et de secours",
+"s": "O",
+"kw": "services feu secours pompier sapeur pompier sdis incendie"
+},
+{
+"c": "8430A",
+"l": "Activités générales de sécurité sociale",
+"s": "O",
+"kw": "generales securite sociale"
+},
+{
+"c": "8430B",
+"l": "Gestion des retraites complémentaires",
+"s": "O",
+"kw": "gestion retraites complementaires"
+},
+{
+"c": "8430C",
+"l": "Distribution sociale de revenus",
+"s": "O",
+"kw": "distribution sociale revenus"
+},
+{
+"c": "8510Z",
+"l": "Enseignement pré-primaire",
+"s": "P",
+"kw": "enseignement pre primaire"
+},
+{
+"c": "8520Z",
+"l": "Enseignement primaire",
+"s": "P",
+"kw": "enseignement primaire ecole instituteur professeur ecoles enseignant"
+},
+{
+"c": "8531Z",
+"l": "Enseignement secondaire général",
+"s": "P",
+"kw": "enseignement secondaire general college lycee professeur enseignant education nationale"
+},
+{
+"c": "8532Z",
+"l": "Enseignement secondaire technique ou professionnel",
+"s": "P",
+"kw": "enseignement secondaire technique professionnel"
+},
+{
+"c": "8541Z",
+"l": "Enseignement post-secondaire non supérieur",
+"s": "P",
+"kw": "enseignement post secondaire non superieur"
+},
+{
+"c": "8542Z",
+"l": "Enseignement supérieur",
+"s": "P",
+"kw": "enseignement superieur"
+},
+{
+"c": "8551Z",
+"l": "Enseignement de disciplines sportives et d'activités de loisirs",
+"s": "P",
+"kw": "enseignement disciplines sportives loisirs auto ecole moniteur conduite educateur sportif cours"
+},
+{
+"c": "8552Z",
+"l": "Enseignement culturel",
+"s": "P",
+"kw": "enseignement culturel"
+},
+{
+"c": "8553Z",
+"l": "Enseignement de la conduite",
+"s": "P",
+"kw": "enseignement conduite"
+},
+{
+"c": "8559A",
+"l": "Formation continue d'adultes",
+"s": "P",
+"kw": "formation continue adultes"
+},
+{
+"c": "8559B",
+"l": "Autres enseignements",
+"s": "P",
+"kw": "enseignements"
+},
+{
+"c": "8560Z",
+"l": "Activités de soutien à l'enseignement",
+"s": "P",
+"kw": "soutien enseignement"
+},
+{
+"c": "8610Z",
+"l": "Activités hospitalières",
+"s": "Q",
+"kw": "hospitalieres"
+},
+{
+"c": "8621Z",
+"l": "Activité des médecins généralistes",
+"s": "Q",
+"kw": "medecins generalistes medecin generaliste docteur cabinet medical"
+},
+{
+"c": "8622A",
+"l": "Activités de radiodiagnostic et de radiothérapie",
+"s": "Q",
+"kw": "radiodiagnostic radiotherapie radiologue manipulateur radio imagerie scanner irm"
+},
+{
+"c": "8622B",
+"l": "Activités chirurgicales",
+"s": "Q",
+"kw": "chirurgicales"
+},
+{
+"c": "8622C",
+"l": "Autres activités des médecins spécialistes",
+"s": "Q",
+"kw": "medecins specialistes medecin specialiste cardiologue dermatologue"
+},
+{
+"c": "8623Z",
+"l": "Pratique dentaire",
+"s": "Q",
+"kw": "pratique dentaire dentiste chirurgien dentiste orthodontiste assistante cabinet"
+},
+{
+"c": "8690A",
+"l": "Ambulances",
+"s": "Q",
+"kw": "ambulances ambulance ambulancier transport sanitaire vsl"
+},
+{
+"c": "8690B",
+"l": "Laboratoires d'analyses médicales",
+"s": "Q",
+"kw": "laboratoires analyses medicales"
+},
+{
+"c": "8690C",
+"l": "Centres de collecte et banques d'organes",
+"s": "Q",
+"kw": "centres collecte banques organes"
+},
+{
+"c": "8690D",
+"l": "Activités des infirmiers et des sages-femmes",
+"s": "Q",
+"kw": "infirmiers sages femmes infirmier infirmiere idel cabinet infirmier sage femme liberal"
+},
+{
+"c": "8690E",
+"l": "Activités des professionnels de la rééducation, de l’appareillage et des pédicures-podologues",
+"s": "Q",
+"kw": "professionnels reeducation appareillage pedicures podologues kine kinesitherapeute osteopathe orthophoniste podologue"
+},
+{
+"c": "8690F",
+"l": "Activités de santé humaine non classées ailleurs",
+"s": "Q",
+"kw": "sante humaine non classees ailleurs"
+},
+{
+"c": "8710A",
+"l": "Hébergement médicalisé pour personnes âgées",
+"s": "Q",
+"kw": "hebergement medicalise personnes agees ehpad maison retraite personne agee aide soignant"
+},
+{
+"c": "8710B",
+"l": "Hébergement médicalisé pour enfants handicapés",
+"s": "Q",
+"kw": "hebergement medicalise enfants handicapes"
+},
+{
+"c": "8710C",
+"l": "Hébergement médicalisé pour adultes handicapés et autre hébergement médicalisé",
+"s": "Q",
+"kw": "hebergement medicalise adultes handicapes"
+},
+{
+"c": "8720A",
+"l": "Hébergement social pour handicapés mentaux et malades mentaux",
+"s": "Q",
+"kw": "hebergement social handicapes mentaux malades"
+},
+{
+"c": "8720B",
+"l": "Hébergement social pour toxicomanes",
+"s": "Q",
+"kw": "hebergement social toxicomanes"
+},
+{
+"c": "8730A",
+"l": "Hébergement social pour personnes âgées",
+"s": "Q",
+"kw": "hebergement social personnes agees"
+},
+{
+"c": "8730B",
+"l": "Hébergement social pour handicapés  physiques",
+"s": "Q",
+"kw": "hebergement social handicapes physiques"
+},
+{
+"c": "8790A",
+"l": "Hébergement social pour enfants en difficultés",
+"s": "Q",
+"kw": "hebergement social enfants difficultes"
+},
+{
+"c": "8790B",
+"l": "Hébergement social pour adultes et familles en difficultés et autre hébergement social",
+"s": "Q",
+"kw": "hebergement social adultes familles difficultes"
+},
+{
+"c": "8810A",
+"l": "Aide à domicile",
+"s": "Q",
+"kw": "aide domicile admr saad auxiliaire vie services personne portage repas"
+},
+{
+"c": "8810B",
+"l": "Accueil ou accompagnement sans hébergement d’adultes handicapés ou de  personnes âgées",
+"s": "Q",
+"kw": "accueil accompagnement sans hebergement adultes handicapes personnes agees"
+},
+{
+"c": "8810C",
+"l": "Aide par le travail",
+"s": "Q",
+"kw": "aide travail"
+},
+{
+"c": "8891A",
+"l": "Accueil de jeunes enfants",
+"s": "Q",
+"kw": "accueil jeunes enfants creche halte garderie assistante maternelle puericultrice petite enfance"
+},
+{
+"c": "8891B",
+"l": "Accueil ou accompagnement sans hébergement d’enfants handicapés",
+"s": "Q",
+"kw": "accueil accompagnement sans hebergement enfants handicapes"
+},
+{
+"c": "8899A",
+"l": "Autre accueil ou accompagnement sans hébergement d’enfants et d’adolescents",
+"s": "Q",
+"kw": "accueil accompagnement sans hebergement enfants adolescents"
+},
+{
+"c": "8899B",
+"l": "Action sociale sans hébergement n.c.a.",
+"s": "Q",
+"kw": "action sociale sans hebergement"
+},
+{
+"c": "9001Z",
+"l": "Arts du spectacle vivant",
+"s": "R",
+"kw": "arts spectacle vivant artiste comedien musicien danseur intermittent"
+},
+{
+"c": "9002Z",
+"l": "Activités de soutien au spectacle vivant",
+"s": "R",
+"kw": "soutien spectacle vivant technicien regisseur machiniste intermittent"
+},
+{
+"c": "9003A",
+"l": "Création artistique relevant des arts plastiques",
+"s": "R",
+"kw": "creation artistique relevant arts plastiques"
+},
+{
+"c": "9003B",
+"l": "Autre création artistique",
+"s": "R",
+"kw": "creation artistique"
+},
+{
+"c": "9004Z",
+"l": "Gestion de salles de spectacles",
+"s": "R",
+"kw": "gestion salles spectacles"
+},
+{
+"c": "9101Z",
+"l": "Gestion des bibliothèques et des archives",
+"s": "R",
+"kw": "gestion bibliotheques archives"
+},
+{
+"c": "9102Z",
+"l": "Gestion des musées",
+"s": "R",
+"kw": "gestion musees"
+},
+{
+"c": "9103Z",
+"l": "Gestion des sites et monuments historiques et des attractions touristiques similaires",
+"s": "R",
+"kw": "gestion sites monuments historiques attractions touristiques similaires"
+},
+{
+"c": "9104Z",
+"l": "Gestion des jardins botaniques et zoologiques et des réserves naturelles",
+"s": "R",
+"kw": "gestion jardins botaniques zoologiques reserves naturelles"
+},
+{
+"c": "9200Z",
+"l": "Organisation de jeux de hasard et d'argent",
+"s": "R",
+"kw": "organisation jeux hasard argent"
+},
+{
+"c": "9311Z",
+"l": "Gestion d'installations sportives",
+"s": "R",
+"kw": "gestion installations sportives stade piscine gymnase salle omnisport installation maitre nageur"
+},
+{
+"c": "9312Z",
+"l": "Activités de clubs de sports",
+"s": "R",
+"kw": "clubs sports club sportif football basket rugby tennis handball association sportive equipe"
+},
+{
+"c": "9313Z",
+"l": "Activités des centres de culture physique",
+"s": "R",
+"kw": "centres culture physique salle sport fitness musculation coach personal trainer crossfit"
+},
+{
+"c": "9319Z",
+"l": "Autres activités liées au sport",
+"s": "R",
+"kw": "liees sport educateur sportif moniteur guide arbitre sportif"
+},
+{
+"c": "9321Z",
+"l": "Activités des parcs d'attractions et parcs à thèmes",
+"s": "R",
+"kw": "parcs attractions themes"
+},
+{
+"c": "9329Z",
+"l": "Autres activités récréatives et de loisirs",
+"s": "R",
+"kw": "recreatives loisirs parc loisir animation aquatique attraction"
+},
+{
+"c": "9411Z",
+"l": "Activités des organisations patronales et consulaires",
+"s": "S",
+"kw": "organisations patronales consulaires"
+},
+{
+"c": "9412Z",
+"l": "Activités des organisations professionnelles",
+"s": "S",
+"kw": "organisations professionnelles"
+},
+{
+"c": "9420Z",
+"l": "Activités des syndicats de salariés",
+"s": "S",
+"kw": "syndicats salaries"
+},
+{
+"c": "9491Z",
+"l": "Activités des organisations religieuses",
+"s": "S",
+"kw": "organisations religieuses culte paroisse eglise pretre religieux"
+},
+{
+"c": "9492Z",
+"l": "Activités des organisations politiques",
+"s": "S",
+"kw": "organisations politiques"
+},
+{
+"c": "9499Z",
+"l": "Autres organisations fonctionnant par adhésion volontaire",
+"s": "S",
+"kw": "organisations fonctionnant adhesion volontaire association loi 1901 benevole humanitaire ong club"
+},
+{
+"c": "9511Z",
+"l": "Réparation d'ordinateurs et d'équipements périphériques",
+"s": "S",
+"kw": "reparation ordinateurs equipements peripheriques"
+},
+{
+"c": "9512Z",
+"l": "Réparation d'équipements de communication",
+"s": "S",
+"kw": "reparation equipements communication"
+},
+{
+"c": "9521Z",
+"l": "Réparation de produits électroniques grand public",
+"s": "S",
+"kw": "reparation produits electroniques grand public"
+},
+{
+"c": "9522Z",
+"l": "Réparation d'appareils électroménagers et d'équipements pour la maison et le jardin",
+"s": "S",
+"kw": "reparation appareils electromenagers equipements maison jardin"
+},
+{
+"c": "9523Z",
+"l": "Réparation de chaussures et d'articles en cuir",
+"s": "S",
+"kw": "reparation chaussures articles cuir"
+},
+{
+"c": "9524Z",
+"l": "Réparation de meubles et d'équipements du foyer",
+"s": "S",
+"kw": "reparation meubles equipements foyer"
+},
+{
+"c": "9525Z",
+"l": "Réparation d'articles d'horlogerie et de bijouterie",
+"s": "S",
+"kw": "reparation articles horlogerie bijouterie"
+},
+{
+"c": "9529Z",
+"l": "Réparation d'autres biens personnels et domestiques",
+"s": "S",
+"kw": "reparation biens personnels domestiques"
+},
+{
+"c": "9601A",
+"l": "Blanchisserie-teinturerie de gros",
+"s": "S",
+"kw": "blanchisserie teinturerie gros"
+},
+{
+"c": "9601B",
+"l": "Blanchisserie-teinturerie de détail",
+"s": "S",
+"kw": "blanchisserie teinturerie detail"
+},
+{
+"c": "9602A",
+"l": "Coiffure",
+"s": "S",
+"kw": "coiffure coiffeur salon barbier coloration"
+},
+{
+"c": "9602B",
+"l": "Soins de beauté",
+"s": "S",
+"kw": "soins beaute esthetique estheticienne institut onglerie manucure spa"
+},
+{
+"c": "9603Z",
+"l": "Services funéraires",
+"s": "S",
+"kw": "services funeraires pompes funebres funeraire obseques croque mort thanatopracteur"
+},
+{
+"c": "9604Z",
+"l": "Entretien corporel",
+"s": "S",
+"kw": "entretien corporel spa massage sauna hammam bien etre thalasso"
+},
+{
+"c": "9609Z",
+"l": "Autres services personnels n.c.a.",
+"s": "S",
+"kw": "services personnels toiletteur tatoueur perceur animalier"
+},
+{
+"c": "9700Z",
+"l": "Activités des ménages en tant qu'employeurs de personnel domestique",
+"s": "T",
+"kw": "menages tant employeurs personnel domestique"
+},
+{
+"c": "9810Z",
+"l": "Activités indifférenciées des ménages en tant que producteurs de biens pour usage propre",
+"s": "T",
+"kw": "indifferenciees menages tant que producteurs biens usage propre"
+},
+{
+"c": "9820Z",
+"l": "Activités indifférenciées des ménages en tant que producteurs de services pour usage propre",
+"s": "T",
+"kw": "indifferenciees menages tant que producteurs services usage propre"
+},
+{
+"c": "9900Z",
+"l": "Activités des organisations et organismes extraterritoriaux",
+"s": "U",
+"kw": "organisations organismes extraterritoriaux"
+}
+]
+}

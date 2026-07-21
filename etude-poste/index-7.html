@@ -1,0 +1,1652 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PréventIA-LaB · Étude de poste</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:oklch(0.30 0.055 250);
+  --navy-900:oklch(0.22 0.05 252);
+  --navy-700:oklch(0.38 0.06 250);
+  --teal:oklch(0.66 0.10 195);
+  --teal-600:oklch(0.58 0.10 196);
+  --teal-050:oklch(0.96 0.02 195);
+  --orange:oklch(0.72 0.16 55);
+  --orange-600:oklch(0.66 0.16 50);
+  --orange-050:oklch(0.96 0.03 60);
+  --ink:oklch(0.26 0.02 250);
+  --muted:oklch(0.52 0.02 250);
+  --line:oklch(0.90 0.01 250);
+  --bg:oklch(0.985 0.004 250);
+  --card:#ffffff;
+  --green:oklch(0.72 0.15 150);
+  --yellow:oklch(0.85 0.14 95);
+  --amber:oklch(0.75 0.15 65);
+  --red:oklch(0.62 0.20 25);
+  --black-band:oklch(0.30 0.03 25);
+  --radius:14px;
+  --radius-sm:9px;
+  --shadow:0 1px 2px oklch(0.3 0.05 250 / .06), 0 8px 24px oklch(0.3 0.05 250 / .07);
+  --shadow-sm:0 1px 2px oklch(0.3 0.05 250 / .08);
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{font-family:"DM Sans",system-ui,sans-serif;color:var(--ink);background:var(--bg);font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4{font-family:"DM Sans",sans-serif;margin:0}
+.serif{font-family:"DM Serif Display",serif;font-weight:400}
+button{font-family:inherit;cursor:pointer}
+input,select,textarea{font-family:inherit;font-size:14px}
+a{color:var(--teal-600)}
+
+/* ---------- App shell ---------- */
+.app{display:grid;grid-template-columns:260px 1fr;min-height:100vh}
+.rail{background:var(--navy-900);color:oklch(0.92 0.01 250);position:sticky;top:0;height:100vh;display:flex;flex-direction:column;overflow:hidden}
+.brand{padding:22px 20px 16px;border-bottom:1px solid oklch(0.4 0.04 250 /.4)}
+.brand .logo{display:flex;align-items:center;gap:10px}
+.brand .mark{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,var(--teal),var(--orange));display:grid;place-items:center;font-weight:700;color:var(--navy-900);font-size:15px}
+.brand .t{font-family:"DM Serif Display",serif;font-size:19px;letter-spacing:.2px;line-height:1}
+.brand .s{font-size:11px;color:oklch(0.72 0.03 200);letter-spacing:.6px;text-transform:uppercase;margin-top:3px}
+.steps{list-style:none;margin:0;padding:12px 10px;overflow-y:auto;flex:1}
+.steps li{margin:2px 0}
+.step-btn{width:100%;display:flex;align-items:center;gap:12px;background:transparent;border:0;color:oklch(0.82 0.02 250);padding:10px 12px;border-radius:10px;text-align:left;font-size:14px;transition:.15s}
+.step-btn .num{width:24px;height:24px;border-radius:7px;background:oklch(0.4 0.04 250 /.5);display:grid;place-items:center;font-size:12px;font-weight:600;flex:none;color:oklch(0.9 0.01 250)}
+.step-btn:hover{background:oklch(0.4 0.04 250 /.35);color:#fff}
+.step-btn.active{background:linear-gradient(90deg,oklch(0.66 0.10 195 /.22),transparent);color:#fff}
+.step-btn.active .num{background:var(--teal);color:var(--navy-900)}
+.step-btn.done .num{background:var(--green);color:oklch(0.2 0.05 150)}
+.rail-foot{padding:14px;border-top:1px solid oklch(0.4 0.04 250 /.4);font-size:11px;color:oklch(0.66 0.02 250)}
+.score-mini{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.score-mini .dot{width:34px;height:34px;border-radius:9px;display:grid;place-items:center;font-weight:700;color:#fff;font-size:14px}
+
+/* ---------- Main ---------- */
+.main{display:flex;flex-direction:column;min-width:0}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:16px 30px;background:var(--card);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:20}
+.topbar .crumb{font-size:12px;color:var(--muted);letter-spacing:.4px;text-transform:uppercase}
+.topbar h2{font-size:20px;font-family:"DM Serif Display",serif;font-weight:400;margin-top:2px}
+.tb-actions{display:flex;gap:8px;flex-wrap:wrap}
+.content{padding:26px 30px 90px;max-width:1180px;width:100%;margin:0 auto}
+
+/* ---------- Buttons ---------- */
+.btn{border:1px solid var(--line);background:#fff;color:var(--ink);padding:9px 14px;border-radius:10px;font-size:13.5px;font-weight:500;display:inline-flex;align-items:center;gap:7px;transition:.15s}
+.btn:hover{border-color:var(--teal);color:var(--teal-600)}
+.btn.primary{background:var(--navy);border-color:var(--navy);color:#fff}
+.btn.primary:hover{background:var(--navy-700);color:#fff}
+.btn.accent{background:var(--orange);border-color:var(--orange);color:oklch(0.25 0.05 50)}
+.btn.accent:hover{background:var(--orange-600);color:#fff}
+.btn.ghost{background:transparent;border-color:transparent;color:var(--muted)}
+.btn.ghost:hover{background:var(--teal-050);color:var(--teal-600)}
+.btn.sm{padding:6px 10px;font-size:12.5px}
+
+/* ---------- Cards / layout ---------- */
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow-sm)}
+.card.pad{padding:22px}
+.grid{display:grid;gap:18px}
+.g2{grid-template-columns:repeat(2,1fr)}
+.g3{grid-template-columns:repeat(3,1fr)}
+.g4{grid-template-columns:repeat(4,1fr)}
+@media(max-width:900px){.g2,.g3,.g4{grid-template-columns:1fr}}
+.sec-title{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+.sec-title .ic{width:30px;height:30px;border-radius:8px;background:var(--teal-050);display:grid;place-items:center;font-size:15px}
+.sec-title h3{font-size:16px}
+.sub{color:var(--muted);font-size:13px}
+.eyebrow{font-size:11px;letter-spacing:1.4px;text-transform:uppercase;color:var(--teal-600);font-weight:600}
+
+/* ---------- Forms ---------- */
+.field{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}
+.field label{font-size:12.5px;font-weight:600;color:var(--navy-700)}
+.field input,.field select,.field textarea{padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:#fff;color:var(--ink);transition:.15s;width:100%}
+.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--teal);box-shadow:0 0 0 3px var(--teal-050)}
+.field .hint{font-size:11.5px;color:var(--muted)}
+
+/* Combobox */
+.combo{position:relative}
+.combo .picked{display:none;align-items:center;gap:10px;padding:10px 12px;border:1px solid var(--teal);background:var(--teal-050);border-radius:10px}
+.combo .picked.on{display:flex}
+.combo .picked .code{font-weight:700;color:var(--teal-600);font-size:13px}
+.combo .picked .lib{flex:1;font-size:13.5px}
+.combo .picked .x{border:0;background:transparent;color:var(--muted);font-size:16px}
+.combo .drop{position:absolute;z-index:40;left:0;right:0;top:calc(100% + 4px);background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow);max-height:300px;overflow:auto;display:none}
+.combo .drop.on{display:block}
+.combo .opt{padding:10px 12px;border-bottom:1px solid var(--bg);cursor:pointer;display:flex;gap:10px;align-items:flex-start}
+.combo .opt:hover{background:var(--teal-050)}
+.combo .opt .code{font-weight:700;font-size:12px;color:var(--teal-600);min-width:52px}
+.combo .opt .lib{font-size:13px}
+.combo .opt small{display:block;color:var(--muted);font-size:11px;margin-top:2px}
+.combo .empty{padding:14px;color:var(--muted);font-size:13px}
+
+/* ---------- Risk sliders ---------- */
+.fam{border:1px solid var(--line);border-radius:12px;overflow:hidden;margin-bottom:14px;background:#fff}
+.fam-head{display:flex;align-items:center;gap:12px;padding:12px 16px;background:oklch(0.98 0.006 250);cursor:pointer}
+.fam-head .ic{font-size:18px}
+.fam-head .nm{font-weight:600;flex:1}
+.fam-head .badge{font-size:12px;font-weight:700;color:#fff;padding:3px 10px;border-radius:20px}
+.fam-head .chev{color:var(--muted);transition:.2s}
+.fam.open .chev{transform:rotate(90deg)}
+.fam-body{display:none;padding:8px 16px 16px}
+.fam.open .fam-body{display:block}
+.ritem{display:grid;grid-template-columns:1fr auto;align-items:center;gap:14px;padding:9px 0;border-top:1px solid var(--bg)}
+.ritem:first-child{border-top:0}
+.ritem .lbl{font-size:13.5px}
+.levels{display:flex;gap:5px}
+.lvl{width:30px;height:30px;border-radius:8px;border:1px solid var(--line);background:#fff;font-size:12px;font-weight:600;color:var(--muted);transition:.12s}
+.lvl:hover{border-color:var(--teal)}
+.lvl.on0{background:oklch(0.94 0.01 250);border-color:oklch(0.85 0.01 250);color:var(--ink)}
+.lvl.on1{background:var(--yellow);border-color:var(--yellow);color:oklch(0.35 0.06 95)}
+.lvl.on2{background:var(--amber);border-color:var(--amber);color:#fff}
+.lvl.on3{background:var(--red);border-color:var(--red);color:#fff}
+
+/* ---------- Tables ---------- */
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:middle}
+th{font-size:11.5px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);font-weight:600;background:oklch(0.98 0.005 250)}
+td input,td select{border:1px solid var(--line);border-radius:8px;padding:7px 8px;width:100%}
+.pill{display:inline-block;padding:2px 9px;border-radius:20px;font-size:11.5px;font-weight:600}
+.pill.ok{background:oklch(0.94 0.06 150);color:oklch(0.4 0.1 150)}
+.pill.warn{background:var(--orange-050);color:var(--orange-600)}
+.pill.no{background:oklch(0.95 0.05 25);color:var(--red)}
+
+/* ---------- Ergo ---------- */
+.ergo-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
+@media(max-width:950px){.ergo-grid{grid-template-columns:1fr}}
+.ergo-card{border:1px solid var(--line);border-radius:12px;padding:16px;background:#fff}
+.ergo-card h4{font-size:14px;display:flex;align-items:center;justify-content:space-between}
+.ergo-res{margin-top:12px;padding:12px;border-radius:10px;text-align:center;background:oklch(0.98 0.005 250)}
+.ergo-res .val{font-family:"DM Serif Display",serif;font-size:34px;line-height:1}
+.ergo-res .lab{font-size:12px;font-weight:600;margin-top:4px}
+.mini-field{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:6px 0;font-size:13px;border-top:1px solid var(--bg)}
+.mini-field:first-child{border-top:0}
+.mini-field select{width:120px;padding:5px 8px}
+
+/* ---------- Restitution tabs ---------- */
+.rtabs{display:flex;gap:6px;background:oklch(0.96 0.006 250);padding:5px;border-radius:12px;margin-bottom:20px;flex-wrap:wrap}
+.rtab{border:0;background:transparent;padding:10px 16px;border-radius:9px;font-weight:600;font-size:13.5px;color:var(--muted)}
+.rtab.active{background:#fff;color:var(--navy);box-shadow:var(--shadow-sm)}
+
+/* ---------- A4 synthèse ---------- */
+.a4{background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:var(--shadow);width:210mm;max-width:100%;margin:0 auto;padding:14mm 14mm 10mm}
+.a4 .a4-head{display:flex;justify-content:space-between;align-items:flex-start;border-bottom:2px solid var(--navy);padding-bottom:10px;margin-bottom:14px}
+.a4 .a4-head .ttl{font-family:"DM Serif Display",serif;font-size:22px;color:var(--navy)}
+.a4 .a4-head .meta{font-size:11px;color:var(--muted);text-align:right;line-height:1.6}
+.a4 h5{font-size:11px;text-transform:uppercase;letter-spacing:.6px;color:var(--teal-600);margin:0 0 6px;font-weight:700}
+.a4 .block{margin-bottom:12px}
+.a4 .idcard{display:grid;grid-template-columns:repeat(4,1fr);gap:6px 14px;font-size:11.5px}
+.a4 .idcard b{display:block;color:var(--muted);font-weight:600;font-size:10px;text-transform:uppercase;letter-spacing:.3px}
+.a4 table{font-size:10.5px}
+.a4 th,.a4 td{padding:5px 7px}
+.a4 .cols{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.a4 .cols3{display:grid;grid-template-columns:1.1fr .9fr;gap:14px}
+
+/* ---------- Cockpit ---------- */
+.cockpit{background:linear-gradient(180deg,oklch(0.22 0.05 252),oklch(0.26 0.05 250));border-radius:16px;padding:20px;color:oklch(0.94 0.01 250)}
+.cock-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px}
+.cock-head .t{font-family:"DM Serif Display",serif;font-size:20px;color:#fff}
+.cock-filters{display:flex;gap:8px;flex-wrap:wrap}
+.cock-filters .chip{background:oklch(0.4 0.04 250 /.5);border:1px solid oklch(0.5 0.04 250 /.5);color:oklch(0.9 0.01 250);padding:5px 11px;border-radius:20px;font-size:12px}
+.kpi-row{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:14px}
+@media(max-width:1000px){.kpi-row{grid-template-columns:repeat(2,1fr)}}
+.kpi{background:oklch(0.3 0.04 250 /.55);border:1px solid oklch(0.45 0.04 250 /.4);border-radius:12px;padding:13px 15px}
+.kpi .k-lab{font-size:11px;color:oklch(0.78 0.02 250);text-transform:uppercase;letter-spacing:.4px}
+.kpi .k-val{font-family:"DM Serif Display",serif;font-size:30px;line-height:1.1;margin-top:5px}
+.kpi .k-val small{font-size:14px;color:oklch(0.75 0.02 250)}
+.kpi .k-tag{font-size:11px;font-weight:600;margin-top:4px}
+.cock-grid{display:grid;grid-template-columns:1.1fr 1fr 1fr;gap:12px}
+@media(max-width:1000px){.cock-grid{grid-template-columns:1fr}}
+.panel{background:oklch(0.3 0.04 250 /.5);border:1px solid oklch(0.45 0.04 250 /.35);border-radius:12px;padding:14px}
+.panel h4{font-size:12.5px;color:oklch(0.86 0.02 250);margin-bottom:10px;text-transform:uppercase;letter-spacing:.5px;font-weight:600}
+.panel.wide{grid-column:1/-1}
+.rag{display:flex;align-items:center;gap:8px;padding:7px 0;border-top:1px solid oklch(0.45 0.04 250 /.3);font-size:12.5px}
+.rag:first-of-type{border-top:0}
+.rag .d{width:11px;height:11px;border-radius:50%;flex:none}
+.cock-table{width:100%;font-size:12px;color:oklch(0.9 0.01 250)}
+.cock-table th{background:transparent;color:oklch(0.72 0.02 250)}
+.cock-table td,.cock-table th{border-color:oklch(0.45 0.04 250 /.3);padding:6px 8px}
+
+/* gauge / svg helpers */
+.gauge-wrap{text-align:center}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--muted);margin-top:8px}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:11px;height:11px;border-radius:3px;display:inline-block}
+
+.notice{background:var(--orange-050);border:1px solid oklch(0.85 0.06 60);border-radius:10px;padding:10px 14px;font-size:12.5px;color:var(--orange-600)}
+.footnav{position:fixed;bottom:0;left:260px;right:0;background:#fff;border-top:1px solid var(--line);padding:12px 30px;display:flex;justify-content:space-between;align-items:center;z-index:15}
+@media(max-width:820px){
+  .app{grid-template-columns:1fr}
+  .rail{position:fixed;left:0;top:0;width:78%;max-width:300px;transform:translateX(-100%);transition:.25s;z-index:60}
+  .rail.open{transform:none}
+  .footnav{left:0}
+  .content{padding:20px 16px 90px}
+  .topbar{padding:14px 16px}
+}
+.menu-btn{display:none}
+@media(max-width:820px){.menu-btn{display:inline-flex}}
+.scrim{position:fixed;inset:0;background:oklch(0.2 0.05 250 /.5);display:none;z-index:55}
+.scrim.on{display:block}
+
+/* ---------- Print ---------- */
+@media print{
+  .rail,.topbar,.footnav,.rtabs,.no-print{display:none!important}
+  .app{grid-template-columns:1fr}
+  .content{padding:0;max-width:none}
+  .a4{border:0;box-shadow:none;border-radius:0;width:auto;padding:0}
+  .cockpit{background:#fff;color:#000;border:0}
+  .kpi,.panel{background:#fff;border:1px solid #ccc;color:#000}
+  .panel h4,.kpi .k-lab,.cock-table th{color:#333}
+  @page{size:A4;margin:12mm}
+}
+</style>
+</head>
+<body>
+<div class="scrim" id="scrim" onclick="toggleRail(false)"></div>
+<div class="app">
+  <!-- ================= RAIL ================= -->
+  <aside class="rail" id="rail">
+    <div class="brand">
+      <div class="logo">
+        <div class="mark">PL</div>
+        <div>
+          <div class="t">PréventIA<span style="color:var(--orange)">·</span>LaB</div>
+          <div class="s">Étude de poste</div>
+        </div>
+      </div>
+    </div>
+    <ul class="steps" id="steps"></ul>
+    <div class="rail-foot">
+      <div class="score-mini">
+        <div class="dot" id="railDot">--</div>
+        <div>
+          <div style="font-weight:600;color:#fff;font-size:12.5px" id="railBand">Score PréventIA</div>
+          <div id="railHint">à compléter</div>
+        </div>
+      </div>
+      <div>Traitement 100 % local · aucune donnée transmise</div>
+    </div>
+  </aside>
+
+  <!-- ================= MAIN ================= -->
+  <main class="main">
+    <header class="topbar">
+      <div style="display:flex;align-items:center;gap:12px">
+        <button class="btn ghost menu-btn" onclick="toggleRail(true)">☰</button>
+        <div>
+          <div class="crumb" id="crumb">Étape 1 / 7</div>
+          <h2 id="stepTitle">Identification du poste</h2>
+        </div>
+      </div>
+      <div class="tb-actions">
+        <button class="btn sm" onclick="saveJSON()">💾 Enregistrer</button>
+        <button class="btn sm" onclick="document.getElementById('loadFile').click()">📂 Charger</button>
+        <button class="btn sm" onclick="resetAll()">↺ Nouveau</button>
+        <input type="file" id="loadFile" accept="application/json" style="display:none" onchange="loadJSON(event)">
+      </div>
+    </header>
+    <div class="content" id="view"></div>
+  </main>
+</div>
+
+<div class="footnav">
+  <button class="btn" id="prevBtn" onclick="go(-1)">← Précédent</button>
+  <div class="sub" id="footHint"></div>
+  <button class="btn primary" id="nextBtn" onclick="go(1)">Suivant →</button>
+</div>
+
+<script>
+/* =========================================================
+   PréventIA-LaB · Étude de poste
+   Données NAF / PCS + profils de risques adaptés par métier
+   (structure identique à la fiche d'entreprise : la base réelle
+    naf-codes.json / pcs2020.json est chargée si présente à côté
+    du fichier, sinon on utilise le référentiel embarqué ci-dessous)
+   ========================================================= */
+
+/* ---- Familles de risques (8) + items ---- */
+const FAMILLES = [
+ {key:'tms',nom:'TMS – Troubles musculosquelettiques',ic:'🦴',items:['Manutention manuelle de charges','Postures contraignantes','Gestes répétitifs','Bras au-dessus des épaules','Effort de poussée / traction','Vibrations mains-bras']},
+ {key:'chimique',nom:'Risque chimique',ic:'⚗️',items:['Agents CMR (cancéro/muta/repro)','Solvants / vapeurs','Poussières inhalables','Fumées / aérosols','Contact cutané produits','Produits d’entretien / désinfectants']},
+ {key:'biologique',nom:'Risque biologique',ic:'🧫',items:['Contact fluides biologiques (AES)','Agents infectieux','Soins / contact patients','Déchets contaminés (DASRI)','Contact animaux / milieux souillés']},
+ {key:'physique',nom:'Risque physique',ic:'🌡️',items:['Bruit','Vibrations corps entier','Ambiances thermiques (chaud/froid)','Rayonnements','Éclairage inadapté','Travail en hauteur']},
+ {key:'psychosocial',nom:'Risques psychosociaux (RPS)',ic:'🧠',items:['Charge mentale / pression temporelle','Faible autonomie / marge de manœuvre','Tensions relationnelles / conflits','Manque de reconnaissance','Contact public / agressivité','Insécurité de l’emploi']},
+ {key:'organisationnel',nom:'Risque organisationnel',ic:'🗂️',items:['Horaires atypiques / travail de nuit','Cadence imposée','Polyvalence excessive','Interruptions fréquentes','Travail isolé']},
+ {key:'accidentel',nom:'Risque accidentel',ic:'⚠️',items:['Chute de plain-pied','Chute de hauteur','Machines / outils tranchants','Circulation / véhicules','Risque électrique','Coupures / chocs / projections']},
+ {key:'environnemental',nom:'Environnement de travail',ic:'🏭',items:['Espace de travail exigu','Encombrement / rangement','Sol glissant / dénivelé','Ventilation insuffisante','Nuisances extérieures']}
+];
+const FAM_POIDS={tms:1.3,chimique:1.2,biologique:1.15,physique:1.0,psychosocial:1.2,organisationnel:1.0,accidentel:1.15,environnemental:0.9};
+const FAM_GRAVITE={tms:3,chimique:4,biologique:4,physique:3,psychosocial:3,organisationnel:3,accidentel:4,environnemental:2};
+
+/* ---- Domaines de capacités fonctionnelles (maintien dans l'emploi) ---- */
+const CAPACITES=['Station debout prolongée','Station assise prolongée','Port / manutention de charges','Bras levés au-dessus des épaules','Flexions / rotations du tronc','Gestes répétitifs des membres sup.','Déplacements / marche','Montée d’escaliers / échelle','Travail en hauteur','Conduite de véhicule / engin','Travail de nuit / horaires décalés','Exposition au bruit','Exposition aux produits chimiques','Charge mentale / cadence soutenue','Contact avec le public'];
+
+/* ---- Référentiel NAF embarqué (extrait représentatif, tag secteur) ---- */
+const NAF_BASE=[
+ ['8610Z','Activités hospitalières','sante'],
+ ['8710A','Hébergement médicalisé pour personnes âgées (EHPAD)','sante'],
+ ['8710C','Hébergement médicalisé pour adultes handicapés','sante'],
+ ['8810A','Aide à domicile','aide_domicile'],
+ ['8891A','Accueil de jeunes enfants (crèche)','petite_enfance'],
+ ['8622A','Cabinets médicaux spécialisés','sante'],
+ ['8623Z','Pratique dentaire','sante'],
+ ['8690A','Ambulances','sante'],
+ ['4711D','Supermarchés','commerce'],
+ ['4711F','Hypermarchés','commerce'],
+ ['4719B','Grands magasins / commerce de détail','commerce'],
+ ['4791B','Vente à distance / e-commerce','logistique'],
+ ['5210B','Entreposage et stockage non frigorifique','logistique'],
+ ['5224A','Manutention portuaire','logistique'],
+ ['4941A','Transports routiers de fret interurbains','transport'],
+ ['4941B','Transports routiers de fret de proximité','transport'],
+ ['4939B','Transports routiers de voyageurs','transport'],
+ ['5320Z','Autres activités de poste et de courrier','transport'],
+ ['4321A','Travaux d’installation électrique','btp'],
+ ['4120A','Construction de maisons individuelles','btp'],
+ ['4399C','Maçonnerie générale / gros œuvre','btp'],
+ ['4322A','Plomberie / installation eau et gaz','btp'],
+ ['4331Z','Travaux de plâtrerie','btp'],
+ ['4941... ','—','transport'],
+ ['5610A','Restauration traditionnelle','hcr'],
+ ['5610C','Restauration de type rapide','hcr'],
+ ['5510Z','Hôtels et hébergement similaire','hcr'],
+ ['5629B','Restauration collective sous contrat','hcr'],
+ ['1071C','Boulangerie et boulangerie-pâtisserie','agroalim'],
+ ['1013B','Charcuterie / préparation de viande','agroalim'],
+ ['1051C','Fabrication de fromage','agroalim'],
+ ['2562B','Mécanique industrielle','industrie'],
+ ['2511Z','Fabrication de structures métalliques','industrie'],
+ ['2599B','Fabrication d’articles métalliques','industrie'],
+ ['3320A','Installation de machines et équipements','industrie'],
+ ['2896Z',' Fabrication de machines pour plasturgie','industrie'],
+ ['8130Z','Services d’aménagement paysager','espaces_verts'],
+ ['0141Z','Élevage de vaches laitières','agriculture'],
+ ['0111Z','Culture de céréales','agriculture'],
+ ['8121Z','Nettoyage courant des bâtiments','proprete'],
+ ['8122Z','Nettoyage industriel / autres bâtiments','proprete'],
+ ['9602A','Coiffure','coiffure'],
+ ['9602B','Soins de beauté','coiffure'],
+ ['8010Z','Activités de sécurité privée','securite'],
+ ['3811Z','Collecte des déchets non dangereux','dechets'],
+ ['3812Z','Collecte des déchets dangereux','dechets'],
+ ['3831Z','Démantèlement d’épaves / tri','dechets'],
+ ['8531Z','Enseignement secondaire général','enseignement'],
+ ['8510Z','Enseignement pré-primaire','enseignement'],
+ ['6201Z','Programmation informatique','tertiaire'],
+ ['6920Z','Activités comptables','tertiaire'],
+ ['7010Z','Activités des sièges sociaux','tertiaire'],
+ ['8411Z','Administration publique générale','tertiaire'],
+ ['6419Z','Autres intermédiations monétaires (banque)','tertiaire'],
+ ['6512Z','Autres assurances','tertiaire']
+];
+
+/* ---- Référentiel PCS 2020 embarqué (extrait) + tag secteur ---- */
+const PCS_BASE=[
+ ['526a','Aides-soignants (secteur public/privé)','sante'],
+ ['431f','Infirmiers en soins généraux','sante'],
+ ['526b','Auxiliaires de puériculture','petite_enfance'],
+ ['563a','Aides à domicile, auxiliaires de vie','aide_domicile'],
+ ['526e','Agents de service hospitalier (ASH)','sante'],
+ ['526c','Ambulanciers','sante'],
+ ['433b','Techniciens de laboratoire médical','sante'],
+ ['434a','Chirurgiens-dentistes / assistants dentaires','sante'],
+ ['636c','Ouvriers boulangers, pâtissiers','agroalim'],
+ ['636d','Bouchers, charcutiers (artisanat)','agroalim'],
+ ['637a','Cuisiniers','hcr'],
+ ['561a','Serveurs, commis de restaurant','hcr'],
+ ['561d','Employés de l’hôtellerie (étage, réception)','hcr'],
+ ['553a','Caissiers, employés de libre-service','commerce'],
+ ['556a','Vendeurs en produits alimentaires','commerce'],
+ ['676a','Ouvriers du tri, de l’emballage, manutentionnaires','logistique'],
+ ['652a','Conducteurs de chariots élévateurs, caristes','logistique'],
+ ['641a','Conducteurs routiers, grands routiers','transport'],
+ ['643a','Conducteurs livreurs, coursiers','transport'],
+ ['546b','Agents de la Poste, distribution de courrier','transport'],
+ ['632a','Maçons qualifiés','btp'],
+ ['632c','Charpentiers, couvreurs qualifiés','btp'],
+ ['633a','Électriciens du bâtiment','btp'],
+ ['632e','Plombiers, chauffagistes','btp'],
+ ['621a','Chefs d’équipe du gros œuvre','btp'],
+ ['681b','Ouvriers non qualifiés du gros œuvre','btp'],
+ ['624d','Soudeurs qualifiés','industrie'],
+ ['625a','Opérateurs sur machines-outils','industrie'],
+ ['628a','Mécaniciens qualifiés de maintenance','industrie'],
+ ['674c','Ouvriers non qualifiés de la manutention','industrie'],
+ ['691a','Agriculteurs / ouvriers agricoles','agriculture'],
+ ['691d','Éleveurs / ouvriers de l’élevage','agriculture'],
+ ['634a','Jardiniers, ouvriers du paysage','espaces_verts'],
+ ['684a','Agents de nettoyage / propreté','proprete'],
+ ['562b','Coiffeurs, esthéticiens salariés','coiffure'],
+ ['534a','Agents de sécurité et de surveillance','securite'],
+ ['628f','Éboueurs, agents de collecte des déchets','dechets'],
+ ['422e','Professeurs des écoles / enseignants','enseignement'],
+ ['388a','Ingénieurs / cadres informatiques','tertiaire'],
+ ['461... ','Techniciens administratifs / employés de bureau','tertiaire'],
+ ['543a','Employés administratifs (guichet, saisie)','tertiaire']
+];
+
+/* ---- Profils de risques adaptés par secteur ----
+   familles: intensité suggérée 0-3 par famille (le préventeur ajuste)
+   taches / capacites : propositions pré-remplies                    */
+const PROFILS={
+ sante:{familles:{tms:3,chimique:2,biologique:3,physique:1,psychosocial:3,organisationnel:3,accidentel:2,environnemental:1},
+   taches:[['Aide au transfert / mobilisation patient',30,'Élevé','Fréquent','TMS'],['Soins / nursing',25,'Modéré','Continu','Biologique'],['Distribution / traçabilité',15,'Faible','Continu','RPS'],['Entretien / réfection lits',15,'Modéré','Fréquent','TMS']],
+   capacites:['Port / manutention de charges','Bras levés au-dessus des épaules','Flexions / rotations du tronc','Travail de nuit / horaires décalés']},
+ aide_domicile:{familles:{tms:3,chimique:1,biologique:2,physique:1,psychosocial:3,organisationnel:3,accidentel:2,environnemental:2},
+   taches:[['Aide à la toilette / transfert',30,'Élevé','Fréquent','TMS'],['Entretien du logement',25,'Modéré','Fréquent','TMS'],['Déplacements entre domiciles',20,'Faible','Continu','Accidentel'],['Préparation repas',15,'Faible','Fréquent','Accidentel']],
+   capacites:['Port / manutention de charges','Flexions / rotations du tronc','Conduite de véhicule / engin','Charge mentale / cadence soutenue']},
+ petite_enfance:{familles:{tms:3,chimique:1,biologique:2,physique:1,psychosocial:2,organisationnel:2,accidentel:1,environnemental:1},
+   taches:[['Portage / change des enfants',35,'Élevé','Continu','TMS'],['Activités au sol / postures basses',25,'Modéré','Continu','TMS'],['Repas / hygiène',20,'Modéré','Fréquent','Biologique']],
+   capacites:['Flexions / rotations du tronc','Port / manutention de charges','Station debout prolongée']},
+ commerce:{familles:{tms:2,chimique:1,biologique:0,physique:1,psychosocial:2,organisationnel:2,accidentel:2,environnemental:1},
+   taches:[['Encaissement / scan',35,'Faible','Continu','TMS'],['Mise en rayon / réassort',30,'Modéré','Fréquent','TMS'],['Relation client',20,'Faible','Continu','RPS']],
+   capacites:['Station debout prolongée','Gestes répétitifs des membres sup.','Port / manutention de charges','Contact avec le public']},
+ logistique:{familles:{tms:3,chimique:1,biologique:0,physique:2,psychosocial:2,organisationnel:3,accidentel:3,environnemental:2},
+   taches:[['Préparation de commandes (picking)',40,'Élevé','Continu','TMS'],['Manutention / palettisation',30,'Élevé','Fréquent','TMS'],['Conduite chariot',20,'Modéré','Fréquent','Accidentel']],
+   capacites:['Port / manutention de charges','Flexions / rotations du tronc','Conduite de véhicule / engin','Exposition au bruit']},
+ transport:{familles:{tms:2,chimique:1,biologique:0,physique:2,psychosocial:2,organisationnel:3,accidentel:3,environnemental:1},
+   taches:[['Conduite',55,'Modéré','Continu','Physique'],['Chargement / déchargement',25,'Élevé','Fréquent','TMS'],['Arrimage / sanglage',10,'Modéré','Fréquent','Accidentel']],
+   capacites:['Station assise prolongée','Port / manutention de charges','Conduite de véhicule / engin','Travail de nuit / horaires décalés']},
+ btp:{familles:{tms:3,chimique:2,biologique:0,physique:3,psychosocial:2,organisationnel:2,accidentel:3,environnemental:2},
+   taches:[['Manutention matériaux',30,'Élevé','Fréquent','TMS'],['Travaux en hauteur',20,'Élevé','Fréquent','Accidentel'],['Utilisation outils portatifs',25,'Modéré','Continu','Physique'],['Postures au sol / à genoux',15,'Élevé','Fréquent','TMS']],
+   capacites:['Port / manutention de charges','Travail en hauteur','Montée d’escaliers / échelle','Bras levés au-dessus des épaules','Flexions / rotations du tronc']},
+ hcr:{familles:{tms:2,chimique:1,biologique:1,physique:2,psychosocial:2,organisationnel:3,accidentel:2,environnemental:2},
+   taches:[['Service / port de plateaux',30,'Modéré','Continu','TMS'],['Cuisine / plonge',30,'Modéré','Continu','Accidentel'],['Nettoyage / entretien',20,'Modéré','Fréquent','Chimique']],
+   capacites:['Station debout prolongée','Port / manutention de charges','Exposition thermique','Travail de nuit / horaires décalés']},
+ agroalim:{familles:{tms:3,chimique:1,biologique:1,physique:2,psychosocial:1,organisationnel:3,accidentel:2,environnemental:2},
+   taches:[['Pétrissage / façonnage / répétitif',40,'Modéré','Continu','TMS'],['Manutention sacs / bacs',25,'Élevé','Fréquent','TMS'],['Travail au fournil / froid',20,'Modéré','Continu','Physique']],
+   capacites:['Gestes répétitifs des membres sup.','Port / manutention de charges','Station debout prolongée','Travail de nuit / horaires décalés']},
+ industrie:{familles:{tms:3,chimique:2,biologique:0,physique:3,psychosocial:2,organisationnel:3,accidentel:3,environnemental:2},
+   taches:[['Conduite de machine / opération',40,'Modéré','Continu','Physique'],['Manutention pièces',25,'Élevé','Fréquent','TMS'],['Contrôle / assemblage répétitif',20,'Modéré','Continu','TMS']],
+   capacites:['Gestes répétitifs des membres sup.','Port / manutention de charges','Exposition au bruit','Exposition aux produits chimiques']},
+ agriculture:{familles:{tms:3,chimique:2,biologique:2,physique:3,psychosocial:2,organisationnel:2,accidentel:3,environnemental:3},
+   taches:[['Conduite d’engins',30,'Modéré','Continu','Physique'],['Soins / traite / élevage',30,'Élevé','Continu','Biologique'],['Manutention / travaux extérieurs',25,'Élevé','Fréquent','TMS']],
+   capacites:['Port / manutention de charges','Conduite de véhicule / engin','Flexions / rotations du tronc','Exposition aux produits chimiques']},
+ espaces_verts:{familles:{tms:3,chimique:2,biologique:1,physique:3,psychosocial:1,organisationnel:1,accidentel:3,environnemental:3},
+   taches:[['Taille / débroussaillage',30,'Élevé','Fréquent','Physique'],['Tonte / conduite',25,'Modéré','Continu','Physique'],['Plantation / postures basses',20,'Élevé','Fréquent','TMS']],
+   capacites:['Port / manutention de charges','Flexions / rotations du tronc','Exposition au bruit','Bras levés au-dessus des épaules']},
+ proprete:{familles:{tms:3,chimique:2,biologique:2,physique:1,psychosocial:2,organisationnel:3,accidentel:2,environnemental:1},
+   taches:[['Lavage sols / surfaces',35,'Modéré','Continu','TMS'],['Manipulation produits',20,'Modéré','Fréquent','Chimique'],['Vidage / manutention',20,'Modéré','Fréquent','TMS']],
+   capacites:['Gestes répétitifs des membres sup.','Flexions / rotations du tronc','Exposition aux produits chimiques','Travail de nuit / horaires décalés']},
+ coiffure:{familles:{tms:3,chimique:2,biologique:0,physique:0,psychosocial:2,organisationnel:2,accidentel:1,environnemental:1},
+   taches:[['Coupe / brushing (bras levés)',45,'Modéré','Continu','TMS'],['Coloration / produits',25,'Faible','Fréquent','Chimique'],['Accueil / relation client',20,'Faible','Continu','RPS']],
+   capacites:['Station debout prolongée','Bras levés au-dessus des épaules','Gestes répétitifs des membres sup.','Exposition aux produits chimiques']},
+ securite:{familles:{tms:1,chimique:0,biologique:0,physique:1,psychosocial:3,organisationnel:3,accidentel:2,environnemental:1},
+   taches:[['Rondes / surveillance',50,'Faible','Continu','RPS'],['Contrôle d’accès',25,'Faible','Continu','RPS'],['Gestion d’incidents',15,'Modéré','Occasionnel','Accidentel']],
+   capacites:['Station debout prolongée','Déplacements / marche','Travail de nuit / horaires décalés','Charge mentale / cadence soutenue']},
+ dechets:{familles:{tms:3,chimique:2,biologique:3,physique:2,psychosocial:1,organisationnel:3,accidentel:3,environnemental:3},
+   taches:[['Collecte / ramassage bacs',45,'Élevé','Continu','TMS'],['Suivi du camion / circulation',25,'Modéré','Continu','Accidentel'],['Tri / manipulation déchets',15,'Modéré','Fréquent','Biologique']],
+   capacites:['Port / manutention de charges','Déplacements / marche','Exposition au bruit','Travail de nuit / horaires décalés']},
+ enseignement:{familles:{tms:1,chimique:0,biologique:1,physique:1,psychosocial:3,organisationnel:2,accidentel:1,environnemental:1},
+   taches:[['Face-à-face pédagogique',50,'Faible','Continu','RPS'],['Préparation / correction',25,'Faible','Continu','RPS'],['Gestion de groupe',20,'Modéré','Continu','RPS']],
+   capacites:['Station debout prolongée','Charge mentale / cadence soutenue','Contact avec le public']},
+ tertiaire:{familles:{tms:2,chimique:0,biologique:0,physique:1,psychosocial:2,organisationnel:2,accidentel:0,environnemental:0},
+   taches:[['Travail sur écran',65,'Faible','Continu','TMS'],['Réunions / échanges',20,'Faible','Continu','RPS'],['Gestion administrative',15,'Faible','Continu','RPS']],
+   capacites:['Station assise prolongée','Gestes répétitifs des membres sup.','Charge mentale / cadence soutenue']}
+};
+/* =========================================================
+   MODÈLE D'ÉTAT
+   ========================================================= */
+let NAF=NAF_BASE.map(x=>({code:x[0].trim(),lib:x[1],sec:x[2]}));
+let PCS=PCS_BASE.map(x=>({code:x[0].trim(),lib:x[1],sec:x[2]}));
+
+function blankFamilles(){const o={};FAMILLES.forEach(f=>o[f.key]=f.items.map(()=>0));return o;}
+const E={
+  poste:{entreprise:'',service:'',activite:'',naf:'',nafLib:'',metier:'',pcs:'',pcsLib:'',secteur:'',date:new Date().toISOString().slice(0,10),preventeur:'',effectif:'',horaires:'',contexte:''},
+  taches:[],
+  risques:blankFamilles(),
+  ergo:{rula:{ua:1,la:1,wr:1,tw:1,neck:1,trunk:1,legs:1,muscleA:0,forceA:0,muscleB:0,forceB:0},
+        reba:{neck:1,trunk:1,legs:1,load:0,ua:1,la:1,wr:1,coupling:0,activity:0},
+        niosh:{poids:0,H:40,V:75,D:50,A:0,F:'0.2',C:'bonne'}},
+  capacites:{},
+  synthIA:'',
+  ergoPhoto:'', ergoPhotoNote:''
+};
+let step=0;
+const STEPS=[
+ {id:'poste',t:'Identification du poste',ic:'📋'},
+ {id:'taches',t:'Analyse des tâches',ic:'📝'},
+ {id:'risques',t:'Évaluation des risques',ic:'🎯'},
+ {id:'ergo',t:'Cotation ergonomique',ic:'🧍'},
+ {id:'environnement',t:'Environnement & contraintes',ic:'🌍'},
+ {id:'capacites',t:'Capacités & compatibilité',ic:'♿'},
+ {id:'restitution',t:'Restitutions & cockpit',ic:'📊'}
+];
+
+/* Déduit un secteur PROFILS à partir du libellé + mots-clés (pour garder les profils quand on charge le JSON) */
+function guessSecteur(txt){
+  const t=(txt||'').toLowerCase();
+  const has=(...w)=>w.some(x=>t.includes(x));
+  if(has('petite enfance','crèche','creche','assistant maternel','assistante maternel','atsem','jeunes enfants')) return 'petite_enfance';
+  if(has('aide à domicile','aide a domicile','auxiliaire de vie','service à la personne','service a la personne','aide ménager','aide menager')) return 'aide_domicile';
+  if(has('hôpital','hopital','hospital','soin','infirm','aide-soignant','aide soignant','médic','medic','clinique','ehpad','ambulanc','dentaire','pharmac','santé','sante','kiné','kine','brancardier')) return 'sante';
+  if(has('bâtiment','batiment','maçon','macon','gros œuvre','gros oeuvre','chantier','construction','couvreur','charpent','plaquiste','terrassement','travaux publics','btp')) return 'btp';
+  if(has('restaurant','restauration','cuisine','serveur','hôtel','hotel','hôtellerie','hotellerie','café','cafe','commis','plonge')) return 'hcr';
+  if(has('transport','chauffeur','conducteur','routier','livraison','livreur','ambulanci')) return 'transport';
+  if(has('logistique','entrepôt','entrepot','manutention','cariste','préparateur de commande','preparateur de commande','magasinier')) return 'logistique';
+  if(has('agroaliment','abattoir','boulanger','boucher','charcut','transformation alimentaire','laiterie','fromager')) return 'agroalim';
+  if(has('commerce','vente','vendeur','vendeuse','caisse','caissier','magasin','supermarché','supermarche','grande distribution')) return 'commerce';
+  return '';
+}
+/* Charger la base réelle si présente (naf-codes.json / pcs2020.json) */
+(async function loadRealBase(){
+  const map=x=>{const code=(x.c||x.code||x.ape||'').trim();const lib=x.l||x.libelle||x.lib||x.label||'';const kw=x.kw||'';const sec=x.secteur||x.sec||guessSecteur(lib+' '+kw);return{code,lib,sec,kw};};
+  try{const r=await fetch('naf-codes.json');if(r.ok){const d=await r.json();
+    const arr=Array.isArray(d)?d:(d.codes||[]);
+    const m=arr.map(map).filter(x=>x.code); if(m.length)NAF=m;
+  }}catch(e){}
+  try{const r=await fetch('pcs2020.json');if(r.ok){const d=await r.json();
+    const arr=Array.isArray(d)?d:(d.professions||d.codes||[]);
+    const m=arr.map(map).filter(x=>x.code); if(m.length)PCS=m;
+  }}catch(e){}
+  if(step===0)rPoste();
+})();
+
+/* =========================================================
+   SCORING PréventIA
+   ========================================================= */
+function famScore(key){const v=E.risques[key]||[];if(!v.length)return 0;const s=v.reduce((a,b)=>a+b,0);return Math.round(s/(v.length*3)*100);}
+function famScores(){const o={};FAMILLES.forEach(f=>o[f.key]=famScore(f.key));return o;}
+
+function ergoScore(){
+  const reba=rebaScore().final; // 1-15
+  const rula=rulaScore().final; // 1-7
+  const li=nioshScore().li;      // lifting index
+  const rebaN=clamp((reba-1)/14*100,0,100);
+  const rulaN=clamp((rula-1)/6*100,0,100);
+  const liN=clamp(li/3*100,0,100);
+  return Math.round(Math.max(rebaN,rulaN,liN));
+}
+function compatData(){
+  let non=0,adapt=0,tot=0;
+  Object.values(E.capacites).forEach(s=>{if(s==='non')non++;else if(s==='adapt')adapt++;if(s&&s!=='nc')tot++;});
+  return {non,adapt,tot};
+}
+function compatScore(){const c=compatData();const base=CAPACITES.length;return Math.round(clamp((c.non*100+c.adapt*45)/(base*100)*100*2.2,0,100));}
+
+function globalScore(){
+  const fs=famScores();let num=0,den=0;
+  FAMILLES.forEach(f=>{num+=fs[f.key]*FAM_POIDS[f.key];den+=FAM_POIDS[f.key];});
+  const risk=num/den;
+  const g=0.58*risk+0.27*ergoScore()+0.15*compatScore();
+  return Math.round(clamp(g,0,100));
+}
+function band(s){
+  if(s<=20)return{lab:'Faible',col:'var(--green)',hex:'#1f9d55',k:'faible'};
+  if(s<=40)return{lab:'Surveillance',col:'var(--yellow)',hex:'#d6b400',k:'surv'};
+  if(s<=60)return{lab:'Amélioration nécessaire',col:'var(--amber)',hex:'#e58a2a',k:'amel'};
+  if(s<=80)return{lab:'Risque élevé',col:'var(--red)',hex:'#d23f2f',k:'eleve'};
+  return{lab:'Situation critique',col:'var(--black-band)',hex:'#4a2320',k:'crit'};
+}
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+
+/* =========================================================
+   ERGONOMIE — RULA / REBA (tables standard) + NIOSH
+   ========================================================= */
+/* ---------- REBA ---------- */
+const REBA_A=[ // [neck-1][trunk-1][legs-1]
+ [[1,2,3,4],[2,3,4,5],[2,4,5,6],[3,5,6,7],[4,6,7,8]],
+ [[1,2,3,4],[3,4,5,6],[4,5,6,7],[5,6,7,8],[6,7,8,9]],
+ [[3,3,5,6],[4,5,6,7],[5,6,7,8],[6,7,8,9],[7,8,9,9]]
+];
+const REBA_B=[ // [lowerarm-1][upperarm-1][wrist-1]
+ [[1,2,2],[1,2,3],[3,4,5],[4,5,5],[6,7,8],[7,8,8]],
+ [[1,2,3],[2,3,4],[4,5,5],[5,6,7],[7,8,8],[8,9,9]]
+];
+const REBA_C=[
+ [1,1,1,2,3,3,4,5,6,7,7,7],[1,2,2,3,4,4,5,6,6,7,7,8],[2,3,3,3,4,5,6,7,7,8,8,8],
+ [3,4,4,4,5,6,7,8,8,9,9,9],[4,4,4,5,6,7,8,8,9,9,9,9],[6,6,6,7,8,8,9,9,10,10,10,10],
+ [7,7,7,8,9,9,9,10,10,11,11,11],[8,8,8,9,10,10,10,10,10,11,11,11],[9,9,9,10,10,10,11,11,11,12,12,12],
+ [10,10,10,11,11,11,11,12,12,12,12,12],[11,11,11,11,12,12,12,12,12,12,12,12],[12,12,12,12,12,12,12,12,12,12,12,12]
+];
+function rebaScore(){
+  const r=E.ergo.reba;
+  let a=REBA_A[clamp(r.neck,1,3)-1][clamp(r.trunk,1,5)-1][clamp(r.legs,1,4)-1]+r.load;
+  let b=REBA_B[clamp(r.la,1,2)-1][clamp(r.ua,1,6)-1][clamp(r.wr,1,3)-1]+r.coupling;
+  a=clamp(a,1,12);b=clamp(b,1,12);
+  let c=REBA_C[a-1][b-1];
+  const final=clamp(c+r.activity,1,15);
+  let niv,col;
+  if(final===1){niv='Négligeable';col='var(--green)';}
+  else if(final<=3){niv='Faible';col='var(--green)';}
+  else if(final<=7){niv='Moyen — investiguer';col='var(--amber)';}
+  else if(final<=10){niv='Élevé — action rapide';col='var(--red)';}
+  else{niv='Très élevé — action immédiate';col='var(--black-band)';}
+  return{scoreA:a,scoreB:b,c,final,niv,col};
+}
+/* ---------- RULA ---------- */
+const RULA_A=[ // [ua-1][la-1] -> wrist(1-4) x twist(1-2)
+ [[[1,2],[2,2],[2,3],[3,3]],[[2,2],[2,2],[3,3],[3,3]],[[2,3],[3,3],[3,3],[4,4]]],
+ [[[2,3],[3,3],[3,4],[4,4]],[[3,3],[3,3],[3,4],[4,4]],[[3,4],[4,4],[4,4],[5,5]]],
+ [[[3,3],[4,4],[4,4],[5,5]],[[3,4],[4,4],[4,4],[5,5]],[[4,4],[4,4],[4,5],[5,5]]],
+ [[[4,4],[4,4],[4,5],[5,5]],[[4,4],[4,4],[4,5],[5,5]],[[4,4],[4,5],[5,5],[6,6]]],
+ [[[5,5],[5,5],[5,6],[6,7]],[[5,6],[6,6],[6,7],[7,7]],[[6,6],[6,7],[7,7],[7,8]]],
+ [[[7,7],[7,7],[7,8],[8,9]],[[8,8],[8,8],[8,9],[9,9]],[[9,9],[9,9],[9,9],[9,9]]]
+];
+const RULA_B=[ // [neck-1][trunk-1] -> legs(1-2)
+ [[1,3],[2,3],[3,4],[5,5],[6,6],[7,7]],
+ [[2,3],[2,3],[4,5],[5,5],[6,7],[7,7]],
+ [[3,3],[3,4],[4,5],[5,6],[6,7],[7,7]],
+ [[5,5],[5,6],[6,7],[7,7],[7,7],[8,8]],
+ [[7,7],[7,7],[7,8],[8,8],[8,8],[8,8]],
+ [[8,8],[8,8],[8,8],[8,9],[9,9],[9,9]]
+];
+const RULA_C=[
+ [1,2,3,3,4,5,5],[2,2,3,4,4,5,5],[3,3,3,4,4,5,6],[3,3,3,4,5,6,6],
+ [4,4,4,5,6,7,7],[4,4,5,6,6,7,7],[5,5,6,6,7,7,7],[5,5,6,7,7,7,7]
+];
+function rulaScore(){
+  const r=E.ergo.rula;
+  let a=RULA_A[clamp(r.ua,1,6)-1][clamp(r.la,1,3)-1][clamp(r.wr,1,4)-1][clamp(r.tw,1,2)-1];
+  let c=clamp(a+r.muscleA+r.forceA,1,8);
+  let b=RULA_B[clamp(r.neck,1,6)-1][clamp(r.trunk,1,6)-1][clamp(r.legs,1,2)-1];
+  let d=clamp(b+r.muscleB+r.forceB,1,7);
+  const final=RULA_C[c-1][d-1];
+  let niv,col;
+  if(final<=2){niv='Acceptable';col='var(--green)';}
+  else if(final<=4){niv='À surveiller';col='var(--amber)';}
+  else if(final<=6){niv='Modifier bientôt';col='var(--red)';}
+  else{niv='Modifier immédiatement';col='var(--black-band)';}
+  return{scoreC:c,scoreD:d,final,niv,col};
+}
+/* ---------- NIOSH ---------- */
+function nioshScore(){
+  const n=E.ergo.niosh, LC=23;
+  const H=clamp(n.H,25,63), V=clamp(n.V,0,175), D=clamp(n.D,25,175), A=clamp(n.A,0,135);
+  const HM=clamp(25/H,0,1);
+  const VM=clamp(1-0.003*Math.abs(V-75),0,1);
+  const DM=clamp(0.82+4.5/D,0,1);
+  const AM=clamp(1-0.0032*A,0,1);
+  const FMtab={'0.2':0.85,'1':0.75,'5':0.60,'10':0.45}; const FM=FMtab[n.F]??0.75;
+  const CMtab={'bonne':1.0,'moyenne':0.95,'mauvaise':0.90}; const CM=CMtab[n.C]??0.95;
+  const rwl=LC*HM*VM*DM*AM*FM*CM;
+  const li=n.poids>0?rwl>0?n.poids/rwl:9:0;
+  let niv,col;
+  if(li<=1){niv='Acceptable';col='var(--green)';}
+  else if(li<=2){niv='Risque modéré';col='var(--amber)';}
+  else if(li<=3){niv='Risque élevé';col='var(--red)';}
+  else{niv='Risque très élevé';col='var(--black-band)';}
+  return{rwl:Math.round(rwl*10)/10,li:Math.round(li*100)/100,niv,col,mult:{HM,VM,DM,AM,FM,CM}};
+}
+/* =========================================================
+   VISUALISATIONS SVG
+   ========================================================= */
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+function svgRadar(scores,opts={}){
+  const keys=FAMILLES.map(f=>f.key), labels=FAMILLES.map(f=>f.nom.split('–')[0].split('(')[0].trim());
+  const cx=170,cy=155,R=105,n=keys.length,size=340,H=300,dark=opts.dark;
+  const ang=i=>(-90+i*360/n)*Math.PI/180;
+  const pt=(i,r)=>[cx+Math.cos(ang(i))*r,cy+Math.sin(ang(i))*r];
+  let g='';
+  [25,50,75,100].forEach(l=>{let p=keys.map((_,i)=>pt(i,R*l/100).join(',')).join(' ');
+    g+=`<polygon points="${p}" fill="none" stroke="${dark?'#4a5a72':'#e6eaf0'}" stroke-width="1"/>`;});
+  keys.forEach((_,i)=>{const[x,y]=pt(i,R);g+=`<line x1="${cx}" y1="${cy}" x2="${x}" y2="${y}" stroke="${dark?'#4a5a72':'#e6eaf0'}" stroke-width="1"/>`;});
+  const poly=keys.map((k,i)=>pt(i,R*(scores[k]||0)/100).join(',')).join(' ');
+  g+=`<polygon points="${poly}" fill="oklch(0.66 0.10 195 / .28)" stroke="oklch(0.58 0.10 196)" stroke-width="2"/>`;
+  keys.forEach((k,i)=>{const[x,y]=pt(i,R*(scores[k]||0)/100);g+=`<circle cx="${x}" cy="${y}" r="3" fill="oklch(0.58 0.10 196)"/>`;});
+  labels.forEach((lb,i)=>{const[x,y]=pt(i,R+22);const anchor=Math.abs(x-cx)<12?'middle':(x<cx?'end':'start');
+    g+=`<text x="${x}" y="${y}" font-size="9.5" fill="${dark?'#c6cfdd':'#5a667a'}" text-anchor="${anchor}" dominant-baseline="middle">${esc(lb)}</text>`;});
+  return `<svg viewBox="0 0 ${size} ${H}" width="100%" style="max-width:360px">${g}</svg>`;
+}
+
+function svgGauge(score,opts={}){
+  const b=band(score),dark=opts.dark,W=220,H=140,cx=110,cy=120,r=90;
+  const a0=180,a1=0, val=a0-(a0-a1)*score/100;
+  const pol=(ang)=>[cx+r*Math.cos(ang*Math.PI/180),cy+r*Math.sin(-ang*Math.PI/180+Math.PI*0)];
+  function arc(from,to,color,w){
+    const p1=[cx+r*Math.cos(from*Math.PI/180),cy-r*Math.sin(from*Math.PI/180)];
+    const p2=[cx+r*Math.cos(to*Math.PI/180),cy-r*Math.sin(to*Math.PI/180)];
+    const large=Math.abs(to-from)>180?1:0;
+    return `<path d="M ${p1[0]} ${p1[1]} A ${r} ${r} 0 ${large} 1 ${p2[0]} ${p2[1]}" fill="none" stroke="${color}" stroke-width="${w}" stroke-linecap="round"/>`;
+  }
+  const seg=[[0,20,'#1f9d55'],[20,40,'#d6b400'],[40,60,'#e58a2a'],[60,80,'#d23f2f'],[80,100,'#4a2320']];
+  let g='';
+  seg.forEach(s=>{const f=180-s[0]/100*180, t=180-s[1]/100*180; g+=arc(f,t,s[2],13);});
+  const needleAng=(180-score/100*180)*Math.PI/180;
+  const nx=cx+ (r-18)*Math.cos(needleAng), ny=cy-(r-18)*Math.sin(needleAng);
+  g+=`<line x1="${cx}" y1="${cy}" x2="${nx}" y2="${ny}" stroke="${dark?'#fff':'#2a3345'}" stroke-width="3" stroke-linecap="round"/>`;
+  g+=`<circle cx="${cx}" cy="${cy}" r="6" fill="${dark?'#fff':'#2a3345'}"/>`;
+  g+=`<text x="${cx}" y="${cy-20}" text-anchor="middle" font-family="DM Serif Display,serif" font-size="34" fill="${b.hex}">${score}</text>`;
+  g+=`<text x="${cx}" y="${cy+2}" text-anchor="middle" font-size="10" fill="${dark?'#aeb8c8':'#7a8598'}">/ 100</text>`;
+  return `<svg viewBox="0 0 ${W} ${H}" width="100%" style="max-width:240px">${g}</svg>`;
+}
+
+function svgMatrix(dark){
+  // familles positionnées : proba = f(score famille) 1-5 ; gravité = FAM_GRAVITE
+  const fs=famScores(), cell=46, ox=42, oy=14, W=ox+cell*5+14, H=oy+cell*5+34;
+  const colScale=[['#e9f7ef','#1f9d55'],['#fff7db','#d6b400'],['#ffe9d4','#e58a2a'],['#fbe0dc','#d23f2f'],['#efd7d3','#4a2320']];
+  function crit(g,p){const c=g*p; if(c<=4)return 0; if(c<=9)return 1; if(c<=14)return 2; if(c<=19)return 3; return 4;}
+  let g='';
+  for(let gr=5;gr>=1;gr--){for(let pr=1;pr<=5;pr++){
+    const lvl=crit(gr,pr); const x=ox+(pr-1)*cell, y=oy+(5-gr)*cell;
+    g+=`<rect x="${x}" y="${y}" width="${cell-3}" height="${cell-3}" rx="6" fill="${colScale[lvl][0]}" stroke="${dark?'#3a4658':'#e6eaf0'}"/>`;
+  }}
+  // placer familles
+  const placed={};
+  FAMILLES.forEach(f=>{
+    const p=clamp(Math.round(fs[f.key]/20+0.001),0,5)||(fs[f.key]>0?1:0);
+    if(p===0)return; const gr=FAM_GRAVITE[f.key];
+    const key=gr+'-'+p; placed[key]=(placed[key]||0);
+    const x=ox+(p-1)*cell+cell/2-1, y=oy+(5-gr)*cell+cell/2-1;
+    const off=placed[key]*9; placed[key]++;
+    g+=`<circle cx="${x}" cy="${y-off}" r="8" fill="oklch(0.30 0.055 250)" stroke="#fff" stroke-width="1.5"/>`;
+    g+=`<text x="${x}" y="${y-off+3}" text-anchor="middle" font-size="8" fill="#fff" font-weight="700">${f.nom.slice(0,2).toUpperCase()}</text>`;
+  });
+  for(let i=1;i<=5;i++){g+=`<text x="${ox+(i-1)*cell+cell/2-1}" y="${oy+5*cell+14}" text-anchor="middle" font-size="9" fill="${dark?'#aeb8c8':'#7a8598'}">${i}</text>`;}
+  for(let gr=1;gr<=5;gr++){g+=`<text x="${ox-8}" y="${oy+(5-gr)*cell+cell/2}" text-anchor="end" font-size="9" fill="${dark?'#aeb8c8':'#7a8598'}">${gr}</text>`;}
+  g+=`<text x="${ox+cell*2.5}" y="${H-2}" text-anchor="middle" font-size="9.5" fill="${dark?'#c6cfdd':'#5a667a'}" font-weight="600">Probabilité →</text>`;
+  g+=`<text x="12" y="${oy+cell*2.5}" text-anchor="middle" font-size="9.5" fill="${dark?'#c6cfdd':'#5a667a'}" font-weight="600" transform="rotate(-90 12 ${oy+cell*2.5})">Gravité →</text>`;
+  return `<svg viewBox="0 0 ${W} ${H}" width="100%" style="max-width:300px">${g}</svg>`;
+}
+
+function svgBars(data,opts={}){ // data: [{lab,val,col}]
+  const dark=opts.dark, W=340, bh=26, gap=12, ox=118, oy=8, max=100;
+  const H=oy+data.length*(bh+gap);
+  let g='';
+  data.forEach((d,i)=>{const y=oy+i*(bh+gap); const w=(W-ox-16)*clamp(d.val,0,max)/max;
+    g+=`<text x="${ox-8}" y="${y+bh/2+4}" text-anchor="end" font-size="10.5" fill="${dark?'#c6cfdd':'#5a667a'}">${esc(d.lab)}</text>`;
+    g+=`<rect x="${ox}" y="${y}" width="${W-ox-16}" height="${bh}" rx="6" fill="${dark?'#3a4658':'#eef1f6'}"/>`;
+    g+=`<rect x="${ox}" y="${y}" width="${Math.max(w,3)}" height="${bh}" rx="6" fill="${d.col||'oklch(0.58 0.10 196)'}"/>`;
+    g+=`<text x="${ox+Math.max(w,3)+6}" y="${y+bh/2+4}" font-size="10.5" font-weight="700" fill="${dark?'#e6ebf3':'#3a4658'}">${Math.round(d.val)}</text>`;
+  });
+  return `<svg viewBox="0 0 ${W} ${H}" width="100%">${g}</svg>`;
+}
+
+function svgDonutTaches(dark){
+  const t=E.taches.filter(x=>+x.temps>0); if(!t.length)return `<div class="sub">Aucune tâche renseignée.</div>`;
+  const total=t.reduce((a,b)=>a+ (+b.temps||0),0)||1;
+  const cols=['#2a5f7a','#3a8fb0','#5bbccf','#e58a2a','#f0b25e','#8a9bb5','#c46a4a','#6a8f6a'];
+  const cx=70,cy=70,r=54,rw=22; let a0=-90,g='';
+  t.forEach((x,i)=>{const frac=(+x.temps||0)/total, a1=a0+frac*360;
+    const large=frac>0.5?1:0;
+    const p0=[cx+r*Math.cos(a0*Math.PI/180),cy+r*Math.sin(a0*Math.PI/180)];
+    const p1=[cx+r*Math.cos(a1*Math.PI/180),cy+r*Math.sin(a1*Math.PI/180)];
+    g+=`<path d="M ${p0[0]} ${p0[1]} A ${r} ${r} 0 ${large} 1 ${p1[0]} ${p1[1]}" fill="none" stroke="${cols[i%cols.length]}" stroke-width="${rw}"/>`;
+    a0=a1;});
+  let leg=t.map((x,i)=>`<span><i style="background:${cols[i%cols.length]}"></i>${esc((x.nom||'Tâche').slice(0,22))} · ${Math.round((+x.temps||0)/total*100)}%</span>`).join('');
+  return `<div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap"><svg viewBox="0 0 140 140" width="130">${g}<text x="70" y="66" text-anchor="middle" font-size="11" fill="${dark?'#aeb8c8':'#7a8598'}">Temps</text><text x="70" y="80" text-anchor="middle" font-size="10" fill="${dark?'#aeb8c8':'#7a8598'}">par tâche</text></svg><div class="legend" style="flex-direction:column;gap:5px">${leg}</div></div>`;
+}
+
+function svgHeatPostures(dark){
+  const zones=['Nuque','Épaules','Dos','Coudes/Poignets','Hanches','Genoux'];
+  const reba=rebaScore(), rula=rulaScore();
+  // intensité par zone dérivée des cotations + familles TMS
+  const tms=E.risques.tms||[];
+  const base=[reba.scoreA*8, tms[3]*33, reba.scoreA*8, tms[2]*33, reba.scoreB*7, E.ergo.reba.legs*22];
+  let g='',ox=90,cw=30,oy=6;
+  zones.forEach((z,i)=>{const v=clamp(base[i],0,100); const y=oy+i*24;
+    const col=v<33?'#3a8f5a':v<66?'#e58a2a':'#d23f2f';
+    g+=`<text x="${ox-8}" y="${y+13}" text-anchor="end" font-size="10" fill="${dark?'#c6cfdd':'#5a667a'}">${z}</text>`;
+    for(let c=0;c<5;c++){const on=v>=c*20; g+=`<rect x="${ox+c*(cw+4)}" y="${y}" width="${cw}" height="17" rx="4" fill="${on?col:(dark?'#3a4658':'#eef1f6')}" opacity="${on?1:0.6}"/>`;}
+  });
+  return `<svg viewBox="0 0 ${ox+5*(cw+4)+6} ${oy+zones.length*24}" width="100%">${g}</svg>`;
+}
+
+function svgTimeline(actions,dark){
+  if(!actions.length)return `<div class="sub">Plan d’action généré automatiquement à partir des risques.</div>`;
+  const W=680,rowH=30,ox=8,oy=22,months=6,plotW=W-160-ox;
+  let g=`<text x="${160}" y="12" font-size="9" fill="${dark?'#aeb8c8':'#7a8598'}">Échéance (mois) →</text>`;
+  for(let m=1;m<=months;m++){const x=160+plotW*m/months; g+=`<line x1="${x}" y1="16" x2="${x}" y2="${oy+actions.length*rowH}" stroke="${dark?'#3a4658':'#eef1f6'}"/><text x="${x}" y="12" font-size="8" fill="${dark?'#8a94a6':'#9aa3b2'}" text-anchor="middle">${m}</text>`;}
+  actions.forEach((a,i)=>{const y=oy+i*rowH; const x=160+plotW*a.mois/months;
+    const col=a.prio==='🔴'?'#d23f2f':a.prio==='🟠'?'#e58a2a':'#1f9d55';
+    g+=`<text x="${ox}" y="${y+14}" font-size="9.5" fill="${dark?'#c6cfdd':'#5a667a'}">${esc(a.txt.slice(0,26))}</text>`;
+    g+=`<rect x="160" y="${y+5}" width="${x-160}" height="10" rx="5" fill="${col}" opacity="0.28"/>`;
+    g+=`<circle cx="${x}" cy="${y+10}" r="6" fill="${col}"/>`;
+  });
+  return `<svg viewBox="0 0 ${W} ${oy+actions.length*rowH+6}" width="100%">${g}</svg>`;
+}
+/* =========================================================
+   ANALYSES DÉRIVÉES (contraintes, pénibilité, plan, synthèse IA)
+   ========================================================= */
+function moy(arr){return arr.length?arr.reduce((a,b)=>a+b,0)/arr.length:0;}
+function contraintes(){
+  const r=E.risques;
+  const P=clamp((moy(r.tms)+moy(r.physique))/2/3*100,0,100);
+  const Cg=clamp(((r.psychosocial[0]||0)*0.6+(r.organisationnel[3]||0)*0.4)/3*100,0,100);
+  const O=clamp(moy(r.organisationnel)/3*100,0,100);
+  const Rel=clamp(moy([r.psychosocial[2],r.psychosocial[3],r.psychosocial[4]])/3*100,0,100);
+  const Env=clamp(moy(r.environnemental)/3*100,0,100);
+  return[{lab:'Physiques',val:P},{lab:'Cognitives',val:Cg},{lab:'Organisationnelles',val:O},{lab:'Relationnelles',val:Rel},{lab:'Environnementales',val:Env}];
+}
+function penibilite(){
+  const r=E.risques, f=[];
+  if((r.organisationnel[0]||0)>=2)f.push('Travail de nuit / horaires alternants');
+  if((r.tms[2]||0)>=2)f.push('Travail répétitif');
+  if((r.physique[0]||0)>=2)f.push('Bruit');
+  if((r.physique[2]||0)>=2)f.push('Températures extrêmes');
+  if((r.tms[0]||0)>=2)f.push('Manutention manuelle de charges');
+  if((r.tms[1]||0)>=2||(r.tms[3]||0)>=2)f.push('Postures pénibles');
+  if((r.chimique[0]||0)>=2)f.push('Agents chimiques dangereux / CMR');
+  if((r.tms[5]||0)>=2||(r.physique[1]||0)>=2)f.push('Vibrations mécaniques');
+  return{n:f.length,facteurs:f};
+}
+const ACTIONS_LIB={
+ tms:['Réduire les manutentions manuelles (aides mécaniques, chariots, tables réglables)','Réorganiser le poste pour limiter postures contraignantes et bras levés','Rotation des tâches / pauses actives pour limiter la répétitivité'],
+ chimique:['Substituer ou capter à la source les produits dangereux (aspiration, ventilation)','Mettre à jour l’inventaire FDS et former au risque chimique / CMR','Fournir et vérifier le port des EPI adaptés (gants, protection respiratoire)'],
+ biologique:['Renforcer les procédures d’hygiène et la conduite à tenir en cas d’AES','Sécuriser l’élimination des DASRI et vérifier les vaccinations'],
+ physique:['Mesurer et réduire l’exposition au bruit (encoffrement, PICB adaptés)','Améliorer l’ambiance thermique et l’éclairage du poste','Sécuriser les travaux en hauteur (protections collectives)'],
+ psychosocial:['Réguler la charge et clarifier les priorités / marges d’autonomie','Renforcer le soutien managérial et les temps de régulation d’équipe','Prévenir les agressions liées au contact public (procédures, formation)'],
+ organisationnel:['Revoir l’organisation des horaires atypiques et la récupération','Limiter les interruptions et lisser la cadence de travail','Sécuriser le travail isolé (dispositif d’alerte, procédures)'],
+ accidentel:['Sécuriser les circulations et zones à risque de chute','Protéger les parties mobiles des machines et former à leur usage','Mettre à jour les protections collectives et la signalisation'],
+ environnemental:['Réaménager l’espace de travail (surface, rangement, dégagements)','Assainir la ventilation et traiter les sols glissants']
+};
+function planAction(){
+  const fs=famScores(),arr=[];
+  FAMILLES.forEach(f=>{const s=fs[f.key]; if(s<25)return;
+    const lib=ACTIONS_LIB[f.key]||[]; const txt=lib[0]||('Traiter le risque '+f.nom);
+    let prio,mois,impact,cout,resp;
+    if(s>=61){prio='🔴';mois=1;impact='⭐⭐⭐⭐⭐';cout='€€';resp='Employeur';}
+    else if(s>=41){prio='🟠';mois=3;impact='⭐⭐⭐⭐';cout='€';resp='Encadrement';}
+    else{prio='🟢';mois=6;impact='⭐⭐⭐';cout='€';resp='SPSTI / préventeur';}
+    arr.push({prio,txt,fam:f.nom,score:s,mois,impact,cout,resp});
+  });
+  const c=compatData();
+  if(c.non>0)arr.push({prio:'🔴',txt:'Étudier l’aménagement / le reclassement (tâches non compatibles)',fam:'Maintien dans l’emploi',score:80,mois:1,impact:'⭐⭐⭐⭐⭐',cout:'€€',resp:'Employeur + médecin du travail'});
+  else if(c.adapt>0)arr.push({prio:'🟠',txt:'Mettre en place les adaptations de poste identifiées',fam:'Maintien dans l’emploi',score:55,mois:2,impact:'⭐⭐⭐⭐',cout:'€',resp:'Employeur'});
+  return arr.sort((a,b)=>b.score-a.score);
+}
+function syntheseIA(){
+  const fs=famScores(),g=globalScore(),b=band(g);
+  const tri=Object.entries(fs).sort((a,b)=>b[1]-a[1]);
+  const nom=k=>FAMILLES.find(f=>f.key===k).nom;
+  const facteurs=tri.filter(x=>x[1]>=40).map(x=>`${nom(x[0])} (${x[1]}/100)`);
+  const protecteurs=tri.filter(x=>x[1]<=20).map(x=>nom(x[0]).split('–')[0].split('(')[0].trim());
+  const tachesDures=E.taches.filter(t=>/élev/i.test(t.effort||'')||t.compat==='no').map(t=>t.nom).filter(Boolean);
+  const reba=rebaScore(),niosh=nioshScore();
+  const c=compatData();
+  const oublis=[];
+  if((fs.psychosocial||0)===0)oublis.push('RPS non évalués — à confirmer par entretien');
+  if((fs.chimique||0)===0&&/coif|indus|btp|agro|prop|agri/.test(E.poste.secteur))oublis.push('Risque chimique probable pour ce secteur');
+  if((fs.biologique||0)===0&&/sante|dechet|petite/.test(E.poste.secteur))oublis.push('Risque biologique probable pour ce secteur');
+  const expertise=[];
+  if(reba.final>=8)expertise.push('Analyse ergonomique approfondie (REBA élevé)');
+  if(niosh.li>2)expertise.push('Étude de manutention (indice de levage > 2)');
+  if(c.non>0)expertise.push('Concertation médecin du travail sur le maintien dans l’emploi');
+  return{
+    facteurs:facteurs.length?facteurs:['Aucun facteur majeur détecté'],
+    tachesDures:tachesDures.length?tachesDures:['—'],
+    protecteurs:protecteurs.length?protecteurs:['—'],
+    adaptations:planAction().slice(0,3).map(a=>a.txt),
+    oublis:oublis.length?oublis:['—'],
+    expertise:expertise.length?expertise:['—'],
+    conclusion:`Poste évalué à ${g}/100 — niveau « ${b.lab.toLowerCase()} ». ${c.non>0?'Compatibilité restreinte : aménagement à étudier.':c.adapt>0?'Maintien possible sous réserve des adaptations proposées.':'Poste globalement compatible en l’état.'}`
+  };
+}
+
+/* =========================================================
+   RENDU DES ÉTAPES
+   ========================================================= */
+const view=()=>document.getElementById('view');
+
+function render(){
+  const s=STEPS[step];
+  document.getElementById('crumb').textContent=`Étape ${step+1} / ${STEPS.length}`;
+  document.getElementById('stepTitle').textContent=s.t;
+  document.getElementById('prevBtn').style.visibility=step===0?'hidden':'visible';
+  document.getElementById('nextBtn').textContent=step===STEPS.length-1?'Terminé':'Suivant →';
+  ({poste:rPoste,taches:rTaches,risques:rRisques,ergo:rErgo,environnement:rEnv,capacites:rCap,restitution:rRestit}[s.id])();
+  renderRail();updateFoot();window.scrollTo(0,0);
+}
+function renderRail(){
+  const ul=document.getElementById('steps');
+  ul.innerHTML=STEPS.map((s,i)=>`<li><button class="step-btn ${i===step?'active':''} ${i<step?'done':''}" onclick="jump(${i})">
+    <span class="num">${i<step?'✓':i+1}</span><span>${s.t}</span></button></li>`).join('');
+  const g=globalScore(),b=band(g);
+  document.getElementById('railDot').style.background=b.hex;
+  document.getElementById('railDot').textContent=g;
+  document.getElementById('railBand').textContent='Score PréventIA';
+  document.getElementById('railHint').textContent=b.lab;
+}
+function updateFoot(){
+  const done=E.poste.entreprise&&E.poste.naf&&E.poste.pcs;
+  document.getElementById('footHint').textContent=done?'':'Renseigne au minimum l’entreprise, le code NAF et le code PCS.';
+}
+
+/* ---------- Étape 1 : Poste ---------- */
+function rPoste(){
+  const p=E.poste;
+  view().innerHTML=`
+  <div class="grid g2">
+    <div class="card pad">
+      <div class="eyebrow">Carte d’identité</div>
+      <div class="sec-title"><div class="ic">🏢</div><div><h3>Entreprise & poste</h3><div class="sub">Base commune avec la fiche d’entreprise</div></div></div>
+      <div style="margin-top:16px">
+        <div class="field"><label>Entreprise</label><input id="f_entreprise" value="${esc(p.entreprise)}" placeholder="Raison sociale" oninput="setP('entreprise',this.value)"></div>
+        <div class="grid g2" style="gap:0 14px">
+          <div class="field"><label>Service / unité</label><input value="${esc(p.service)}" placeholder="Ex : production, soins" oninput="setP('service',this.value)"></div>
+          <div class="field"><label>Nombre de salariés au poste</label><input value="${esc(p.effectif)}" placeholder="Ex : 4" oninput="setP('effectif',this.value)"></div>
+        </div>
+        <div class="field"><label>Activité (description libre)</label><input value="${esc(p.activite)}" placeholder="Décrire l’activité de l’entreprise" oninput="setP('activite',this.value)"></div>
+        <div class="grid g2" style="gap:0 14px">
+          <div class="field"><label>Date de l’étude</label><input type="date" value="${esc(p.date)}" oninput="setP('date',this.value)"></div>
+          <div class="field"><label>Réalisée par</label><input value="${esc(p.preventeur)}" placeholder="Nom du préventeur / IPRP" oninput="setP('preventeur',this.value)"></div>
+        </div>
+        <div class="field"><label>Horaires / organisation</label><input value="${esc(p.horaires)}" placeholder="Ex : 2×8, journée, nuit" oninput="setP('horaires',this.value)"></div>
+      </div>
+    </div>
+    <div class="card pad">
+      <div class="eyebrow">Codification</div>
+      <div class="sec-title"><div class="ic">🔎</div><div><h3>Recherche NAF & PCS</h3><div class="sub">Recherche par activité, métier ou code</div></div></div>
+      <div style="margin-top:16px">
+        <div class="field">
+          <label>Code NAF / APE — activité</label>
+          ${combo('naf')}
+          <div class="hint">Recherche par mot-clé (ex : « hospitalier », « transport ») ou par code.</div>
+        </div>
+        <div class="field">
+          <label>Code PCS 2020 — métier</label>
+          ${combo('pcs')}
+          <div class="hint">Recherche par métier (ex : « aide-soignant », « maçon ») ou par code.</div>
+        </div>
+        <div id="propoZone"></div>
+      </div>
+    </div>
+  </div>`;
+  wireCombo('naf');wireCombo('pcs');renderPropo();
+}
+function combo(kind){
+  const picked=kind==='naf'?{c:E.poste.naf,l:E.poste.nafLib}:{c:E.poste.pcs,l:E.poste.pcsLib};
+  return `<div class="combo" data-kind="${kind}">
+    <input class="combo-input" placeholder="Rechercher…" autocomplete="off" style="${picked.c?'display:none':''}">
+    <div class="picked ${picked.c?'on':''}"><span class="code">${esc(picked.c)}</span><span class="lib">${esc(picked.l)}</span><button class="x" title="Modifier" onclick="clearCode('${kind}')">✕</button></div>
+    <div class="drop"></div>
+  </div>`;
+}
+function renderPropo(){
+  const z=document.getElementById('propoZone'); if(!z)return;
+  if(!E.poste.secteur){z.innerHTML='';return;}
+  const pr=PROFILS[E.poste.secteur];
+  z.innerHTML=`<div class="notice" style="margin-top:6px">
+    <b>Proposition adaptée au métier</b> — un profil de risques, des tâches et des contraintes types sont disponibles pour ce secteur.
+    <div style="margin-top:8px;display:flex;gap:8px;flex-wrap:wrap">
+      <button class="btn accent sm" onclick="appliquerProfil()">✨ Appliquer le profil suggéré</button>
+      <button class="btn sm" onclick="document.getElementById('propoZone').innerHTML=''">Ignorer</button>
+    </div>
+    <div class="sub" style="margin-top:8px">${pr?`Familles pré-cotées, ${pr.taches.length} tâches et ${pr.capacites.length} contraintes proposées. Tout reste modifiable.`:''}</div>
+  </div>`;
+}
+/* ---------- Étape 2 : Tâches ---------- */
+function rTaches(){
+  view().innerHTML=`
+  <div class="card pad">
+    <div class="sec-title"><div class="ic">📝</div><div><h3>Décomposition des tâches</h3><div class="sub">Identifier les tâches critiques : temps, effort, risque, compatibilité</div></div></div>
+    <div style="overflow:auto;margin-top:14px">
+    <table id="tacheTbl"><thead><tr>
+      <th style="min-width:180px">Tâche</th><th>Temps %</th><th>Effort</th><th>Fréquence</th><th>Risque principal</th><th>Compatible</th><th>Adaptation</th><th></th>
+    </tr></thead><tbody></tbody></table></div>
+    <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
+      <button class="btn" onclick="addTache()">＋ Ajouter une tâche</button>
+      ${E.poste.secteur?'<button class="btn ghost sm" onclick="appliquerTachesProfil()">Proposer les tâches types du métier</button>':''}
+      <span class="sub" id="tacheSum" style="align-self:center"></span>
+    </div>
+  </div>`;
+  drawTaches();
+}
+function drawTaches(){
+  const tb=document.querySelector('#tacheTbl tbody');
+  const risks=['','TMS','Chimique','Biologique','Physique','RPS','Organisationnel','Accidentel','Environnemental'];
+  tb.innerHTML=E.taches.map((t,i)=>`<tr>
+    <td><input value="${esc(t.nom)}" oninput="setT(${i},'nom',this.value)" placeholder="Décrire la tâche"></td>
+    <td><input type="number" min="0" max="100" value="${esc(t.temps)}" oninput="setT(${i},'temps',this.value)" style="width:64px"></td>
+    <td><select onchange="setT(${i},'effort',this.value)">${['Faible','Modéré','Élevé'].map(o=>`<option ${t.effort===o?'selected':''}>${o}</option>`).join('')}</select></td>
+    <td><select onchange="setT(${i},'frequence',this.value)">${['Occasionnel','Fréquent','Continu'].map(o=>`<option ${t.frequence===o?'selected':''}>${o}</option>`).join('')}</select></td>
+    <td><select onchange="setT(${i},'risque',this.value)">${risks.map(o=>`<option ${t.risque===o?'selected':''}>${o||'—'}</option>`).join('')}</select></td>
+    <td><select onchange="setT(${i},'compat',this.value)">
+      <option value="ok" ${t.compat==='ok'?'selected':''}>✅ Oui</option>
+      <option value="warn" ${t.compat==='warn'?'selected':''}>⚠️ Adaptation</option>
+      <option value="no" ${t.compat==='no'?'selected':''}>❌ Non</option></select></td>
+    <td><input value="${esc(t.adaptation)}" oninput="setT(${i},'adaptation',this.value)" placeholder="Aménagement"></td>
+    <td><button class="btn ghost sm" onclick="delTache(${i})" title="Supprimer">🗑</button></td>
+  </tr>`).join('')||`<tr><td colspan="8" class="sub" style="text-align:center;padding:22px">Aucune tâche. Ajoute une tâche ou applique le profil du métier.</td></tr>`;
+  const sum=E.taches.reduce((a,b)=>a+(+b.temps||0),0);
+  const el=document.getElementById('tacheSum');if(el)el.textContent=`Total temps : ${sum}%`+(sum>100?' ⚠️ dépasse 100%':'');
+}
+function addTache(t){E.taches.push(t||{nom:'',temps:'',effort:'Modéré',frequence:'Fréquent',risque:'',compat:'ok',adaptation:''});drawTaches();}
+function delTache(i){E.taches.splice(i,1);drawTaches();}
+function setT(i,k,v){E.taches[i][k]=v;if(k==='temps')drawTaches();renderRail();}
+function appliquerTachesProfil(){const pr=PROFILS[E.poste.secteur];if(!pr)return;
+  pr.taches.forEach(t=>addTache({nom:t[0],temps:t[1],effort:t[2],frequence:t[3],risque:t[4],compat:'ok',adaptation:''}));}
+
+/* ---------- Étape 3 : Risques ---------- */
+function rRisques(){
+  view().innerHTML=`
+  <div class="card pad" style="margin-bottom:16px">
+    <div class="sec-title"><div class="ic">🎯</div><div><h3>Évaluation des 8 familles de risques</h3><div class="sub">Cote chaque item de 0 (nul) à 3 (élevé). Le score de famille se calcule automatiquement.</div></div></div>
+    ${E.poste.secteur?`<div style="margin-top:10px"><button class="btn accent sm" onclick="appliquerProfil(true)">✨ Pré-coter selon le métier (${esc(E.poste.metier||E.poste.secteur)})</button></div>`:''}
+  </div>
+  <div id="famList"></div>`;
+  drawFamilles();
+}
+function drawFamilles(){
+  const host=document.getElementById('famList');
+  host.innerHTML=FAMILLES.map((f,fi)=>{
+    const sc=famScore(f.key),b=band(sc);
+    const rows=f.items.map((it,ii)=>{
+      const cur=E.risques[f.key][ii]||0;
+      const lv=[0,1,2,3].map(l=>`<button class="lvl ${cur===l?'on'+l:''}" onclick="setR('${f.key}',${ii},${l})">${l}</button>`).join('');
+      return `<div class="ritem"><div class="lbl">${esc(it)}</div><div class="levels">${lv}</div></div>`;
+    }).join('');
+    return `<div class="fam ${fi===0?'open':''}" id="fam_${f.key}">
+      <div class="fam-head" onclick="document.getElementById('fam_${f.key}').classList.toggle('open')">
+        <span class="ic">${f.ic}</span><span class="nm">${esc(f.nom)}</span>
+        <span class="badge" style="background:${b.hex}">${sc}</span><span class="chev">▸</span>
+      </div>
+      <div class="fam-body">${rows}</div></div>`;
+  }).join('');
+}
+function setR(key,idx,val){E.risques[key][idx]=val;
+  const f=document.getElementById('fam_'+key);const sc=famScore(key),b=band(sc);
+  f.querySelector('.badge').style.background=b.hex;f.querySelector('.badge').textContent=sc;
+  f.querySelectorAll('.ritem')[idx].querySelectorAll('.lvl').forEach((btn,l)=>{btn.className='lvl'+(l===val?' on'+l:'');});
+  renderRail();
+}
+/* ---------- Étape 4 : Ergonomie ---------- */
+function selMini(path,opts,val){
+  return `<select onchange="setErgo('${path}',this.value)">${opts.map(o=>`<option value="${o[0]}" ${String(val)===String(o[0])?'selected':''}>${o[1]}</option>`).join('')}</select>`;
+}
+function rErgo(){
+  const rl=E.ergo.rula,rb=E.ergo.reba,ni=E.ergo.niosh;
+  const s01=[[0,'Non'],[1,'Oui']];
+  view().innerHTML=`
+  <div class="card pad" style="margin-bottom:16px">
+    <div class="sec-title"><div class="ic">🧍</div><div><h3>Cotation ergonomique</h3><div class="sub">RULA (membres supérieurs) · REBA (corps entier) · NIOSH (manutention). Tables standard.</div></div></div>
+    <div class="notice" style="margin-top:10px">Ces cotations guident l’analyse. Pour une décision d’aptitude, confronter à l’observation terrain et, si besoin, à une mesure instrumentée.</div>
+  </div>
+  ${photoBlock()}
+  <div class="ergo-grid">
+    <div class="ergo-card">
+      <h4>RULA <span class="sub">membres supérieurs</span></h4>
+      <div class="mini-field"><span>Bras (épaule)</span>${selMini('rula.ua',[[1,'0–20°'],[2,'20–45°'],[3,'45–90°'],[4,'>90°'],[5,'+ épaule levée'],[6,'+ abduction']],rl.ua)}</div>
+      <div class="mini-field"><span>Avant-bras</span>${selMini('rula.la',[[1,'60–100°'],[2,'<60° ou >100°'],[3,'écarté / croisé']],rl.la)}</div>
+      <div class="mini-field"><span>Poignet</span>${selMini('rula.wr',[[1,'neutre'],[2,'0–15°'],[3,'>15°'],[4,'extrême']],rl.wr)}</div>
+      <div class="mini-field"><span>Torsion poignet</span>${selMini('rula.tw',[[1,'mi-course'],[2,'fin de course']],rl.tw)}</div>
+      <div class="mini-field"><span>Cou</span>${selMini('rula.neck',[[1,'0–10°'],[2,'10–20°'],[3,'>20°'],[4,'extension'],[5,'incliné'],[6,'tordu']],rl.neck)}</div>
+      <div class="mini-field"><span>Tronc</span>${selMini('rula.trunk',[[1,'droit'],[2,'0–20°'],[3,'20–60°'],[4,'>60°'],[5,'incliné'],[6,'tordu']],rl.trunk)}</div>
+      <div class="mini-field"><span>Jambes</span>${selMini('rula.legs',[[1,'appui stable'],[2,'appui instable']],rl.legs)}</div>
+      <div class="mini-field"><span>Muscle (statique/répété)</span>${selMini('rula.muscleA',s01,rl.muscleA)}</div>
+      <div class="mini-field"><span>Force / charge</span>${selMini('rula.forceA',[[0,'<2 kg'],[1,'2–10 kg ponct.'],[2,'2–10 kg répété'],[3,'>10 kg / choc']],rl.forceA)}</div>
+      <div id="rulaRes"></div>
+    </div>
+    <div class="ergo-card">
+      <h4>REBA <span class="sub">corps entier</span></h4>
+      <div class="mini-field"><span>Cou</span>${selMini('reba.neck',[[1,'0–20°'],[2,'>20° / extension'],[3,'+ torsion/inclinaison']],rb.neck)}</div>
+      <div class="mini-field"><span>Tronc</span>${selMini('reba.trunk',[[1,'droit'],[2,'0–20°'],[3,'20–60°'],[4,'>60°'],[5,'+ torsion']],rb.trunk)}</div>
+      <div class="mini-field"><span>Jambes</span>${selMini('reba.legs',[[1,'bilatéral'],[2,'unilatéral'],[3,'flexion 30–60°'],[4,'flexion >60°']],rb.legs)}</div>
+      <div class="mini-field"><span>Charge / force</span>${selMini('reba.load',[[0,'<5 kg'],[1,'5–10 kg'],[2,'>10 kg'],[3,'+ à-coups']],rb.load)}</div>
+      <div class="mini-field"><span>Bras</span>${selMini('reba.ua',[[1,'20° av/ar'],[2,'>20° / 45°'],[3,'45–90°'],[4,'>90°'],[5,'+ épaule levée'],[6,'+ appui']],rb.ua)}</div>
+      <div class="mini-field"><span>Avant-bras</span>${selMini('reba.la',[[1,'60–100°'],[2,'<60° / >100°']],rb.la)}</div>
+      <div class="mini-field"><span>Poignet</span>${selMini('reba.wr',[[1,'0–15°'],[2,'>15°'],[3,'+ torsion']],rb.wr)}</div>
+      <div class="mini-field"><span>Préhension</span>${selMini('reba.coupling',[[0,'bonne'],[1,'moyenne'],[2,'mauvaise'],[3,'inacceptable']],rb.coupling)}</div>
+      <div class="mini-field"><span>Activité</span>${selMini('reba.activity',[[0,'—'],[1,'statique >1 min'],[2,'répété'],[3,'instable/rapide']],rb.activity)}</div>
+      <div id="rebaRes"></div>
+    </div>
+    <div class="ergo-card">
+      <h4>NIOSH <span class="sub">levage de charge</span></h4>
+      <div class="mini-field"><span>Poids soulevé (kg)</span><input type="number" style="width:90px" value="${ni.poids}" onchange="setErgo('niosh.poids',this.value)"></div>
+      <div class="mini-field"><span>Distance H (cm)</span><input type="number" style="width:90px" value="${ni.H}" onchange="setErgo('niosh.H',this.value)"></div>
+      <div class="mini-field"><span>Hauteur V (cm)</span><input type="number" style="width:90px" value="${ni.V}" onchange="setErgo('niosh.V',this.value)"></div>
+      <div class="mini-field"><span>Déplacement D (cm)</span><input type="number" style="width:90px" value="${ni.D}" onchange="setErgo('niosh.D',this.value)"></div>
+      <div class="mini-field"><span>Asymétrie A (°)</span><input type="number" style="width:90px" value="${ni.A}" onchange="setErgo('niosh.A',this.value)"></div>
+      <div class="mini-field"><span>Fréquence (lev./min)</span>${selMini('niosh.F',[['0.2','≤0,2'],['1','1'],['5','5'],['10','≥10']],ni.F)}</div>
+      <div class="mini-field"><span>Prise</span>${selMini('niosh.C',[['bonne','bonne'],['moyenne','moyenne'],['mauvaise','mauvaise']],ni.C)}</div>
+      <div id="nioshRes"></div>
+    </div>
+  </div>`;
+  drawErgoRes();
+}
+function drawErgoRes(){
+  const rl=rulaScore(),rb=rebaScore(),ni=nioshScore();
+  const r=document.getElementById('rulaRes');if(r)r.innerHTML=`<div class="ergo-res"><div class="val" style="color:${rl.col}">${rl.final}<small style="font-size:14px">/7</small></div><div class="lab" style="color:${rl.col}">${rl.niv}</div></div>`;
+  const e=document.getElementById('rebaRes');if(e)e.innerHTML=`<div class="ergo-res"><div class="val" style="color:${rb.col}">${rb.final}<small style="font-size:14px">/15</small></div><div class="lab" style="color:${rb.col}">${rb.niv}</div></div>`;
+  const n=document.getElementById('nioshRes');if(n)n.innerHTML=`<div class="ergo-res"><div class="val" style="color:${ni.col}">${ni.li}</div><div class="lab" style="color:${ni.col}">IL — ${ni.niv}</div><div class="sub" style="margin-top:4px">Poids limite : ${ni.rwl} kg</div></div>`;
+}
+function setErgo(path,val){const[a,b]=path.split('.');const num=['poids','H','V','D','A','ua','la','wr','tw','neck','trunk','legs','muscleA','forceA','muscleB','forceB','load','coupling','activity'].includes(b);E.ergo[a][b]=num?+val:val;drawErgoRes();renderRail();}
+
+/* =========================================================
+   MODULE PHOTO DU POSTE — aide au calcul des angulations
+   Webhook vision Make.com · pattern « Solution C » (text/plain, payload stringifié)
+   ▸ À renseigner : URL exacte du scénario Make + token vision.
+   ========================================================= */
+const VISION_CFG={
+  url:'https://hook.eu1.make.com/y91ilwbt4jpfgt4m42gzurbbmolkxj2x', // ← ton webhook vision
+  token:'previa_vision_2026_xxx',                                   // ← ton token vision
+  model:'claude-sonnet-4-5',
+  maxDim:1600, quality:0.82, maxKo:3800   // compression : côté max 1600 px, cible < 3,8 Mo
+};
+
+function photoBlock(){
+  const has=!!E.ergoPhoto, ko=has?Math.round((E.ergoPhoto.length*0.75)/1024):0;
+  return `
+  <div class="card pad" style="margin-bottom:16px">
+    <div class="sec-title"><div class="ic">📷</div><div><h3>Analyse photo du poste — aide au calcul des angulations</h3>
+      <div class="sub">Prends ou importe une photo du poste. L’image est compressée sur ton appareil (&lt; 4 Mo), puis analysée par l’IA pour pré-remplir les angulations RULA / REBA (membre supérieur, poignet, cou, tronc, jambes, force…). Tu gardes la main sur chaque valeur.</div></div></div>
+    <div style="display:flex;gap:18px;flex-wrap:wrap;align-items:flex-start;margin-top:12px">
+      <div style="flex:0 0 auto">
+        ${has
+          ? `<img src="${E.ergoPhoto}" alt="poste de travail" style="max-width:300px;max-height:220px;border-radius:12px;border:1px solid var(--line);display:block;object-fit:cover">
+             <div class="sub" style="margin-top:6px">Image compressée : ${ko} Ko</div>`
+          : `<label style="display:flex;flex-direction:column;align-items:center;justify-content:center;width:300px;height:180px;border:2px dashed var(--line);border-radius:12px;cursor:pointer;color:var(--muted);gap:8px;text-align:center;background:var(--teal-050)">
+               <span style="font-size:34px">🖼️</span><span>Importer une photo<br>ou prendre une photo</span>
+               <input type="file" accept="image/*" capture="environment" style="display:none" onchange="onErgoPhoto(event)">
+             </label>`}
+      </div>
+      <div style="flex:1 1 260px;min-width:240px">
+        ${has
+          ? `<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px">
+               <button class="btn sm accent" onclick="analyseErgoPhoto()">🔍 Analyser (IA)</button>
+               <button class="btn sm" onclick="downloadErgoPhoto()">⬇️ Télécharger</button>
+               <label class="btn sm ghost" style="cursor:pointer">🔄 Changer<input type="file" accept="image/*" capture="environment" style="display:none" onchange="onErgoPhoto(event)"></label>
+               <button class="btn sm ghost" onclick="removeErgoPhoto()">🗑️ Retirer</button>
+             </div>`
+          : `<div class="sub" style="line-height:1.6">1 · Importe la photo → compression automatique.<br>2 · « Analyser (IA) » → les angulations se remplissent seules.<br>3 · Tu vérifies et ajustes ci-dessous. La photo reste téléchargeable.</div>`}
+        <div id="photoStatus" class="sub"></div>
+        <div id="photoAnalyse" style="margin-top:8px;font-size:12.5px;line-height:1.6">${E.ergoPhotoNote?`<div class="notice" style="background:var(--teal-050)">${esc(E.ergoPhotoNote)}</div>`:''}</div>
+      </div>
+    </div>
+  </div>`;
+}
+
+function onErgoPhoto(ev){
+  const f=ev.target.files&&ev.target.files[0];ev.target.value='';if(!f)return;
+  if(!/^image\//.test(f.type)){alert('Sélectionne un fichier image.');return;}
+  compressImage(f).then(url=>{
+    E.ergoPhoto=url;E.ergoPhotoNote='';rErgo();
+    const st=document.getElementById('photoStatus');
+    if(st)st.textContent='Photo prête ('+Math.round((url.length*0.75)/1024)+' Ko). Lance « Analyser (IA) » ou renseigne les angulations manuellement.';
+  }).catch(e=>alert('Impossible de traiter cette image : '+e.message));
+}
+
+function compressImage(file){
+  return new Promise((resolve,reject)=>{
+    const rd=new FileReader();
+    rd.onerror=()=>reject(new Error('lecture du fichier'));
+    rd.onload=()=>{
+      const img=new Image();
+      img.onerror=()=>reject(new Error('image illisible'));
+      img.onload=()=>{
+        let w=img.naturalWidth||img.width, h=img.naturalHeight||img.height;
+        const m=VISION_CFG.maxDim;
+        if(Math.max(w,h)>m){const r=m/Math.max(w,h);w=Math.round(w*r);h=Math.round(h*r);}
+        let cv=document.createElement('canvas');cv.width=w;cv.height=h;
+        let ctx=cv.getContext('2d');ctx.fillStyle='#fff';ctx.fillRect(0,0,w,h);ctx.drawImage(img,0,0,w,h);
+        let q=VISION_CFG.quality, url=cv.toDataURL('image/jpeg',q);
+        const lim=VISION_CFG.maxKo*1024*4/3; // longueur base64 ≈ octets×4/3
+        let guard=0;
+        while(url.length>lim && guard++<7){
+          q-=0.12;
+          if(q<0.35){ // réduire aussi les dimensions
+            const nw=Math.round(cv.width*0.85), nh=Math.round(cv.height*0.85);
+            const c2=document.createElement('canvas');c2.width=nw;c2.height=nh;
+            c2.getContext('2d').drawImage(cv,0,0,nw,nh);cv=c2;ctx=cv.getContext('2d');q=0.6;
+          }
+          url=cv.toDataURL('image/jpeg',Math.max(0.3,q));
+        }
+        resolve(url);
+      };
+      img.src=rd.result;
+    };
+    rd.readAsDataURL(file);
+  });
+}
+
+function downloadErgoPhoto(){
+  if(!E.ergoPhoto)return;
+  const a=document.createElement('a');a.href=E.ergoPhoto;
+  a.download='poste_'+((E.poste.metier||E.poste.entreprise||'photo').replace(/[^a-z0-9]/gi,'_'))+'.jpg';a.click();
+}
+function removeErgoPhoto(){E.ergoPhoto='';E.ergoPhotoNote='';rErgo();}
+
+function applyIaAngles(obj){
+  const R={ua:[1,6],la:[1,3],wr:[1,4],tw:[1,2],neck:[1,6],trunk:[1,6],legs:[1,2],muscleA:[0,1],forceA:[0,3]};
+  const B={neck:[1,3],trunk:[1,5],legs:[1,4],load:[0,3],ua:[1,6],la:[1,2],wr:[1,3],coupling:[0,3],activity:[0,3]};
+  const put=(grp,map)=>{const src=obj[grp];if(!src||typeof src!=='object')return 0;let n=0;
+    Object.entries(map).forEach(([k,[a,b]])=>{let v=src[k];if(v===undefined||v===null||v==='')return;v=Math.round(+v);if(isNaN(v))return;E.ergo[grp][k]=clamp(v,a,b);n++;});return n;};
+  return put('rula',R)+put('reba',B);
+}
+
+function analyseErgoPhoto(){
+  if(!E.ergoPhoto){alert('Ajoute une photo d’abord.');return;}
+  const setStatus=(t,c)=>{const s=document.getElementById('photoStatus');if(s){s.innerHTML=t;s.style.color=c||'';}};
+  setStatus('⏳ Analyse en cours… envoi de l’image à l’IA.','var(--teal-600)');
+  const b64=(E.ergoPhoto.split(',')[1])||'';
+  const prompt=`Tu es ergonome. Analyse la posture de travail de l’opérateur sur cette photo et estime, pour la posture principale, les catégories RULA et REBA selon EXACTEMENT ce codage (réponds par l’entier de la catégorie la plus proche).
+
+RULA :
+- ua (bras/épaule) : 1=0–20° | 2=20–45° | 3=45–90° | 4=>90° | 5=épaule surélevée | 6=bras en abduction
+- la (avant-bras) : 1=60–100° | 2=<60° ou >100° | 3=écarté/croisé
+- wr (poignet) : 1=neutre | 2=0–15° | 3=>15° | 4=extrême
+- tw (torsion poignet) : 1=mi-course | 2=fin de course
+- neck (cou) : 1=0–10° | 2=10–20° | 3=>20° | 4=extension | 5=incliné | 6=tordu
+- trunk (tronc) : 1=droit | 2=0–20° | 3=20–60° | 4=>60° | 5=incliné | 6=tordu
+- legs (jambes) : 1=appui stable | 2=appui instable
+- muscleA (contraction statique/répétée) : 0=non | 1=oui
+- forceA (force/charge) : 0=<2kg | 1=2–10kg ponctuel | 2=2–10kg répété | 3=>10kg ou choc
+
+REBA :
+- neck : 1=0–20° | 2=>20° ou extension | 3=+torsion/inclinaison
+- trunk : 1=droit | 2=0–20° | 3=20–60° | 4=>60° | 5=+torsion
+- legs : 1=appui bilatéral | 2=unilatéral | 3=flexion 30–60° | 4=flexion >60°
+- load : 0=<5kg | 1=5–10kg | 2=>10kg | 3=+à-coups
+- ua (bras) : 1=±20° | 2=>20° ou 45° | 3=45–90° | 4=>90° | 5=épaule surélevée | 6=bras en appui
+- la (avant-bras) : 1=60–100° | 2=<60° ou >100°
+- wr (poignet) : 1=0–15° | 2=>15° | 3=+torsion
+- coupling (préhension) : 0=bonne | 1=moyenne | 2=mauvaise | 3=inacceptable
+- activity : 0=aucune | 1=statique >1 min | 2=répétée | 3=instable/rapide
+
+Si un segment n’est pas visible ou non évaluable, ne l’inclus pas.
+Réponds UNIQUEMENT par un objet JSON valide, sans aucun texte autour :
+{"rula":{...},"reba":{...},"commentaire":"une phrase : posture dominante, segments les plus à risque, et rappel que la photo donne une estimation à confirmer sur le terrain"}`;
+  const body={model:VISION_CFG.model,max_tokens:1200,messages:[{role:'user',content:[
+    {type:'image',source:{type:'base64',media_type:'image/jpeg',data:b64}},
+    {type:'text',text:prompt}]}]};
+  fetch(VISION_CFG.url,{method:'POST',headers:{'Content-Type':'text/plain'},
+    body:JSON.stringify({token:VISION_CFG.token,payload:JSON.stringify(body)})})
+  .then(res=>{if(!res.ok)throw new Error('HTTP '+res.status);return res.text();})
+  .then(raw=>{
+    let data;try{data=JSON.parse(raw);}catch(_){data=null;}
+    let txt='';
+    if(data&&Array.isArray(data.content))txt=data.content.filter(x=>x.type==='text').map(x=>x.text).join('\n');
+    else if(data&&typeof data.text==='string')txt=data.text;
+    else if(data&&typeof data.completion==='string')txt=data.completion;
+    else txt=raw;
+    const clean=String(txt).replace(/```json/gi,'').replace(/```/g,'').trim();
+    const a=clean.indexOf('{'),b=clean.lastIndexOf('}');
+    if(a<0||b<0)throw new Error('pas de JSON exploitable');
+    const obj=JSON.parse(clean.slice(a,b+1));
+    const n=applyIaAngles(obj);
+    E.ergoPhotoNote='🔍 Analyse IA — '+(obj.commentaire||'angulations proposées, à vérifier sur le terrain.')+(n?` (${n} segment(s) pré-rempli(s))`:'');
+    rErgo();
+    setStatus('✅ Angulations pré-remplies. Vérifie et ajuste chaque valeur ci-dessous.','var(--teal-600)');
+  })
+  .catch(e=>{
+    setStatus('⚠️ Analyse indisponible ('+esc(e.message)+'). Vérifie l’URL et le token du webhook vision, ou renseigne les angulations manuellement.','var(--orange-600)');
+  });
+}
+
+/* ---------- Étape 5 : Environnement & contraintes ---------- */
+function rEnv(){
+  const c=contraintes(),pen=penibilite();
+  view().innerHTML=`
+  <div class="grid g2">
+    <div class="card pad">
+      <div class="sec-title"><div class="ic">🌍</div><div><h3>Répartition des contraintes</h3><div class="sub">Calculée à partir de l’évaluation des risques</div></div></div>
+      <div style="margin-top:16px">${svgBars(c.map(x=>({lab:x.lab,val:x.val,col:'oklch(0.58 0.10 196)'})))}</div>
+    </div>
+    <div class="card pad">
+      <div class="sec-title"><div class="ic">⏱️</div><div><h3>Facteurs de pénibilité</h3><div class="sub">Repérage (art. L.4163-1 C. trav.)</div></div></div>
+      <div style="margin-top:14px">
+        <div style="display:flex;align-items:baseline;gap:10px;margin-bottom:12px">
+          <span class="serif" style="font-size:40px;color:${pen.n>=3?'var(--red)':pen.n>=1?'var(--amber)':'var(--green)'}">${pen.n}</span>
+          <span class="sub">facteur(s) de pénibilité repéré(s)</span>
+        </div>
+        ${pen.facteurs.length?pen.facteurs.map(f=>`<div class="rag" style="border-color:var(--line)"><span class="d" style="background:var(--amber)"></span>${esc(f)}</div>`).join(''):'<div class="sub">Aucun facteur de pénibilité repéré au-delà du seuil.</div>'}
+      </div>
+    </div>
+    <div class="card pad" style="grid-column:1/-1">
+      <div class="sec-title"><div class="ic">🧩</div><div><h3>Environnement de travail — observations</h3><div class="sub">Éléments qualitatifs complétant la cotation</div></div></div>
+      <div class="grid g2" style="margin-top:14px;gap:0 14px">
+        <div class="field"><label>Machines / équipements</label><textarea rows="3" oninput="setP('contexte',this.value)" placeholder="Machines, outils, EPC en place…">${esc(E.poste.contexte)}</textarea></div>
+        <div class="field"><label>Ambiances & aménagement</label><textarea rows="3" oninput="E.envNote=this.value" placeholder="Bruit, thermique, éclairage, espace, ventilation…">${esc(E.envNote||'')}</textarea></div>
+      </div>
+    </div>
+  </div>`;
+}
+
+/* ---------- Étape 6 : Capacités / compatibilité ---------- */
+function rCap(){
+  view().innerHTML=`
+  <div class="card pad">
+    <div class="sec-title"><div class="ic">♿</div><div><h3>Compatibilité des capacités fonctionnelles</h3><div class="sub">Support au maintien dans l’emploi et à l’avis d’aptitude</div></div></div>
+    ${E.poste.secteur?`<div style="margin-top:10px"><button class="btn accent sm" onclick="preselectCap()">✨ Cibler les contraintes clés du métier</button></div>`:''}
+    <div style="overflow:auto;margin-top:14px"><table><thead><tr><th style="min-width:220px">Domaine</th><th>Compatible</th><th>Adaptation nécessaire</th><th>Non compatible</th><th>Non concerné</th></tr></thead><tbody>
+    ${CAPACITES.map((d,i)=>{const v=E.capacites[d]||'';const rb=(val,lab)=>`<label style="display:flex;justify-content:center"><input type="radio" name="cap_${i}" ${v===val?'checked':''} onchange="setCap('${esc(d).replace(/'/g,"\\'")}','${val}')"></label>`;
+      return `<tr><td>${esc(d)}</td><td>${rb('ok')}</td><td>${rb('adapt')}</td><td>${rb('non')}</td><td>${rb('nc')}</td></tr>`;}).join('')}
+    </tbody></table></div>
+    <div id="capSum" class="sub" style="margin-top:12px"></div>
+  </div>`;
+  capSum();
+}
+function setCap(d,v){E.capacites[d]=v;capSum();renderRail();}
+function preselectCap(){const pr=PROFILS[E.poste.secteur];if(!pr)return;pr.capacites.forEach(d=>{if(CAPACITES.includes(d)&&!E.capacites[d])E.capacites[d]='adapt';});rCap();}
+function capSum(){const c=compatData();const el=document.getElementById('capSum');if(el)el.innerHTML=`<b>${c.non}</b> non compatible(s) · <b>${c.adapt}</b> adaptation(s) · sur ${c.tot} domaine(s) évalué(s).`;}
+/* =========================================================
+   ÉTAPE 7 : RESTITUTIONS
+   ========================================================= */
+let rtab='synth';
+function rRestit(){
+  view().innerHTML=`
+  <div class="rtabs no-print">
+    <button class="rtab ${rtab==='expert'?'active':''}" onclick="setRtab('expert')">📚 Étude expert (N1)</button>
+    <button class="rtab ${rtab==='synth'?'active':''}" onclick="setRtab('synth')">📄 Synthèse A4 (N2)</button>
+    <button class="rtab ${rtab==='cockpit'?'active':''}" onclick="setRtab('cockpit')">📊 Cockpit médecin (N3)</button>
+    <div style="flex:1"></div>
+    <button class="btn sm" onclick="window.print()">🖨️ Imprimer / PDF</button>
+    ${rtab==='expert'?'<button class="btn sm" onclick="exportWord()">📝 Word</button>':''}
+    ${rtab==='synth'?'<button class="btn sm" onclick="exportWordSynth()">📝 Word</button>':''}
+  </div>
+  <div id="restitBody"></div>`;
+  ({expert:drawExpert,synth:drawSynth,cockpit:drawCockpit}[rtab])();
+}
+function setRtab(t){rtab=t;rRestit();}
+
+/* ---------- Niveau 2 : Synthèse A4 ---------- */
+function drawSynth(){
+  const p=E.poste,g=globalScore(),b=band(g),fs=famScores(),ia=syntheseIA(),c=contraintes(),plan=planAction();
+  const compatRows=CAPACITES.filter(d=>E.capacites[d]&&E.capacites[d]!=='nc').map(d=>{
+    const v=E.capacites[d],pill=v==='ok'?'<span class="pill ok">✅</span>':v==='adapt'?'<span class="pill warn">⚠️</span>':'<span class="pill no">❌</span>';
+    return `<tr><td>${esc(d)}</td><td style="text-align:center">${pill}</td></tr>`;}).join('')||'<tr><td class="sub" colspan="2">Non renseigné</td></tr>';
+  const tacheRows=E.taches.slice(0,6).map(t=>{const pill=t.compat==='ok'?'<span class="pill ok">✅</span>':t.compat==='warn'?'<span class="pill warn">⚠️</span>':'<span class="pill no">❌</span>';
+    return `<tr><td>${esc(t.nom||'—')}</td><td>${esc(t.temps)||'–'}%</td><td>${esc(t.effort)}</td><td>${esc(t.risque)||'–'}</td><td style="text-align:center">${pill}</td></tr>`;}).join('')||'<tr><td colspan="5" class="sub">Aucune tâche renseignée</td></tr>';
+  const planRows=plan.slice(0,5).map(a=>`<tr><td style="text-align:center">${a.prio}</td><td>${esc(a.txt)}</td><td>${a.impact}</td><td>${a.cout}</td><td>${a.mois} mois</td><td>${esc(a.resp)}</td></tr>`).join('');
+  document.getElementById('restitBody').innerHTML=`
+  <div class="a4" id="a4page">
+    <div class="a4-head">
+      <div><div class="ttl">Synthèse décisionnelle</div><div style="font-size:11px;color:var(--muted)">PréventIA-LaB · étude de poste</div></div>
+      <div class="meta"><b>${esc(p.entreprise||'—')}</b><br>${esc(p.service||'')} · ${esc(p.metier||'—')}<br>${esc(p.date)} · ${esc(p.preventeur||'')}</div>
+    </div>
+    <div class="block idcard">
+      <div><b>NAF</b>${esc(p.naf||'—')}</div><div><b>PCS</b>${esc(p.pcs||'—')}</div>
+      <div><b>Effectif poste</b>${esc(p.effectif||'—')}</div><div><b>Horaires</b>${esc(p.horaires||'—')}</div>
+    </div>
+    <div class="cols">
+      <div>
+        <div class="block"><h5>Tâches critiques</h5>
+          <table><thead><tr><th>Tâche</th><th>%</th><th>Effort</th><th>Risque</th><th>Compat.</th></tr></thead><tbody>${tacheRows}</tbody></table></div>
+        <div class="block"><h5>Compatibilité des capacités</h5>
+          <table><tbody>${compatRows}</tbody></table></div>
+      </div>
+      <div>
+        <div class="block" style="text-align:center"><h5>Score PréventIA</h5>${svgGauge(g)}
+          <div style="font-weight:700;color:${b.hex};font-size:13px">${b.lab}</div></div>
+        <div class="cols3" style="margin-top:6px">
+          <div><h5>Familles de risques</h5>${svgRadar(fs)}</div>
+          <div><h5>Gravité × Probabilité</h5>${svgMatrix(false)}</div>
+        </div>
+      </div>
+    </div>
+    <div class="block"><h5>Répartition des contraintes</h5>${svgBars(c.map(x=>({lab:x.lab,val:x.val})),{})}</div>
+    <div class="cols">
+      <div class="block"><h5>Synthèse IA</h5>
+        <div style="font-size:10.5px;line-height:1.5">
+          <b>Facteurs majeurs :</b> ${ia.facteurs.join(' · ')}<br>
+          <b>Tâches pénalisantes :</b> ${ia.tachesDures.join(' · ')}<br>
+          <b>Facteurs protecteurs :</b> ${ia.protecteurs.join(' · ')}<br>
+          <b>Points à expertiser :</b> ${ia.expertise.join(' · ')}<br>
+          <b>Risques possiblement oubliés :</b> ${ia.oublis.join(' · ')}
+        </div>
+      </div>
+      <div class="block"><h5>Conclusion</h5>
+        <div style="font-size:10.5px;line-height:1.5;background:var(--teal-050);padding:8px 10px;border-radius:8px">${esc(ia.conclusion)}</div>
+      </div>
+    </div>
+    <div class="block"><h5>Plan d’action priorisé</h5>
+      <table><thead><tr><th>Prio</th><th>Action</th><th>Impact</th><th>Coût</th><th>Échéance</th><th>Responsable</th></tr></thead><tbody>${planRows}</tbody></table></div>
+  </div>`;
+}
+
+/* ---------- Niveau 3 : Cockpit ---------- */
+function drawCockpit(){
+  const p=E.poste,g=globalScore(),b=band(g),fs=famScores(),reba=rebaScore(),niosh=nioshScore(),pen=penibilite(),c=compatData();
+  const critiques=FAMILLES.filter(f=>fs[f.key]>=61).length;
+  const tachesInc=E.taches.filter(t=>t.compat==='no').length;
+  const amenag=c.non+c.adapt;
+  const chargeMentale=Math.round(((E.risques.psychosocial[0]||0))/3*100);
+  const expoChim=fs.chimique,expoPhys=fs.physique;
+  const plan=planAction();
+  const kpi=(lab,val,unit,tag,tagcol)=>`<div class="kpi"><div class="k-lab">${lab}</div><div class="k-val">${val}${unit?`<small>${unit}</small>`:''}</div><div class="k-tag" style="color:${tagcol||'#9fb4c8'}">${tag||''}</div></div>`;
+  const ragRow=(lab,val)=>{const bb=band(val);return `<div class="rag"><span class="d" style="background:${bb.hex}"></span><span style="flex:1">${lab}</span><b>${val}</b></div>`;};
+  const riskRows=FAMILLES.map(f=>{const s=fs[f.key],bb=band(s);return `<tr><td>${f.ic} ${esc(f.nom.split('–')[0].split('(')[0].trim())}</td><td><b style="color:${bb.hex}">${s}</b></td><td>${FAM_GRAVITE[f.key]}</td><td><span style="color:${bb.hex}">●</span> ${bb.lab}</td></tr>`;}).join('');
+  document.getElementById('restitBody').innerHTML=`
+  <div class="cockpit" id="cockpit">
+    <div class="cock-head">
+      <div class="t">Cockpit décisionnel — ${esc(p.metier||'poste')}</div>
+      <div class="cock-filters">
+        <span class="chip">🏢 ${esc(p.entreprise||'—')}</span><span class="chip">NAF ${esc(p.naf||'—')}</span>
+        <span class="chip">PCS ${esc(p.pcs||'—')}</span><span class="chip">${esc(p.service||'—')}</span><span class="chip">${esc(p.date)}</span>
+      </div>
+    </div>
+    <div class="kpi-row">
+      ${kpi('Score PréventIA',g,'/100',b.lab,b.hex)}
+      ${kpi('Risques critiques',critiques,'',critiques?'à traiter':'aucun',critiques?'#e58a2a':'#4fbf7a')}
+      ${kpi('Tâches incompatibles',tachesInc,'',tachesInc?'aménagement':'ok',tachesInc?'#d23f2f':'#4fbf7a')}
+      ${kpi('Aménagements prioritaires',amenag,'','maintien emploi','#8fd0e0')}
+      ${kpi('Pénibilité',pen.n,' fact.',pen.n>=3?'élevée':pen.n?'à suivre':'faible',pen.n>=3?'#d23f2f':'#e6c34a')}
+    </div>
+    <div class="kpi-row">
+      ${kpi('Indice ergonomique',reba.final,'/15','REBA · '+reba.niv.split('—')[0],reba.col.includes('green')?'#4fbf7a':reba.col.includes('amber')?'#e6c34a':'#e58a2a')}
+      ${kpi('Charge mentale',chargeMentale,'/100','','#8fd0e0')}
+      ${kpi('Exposition chimique',expoChim,'/100','','#c9a26b')}
+      ${kpi('Exposition physique',expoPhys,'/100','','#8fd0e0')}
+      ${kpi('Indice de levage',niosh.li,'','NIOSH · '+niosh.niv,niosh.col.includes('green')?'#4fbf7a':'#e58a2a')}
+    </div>
+    <div class="cock-grid">
+      <div class="panel"><h4>Radar des familles de risques</h4>${svgRadar(fs,{dark:true})}</div>
+      <div class="panel gauge-wrap"><h4>Jauge du score</h4>${svgGauge(g,{dark:true})}<div style="color:${b.hex};font-weight:700;margin-top:4px">${b.lab}</div></div>
+      <div class="panel"><h4>Matrice gravité × probabilité</h4>${svgMatrix(true)}</div>
+      <div class="panel"><h4>Histogramme des familles</h4>${svgBars(FAMILLES.map(f=>({lab:f.nom.split('–')[0].split('(')[0].trim().slice(0,12),val:fs[f.key],col:band(fs[f.key]).hex})),{dark:true})}</div>
+      <div class="panel"><h4>Répartition du temps par tâche</h4>${svgDonutTaches(true)}</div>
+      <div class="panel"><h4>Heatmap des postures</h4>${svgHeatPostures(true)}
+        <div class="legend" style="margin-top:8px"><span><i style="background:#3a8f5a"></i>faible</span><span><i style="background:#e58a2a"></i>modéré</span><span><i style="background:#d23f2f"></i>élevé</span></div></div>
+      <div class="panel wide"><h4>Indicateurs RAG — synthèse</h4>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0 26px">
+          <div>${ragRow('TMS',fs.tms)}${ragRow('Chimique',fs.chimique)}${ragRow('Biologique',fs.biologique)}${ragRow('Physique',fs.physique)}</div>
+          <div>${ragRow('RPS',fs.psychosocial)}${ragRow('Organisationnel',fs.organisationnel)}${ragRow('Accidentel',fs.accidentel)}${ragRow('Environnement',fs.environnemental)}</div>
+        </div></div>
+      <div class="panel wide"><h4>Chronologie du plan d’action</h4>${svgTimeline(plan.map(a=>({txt:a.txt,mois:a.mois,prio:a.prio})),true)}</div>
+      <div class="panel wide"><h4>Tableau interactif des risques</h4>
+        <table class="cock-table"><thead><tr><th>Famille</th><th>Score</th><th>Gravité</th><th>Niveau</th></tr></thead><tbody>${riskRows}</tbody></table></div>
+    </div>
+    <div style="margin-top:14px;padding:12px 14px;background:oklch(0.3 0.04 250 /.5);border-radius:12px;font-size:12.5px;color:oklch(0.9 0.01 250)">
+      <b style="color:#fff">Avis pour le médecin du travail —</b> ${esc(syntheseIA().conclusion)}
+    </div>
+  </div>`;
+}
+
+/* ---------- Niveau 1 : Étude expert ---------- */
+function drawExpert(){
+  const p=E.poste,fs=famScores(),reba=rebaScore(),rula=rulaScore(),niosh=nioshScore(),ia=syntheseIA(),pen=penibilite();
+  const secBlock=(title,body)=>`<div class="card pad" style="margin-bottom:14px"><div class="eyebrow">${title}</div>${body}</div>`;
+  const famTable=`<table><thead><tr><th>Famille</th><th>Score /100</th><th>Niveau</th><th>Items cotés ≥ 2</th></tr></thead><tbody>${FAMILLES.map(f=>{
+    const items=f.items.filter((_,i)=>(E.risques[f.key][i]||0)>=2).map(x=>esc(x)).join(', ')||'—';const bb=band(fs[f.key]);
+    return `<tr><td>${f.ic} ${esc(f.nom)}</td><td><b style="color:${bb.hex}">${fs[f.key]}</b></td><td>${bb.lab}</td><td class="sub">${items}</td></tr>`;}).join('')}</tbody></table>`;
+  const tacheTable=`<table><thead><tr><th>Tâche</th><th>Temps</th><th>Effort</th><th>Fréq.</th><th>Risque</th><th>Compat.</th><th>Adaptation</th></tr></thead><tbody>${
+    E.taches.map(t=>`<tr><td>${esc(t.nom||'—')}</td><td>${esc(t.temps)}%</td><td>${esc(t.effort)}</td><td>${esc(t.frequence)}</td><td>${esc(t.risque)||'–'}</td><td>${t.compat==='ok'?'✅':t.compat==='warn'?'⚠️':'❌'}</td><td class="sub">${esc(t.adaptation)||'–'}</td></tr>`).join('')||'<tr><td colspan="7" class="sub">Aucune tâche</td></tr>'}</tbody></table>`;
+  const capTable=`<table><thead><tr><th>Domaine</th><th>Statut</th></tr></thead><tbody>${CAPACITES.filter(d=>E.capacites[d]&&E.capacites[d]!=='nc').map(d=>{const v=E.capacites[d];return `<tr><td>${esc(d)}</td><td>${v==='ok'?'✅ Compatible':v==='adapt'?'⚠️ Adaptation nécessaire':'❌ Non compatible'}</td></tr>`;}).join('')||'<tr><td colspan="2" class="sub">Non renseigné</td></tr>'}</tbody></table>`;
+  const planTable=`<table><thead><tr><th>Prio</th><th>Action</th><th>Famille</th><th>Impact</th><th>Coût</th><th>Échéance</th><th>Responsable</th></tr></thead><tbody>${planAction().map(a=>`<tr><td>${a.prio}</td><td>${esc(a.txt)}</td><td class="sub">${esc(a.fam)}</td><td>${a.impact}</td><td>${a.cout}</td><td>${a.mois} mois</td><td>${esc(a.resp)}</td></tr>`).join('')}</tbody></table>`;
+  document.getElementById('restitBody').innerHTML=`
+  <div id="expertDoc">
+    ${secBlock('1 · Identification',`<div class="idcard" style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px 16px;font-size:13px">
+      <div><b style="color:var(--muted);font-size:11px">Entreprise</b><br>${esc(p.entreprise||'—')}</div>
+      <div><b style="color:var(--muted);font-size:11px">Service</b><br>${esc(p.service||'—')}</div>
+      <div><b style="color:var(--muted);font-size:11px">Effectif poste</b><br>${esc(p.effectif||'—')}</div>
+      <div><b style="color:var(--muted);font-size:11px">NAF / activité</b><br>${esc(p.naf)} — ${esc(p.nafLib||'—')}</div>
+      <div><b style="color:var(--muted);font-size:11px">PCS / métier</b><br>${esc(p.pcs)} — ${esc(p.metier||'—')}</div>
+      <div><b style="color:var(--muted);font-size:11px">Horaires</b><br>${esc(p.horaires||'—')}</div>
+      <div><b style="color:var(--muted);font-size:11px">Date / préventeur</b><br>${esc(p.date)} · ${esc(p.preventeur||'—')}</div>
+      <div style="grid-column:span 2"><b style="color:var(--muted);font-size:11px">Activité</b><br>${esc(p.activite||'—')}</div></div>`)}
+    ${secBlock('2 · Analyse détaillée des tâches',tacheTable)}
+    ${secBlock('3 · Évaluation des risques (8 familles)',famTable)}
+    ${secBlock('4 · Cotations ergonomiques',`<div class="grid g3">
+      <div class="ergo-res"><div class="val" style="color:${rula.col}">${rula.final}/7</div><div class="lab">RULA — ${rula.niv}</div></div>
+      <div class="ergo-res"><div class="val" style="color:${reba.col}">${reba.final}/15</div><div class="lab">REBA — ${reba.niv}</div></div>
+      <div class="ergo-res"><div class="val" style="color:${niosh.col}">${niosh.li}</div><div class="lab">NIOSH — IL ${niosh.niv} (RWL ${niosh.rwl} kg)</div></div></div>`)}
+    ${secBlock('5 · Environnement & pénibilité',`<div class="sub" style="margin-bottom:8px">${pen.n} facteur(s) de pénibilité : ${pen.facteurs.join(', ')||'aucun'}</div>
+      <div style="font-size:13px"><b>Machines / équipements :</b> ${esc(p.contexte)||'—'}<br><b>Ambiances & aménagement :</b> ${esc(E.envNote||'—')}</div>`)}
+    ${secBlock('6 · Capacités fonctionnelles',capTable)}
+    ${secBlock('7 · Analyse IA',`<div style="font-size:13.5px;line-height:1.7">
+      <b>Principaux facteurs de risque :</b> ${ia.facteurs.join(' · ')}<br>
+      <b>Tâches les plus pénalisantes :</b> ${ia.tachesDures.join(' · ')}<br>
+      <b>Facteurs protecteurs :</b> ${ia.protecteurs.join(' · ')}<br>
+      <b>Adaptations recommandées :</b> ${ia.adaptations.join(' · ')}<br>
+      <b>Risques potentiellement oubliés :</b> ${ia.oublis.join(' · ')}<br>
+      <b>Expertise complémentaire :</b> ${ia.expertise.join(' · ')}</div>`)}
+    ${secBlock('8 · Préconisations & plan d’action',planTable)}
+    ${secBlock('9 · Conclusion',`<div style="background:var(--teal-050);padding:12px 14px;border-radius:10px;font-size:14px">${esc(ia.conclusion)}</div>`)}
+  </div>`;
+}
+/* =========================================================
+   COMBOBOX NAF / PCS + APPLICATION DU PROFIL
+   ========================================================= */
+function wireCombo(kind){
+  const wrap=document.querySelector(`.combo[data-kind="${kind}"]`);if(!wrap)return;
+  const inp=wrap.querySelector('.combo-input'),drop=wrap.querySelector('.drop');
+  const data=kind==='naf'?NAF:PCS;
+  function search(q){
+    q=q.trim().toLowerCase();
+    let res= !q?data.slice(0,12):data.filter(x=>x.lib.toLowerCase().includes(q)||x.code.toLowerCase().includes(q)||(x.kw||'').toLowerCase().includes(q)).slice(0,30);
+    drop.innerHTML=res.length?res.map(x=>`<div class="opt" data-kind="${kind}" data-code="${esc(x.code)}"><span class="code">${esc(x.code)}</span><span class="lib">${esc(x.lib)}<small>${secLabel(x.sec)}</small></span></div>`).join(''):`<div class="empty">Aucun résultat pour « ${esc(q)} »</div>`;
+    drop.classList.add('on');
+  }
+  inp.addEventListener('focus',()=>search(inp.value));
+  inp.addEventListener('input',()=>search(inp.value));
+  inp.addEventListener('click',()=>search(inp.value));
+}
+/* Délégation globale UNIQUE (évite l'accumulation de listeners à chaque re-render) */
+if(!window.__comboWired){
+  window.__comboWired=true;
+  // Sélection d'une option — mousedown se déclenche AVANT blur/click, marche partout (souris + tactile)
+  document.addEventListener('mousedown',e=>{
+    const opt=e.target.closest('.opt[data-kind]');
+    if(opt){e.preventDefault();pickCode(opt.dataset.kind,opt.dataset.code);}
+  });
+  // Fallback tactile pour navigateurs qui n'émettent pas mousedown au touch
+  document.addEventListener('touchstart',e=>{
+    const opt=e.target.closest('.opt[data-kind]');
+    if(opt){e.preventDefault();pickCode(opt.dataset.kind,opt.dataset.code);}
+  },{passive:false});
+  // Fermeture au clic hors de tout combo
+  document.addEventListener('click',e=>{
+    document.querySelectorAll('.combo').forEach(c=>{
+      if(!c.contains(e.target))c.querySelector('.drop')?.classList.remove('on');
+    });
+  });
+}
+function secLabel(s){return ({sante:'Santé',aide_domicile:'Aide à domicile',petite_enfance:'Petite enfance',commerce:'Commerce',logistique:'Logistique',transport:'Transport',btp:'BTP',hcr:'Hôtellerie-restauration',agroalim:'Agroalimentaire',industrie:'Industrie',agriculture:'Agriculture',espaces_verts:'Espaces verts',proprete:'Propreté',coiffure:'Coiffure/beauté',securite:'Sécurité',dechets:'Déchets',enseignement:'Enseignement',tertiaire:'Tertiaire'}[s]||s||'');}
+function pickCode(kind,code){
+  const data=kind==='naf'?NAF:PCS;const x=data.find(d=>d.code===code);if(!x)return;
+  if(kind==='naf'){E.poste.naf=x.code;E.poste.nafLib=x.lib;}
+  else{E.poste.pcs=x.code;E.poste.metier=x.lib;E.poste.pcsLib=x.lib;}
+  if(x.sec&&PROFILS[x.sec])E.poste.secteur=x.sec;
+  rPoste();renderRail();updateFoot();
+}
+function clearCode(kind){if(kind==='naf'){E.poste.naf='';E.poste.nafLib='';}else{E.poste.pcs='';E.poste.metier='';E.poste.pcsLib='';}rPoste();}
+function appliquerProfil(silent){
+  const pr=PROFILS[E.poste.secteur];if(!pr){alert('Sélectionne d’abord un code NAF ou PCS reconnu.');return;}
+  FAMILLES.forEach(f=>{const base=pr.familles[f.key]??0;E.risques[f.key]=f.items.map(()=>base);});
+  if(!E.taches.length)pr.taches.forEach(t=>E.taches.push({nom:t[0],temps:t[1],effort:t[2],frequence:t[3],risque:t[4],compat:'ok',adaptation:''}));
+  pr.capacites.forEach(d=>{if(CAPACITES.includes(d)&&!E.capacites[d])E.capacites[d]='adapt';});
+  renderRail();
+  if(!silent){const z=document.getElementById('propoZone');if(z)z.innerHTML='<div class="notice" style="margin-top:6px;background:oklch(0.94 0.06 150);border-color:oklch(0.8 0.1 150);color:oklch(0.4 0.1 150)">✅ Profil appliqué : familles pré-cotées, tâches et contraintes proposées. Ajuste dans les étapes suivantes.</div>';}
+  else drawFamilles&&document.getElementById('famList')&&drawFamilles();
+}
+
+/* =========================================================
+   EXPORTS
+   ========================================================= */
+function exportWord(){
+  const p=E.poste,doc=document.getElementById('expertDoc');if(!doc)return;
+  const html=`<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word'><head><meta charset="utf-8"><style>
+    body{font-family:Calibri,Arial,sans-serif;color:#222;font-size:11pt}h1{color:#22344a}table{border-collapse:collapse;width:100%}td,th{border:1px solid #bbb;padding:5px;font-size:9.5pt}th{background:#eef3f7}.eyebrow{color:#2a7f95;font-weight:bold;text-transform:uppercase;font-size:9pt;letter-spacing:1px}</style></head><body>
+    <h1>Étude de poste — ${esc(p.entreprise||'')}</h1><p>${esc(p.metier||'')} · NAF ${esc(p.naf||'')} · PCS ${esc(p.pcs||'')} · ${esc(p.date)}</p>${doc.innerHTML}</body></html>`;
+  const blob=new Blob(['\ufeff',html],{type:'application/msword'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);
+  a.download=`Etude-poste_${(p.entreprise||'poste').replace(/[^a-z0-9]/gi,'_')}.doc`;a.click();
+}
+function exportWordSynth(){
+  const p=E.poste,g=globalScore(),b=band(g),fs=famScores(),ia=syntheseIA(),c=contraintes(),plan=planAction();
+  const cd=compatData(),pen=penibilite(),reba=rebaScore(),rula=rulaScore(),niosh=nioshScore();
+  const pill=(v)=>v==='ok'?'<span style="color:#1a8a4a;font-weight:bold">✅</span>':v==='adapt'||v==='warn'?'<span style="color:#cc8800;font-weight:bold">⚠️</span>':'<span style="color:#c62828;font-weight:bold">❌</span>';
+  const tRows=E.taches.slice(0,8).map(t=>`<tr><td>${esc(t.nom||'—')}</td><td style="text-align:center">${esc(t.temps)||'–'}%</td><td style="text-align:center">${esc(t.effort)}</td><td style="text-align:center">${esc(t.risque)||'–'}</td><td style="text-align:center">${pill(t.compat)}</td></tr>`).join('')||'<tr><td colspan="5" style="color:#999">Aucune tâche renseignée</td></tr>';
+  const capRows=CAPACITES.filter(d=>E.capacites[d]&&E.capacites[d]!=='nc').map(d=>`<tr><td>${esc(d)}</td><td style="text-align:center">${pill(E.capacites[d])}</td></tr>`).join('')||'<tr><td colspan="2" style="color:#999">Non renseigné</td></tr>';
+  const famRows=FAMILLES.map(f=>{const s=fs[f.key],bb=band(s);return `<tr><td>${f.ic} ${esc(f.nom.split('–')[0].split('(')[0].trim())}</td><td style="text-align:center;font-weight:bold;color:${bb.hex}">${s}/100</td><td style="color:${bb.hex}">${bb.lab}</td><td style="text-align:center">${FAM_GRAVITE[f.key]}/5</td></tr>`;}).join('');
+  const cRows=c.map(x=>{const bb=band(x.val);return `<tr><td>${esc(x.lab)}</td><td style="text-align:center;font-weight:bold;color:${bb.hex}">${x.val}/100</td></tr>`;}).join('');
+  const planRows=plan.slice(0,6).map(a=>`<tr><td style="text-align:center">${a.prio}</td><td>${esc(a.txt)}</td><td style="text-align:center">${a.impact}</td><td style="text-align:center">${a.cout}</td><td style="text-align:center">${a.mois} mois</td><td>${esc(a.resp)}</td></tr>`).join('');
+  const sty=`body{font-family:Calibri,Arial,sans-serif;color:#222;font-size:10pt;margin:24px 28px}
+    h1{color:#22344a;font-size:16pt;border-bottom:2px solid #2a7f95;padding-bottom:4px}
+    h2{color:#2a7f95;font-size:11pt;text-transform:uppercase;letter-spacing:1px;margin:14px 0 4px}
+    table{border-collapse:collapse;width:100%;margin-bottom:10px}td,th{border:1px solid #bbb;padding:4px 6px;font-size:9pt}th{background:#eef3f7;color:#333}
+    .score-box{text-align:center;padding:12px;border:2px solid ${b.hex};border-radius:6px;margin:8px 0}
+    .score-val{font-size:28pt;font-weight:bold;color:${b.hex}}.score-lab{font-size:11pt;color:${b.hex};font-weight:bold}
+    .meta{background:#f5f8fa;padding:8px 12px;border-radius:6px;margin-bottom:10px;font-size:9.5pt}
+    .cols2{display:flex;gap:14px}.cols2>div{flex:1}
+    .conclu{background:#e8f5f0;padding:10px 14px;border-radius:6px;border-left:4px solid #2a7f95;margin:8px 0;font-size:10pt}
+    @page{size:A4;margin:16mm 14mm}`;
+  const html=`<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word'>
+  <head><meta charset="utf-8"><style>${sty}</style></head><body>
+  <h1>Synthèse décisionnelle — Étude de poste</h1>
+  <p style="font-size:9pt;color:#666">PréventIA-LaB · ${esc(p.date)} · ${esc(p.preventeur||'')}</p>
+  <div class="meta">
+    <b>${esc(p.entreprise||'—')}</b> · ${esc(p.service||'')} · <b>${esc(p.metier||'—')}</b><br>
+    NAF ${esc(p.naf||'—')} — ${esc(p.nafLib||'')} &nbsp;|&nbsp; PCS ${esc(p.pcs||'—')}<br>
+    Effectif : ${esc(p.effectif||'—')} &nbsp;|&nbsp; Horaires : ${esc(p.horaires||'—')}
+  </div>
+  <div class="score-box">
+    <div class="score-val">${g} / 100</div>
+    <div class="score-lab">${b.lab}</div>
+    <div style="font-size:8pt;color:#999;margin-top:2px">Score PréventIA® (0 = faible risque · 100 = critique)</div>
+  </div>
+  <h2>Familles de risques</h2>
+  <table><thead><tr><th>Famille</th><th>Score</th><th>Niveau</th><th>Gravité</th></tr></thead><tbody>${famRows}</tbody></table>
+  <h2>Tâches critiques</h2>
+  <table><thead><tr><th>Tâche</th><th>%</th><th>Effort</th><th>Risque</th><th>Compat.</th></tr></thead><tbody>${tRows}</tbody></table>
+  <h2>Cotations ergonomiques</h2>
+  <table><thead><tr><th>Méthode</th><th>Score</th><th>Niveau</th></tr></thead><tbody>
+    <tr><td>RULA (membres supérieurs)</td><td style="text-align:center;font-weight:bold;color:${rula.col}">${rula.final}/7</td><td style="color:${rula.col}">${rula.niv}</td></tr>
+    <tr><td>REBA (corps entier)</td><td style="text-align:center;font-weight:bold;color:${reba.col}">${reba.final}/15</td><td style="color:${reba.col}">${reba.niv}</td></tr>
+    <tr><td>NIOSH (levage)</td><td style="text-align:center;font-weight:bold;color:${niosh.col}">${niosh.li} (RWL ${niosh.rwl} kg)</td><td style="color:${niosh.col}">${niosh.niv}</td></tr>
+  </tbody></table>
+  <h2>Répartition des contraintes</h2>
+  <table><thead><tr><th>Contrainte</th><th>Score</th></tr></thead><tbody>${cRows}</tbody></table>
+  <h2>Compatibilité des capacités</h2>
+  <table><thead><tr><th>Domaine</th><th>Statut</th></tr></thead><tbody>${capRows}</tbody></table>
+  <p style="font-size:9pt;color:#666">Incompatibilités : ${cd.non} · Adaptations : ${cd.adapt} · Pénibilité : ${pen.n} facteur(s)</p>
+  <h2>Synthèse IA</h2>
+  <table style="border:none"><tbody style="border:none">
+    <tr style="border:none"><td style="border:none;padding:2px 6px"><b>Facteurs majeurs</b></td><td style="border:none;padding:2px 6px">${esc(ia.facteurs.join(' · '))}</td></tr>
+    <tr style="border:none"><td style="border:none;padding:2px 6px"><b>Tâches pénalisantes</b></td><td style="border:none;padding:2px 6px">${esc(ia.tachesDures.join(' · '))}</td></tr>
+    <tr style="border:none"><td style="border:none;padding:2px 6px"><b>Facteurs protecteurs</b></td><td style="border:none;padding:2px 6px">${esc(ia.protecteurs.join(' · '))}</td></tr>
+    <tr style="border:none"><td style="border:none;padding:2px 6px"><b>Points à expertiser</b></td><td style="border:none;padding:2px 6px">${esc(ia.expertise.join(' · '))}</td></tr>
+    <tr style="border:none"><td style="border:none;padding:2px 6px"><b>Risques oubliés</b></td><td style="border:none;padding:2px 6px">${esc(ia.oublis.join(' · '))}</td></tr>
+  </tbody></table>
+  <h2>Plan d'action priorisé</h2>
+  <table><thead><tr><th>Prio</th><th>Action</th><th>Impact</th><th>Coût</th><th>Échéance</th><th>Resp.</th></tr></thead><tbody>${planRows}</tbody></table>
+  <h2>Conclusion</h2>
+  <div class="conclu">${esc(ia.conclusion)}</div>
+  <p style="font-size:8pt;color:#aaa;margin-top:18px;text-align:center">Document généré par PréventIA-LaB · Étude de poste · ${esc(p.date)}</p>
+  </body></html>`;
+  const blob=new Blob(['\ufeff',html],{type:'application/msword'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);
+  a.download=`Synthese-poste_${(p.entreprise||'poste').replace(/[^a-z0-9]/gi,'_')}.doc`;a.click();
+}
+function saveJSON(){
+  const blob=new Blob([JSON.stringify(E,null,2)],{type:'application/json'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);
+  a.download=`etude-poste_${(E.poste.entreprise||'sans-nom').replace(/[^a-z0-9]/gi,'_')}.json`;a.click();
+}
+function loadJSON(ev){
+  const f=ev.target.files[0];if(!f)return;const r=new FileReader();
+  r.onload=()=>{try{const d=JSON.parse(r.result);Object.assign(E,d);
+    if(!E.risques)E.risques=blankFamilles();FAMILLES.forEach(fm=>{if(!Array.isArray(E.risques[fm.key]))E.risques[fm.key]=fm.items.map(()=>0);});
+    if(!E.taches)E.taches=[];if(!E.capacites)E.capacites={};
+    step=0;render();}catch(e){alert('Fichier illisible.');}};
+  r.readAsText(f);ev.target.value='';
+}
+function resetAll(){if(!confirm('Démarrer une nouvelle étude ? Les données non enregistrées seront perdues.'))return;
+  Object.assign(E,{taches:[],risques:blankFamilles(),capacites:{},envNote:'',ergoPhoto:'',ergoPhotoNote:''});
+  E.poste={entreprise:'',service:'',activite:'',naf:'',nafLib:'',metier:'',pcs:'',pcsLib:'',secteur:'',date:new Date().toISOString().slice(0,10),preventeur:'',effectif:'',horaires:'',contexte:''};
+  E.ergo={rula:{ua:1,la:1,wr:1,tw:1,neck:1,trunk:1,legs:1,muscleA:0,forceA:0,muscleB:0,forceB:0},reba:{neck:1,trunk:1,legs:1,load:0,ua:1,la:1,wr:1,coupling:0,activity:0},niosh:{poids:0,H:40,V:75,D:50,A:0,F:'0.2',C:'bonne'}};
+  step=0;render();}
+
+/* =========================================================
+   NAVIGATION & UTILITAIRES
+   ========================================================= */
+function setP(k,v){E.poste[k]=v;renderRail();updateFoot();}
+function go(dir){const n=step+dir;if(n<0)return;if(n>=STEPS.length){step=STEPS.length-1;rtab='synth';render();return;}step=n;render();}
+function jump(i){step=i;render();}
+function toggleRail(open){const r=document.getElementById('rail'),s=document.getElementById('scrim');
+  if(open===undefined)open=!r.classList.contains('open');r.classList.toggle('open',open);s.classList.toggle('on',open);}
+
+/* ---- init ---- */
+render();
+</script>
+</body>
+</html>
