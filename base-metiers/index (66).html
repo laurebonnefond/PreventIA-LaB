@@ -1,0 +1,1399 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Base Métiers — Santé au Travail & Prévention</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --navy: #1F4E79;
+  --navy-dark: #143656;
+  --navy-light: #DEEBF7;
+  --orange: #C55A11;
+  --orange-light: #FBE5D6;
+  --rouge-sir: #C00000;
+  --orange-sia: #ED7D31;
+  --vert-si: #548235;
+  --gris: #595959;
+  --bg: #FAFAF7;
+  --card: #FFFFFF;
+  --border: #E5E5E0;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--bg);
+  color: #1a1a1a;
+  line-height: 1.5;
+  min-height: 100vh;
+}
+
+/* ============ HEADER ============ */
+.hero {
+  background: linear-gradient(135deg, var(--navy) 0%, var(--navy-dark) 100%);
+  color: white;
+  padding: 32px 24px 28px;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -30%;
+  right: -10%;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(197,90,17,0.18) 0%, transparent 70%);
+  border-radius: 50%;
+}
+.hero-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+.hero h1 {
+  font-family: 'Fraunces', serif;
+  font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  margin-bottom: 6px;
+}
+.hero h1 .accent {
+  color: #FFB380;
+  font-style: italic;
+  font-weight: 400;
+}
+.hero .subtitle {
+  font-size: 0.95rem;
+  opacity: 0.85;
+  font-weight: 300;
+  max-width: 720px;
+}
+.hero .meta {
+  display: flex;
+  gap: 18px;
+  margin-top: 14px;
+  flex-wrap: wrap;
+  font-size: 0.8rem;
+}
+.hero .meta span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.15);
+}
+.hero .meta .dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  display: inline-block;
+}
+
+/* ============ STATS ============ */
+.stats {
+  max-width: 1400px;
+  margin: -20px auto 0;
+  padding: 0 24px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 10px;
+  position: relative;
+  z-index: 2;
+}
+.stat {
+  background: var(--card);
+  padding: 14px 18px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+.stat .num {
+  font-family: 'Fraunces', serif;
+  font-size: 1.8rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+.stat .label {
+  font-size: 0.78rem;
+  color: var(--gris);
+  margin-top: 2px;
+}
+.stat.sir .num { color: var(--rouge-sir); }
+.stat.sia .num { color: var(--orange-sia); }
+.stat.si .num { color: var(--vert-si); }
+.stat.total .num { color: var(--navy); }
+
+/* ============ CONTROLS ============ */
+main {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 22px 24px 60px;
+}
+.controls {
+  background: var(--card);
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  padding: 18px;
+  margin-bottom: 18px;
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr auto;
+  gap: 12px;
+  align-items: end;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+}
+.field label {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--gris);
+  margin-bottom: 5px;
+}
+.field input, .field select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 0.92rem;
+  background: white;
+  color: #1a1a1a;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.field input:focus, .field select:focus {
+  outline: none;
+  border-color: var(--navy);
+  box-shadow: 0 0 0 3px rgba(31,78,121,0.1);
+}
+.field input::placeholder {
+  color: #9a9a9a;
+}
+.btn-reset {
+  padding: 10px 16px;
+  background: var(--orange-light);
+  color: var(--orange);
+  border: 1.5px solid var(--orange);
+  border-radius: 8px;
+  font-family: inherit;
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+.btn-reset:hover {
+  background: var(--orange);
+  color: white;
+}
+
+/* ============ RESULTS COUNT ============ */
+.results-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 12px;
+  padding: 0 4px;
+  font-size: 0.85rem;
+}
+.results-count {
+  color: var(--gris);
+}
+.results-count strong {
+  color: var(--navy);
+  font-family: 'Fraunces', serif;
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-right: 4px;
+}
+.view-toggle {
+  display: flex;
+  gap: 4px;
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 3px;
+}
+.view-toggle button {
+  padding: 5px 12px;
+  border: none;
+  background: transparent;
+  font-family: inherit;
+  font-size: 0.8rem;
+  cursor: pointer;
+  border-radius: 5px;
+  color: var(--gris);
+  transition: all 0.15s;
+}
+.view-toggle button.active {
+  background: var(--navy);
+  color: white;
+}
+
+/* ============ CARDS VIEW ============ */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+  gap: 16px;
+}
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 18px;
+  transition: transform 0.15s, box-shadow 0.15s, border-color 0.15s;
+  position: relative;
+  overflow: hidden;
+}
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+  border-color: var(--navy);
+}
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 4px;
+  height: 100%;
+}
+.card.sir::before { background: var(--rouge-sir); }
+.card.sia::before { background: var(--orange-sia); }
+.card.si::before { background: var(--vert-si); }
+.card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+.card-title {
+  font-family: 'Fraunces', serif;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--navy);
+  line-height: 1.25;
+}
+.badge {
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 999px;
+  letter-spacing: 0.05em;
+  color: white;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.badge.sir { background: var(--rouge-sir); }
+.badge.sia { background: var(--orange-sia); }
+.badge.si { background: var(--vert-si); }
+.sector {
+  font-size: 0.78rem;
+  color: var(--gris);
+  margin-bottom: 12px;
+  font-weight: 500;
+}
+.card-section {
+  margin-bottom: 10px;
+}
+.card-section:last-child { margin-bottom: 0; }
+.card-section .lbl {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--orange);
+  margin-bottom: 3px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.card-section .lbl::before {
+  content: '';
+  width: 12px;
+  height: 1.5px;
+  background: var(--orange);
+}
+.card-section .content {
+  font-size: 0.85rem;
+  color: #2a2a2a;
+  line-height: 1.5;
+}
+.card-section.ref .content {
+  font-size: 0.78rem;
+  color: var(--gris);
+  font-style: italic;
+}
+
+/* ============ TABLE VIEW ============ */
+.table-wrap {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  overflow-x: auto;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+  min-width: 1200px;
+}
+thead {
+  background: var(--navy);
+  color: white;
+}
+th {
+  padding: 12px 14px;
+  text-align: left;
+  font-weight: 600;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+td {
+  padding: 12px 14px;
+  border-top: 1px solid var(--border);
+  vertical-align: top;
+  line-height: 1.45;
+}
+tr:hover td { background: #FAFAF7; }
+td.suivi {
+  text-align: center;
+  font-weight: 700;
+  font-size: 0.78rem;
+}
+td.suivi-sir { background: var(--rouge-sir); color: white; }
+td.suivi-sia { background: var(--orange-sia); color: white; }
+td.suivi-si { background: var(--vert-si); color: white; }
+td.metier-name {
+  font-family: 'Fraunces', serif;
+  font-weight: 600;
+  color: var(--navy);
+  min-width: 200px;
+}
+
+/* ============ EMPTY STATE ============ */
+.empty {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--gris);
+}
+.empty .emoji {
+  font-size: 3rem;
+  margin-bottom: 10px;
+}
+.empty h3 {
+  font-family: 'Fraunces', serif;
+  font-size: 1.3rem;
+  color: var(--navy);
+  margin-bottom: 6px;
+}
+
+/* ============ LEGEND ============ */
+.legend {
+  margin-top: 32px;
+  padding: 24px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+.legend h2 {
+  font-family: 'Fraunces', serif;
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: var(--navy);
+  margin-bottom: 14px;
+}
+.legend-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 14px;
+  margin-bottom: 22px;
+}
+.legend-item {
+  display: flex;
+  gap: 12px;
+  padding: 12px;
+  background: var(--bg);
+  border-radius: 8px;
+  border-left: 4px solid;
+}
+.legend-item.sir { border-color: var(--rouge-sir); }
+.legend-item.sia { border-color: var(--orange-sia); }
+.legend-item.si { border-color: var(--vert-si); }
+.legend-item .code {
+  font-weight: 700;
+  font-size: 0.95rem;
+  font-family: 'Fraunces', serif;
+  flex-shrink: 0;
+  width: 40px;
+}
+.legend-item.sir .code { color: var(--rouge-sir); }
+.legend-item.sia .code { color: var(--orange-sia); }
+.legend-item.si .code { color: var(--vert-si); }
+.legend-item p {
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: #333;
+}
+.refs h3 {
+  font-family: 'Fraunces', serif;
+  font-size: 1rem;
+  color: var(--orange);
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+.refs ul {
+  list-style: none;
+  font-size: 0.82rem;
+  color: #444;
+}
+.refs li {
+  padding: 5px 0 5px 20px;
+  position: relative;
+  border-bottom: 1px dashed var(--border);
+}
+.refs li::before {
+  content: '§';
+  position: absolute;
+  left: 0;
+  color: var(--orange);
+  font-weight: 700;
+}
+.refs li:last-child { border: none; }
+
+/* ============ FOOTER ============ */
+footer {
+  text-align: center;
+  padding: 28px 20px;
+  color: var(--gris);
+  font-size: 0.78rem;
+  border-top: 1px solid var(--border);
+  margin-top: 32px;
+}
+footer strong { color: var(--navy); }
+
+/* ============ HIGHLIGHT (recherche) ============ */
+mark {
+  background: #FFF3A0;
+  color: inherit;
+  padding: 1px 2px;
+  border-radius: 2px;
+  font-weight: 500;
+}
+
+/* ============ RESPONSIVE ============ */
+@media (max-width: 900px) {
+  .controls {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  .stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .cards {
+    grid-template-columns: 1fr;
+  }
+  .hero { padding: 24px 18px 22px; }
+  main { padding: 18px 14px 50px; }
+}
+.meta-row { display:flex; flex-wrap:wrap; gap:6px; margin:8px 0 4px; }
+.meta-chip { font-size:11.5px; font-weight:600; padding:3px 10px; border-radius:100px;
+  background:#EEF2F6; color:#3A4654; letter-spacing:.01em; }
+.meta-chip.period { background:#E6F4F1; color:#136A63; }
+.card-btns { display:flex; gap:8px; margin-top:14px; }
+.ordonnance-btn, .suivi-btn { flex:1; padding:10px 12px; border:none; border-radius:10px;
+  font-family:inherit; font-size:12.5px; font-weight:600; cursor:pointer; transition:all .2s; }
+.ordonnance-btn { background:#12243A; color:#fff; }
+.ordonnance-btn:hover { background:#1A9B92; transform:translateY(-1px); }
+.suivi-btn { background:linear-gradient(135deg,#1A9B92,#12243A); color:#fff; }
+.suivi-btn:hover { filter:brightness(1.15); transform:translateY(-1px); }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-inner">
+    <h1>Base Métiers — <span class="accent">Santé au travail</span></h1>
+    <p class="subtitle">Référentiel des suivis médicaux, risques professionnels, EPI et EPC par métier — Classification NAF, droit du travail français.</p>
+    <div class="meta">
+      <span><span class="dot" style="background:#FFB380"></span>118 métiers · 19 secteurs</span>
+      <span><span class="dot" style="background:#fff"></span>Code du travail français</span>
+      <span><span class="dot" style="background:#FFB380"></span>Référence INRS / DGT</span>
+    </div>
+  </div>
+</header>
+
+<div class="stats">
+  <div class="stat total">
+    <div class="num" id="stat-total">—</div>
+    <div class="label">Métiers référencés</div>
+  </div>
+  <div class="stat sir">
+    <div class="num" id="stat-sir">—</div>
+    <div class="label">Suivi Renforcé (SIR)</div>
+  </div>
+  <div class="stat sia">
+    <div class="num" id="stat-sia">—</div>
+    <div class="label">Suivi Adapté (SIA)</div>
+  </div>
+  <div class="stat si">
+    <div class="num" id="stat-si">—</div>
+    <div class="label">Suivi Simple (SI)</div>
+  </div>
+</div>
+
+<main>
+
+  <div class="controls">
+    <div class="field">
+      <label for="search">🔍 Rechercher un métier, un risque, un EPI…</label>
+      <input type="text" id="search" placeholder="Ex : soudeur, amiante, harnais, biologique…" autofocus>
+    </div>
+    <div class="field">
+      <label for="filter-secteur">Filtrer par secteur</label>
+      <select id="filter-secteur">
+        <option value="">Tous les secteurs</option>
+        <option value="A. Agriculture, sylviculture, pêche">A. Agriculture, sylviculture, pêche</option>
+        <option value="B. Industries extractives">B. Industries extractives</option>
+        <option value="C. Industrie manufacturière">C. Industrie manufacturière</option>
+        <option value="D. Énergie">D. Énergie</option>
+        <option value="E. Eau, déchets">E. Eau, déchets</option>
+        <option value="F. Construction / BTP">F. Construction / BTP</option>
+        <option value="G. Commerce">G. Commerce</option>
+        <option value="H. Transport, logistique">H. Transport, logistique</option>
+        <option value="I. Hébergement, restauration">I. Hébergement, restauration</option>
+        <option value="J. Information, communication">J. Information, communication</option>
+        <option value="K. Finance, assurance">K. Finance, assurance</option>
+        <option value="L. Immobilier">L. Immobilier</option>
+        <option value="M. Activités scientifiques, techniques">M. Activités scientifiques, techniques</option>
+        <option value="N. Services administratifs, soutien">N. Services administratifs, soutien</option>
+        <option value="O. Administration publique, sécurité">O. Administration publique, sécurité</option>
+        <option value="P. Enseignement">P. Enseignement</option>
+        <option value="Q. Santé, action sociale">Q. Santé, action sociale</option>
+        <option value="R. Arts, spectacles, loisirs">R. Arts, spectacles, loisirs</option>
+        <option value="S. Autres services">S. Autres services</option>
+      </select>
+    </div>
+    <div class="field">
+      <label for="filter-suivi">Filtrer par type de suivi</label>
+      <select id="filter-suivi">
+        <option value="">Tous les suivis</option>
+        <option value="SIR">SIR — Suivi Individuel Renforcé</option>
+        <option value="SIA">SIA — Suivi Individuel Adapté</option>
+        <option value="SI">SI — Suivi Individuel simple</option>
+      </select>
+    </div>
+    <button class="btn-reset" onclick="resetFilters()">Réinitialiser</button>
+  </div>
+
+  <div class="results-bar">
+    <div class="results-count"><strong id="count">118</strong> métier(s) affiché(s)</div>
+    <div class="view-toggle">
+      <button class="active" id="btn-cards" onclick="setView('cards')">▦ Cartes</button>
+      <button id="btn-table" onclick="setView('table')">☰ Tableau</button>
+    </div>
+  </div>
+
+  <div id="results-cards" class="cards"></div>
+  <div id="results-table" class="table-wrap" style="display:none">
+    <table>
+      <thead>
+        <tr>
+          <th>Métier</th>
+          <th>Secteur</th>
+          <th style="width:80px">Suivi</th>
+          <th style="width:80px">Périod.</th>
+          <th>Risques</th>
+          <th>EPI</th>
+          <th>EPC</th>
+          <th>Réf.</th>
+        </tr>
+      </thead>
+      <tbody id="tbody"></tbody>
+    </table>
+  </div>
+
+  <div id="empty" class="empty" style="display:none">
+    <div class="emoji">🔍</div>
+    <h3>Aucun métier ne correspond</h3>
+    <p>Essayez d'élargir vos critères de recherche ou de réinitialiser les filtres.</p>
+  </div>
+
+  <section class="legend">
+    <h2>Légende des suivis médicaux</h2>
+    <div class="legend-grid">
+      <div class="legend-item si">
+        <div class="code">SI</div>
+        <p>Suivi Individuel — Visite d'Information et de Prévention (VIP) initiale puis tous les 5 ans (3 ans si SIA). Par professionnel de santé au travail.</p>
+      </div>
+      <div class="legend-item sia">
+        <div class="code">SIA</div>
+        <p>Suivi Individuel Adapté — Modulé selon situation : travailleurs de nuit, < 18 ans, travailleurs handicapés (RQTH), femmes enceintes/allaitantes, invalidité, champs EM > VLA. Périodicité ≤ 3 ans.</p>
+      </div>
+      <div class="legend-item sir">
+        <div class="code">SIR</div>
+        <p>Suivi Individuel Renforcé — Examen Médical d'Aptitude (EMA) avant affectation par médecin du travail + visites tous les 4 ans max avec visite intermédiaire à 2 ans par professionnel de santé. Postes à risques : amiante, plomb, CMR, agents biologiques groupes 3-4, RI, hyperbare, chute de hauteur (échafaudages), jeunes en dérogation, port d'arme.</p>
+      </div>
+    </div>
+
+    <div class="refs">
+      <h3>Références réglementaires principales</h3>
+      <ul>
+        <li>Code du travail : R.4624-10 et suivants (SI), R.4624-17 et suivants (SIA), R.4624-22 à R.4624-28 (SIR)</li>
+        <li>CMR : R.4412-1 à R.4412-93 — Cancérogènes, Mutagènes, Reprotoxiques</li>
+        <li>Amiante : R.4412-94 à R.4412-148 + Arrêté du 8 avril 2013 (SS3/SS4)</li>
+        <li>Plomb : R.4412-149 à R.4412-164</li>
+        <li>Agents biologiques : R.4421-1 à R.4427-5 (classement INRS en 4 groupes)</li>
+        <li>Rayonnements ionisants : R.4451-1 à R.4451-135 (catégories A et B)</li>
+        <li>Bruit : R.4431-1 à R.4437-4 (VLE 87 dB(A), VA 80/85 dB(A))</li>
+        <li>Vibrations : R.4441-1 à R.4447-1</li>
+        <li>Hyperbare : R.4461-1 à R.4461-49</li>
+        <li>Champs électromagnétiques : R.4453-1 à R.4453-34</li>
+        <li>Tableaux de Maladies Professionnelles (régime général et agricole)</li>
+        <li>INRS — ED 6140 (évaluation des risques chimiques)</li>
+      </ul>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <p><strong>Base métiers — Santé au travail & prévention</strong></p>
+  <p>Outil de synthèse à adapter à l'évaluation des risques propre à chaque entreprise (DUERP). Décision du suivi sous responsabilité du médecin du travail.</p>
+</footer>
+
+<script>
+// Chargement robuste de docx — essaie plusieurs sources jusqu'à succès
+(function loadDocxLib() {
+  // Sources testées dans l'ordre. docx 8.5.0 = version stable qui crée le global window.docx
+  var SOURCES = [
+    'https://cdn.jsdelivr.net/npm/docx@8.5.0/build/index.umd.js',
+    'https://unpkg.com/docx@8.5.0/build/index.umd.js',
+    'https://cdn.jsdelivr.net/npm/docx@8.5.0/build/index.iife.js'
+  ];
+  var i = 0;
+  function tryNext() {
+    if (window.docx) { console.log('✅ docx déjà chargée'); return; }
+    if (i >= SOURCES.length) {
+      console.error('❌ docx: toutes les sources ont échoué. Vérifiez la connexion.');
+      return;
+    }
+    var url = SOURCES[i++];
+    var s = document.createElement('script');
+    s.src = url;
+    s.onload = function() {
+      if (window.docx) {
+        console.log('✅ docx chargée depuis :', url, '| type:', typeof window.docx);
+      } else {
+        console.warn('⚠️ Script chargé mais window.docx absent, source suivante…');
+        tryNext();
+      }
+    };
+    s.onerror = function() {
+      console.warn('⚠️ Échec de :', url, '— source suivante…');
+      tryNext();
+    };
+    document.head.appendChild(s);
+  }
+  tryNext();
+})();
+</script>
+<script>
+let METIERS = [];
+
+// Chargement de la base depuis metiers.json (source unique de vérité)
+async function loadMetiers() {
+  try {
+    const res = await fetch('metiers.json', {cache: 'no-store'});
+    const data = await res.json();
+    METIERS = (data.metiers || data).map(m => ({
+      metier: m.metier,
+      secteur: m.secteur,
+      suivi: m.suivi,
+      risques: m.risques,
+      epi: m.epi,
+      epc: m.epc,
+      ref: m.ref,
+      pcs_ese: m.pcs_ese || '',
+      periodicite_ans: m.periodicite_ans || (m.suivi === 'SIR' ? 2 : 5)
+    }));
+    initSecteurFilter();
+    updateStats();
+    applyFilters();
+  } catch (e) {
+    console.error('Erreur chargement metiers.json', e);
+    const c = document.getElementById('results-cards');
+    if (c) c.innerHTML = '<p style="padding:2rem;color:#b91c1c">Impossible de charger la base de données métiers (metiers.json). Vérifiez que le fichier est présent dans le même dossier.</p>';
+  }
+}
+
+function updateStats() {
+  const t = METIERS.length;
+  const sir = METIERS.filter(m => m.suivi === 'SIR').length;
+  const sia = METIERS.filter(m => m.suivi === 'SIA').length;
+  const si  = t - sir - sia;
+  const sec = new Set(METIERS.map(m => m.secteur)).size;
+  document.getElementById('stat-total').textContent = t;
+  document.getElementById('stat-sir').textContent = sir;
+  document.getElementById('stat-sia').textContent = sia;
+  document.getElementById('stat-si').textContent = si;
+  const hdr = document.querySelector('.hero .meta span');
+  if (hdr) hdr.innerHTML = `<span class="dot" style="background:#FFB380"></span>${t} métiers · ${sec} secteurs`;
+}
+
+function initSecteurFilter() {
+  const sel = document.getElementById('filter-secteur');
+  if (!sel) return;
+  const secteurs = [...new Set(METIERS.map(m => m.secteur))].sort();
+  sel.innerHTML = '<option value="">Tous les secteurs</option>' +
+    secteurs.map(s => `<option value="${s.replace(/"/g,'&quot;')}">${s}</option>`).join('');
+}
+
+let currentView = 'cards';
+
+function escapeHtml(t) {
+  return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function highlight(text, term) {
+  if (!term) return escapeHtml(text);
+  const escaped = escapeHtml(text);
+  const safeTerm = term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  return escaped.replace(new RegExp('(' + safeTerm + ')', 'gi'), '<mark>$1</mark>');
+}
+
+function renderCards(list, term) {
+  const container = document.getElementById('results-cards');
+  container.innerHTML = list.map((m, idx) => {
+    const cls = m.suivi.toLowerCase();
+    const periodTxt = m.periodicite_ans ? `Tous les ${m.periodicite_ans} ans` : '';
+    return `
+      <article class="card ${cls}">
+        <div class="card-head">
+          <h3 class="card-title">${highlight(m.metier, term)}</h3>
+          <span class="badge ${cls}">${m.suivi}</span>
+        </div>
+        <div class="sector">${highlight(m.secteur, term)}</div>
+
+        <div class="meta-row">
+          ${m.pcs_ese ? `<span class="meta-chip">PCS-ESE ${m.pcs_ese}</span>` : ''}
+          ${periodTxt ? `<span class="meta-chip period">🗓️ ${periodTxt}</span>` : ''}
+        </div>
+
+        <div class="card-section">
+          <div class="lbl">⚠️ Risques associés</div>
+          <div class="content">${highlight(m.risques, term)}</div>
+        </div>
+        <div class="card-section">
+          <div class="lbl">🦺 EPI préconisés</div>
+          <div class="content">${highlight(m.epi, term)}</div>
+        </div>
+        <div class="card-section">
+          <div class="lbl">🏭 EPC préconisés</div>
+          <div class="content">${highlight(m.epc, term)}</div>
+        </div>
+        ${m.ref ? `<div class="card-section ref"><div class="lbl">📖 Références</div><div class="content">${highlight(m.ref, term)}</div></div>` : ''}
+
+        <div class="card-btns">
+          <button class="ordonnance-btn" onclick="genererOrdonnance(${idx})">📄 Ordonnance prévention</button>
+          <button class="suivi-btn" onclick="genererFicheSuivi(${idx})">📋 Fiche suivi santé</button>
+        </div>
+      </article>`;
+  }).join('');
+  // mémoriser la liste courante pour le bouton
+  window._currentList = list;
+}
+
+function renderTable(list, term) {
+  const tbody = document.getElementById('tbody');
+  tbody.innerHTML = list.map(m => `
+    <tr>
+      <td class="metier-name">${highlight(m.metier, term)}</td>
+      <td>${highlight(m.secteur, term)}</td>
+      <td class="suivi suivi-${m.suivi.toLowerCase()}">${m.suivi}</td>
+      <td>${m.periodicite_ans ? m.periodicite_ans + ' ans' : '—'}</td>
+      <td>${highlight(m.risques, term)}</td>
+      <td>${highlight(m.epi, term)}</td>
+      <td>${highlight(m.epc, term)}</td>
+      <td>${highlight(m.ref || '—', term)}</td>
+    </tr>`).join('');
+  window._currentList = list;
+}
+
+
+function applyFilters() {
+  const term = document.getElementById('search').value.trim().toLowerCase();
+  const secteur = document.getElementById('filter-secteur').value;
+  const suivi = document.getElementById('filter-suivi').value;
+
+  const filtered = METIERS.filter(m => {
+    if (secteur && m.secteur !== secteur) return false;
+    if (suivi && m.suivi !== suivi) return false;
+    if (term) {
+      const blob = (m.metier + ' ' + m.secteur + ' ' + m.suivi + ' ' + m.risques + ' ' + m.epi + ' ' + m.epc + ' ' + (m.ref || '')).toLowerCase();
+      if (!blob.includes(term)) return false;
+    }
+    return true;
+  });
+
+  document.getElementById('count').textContent = filtered.length;
+
+  const emptyEl = document.getElementById('empty');
+  const cardsEl = document.getElementById('results-cards');
+  const tableEl = document.getElementById('results-table');
+
+  if (filtered.length === 0) {
+    emptyEl.style.display = 'block';
+    cardsEl.style.display = 'none';
+    tableEl.style.display = 'none';
+    return;
+  }
+  emptyEl.style.display = 'none';
+
+  if (currentView === 'cards') {
+    cardsEl.style.display = 'grid';
+    tableEl.style.display = 'none';
+    renderCards(filtered, term);
+  } else {
+    cardsEl.style.display = 'none';
+    tableEl.style.display = 'block';
+    renderTable(filtered, term);
+  }
+}
+
+function setView(view) {
+  currentView = view;
+  document.getElementById('btn-cards').classList.toggle('active', view === 'cards');
+  document.getElementById('btn-table').classList.toggle('active', view === 'table');
+  applyFilters();
+}
+
+function resetFilters() {
+  document.getElementById('search').value = '';
+  document.getElementById('filter-secteur').value = '';
+  document.getElementById('filter-suivi').value = '';
+  applyFilters();
+}
+
+document.getElementById('search').addEventListener('input', applyFilters);
+document.getElementById('filter-secteur').addEventListener('change', applyFilters);
+document.getElementById('filter-suivi').addEventListener('change', applyFilters);
+
+// ════════════════════════════════════════════════════════════
+// ORDONNANCE DE PRÉVENTION — génération Word (.docx)
+// ════════════════════════════════════════════════════════════
+function genererOrdonnance(idx, attempt) {
+  attempt = attempt || 0;
+  const m = (window._currentList || METIERS)[idx];
+  if (!m) return;
+
+  // Si la lib n'est pas prête, on attend qu'elle charge (max ~15 s)
+  if (typeof docx === 'undefined' || !window.docx) {
+    const btn = (typeof event !== 'undefined' && event) ? event.target : null;
+    if (attempt >= 6) {
+      if (btn) { btn.textContent = '📄 Ordonnance de prévention (Word)'; btn.disabled = false; }
+      alert("La génération Word n'a pas pu démarrer : la bibliothèque docx ne s'est pas chargée.\n\nVérifiez votre connexion internet, puis rechargez la page (Ctrl+F5). Si le problème persiste, un bloqueur de pub ou le réseau de l'entreprise bloque peut-être le CDN jsdelivr/unpkg.");
+      return;
+    }
+    if (btn) { btn.textContent = '⏳ Chargement de la bibliothèque…'; btn.disabled = true; }
+    setTimeout(() => genererOrdonnance(idx, attempt + 1), 2500);
+    return;
+  }
+
+  // Lib prête : on restaure le bouton
+  const btn = (typeof event !== 'undefined' && event) ? event.target : null;
+  if (btn) { btn.textContent = '📄 Ordonnance de prévention (Word)'; btn.disabled = false; }
+
+  const { Document, Packer, Paragraph, TextRun, HeadingLevel, AlignmentType,
+          Table, TableRow, TableCell, WidthType, BorderStyle, ShadingType } = docx;
+
+  const NAVY = "12243A", TEAL = "1A9B92", GREY = "5A6470";
+  const today = new Date().toLocaleDateString('fr-FR', {day:'2-digit',month:'long',year:'numeric'});
+
+  const splitItems = (txt) => (txt || '').split(/[;,]/).map(s => s.trim()).filter(s => s && s !== '—');
+
+  // helpers
+  const h2 = (txt, color=TEAL) => new Paragraph({
+    spacing: { before: 260, after: 120 },
+    children: [ new TextRun({ text: txt, bold: true, size: 26, color }) ],
+    border: { bottom: { color: "DDDDDD", space: 4, style: BorderStyle.SINGLE, size: 6 } }
+  });
+  const bullet = (txt) => new Paragraph({
+    bullet: { level: 0 }, spacing: { after: 60 },
+    children: [ new TextRun({ text: txt, size: 21 }) ]
+  });
+  const para = (txt, opts={}) => new Paragraph({
+    spacing: { after: 100 },
+    children: [ new TextRun({ text: txt, size: 21, ...opts }) ]
+  });
+
+  const children = [];
+
+  // ── EN-TÊTE ──
+  children.push(new Paragraph({
+    alignment: AlignmentType.CENTER,
+    spacing: { after: 40 },
+    children: [ new TextRun({ text: "ORDONNANCE DE PRÉVENTION", bold: true, size: 40, color: NAVY }) ]
+  }));
+  children.push(new Paragraph({
+    alignment: AlignmentType.CENTER, spacing: { after: 60 },
+    children: [ new TextRun({ text: "Santé & sécurité au travail — Synthèse des mesures de prévention par métier", italics: true, size: 20, color: GREY }) ]
+  }));
+  children.push(new Paragraph({
+    alignment: AlignmentType.CENTER, spacing: { after: 240 },
+    border: { bottom: { color: TEAL, space: 6, style: BorderStyle.SINGLE, size: 12 } },
+    children: [ new TextRun({ text: "PréventIA-LaB · SPSTI 23/87", size: 18, color: TEAL, bold: true }) ]
+  }));
+
+  // ── IDENTIFICATION ──
+  const infoRow = (label, value) => new TableRow({ children: [
+    new TableCell({ width: { size: 32, type: WidthType.PERCENTAGE },
+      shading: { fill: "F0F4F8", type: ShadingType.CLEAR },
+      children: [ new Paragraph({ children:[new TextRun({text:label, bold:true, size:20, color:NAVY})] }) ] }),
+    new TableCell({ width: { size: 68, type: WidthType.PERCENTAGE },
+      children: [ new Paragraph({ children:[new TextRun({text:value, size:20})] }) ] })
+  ]});
+  const suiviLabels = { SIR: "Suivi Individuel Renforcé (SIR)", SIA: "Suivi Individuel Adapté (SIA)", SI: "Suivi Individuel (SI)", SIG: "Suivi Individuel Général (SIG)" };
+  children.push(new Table({
+    width: { size: 100, type: WidthType.PERCENTAGE },
+    rows: [
+      infoRow("Métier / poste", m.metier),
+      infoRow("Secteur d'activité", m.secteur),
+      infoRow("Code PCS-ESE", m.pcs_ese || "Non renseigné"),
+      infoRow("Type de suivi médical", suiviLabels[m.suivi] || m.suivi),
+      infoRow("Périodicité du suivi", m.periodicite_ans ? `Tous les ${m.periodicite_ans} ans (au maximum)` : "Selon avis du médecin du travail"),
+      infoRow("Date d'édition", today)
+    ]
+  }));
+
+  // ── RISQUES ──
+  children.push(h2("⚠  Risques professionnels identifiés"));
+  splitItems(m.risques).forEach(r => children.push(bullet(r)));
+
+  // ── EPI ──
+  children.push(h2("🦺  Équipements de protection individuelle (EPI)"));
+  const epis = splitItems(m.epi);
+  if (epis.length) epis.forEach(e => children.push(bullet(e)));
+  else children.push(para("Aucun EPI spécifique — voir mesures collectives.", {italics:true, color:GREY}));
+
+  // ── EPC ──
+  children.push(h2("🏭  Équipements et mesures de protection collective (EPC)"));
+  const epcs = splitItems(m.epc);
+  if (epcs.length) epcs.forEach(e => children.push(bullet(e)));
+  else children.push(para("Voir évaluation des risques de l'entreprise.", {italics:true, color:GREY}));
+
+  // ── SUIVI SANTÉ ──
+  children.push(h2("🩺  Suivi de santé au travail"));
+  children.push(para(`Ce poste relève d'un ${suiviLabels[m.suivi] || m.suivi}.`, {bold:true}));
+  children.push(para(m.periodicite_ans
+    ? `Périodicité recommandée : une visite au minimum tous les ${m.periodicite_ans} ans, sauf avis contraire du médecin du travail qui peut moduler ce délai.`
+    : `Périodicité fixée par le médecin du travail selon l'exposition.`));
+  if (m.suivi === 'SIR') {
+    children.push(para("→ Examen médical d'aptitude à l'embauche réalisé par le médecin du travail AVANT l'affectation au poste, puis renouvelé périodiquement (art. R.4624-24 et suivants du Code du travail)."));
+  } else if (m.suivi === 'SIA') {
+    children.push(para("→ Visite d'information et de prévention adaptée, avec modalités définies par le médecin du travail."));
+  } else {
+    children.push(para("→ Visite d'information et de prévention (VIP) réalisée par un professionnel de santé au travail."));
+  }
+
+  // ── RÈGLES & RAPPELS ──
+  children.push(h2("✔  Règles de sécurité & rappels de prévention"));
+  [
+    "Respecter le port effectif des EPI adaptés et vérifier leur état avant chaque utilisation.",
+    "Privilégier les protections collectives (EPC) avant les protections individuelles (principe de prévention, art. L.4121-2).",
+    "Signaler sans délai toute situation dangereuse, presque-accident ou dysfonctionnement.",
+    "Se référer au Document Unique d'Évaluation des Risques (DUERP) de l'entreprise.",
+    "Maintenir ses vaccinations et son suivi médical à jour.",
+    "Participer aux formations sécurité et aux sensibilisations proposées."
+  ].forEach(r => children.push(bullet(r)));
+
+  // ── RÉFÉRENCES ──
+  if (m.ref) {
+    children.push(h2("📖  Références réglementaires"));
+    children.push(para(m.ref, {size:20}));
+  }
+
+  // ── PIED DE PAGE ──
+  children.push(new Paragraph({ spacing: { before: 320 },
+    border: { top: { color: "DDDDDD", space: 6, style: BorderStyle.SINGLE, size: 6 } },
+    children: [ new TextRun({
+      text: "Document de synthèse à adapter à l'évaluation des risques propre à chaque entreprise (DUERP). La décision relative au suivi médical relève de la responsabilité du médecin du travail. Généré par PréventIA-LaB.",
+      italics: true, size: 16, color: GREY }) ]
+  }));
+
+  const doc = new Document({
+    creator: "PréventIA-LaB",
+    title: "Ordonnance de prévention — " + m.metier,
+    sections: [{ properties: { page: { margin: { top: 1000, bottom: 1000, left: 1100, right: 1100 } } }, children }]
+  });
+
+  Packer.toBlob(doc).then(blob => {
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    const slug = m.metier.normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-zA-Z0-9]+/g,'-').replace(/^-|-$/g,'').toLowerCase();
+    a.href = url;
+    a.download = `ordonnance-prevention-${slug}.docx`;
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  });
+}
+
+// ════════════════════════════════════════════════════════════
+// FICHE SUIVI SANTÉ-TRAVAIL — génération Word (.docx)
+// ════════════════════════════════════════════════════════════
+function genererFicheSuivi(idx, attempt) {
+  attempt = attempt || 0;
+  const m = (window._currentList || METIERS)[idx];
+  if (!m) return;
+
+  if (typeof docx === 'undefined' || !window.docx) {
+    if (attempt >= 6) { alert("Bibliothèque docx non chargée. Rechargez la page."); return; }
+    setTimeout(() => genererFicheSuivi(idx, attempt + 1), 2500);
+    return;
+  }
+
+  const { Document, Packer, Paragraph, TextRun, HeadingLevel, AlignmentType,
+          Table, TableRow, TableCell, WidthType, BorderStyle, ShadingType,
+          Header, Footer, PageNumber, PageBreak, LevelFormat } = docx;
+
+  const NAVY="12243A", TEAL="1A9B92", GREY="5A6470", RED="C00000", ORANGE="D97706", WHITE="FFFFFF";
+  const today = new Date().toLocaleDateString('fr-FR',{day:'2-digit',month:'long',year:'numeric'});
+  const splitItems = t => (t||'').split(/[;,]/).map(s=>s.trim()).filter(s=>s&&s!=='—');
+
+  // ── helpers ──
+  const mkCell = (txt, opts={}) => {
+    const runs = Array.isArray(txt) ? txt : [new TextRun({text:txt||'',bold:!!opts.bold,color:opts.color||'1a1a1a',size:opts.size||20,font:'Calibri',italics:!!opts.italics})];
+    return new TableCell({
+      children:[new Paragraph({children:runs,spacing:{before:40,after:40},alignment:opts.align||AlignmentType.LEFT})],
+      width:opts.w?{size:opts.w,type:WidthType.DXA}:undefined,
+      columnSpan:opts.span,
+      shading:opts.bg?{type:ShadingType.CLEAR,color:'auto',fill:opts.bg}:undefined,
+      verticalAlign:'center',
+      margins:{top:40,bottom:40,left:80,right:80}
+    });
+  };
+  const hdrCell = (txt,w) => mkCell(txt,{bold:true,color:GREY,bg:'F1F3F9',w});
+  const secTitle = (emoji,txt) => new Paragraph({
+    children:[new TextRun({text:`${emoji}  ${txt}`,bold:true,color:TEAL,font:'Calibri',size:26})],
+    heading:HeadingLevel.HEADING_2,
+    spacing:{before:360,after:160},
+    border:{bottom:{style:BorderStyle.SINGLE,size:6,color:TEAL}}
+  });
+  const bul = txt => new Paragraph({
+    bullet:{level:0},spacing:{after:50},
+    children:[new TextRun({text:txt,font:'Calibri',size:20})]
+  });
+  const par = (txt,opts={}) => new Paragraph({
+    spacing:{before:opts.before||60,after:opts.after||60},alignment:opts.alignment,
+    children:Array.isArray(txt)?txt:[new TextRun({text:txt,font:'Calibri',size:opts.size||20,bold:opts.bold,color:opts.color,italics:opts.italics})]
+  });
+  const alertP = (emoji,txt,color) => new Paragraph({
+    spacing:{before:120,after:120},
+    border:{left:{style:BorderStyle.SINGLE,size:12,color:color||RED}},
+    indent:{left:200},
+    children:[new TextRun({text:`${emoji}  `,font:'Calibri',size:20}),new TextRun({text:txt,bold:true,color:color||RED,font:'Calibri',size:20})]
+  });
+
+  // ── Déduire les détails du suivi ──
+  const suiviMap = {SIR:'Suivi Individuel Renforcé',SIA:'Suivi Individuel Adapté',SI:'Suivi Individuel'};
+  const suiviLabel = suiviMap[m.suivi] || m.suivi;
+  const risques = splitItems(m.risques);
+  const epis = splitItems(m.epi);
+  const epcs = splitItems(m.epc);
+
+  // ── Construire les risques avec familles ──
+  const RISK_FAMILIES = {
+    'Risque chimique':'CHIMIQUE','Risque biologique':'BIOLOGIQUE','Bruit':'PHYSIQUE',
+    'Vibrations':'PHYSIQUE','Manutention':'PHYSIQUE','TMS':'PHYSIQUE',
+    'Postures':'PHYSIQUE','Chute de hauteur':'PHYSIQUE','Chute de plain-pied':'PHYSIQUE',
+    'Ambiance thermique':'PHYSIQUE','Risque machine':'PHYSIQUE','Risque routier':'ROUTIER',
+    'RPS':'PSYCHOSOCIAL','Travail sur écran':'ERGONOMIQUE','Risque électrique':'PHYSIQUE',
+    'Incendie':'PHYSIQUE','Horaires atypiques':'ORGANISATIONNEL','Travail isolé':'ORGANISATIONNEL',
+    'Coactivité':'ORGANISATIONNEL','Addictions':'ORGANISATIONNEL','Éclairage':'PHYSIQUE'
+  };
+  const FAMILY_COLORS = {
+    'CHIMIQUE':RED,'BIOLOGIQUE':'7C3AED','PHYSIQUE':'0891B2',
+    'ROUTIER':'B45309','PSYCHOSOCIAL':'6366F1','ERGONOMIQUE':'0D9488',
+    'ORGANISATIONNEL':'6366F1'
+  };
+  function getFamily(r) {
+    for (const [k,v] of Object.entries(RISK_FAMILIES)) { if (r.toLowerCase().includes(k.toLowerCase())) return v; }
+    return 'PHYSIQUE';
+  }
+
+  const children = [];
+
+  // ═══ TITRE ═══
+  children.push(new Paragraph({
+    alignment:AlignmentType.CENTER,spacing:{after:40},
+    shading:{type:ShadingType.CLEAR,fill:NAVY},
+    children:[new TextRun({text:'FICHE DE SUIVI SANTÉ-TRAVAIL',bold:true,color:WHITE,font:'Calibri',size:36})]
+  }));
+  children.push(new Paragraph({
+    alignment:AlignmentType.CENTER,spacing:{after:200},
+    shading:{type:ShadingType.CLEAR,fill:NAVY},
+    children:[new TextRun({text:'Évaluation des risques professionnels et modalités de suivi individuel',color:'94A3B8',font:'Calibri',size:22,italics:true})]
+  }));
+
+  // ═══ IDENTIFICATION ═══
+  const CW = [2400,7500];
+  const infoRows = [
+    ['Poste / Métier', m.metier],
+    ['Secteur d\'activité', m.secteur],
+    ['Code PCS-ESE', m.pcs_ese || 'Non renseigné'],
+    ['Type de suivi', `${m.suivi} — ${suiviLabel}`],
+    ['Périodicité', m.periodicite_ans ? `≤ ${m.periodicite_ans} ans` : 'Selon avis MT'],
+    ['Date d\'édition', today],
+    ['Rédacteur', 'IDE-ST / IPRP — SPSTI']
+  ];
+  children.push(new Table({
+    width:{size:9900,type:WidthType.DXA},columnWidths:CW,
+    rows:infoRows.map(([l,v]) => new TableRow({children:[
+      mkCell(l,{bold:true,bg:'F0F4F8',w:CW[0]}),
+      mkCell(v,{w:CW[1]})
+    ]}))
+  }));
+
+  // ═══ INVENTAIRE DES RISQUES ═══
+  children.push(secTitle('⚠️','INVENTAIRE DES RISQUES PROFESSIONNELS'));
+  if (risques.length) {
+    const rCW = [1800,4200,1200,2700];
+    const rRows = [new TableRow({children:[
+      hdrCell('Famille',rCW[0]),hdrCell('Risque identifié',rCW[1]),hdrCell('Gravité',rCW[2]),hdrCell('Réf. réglementaire',rCW[3])
+    ]})];
+    const REF_MAP = {
+      'chimique':'R4412-1 CT','biologique':'R4421-1 CT','bruit':'R4431-1 CT',
+      'vibration':'R4441-1 CT','manutention':'R4541-1 CT','chute de hauteur':'R4323-58 CT',
+      'chute de plain':'R4224-4 CT','électrique':'R4544-1 CT','incendie':'R4227-1 CT',
+      'machine':'R4311-1 CT','routier':'R4121-1 CT','rps':'L4121-1 CT',
+      'écran':'R4542-1 CT','thermique':'R4223-13 CT','horaires':'L3122-1 CT',
+      'isolé':'R4224-16 CT','tms':'R4541-1 CT','posture':'R4541-1 CT'
+    };
+    function getRef(r) {
+      for (const [k,v] of Object.entries(REF_MAP)) { if (r.toLowerCase().includes(k)) return v; }
+      return 'R4121-1 CT';
+    }
+    function getGrav(r) {
+      if (/chimique|biologique|chute de hauteur|bruit/i.test(r)) return {t:'ÉLEVÉE',c:RED};
+      return {t:'MODÉRÉE',c:ORANGE};
+    }
+    risques.forEach(r => {
+      const fam = getFamily(r);
+      const famColor = FAMILY_COLORS[fam] || TEAL;
+      const grav = getGrav(r);
+      rRows.push(new TableRow({children:[
+        mkCell(fam,{bold:true,color:famColor,w:rCW[0],size:18}),
+        mkCell(r,{bold:true,w:rCW[1]}),
+        mkCell(grav.t,{bold:true,color:grav.c,w:rCW[2],size:18}),
+        mkCell(getRef(r),{color:GREY,size:18,w:rCW[3]})
+      ]}));
+    });
+    children.push(new Table({width:{size:9900,type:WidthType.DXA},columnWidths:rCW,rows:rRows}));
+  } else {
+    children.push(par('Aucun risque spécifique renseigné — compléter après étude de poste.',{italics:true,color:GREY}));
+  }
+
+  // ═══ CLASSIFICATION DU SUIVI ═══
+  children.push(secTitle('📋','CLASSIFICATION DU SUIVI INDIVIDUEL'));
+  children.push(par([
+    new TextRun({text:'Modalité retenue : ',font:'Calibri',size:24}),
+    new TextRun({text:`${m.suivi} — ${suiviLabel}`,bold:true,color:TEAL,font:'Calibri',size:28})
+  ],{before:120,after:80}));
+
+  if (m.suivi === 'SIR') {
+    children.push(par('Ce poste relève du SIR (art. R4624-22 à R4624-28 CT) : examen médical d\'aptitude AVANT affectation par le médecin du travail, renouvelé tous les 4 ans max avec visite intermédiaire à 2 ans.'));
+    children.push(bul('Postes à risques : exposition CMR, amiante, plomb, agents biologiques groupes 3-4, rayonnements ionisants, hyperbare, chute de hauteur, port d\'arme'));
+  } else if (m.suivi === 'SIA') {
+    children.push(par('Ce poste relève du SIA (art. R4624-17 à R4624-21 CT) : visite d\'information et de prévention avec modalités adaptées, périodicité ≤ 3 ans.'));
+    children.push(bul('Situations relevant du SIA : travailleurs de nuit, handicap, femmes enceintes, invalidité, ACD dangereux non CMR'));
+  } else {
+    children.push(par('Ce poste relève du SI (art. R4624-10 à R4624-16 CT) : VIP initiale dans les 3 mois suivant l\'embauche, puis renouvellement ≤ 5 ans.'));
+  }
+
+  // ═══ PÉRIODICITÉ ET VISITES ═══
+  children.push(secTitle('🗓️','PÉRIODICITÉ ET VISITES'));
+  const vCW = [2800,3000,2200,1900];
+  const visites = [
+    [m.suivi==='SIR'?'Examen médical d\'aptitude initial':'VIPI',
+     m.suivi==='SIR'?'Avant affectation au poste':'Dans les 3 mois suivant l\'embauche',
+     m.suivi==='SIR'?'Médecin du travail':'IDE-ST / MT',
+     m.suivi==='SIR'?'R4624-24 CT':'R4624-10 CT'],
+    ['Renouvellement',
+     m.suivi==='SIR'?'≤ 4 ans (+ visite intermédiaire à 2 ans)':m.suivi==='SIA'?'≤ 3 ans':'≤ 5 ans',
+     m.suivi==='SIR'?'MT + prof. santé':'IDE-ST',
+     m.suivi==='SIR'?'R4624-25 CT':'R4624-16 CT'],
+    ['Visite mi-carrière','À 45 ans (± 2 ans)','IDE-ST ou MT','L4624-2-2 CT'],
+    ['Visite post-exposition / fin de carrière','Avant départ ou dans les meilleurs délais','Médecin du travail','L4624-2-1 CT'],
+    ['Visite de reprise','Après AT ≥ 30j, MP, maternité, maladie ≥ 60j','Médecin du travail','R4624-31 CT'],
+    ['Visite de pré-reprise','Pendant arrêt ≥ 30j','Médecin du travail','R4624-29 CT'],
+  ];
+  children.push(new Table({
+    width:{size:9900,type:WidthType.DXA},columnWidths:vCW,
+    rows:[
+      new TableRow({children:[hdrCell('Type de visite',vCW[0]),hdrCell('Périodicité',vCW[1]),hdrCell('Réalisée par',vCW[2]),hdrCell('Réf.',vCW[3])]}),
+      ...visites.map(v => new TableRow({children:[
+        mkCell(v[0],{bold:true,w:vCW[0]}),mkCell(v[1],{w:vCW[1]}),mkCell(v[2],{w:vCW[2]}),mkCell(v[3],{color:GREY,size:18,w:vCW[3]})
+      ]}))
+    ]
+  }));
+
+  // ═══ EXAMENS COMPLÉMENTAIRES ═══
+  children.push(secTitle('🩺','EXAMENS COMPLÉMENTAIRES RECOMMANDÉS'));
+  // Examens auto-déduits des risques
+  const exams = [];
+  if (risques.some(r=>/chimique/i.test(r))) {
+    exams.push('EFR (spirométrie) — surveillance fonction respiratoire si exposition irritants voies aériennes');
+    exams.push('Examen dermatologique ciblé — mains, avant-bras (dermatoses irritatives/allergiques)');
+  }
+  if (risques.some(r=>/biologique/i.test(r))) {
+    exams.push('Vérification statut vaccinal : DTP obligatoire, hépatite B recommandée, leptospirose à évaluer');
+    exams.push('Sérologie hépatite B si vaccination ancienne — taux Ac anti-HBs');
+  }
+  if (risques.some(r=>/bruit/i.test(r))) {
+    exams.push('Audiogramme — bilan initial puis selon Lex,8h (≥ 80 dB(A) → suivi audiométrique)');
+  }
+  if (risques.some(r=>/tms|manutention|posture/i.test(r))) {
+    exams.push('Évaluation TMS — questionnaire nordique ou examen ciblé membres supérieurs / rachis');
+  }
+  if (risques.some(r=>/écran/i.test(r))) {
+    exams.push('Examen visuel — acuité, fatigue oculaire, adaptation poste écran');
+  }
+  if (risques.some(r=>/rps/i.test(r))) {
+    exams.push('Entretien infirmier ciblé RPS — évaluation charge mentale, signes d\'épuisement');
+  }
+  if (risques.some(r=>/horaires|nuit/i.test(r))) {
+    exams.push('Bilan de vigilance et suivi chronobiologique (travail de nuit)');
+  }
+  if (exams.length === 0) exams.push('Examens à déterminer par le médecin du travail selon évaluation du poste');
+  exams.forEach(e => children.push(bul(e)));
+
+  // ═══ EPI ═══
+  children.push(secTitle('🧤','EPI — ÉQUIPEMENTS DE PROTECTION INDIVIDUELLE'));
+  if (epis.length) {
+    const eCW = [2400,5600,1900];
+    const epiRows = [new TableRow({children:[hdrCell('EPI',eCW[0]),hdrCell('Préconisation',eCW[1]),hdrCell('Norme',eCW[2])]})];
+    const NORME_MAP = {
+      'gant':'EN 374 / EN 388','lunette':'EN 166','masque':'EN 149','casque':'EN 397',
+      'chaussure':'EN ISO 20345','harnais':'EN 361','bouchon':'EN 352','protecteur':'EN 352',
+      'blouse':'EN 13034','tablier':'EN 13034','visière':'EN 166','combinaison':'EN 13034'
+    };
+    function getNorme(e) {
+      for (const [k,v] of Object.entries(NORME_MAP)) { if (e.toLowerCase().includes(k)) return v; }
+      return 'Selon risque';
+    }
+    epis.forEach(e => epiRows.push(new TableRow({children:[
+      mkCell(e,{bold:true,w:eCW[0]}),
+      mkCell('Vérifier adéquation au risque, état, formation port/retrait',{w:eCW[1]}),
+      mkCell(getNorme(e),{color:GREY,size:18,w:eCW[2]})
+    ]})));
+    children.push(new Table({width:{size:9900,type:WidthType.DXA},columnWidths:eCW,rows:epiRows}));
+  } else {
+    children.push(par('Aucun EPI spécifique renseigné — à compléter après étude de poste.',{italics:true,color:GREY}));
+  }
+
+  // ═══ EPC ═══
+  children.push(secTitle('🏭','EPC — MESURES DE PROTECTION COLLECTIVE'));
+  if (epcs.length) epcs.forEach(e => children.push(bul(e)));
+  else children.push(par('Voir évaluation des risques de l\'entreprise (DUERP).',{italics:true,color:GREY}));
+
+  // ═══ TABLEAUX MP ═══
+  children.push(secTitle('📑','TABLEAUX DE MALADIES PROFESSIONNELLES APPLICABLES'));
+  const mpEntries = [];
+  if (risques.some(r=>/chimique/i.test(r))) { mpEntries.push(['TMP 49','Affections cutanées par agents chimiques']); mpEntries.push(['TMP 66','Rhinites et asthmes professionnels']); }
+  if (risques.some(r=>/tms|manutention|posture|répétitif/i.test(r))) mpEntries.push(['TMP 57','Affections périarticulaires (TMS)']);
+  if (risques.some(r=>/bruit/i.test(r))) mpEntries.push(['TMP 42','Surdité provoquée par les bruits lésionnels']);
+  if (risques.some(r=>/biologique/i.test(r))) mpEntries.push(['TMP 76','Maladies liées à des agents infectieux ou parasitaires']);
+  if (risques.some(r=>/amiante/i.test(r))) mpEntries.push(['TMP 30/30 bis','Affections liées à l\'amiante']);
+  if (risques.some(r=>/vibration/i.test(r))) mpEntries.push(['TMP 69','Affections provoquées par les vibrations']);
+  if (risques.some(r=>/écran/i.test(r))) mpEntries.push(['—','Pas de tableau spécifique « écran » — surveillance visuelle']);
+  if (mpEntries.length === 0) mpEntries.push(['—','À déterminer selon exposition réelle']);
+  const mpCW = [1400,8500];
+  children.push(new Table({
+    width:{size:9900,type:WidthType.DXA},columnWidths:mpCW,
+    rows:[
+      new TableRow({children:[hdrCell('N° Tableau',mpCW[0]),hdrCell('Intitulé',mpCW[1])]}),
+      ...mpEntries.map(([n,l]) => new TableRow({children:[
+        mkCell(n,{bold:true,w:mpCW[0]}),mkCell(l,{w:mpCW[1]})
+      ]}))
+    ]
+  }));
+
+  // ═══ AMT ═══
+  children.push(secTitle('✅','ACTIONS EN MILIEU DE TRAVAIL (AMT) À PROGRAMMER'));
+  const amts = [];
+  if (risques.some(r=>/chimique/i.test(r))) amts.push('Métrologie atmosphérique — vérifier respect VLEP au poste (R4412-149 CT)');
+  if (risques.some(r=>/bruit/i.test(r))) amts.push('Métrologie bruit — dosimétrie au poste pour Lex,8h (R4431-2 CT)');
+  if (risques.some(r=>/tms|manutention|posture/i.test(r))) amts.push('Étude de poste ergonomique — hauteur de travail, manutention, gestes répétitifs (R4541-1 CT)');
+  if (risques.some(r=>/biologique/i.test(r))) amts.push('Protocole AES et vérification hygiène — afficher CAT en zone de travail');
+  amts.push('Audit EPI — vérifier adéquation, état, formation port/retrait');
+  amts.push('Vérification FDS — recueillir les Fiches de Données de Sécurité à jour');
+  amts.push('Sensibilisation salarié — formation aux risques identifiés et bonnes pratiques (R4412-38 CT)');
+  amts.forEach(a => children.push(bul(a)));
+
+  // ═══ SYNTHÈSE DMST ═══
+  children.push(secTitle('📂','SYNTHÈSE POUR LE DOSSIER MÉDICAL SANTÉ-TRAVAIL (DMST)'));
+  children.push(par('Expositions à tracer :',{bold:true}));
+  risques.forEach(r => children.push(bul(r)));
+  children.push(par('Points de vigilance clinique :',{bold:true,before:160}));
+  if (risques.some(r=>/chimique/i.test(r))) children.push(bul('Signes respiratoires (toux, dyspnée, irritation)'));
+  if (risques.some(r=>/chimique|biologique/i.test(r))) children.push(bul('Dermatoses mains / avant-bras'));
+  if (risques.some(r=>/tms|manutention|posture/i.test(r))) children.push(bul('TMS membres supérieurs / rachis lombaire'));
+  if (risques.some(r=>/rps/i.test(r))) children.push(bul('Signes d\'épuisement professionnel, anxiété'));
+  if (risques.some(r=>/bruit/i.test(r))) children.push(bul('Perte auditive, acouphènes'));
+  if (risques.some(r=>/écran/i.test(r))) children.push(bul('Fatigue visuelle, céphalées'));
+
+  // ═══ PIED DE PAGE ═══
+  children.push(par(''));
+  children.push(par([
+    new TextRun({text:`Document généré le ${today} — Usage professionnel SPSTI — À valider par le médecin du travail`,font:'Calibri',size:18,color:GREY,italics:true})
+  ],{alignment:AlignmentType.CENTER}));
+  children.push(par([
+    new TextRun({text:'Cadre réglementaire : Loi n°2021-1018 du 02/08/2021, Décret n°2022-372 du 16/03/2022 — Généré par PréventIA-LaB',font:'Calibri',size:18,color:GREY,italics:true})
+  ],{alignment:AlignmentType.CENTER}));
+
+  // ═══ BUILD ═══
+  const doc = new Document({
+    creator:'PréventIA-LaB',
+    title:'Fiche suivi santé-travail — '+m.metier,
+    styles:{default:{document:{run:{font:'Calibri',size:20}}}},
+    numbering:{config:[{reference:'bullets',levels:[{level:0,format:LevelFormat.BULLET,text:'\u2022',alignment:AlignmentType.LEFT,style:{paragraph:{indent:{left:400,hanging:200}}}}]}]},
+    sections:[{
+      properties:{page:{margin:{top:1000,bottom:1000,left:1100,right:1100}}},
+      headers:{default:new Header({children:[par([new TextRun({text:`SUIVI SANTÉ-TRAVAIL — ${m.metier}`,font:'Calibri',size:16,color:GREY,italics:true})],{alignment:AlignmentType.RIGHT})]})},
+      footers:{default:new Footer({children:[new Paragraph({alignment:AlignmentType.CENTER,children:[
+        new TextRun({text:'Document SPSTI — Page ',font:'Calibri',size:16,color:GREY}),
+        new TextRun({children:[PageNumber.CURRENT],font:'Calibri',size:16,color:GREY}),
+        new TextRun({text:'/',font:'Calibri',size:16,color:GREY}),
+        new TextRun({children:[PageNumber.TOTAL_PAGES],font:'Calibri',size:16,color:GREY})
+      ]})]})},
+      children
+    }]
+  });
+
+  Packer.toBlob(doc).then(blob => {
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    const slug = m.metier.normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-zA-Z0-9]+/g,'-').replace(/^-|-$/g,'').toLowerCase();
+    a.href = url;
+    a.download = `fiche-suivi-sante-${slug}.docx`;
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  });
+}
+
+loadMetiers();
+</script>
+
+<!-- PCS 2020 : chargement et fusion automatique -->
+<script src="pcs-loader.js"></script>
+</body>
+</html>
