@@ -1,994 +1,2684 @@
 {
-"meta": {
-"source": "PCS 2020 (INSEE) — sélection orientée santé au travail",
-"niveau": "professions détaillées (curées SST)",
-"nb_professions": 60,
-"version": "2026",
-"note": "Nomenclature des Professions et Catégories Socioprofessionnelles 2020. Codes rapprochés du niveau détaillé INSEE. Chaque profession porte ses sections NAF probables et ses risques types (croisement métier↔risque)."
-},
-"groupes": [
-{
-"g": "1",
-"label": "Agriculteurs exploitants"
-},
-{
-"g": "2",
-"label": "Artisans, commerçants, chefs d'entreprise"
-},
-{
-"g": "3",
-"label": "Cadres et professions intellectuelles supérieures"
-},
-{
-"g": "4",
-"label": "Professions intermédiaires"
-},
-{
-"g": "5",
-"label": "Employés"
-},
-{
-"g": "6",
-"label": "Ouvriers"
-}
-],
-"professions": [
-{
-"c": "111",
-"l": "Agriculteur / exploitant sur petite exploitation",
-"g": "1",
-"naf": [
-"A"
-],
-"risques": [
-"Risque routier",
-"Vibrations mécaniques",
-"Risque machine",
-"Risque chimique (incl. radon, CMR)",
-"Manutention manuelle",
-"Ambiance thermique",
-"Risque biologique"
-],
-"kw": "agriculteur exploitant petite exploitation ferme cerealier"
-},
-{
-"c": "121",
-"l": "Maraîcher, horticulteur",
-"g": "1",
-"naf": [
-"A"
-],
-"risques": [
-"Risque chimique (incl. radon, CMR)",
-"Postures contraignantes",
-"Manutention manuelle",
-"Ambiance thermique",
-"TMS / Travail répétitif"
-],
-"kw": "maraicher horticulteur legume serre"
-},
-{
-"c": "130",
-"l": "Éleveur",
-"g": "1",
-"naf": [
-"A"
-],
-"risques": [
-"Risque biologique",
-"Manutention manuelle",
-"Risque machine",
-"Vibrations mécaniques",
-"Ambiance thermique"
-],
-"kw": "eleveur bovin volaille zoonose"
-},
-{
-"c": "140",
-"l": "Bûcheron, sylviculteur",
-"g": "1",
-"naf": [
-"A"
-],
-"risques": [
-"Risque machine",
-"Bruit",
-"Vibrations mécaniques",
-"Chute de plain-pied",
-"Manutention manuelle"
-],
-"kw": "bucheron sylviculteur forestier tronconneuse"
-},
-{
-"c": "211",
-"l": "Artisan du BTP (maçon, plâtrier)",
-"g": "2",
-"naf": [
-"F"
-],
-"risques": [
-"Chute de hauteur",
-"Manutention manuelle",
-"Postures contraignantes",
-"Risque chimique (incl. radon, CMR)",
-"Bruit",
-"Vibrations mécaniques"
-],
-"kw": "artisan btp macon platrier batiment"
-},
-{
-"c": "214",
-"l": "Artisan boulanger, pâtissier",
-"g": "2",
-"naf": [
-"C",
-"G"
-],
-"risques": [
-"Ambiance thermique",
-"Risque chimique (incl. radon, CMR)",
-"Postures contraignantes",
-"Horaires atypiques / nuit",
-"TMS / Travail répétitif"
-],
-"kw": "artisan boulanger patissier fournil farine"
-},
-{
-"c": "215",
-"l": "Artisan coiffeur, esthéticien",
-"g": "2",
-"naf": [
-"S"
-],
-"risques": [
-"Risque chimique (incl. radon, CMR)",
-"Postures contraignantes",
-"TMS / Travail répétitif",
-"Travail isolé"
-],
-"kw": "artisan coiffeur estheticien esthetique institut manucure"
-},
-{
-"c": "216",
-"l": "Artisan de l'alimentation (boucher, charcutier)",
-"g": "2",
-"naf": [
-"C",
-"G"
-],
-"risques": [
-"Risque machine",
-"Ambiance thermique",
-"Postures contraignantes",
-"Manutention manuelle",
-"Chute de plain-pied"
-],
-"kw": "artisan alimentation boucher charcutier traiteur couteau"
-},
-{
-"c": "221",
-"l": "Commerçant en détail (magasin)",
-"g": "2",
-"naf": [
-"G"
-],
-"risques": [
-"Manutention manuelle",
-"RPS / contact public",
-"Postures contraignantes",
-"Chute de plain-pied"
-],
-"kw": "commercant detail magasin detaillant boutique"
-},
-{
-"c": "223",
-"l": "Restaurateur, cafetier",
-"g": "2",
-"naf": [
-"I"
-],
-"risques": [
-"Ambiance thermique",
-"Postures contraignantes",
-"Chute de plain-pied",
-"RPS / contact public",
-"Horaires atypiques / nuit"
-],
-"kw": "restaurateur cafetier bar restaurant"
-},
-{
-"c": "311",
-"l": "Médecin (généraliste, spécialiste)",
-"g": "3",
-"naf": [
-"Q"
-],
-"risques": [
-"Risque biologique",
-"RPS / contact public",
-"Risque chimique (incl. radon, CMR)",
-"Horaires atypiques / nuit"
-],
-"kw": "medecin generaliste specialiste docteur"
-},
-{
-"c": "313",
-"l": "Pharmacien",
-"g": "3",
-"naf": [
-"Q",
-"G"
-],
-"risques": [
-"Risque chimique (incl. radon, CMR)",
-"Risque biologique",
-"Postures contraignantes",
-"RPS / contact public"
-],
-"kw": "pharmacien officine preparateur"
-},
-{
-"c": "312",
-"l": "Chirurgien-dentiste",
-"g": "3",
-"naf": [
-"Q"
-],
-"risques": [
-"Risque biologique",
-"Risque chimique (incl. radon, CMR)",
-"Postures contraignantes",
-"Bruit"
-],
-"kw": "chirurgien dentiste orthodontiste"
-},
-{
-"c": "331",
-"l": "Cadre de la fonction publique",
-"g": "3",
-"naf": [
-"O"
-],
-"risques": [
-"Travail sur écran",
-"RPS / contact public",
-"Postures contraignantes"
-],
-"kw": "cadre fonction publique administration"
-},
-{
-"c": "341",
-"l": "Enseignant du supérieur, chercheur",
-"g": "3",
-"naf": [
-"P",
-"M"
-],
-"risques": [
-"Travail sur écran",
-"RPS / contact public",
-"Bruit",
-"Risque chimique (incl. radon, CMR)"
-],
-"kw": "enseignant superieur chercheur universite laboratoire"
-},
-{
-"c": "372",
-"l": "Cadre commercial, ingénieur d'affaires",
-"g": "3",
-"naf": [
-"G",
-"M",
-"J"
-],
-"risques": [
-"Risque routier",
-"Travail sur écran",
-"RPS / contact public",
-"Horaires atypiques / nuit"
-],
-"kw": "cadre commercial ingenieur affaires business"
-},
-{
-"c": "375",
-"l": "Cadre marketing, communication",
-"g": "3",
-"naf": [
-"J",
-"M"
-],
-"risques": [
-"Travail sur écran",
-"RPS / contact public",
-"Postures contraignantes"
-],
-"kw": "cadre marketing communication publicite"
-},
-{
-"c": "388",
-"l": "Ingénieur informatique, développeur",
-"g": "3",
-"naf": [
-"J"
-],
-"risques": [
-"Travail sur écran",
-"Postures contraignantes",
-"RPS / contact public"
-],
-"kw": "ingenieur informatique developpeur devops data"
-},
-{
-"c": "382",
-"l": "Ingénieur BTP, bureau d'études",
-"g": "3",
-"naf": [
-"F",
-"M"
-],
-"risques": [
-"Risque routier",
-"Chute de hauteur",
-"Travail sur écran",
-"Coactivité",
-"Bruit"
-],
-"kw": "ingenieur btp bureau etudes conducteur travaux"
-},
-{
-"c": "384",
-"l": "Ingénieur de production industrielle",
-"g": "3",
-"naf": [
-"C"
-],
-"risques": [
-"Risque machine",
-"Bruit",
-"Risque chimique (incl. radon, CMR)",
-"Travail sur écran"
-],
-"kw": "ingenieur production industrielle industrie process"
-},
-{
-"c": "431",
-"l": "Infirmier(e)",
-"g": "4",
-"naf": [
-"Q"
-],
-"risques": [
-"Risque biologique",
-"TMS / Travail répétitif",
-"RPS / contact public",
-"Risque chimique (incl. radon, CMR)",
-"Manutention manuelle",
-"Horaires atypiques / nuit"
-],
-"kw": "infirmier infirmiere ide idel soins"
-},
-{
-"c": "432",
-"l": "Sage-femme",
-"g": "4",
-"naf": [
-"Q"
-],
-"risques": [
-"Risque biologique",
-"RPS / contact public",
-"Horaires atypiques / nuit",
-"Manutention manuelle"
-],
-"kw": "sage femme maternite accouchement"
-},
-{
-"c": "433",
-"l": "Kinésithérapeute, ergothérapeute",
-"g": "4",
-"naf": [
-"Q"
-],
-"risques": [
-"TMS / Travail répétitif",
-"Postures contraignantes",
-"Manutention manuelle",
-"Risque biologique"
-],
-"kw": "kinesitherapeute ergotherapeute kine osteopathe reeducation"
-},
-{
-"c": "434",
-"l": "Technicien médical, manipulateur radio",
-"g": "4",
-"naf": [
-"Q"
-],
-"risques": [
-"Risque chimique (incl. radon, CMR)",
-"Risque biologique",
-"Postures contraignantes",
-"RPS / contact public"
-],
-"kw": "technicien medical manipulateur radio laboratoire imagerie"
-},
-{
-"c": "435",
-"l": "Éducateur spécialisé, travailleur social",
-"g": "4",
-"naf": [
-"Q"
-],
-"risques": [
-"RPS / contact public",
-"Risque routier",
-"Manutention manuelle",
-"Travail isolé"
-],
-"kw": "educateur specialise travailleur social assistant"
-},
-{
-"c": "421",
-"l": "Instituteur, professeur des écoles",
-"g": "4",
-"naf": [
-"P"
-],
-"risques": [
-"RPS / contact public",
-"Bruit",
-"Postures contraignantes",
-"Risque biologique"
-],
-"kw": "instituteur professeur ecoles ecole enseignant primaire"
-},
-{
-"c": "422",
-"l": "Professeur (collège, lycée)",
-"g": "4",
-"naf": [
-"P"
-],
-"risques": [
-"RPS / contact public",
-"Bruit",
-"Travail sur écran",
-"Postures contraignantes"
-],
-"kw": "professeur college lycee enseignant secondaire"
-},
-{
-"c": "451",
-"l": "Technicien de maintenance industrielle",
-"g": "4",
-"naf": [
-"C",
-"N"
-],
-"risques": [
-"Risque machine",
-"Risque électrique",
-"Bruit",
-"Manutention manuelle",
-"Chute de hauteur",
-"Risque chimique (incl. radon, CMR)"
-],
-"kw": "technicien maintenance industrielle depannage"
-},
-{
-"c": "461",
-"l": "Technicien commercial, VRP",
-"g": "4",
-"naf": [
-"G",
-"M"
-],
-"risques": [
-"Risque routier",
-"Travail sur écran",
-"RPS / contact public",
-"Horaires atypiques / nuit"
-],
-"kw": "technicien commercial vrp representant"
-},
-{
-"c": "471",
-"l": "Technicien informatique, support",
-"g": "4",
-"naf": [
-"J"
-],
-"risques": [
-"Travail sur écran",
-"Postures contraignantes",
-"Manutention manuelle"
-],
-"kw": "technicien informatique support helpdesk"
-},
-{
-"c": "480",
-"l": "Contremaître, chef d'équipe (BTP, industrie)",
-"g": "4",
-"naf": [
-"F",
-"C"
-],
-"risques": [
-"Coactivité",
-"Bruit",
-"Chute de hauteur",
-"Risque machine",
-"Risque routier"
-],
-"kw": "contremaitre chef equipe btp industrie encadrement chantier"
-},
-{
-"c": "452",
-"l": "Technicien de laboratoire",
-"g": "4",
-"naf": [
-"M",
-"Q",
-"C"
-],
-"risques": [
-"Risque chimique (incl. radon, CMR)",
-"Risque biologique",
-"Postures contraignantes",
-"Travail sur écran"
-],
-"kw": "technicien laboratoire analyse chimie"
-},
-{
-"c": "511",
-"l": "Employé de la fonction publique (guichet)",
-"g": "5",
-"naf": [
-"O"
-],
-"risques": [
-"Travail sur écran",
-"RPS / contact public",
-"Postures contraignantes"
-],
-"kw": "employe fonction publique guichet administratif"
-},
-{
-"c": "521",
-"l": "Employé administratif, secrétaire",
-"g": "5",
-"naf": [
-"J",
-"M",
-"N",
-"O"
-],
-"risques": [
-"Travail sur écran",
-"Postures contraignantes",
-"RPS / contact public"
-],
-"kw": "employe administratif secretaire assistant bureau saisie"
-},
-{
-"c": "522",
-"l": "Agent d'accueil, standardiste",
-"g": "5",
-"naf": [
-"N",
-"S"
-],
-"risques": [
-"Travail sur écran",
-"RPS / contact public",
-"Postures contraignantes"
-],
-"kw": "agent accueil standardiste hotesse reception"
-},
-{
-"c": "531",
-"l": "Agent de sécurité, gardiennage",
-"g": "5",
-"naf": [
-"N"
-],
-"risques": [
-"Travail isolé",
-"RPS / contact public",
-"Horaires atypiques / nuit",
-"Chute de plain-pied"
-],
-"kw": "agent securite gardiennage gardien vigile surveillance"
-},
-{
-"c": "533",
-"l": "Sapeur-pompier",
-"g": "5",
-"naf": [
-"O"
-],
-"risques": [
-"Risque biologique",
-"Ambiance thermique",
-"Manutention manuelle",
-"RPS / contact public",
-"Horaires atypiques / nuit",
-"Chute de hauteur"
-],
-"kw": "sapeur pompier secours incendie"
-},
-{
-"c": "541",
-"l": "Employé de commerce, caissier",
-"g": "5",
-"naf": [
-"G"
-],
-"risques": [
-"TMS / Travail répétitif",
-"RPS / contact public",
-"Manutention manuelle",
-"Postures contraignantes",
-"Travail sur écran"
-],
-"kw": "employe commerce caissier vendeur libre service"
-},
-{
-"c": "551",
-"l": "Serveur, employé de restauration",
-"g": "5",
-"naf": [
-"I"
-],
-"risques": [
-"Postures contraignantes",
-"TMS / Travail répétitif",
-"Chute de plain-pied",
-"RPS / contact public",
-"Ambiance thermique"
-],
-"kw": "serveur employe restauration barman cafe"
-},
-{
-"c": "561",
-"l": "Aide-soignant(e)",
-"g": "5",
-"naf": [
-"Q"
-],
-"risques": [
-"Risque biologique",
-"TMS / Travail répétitif",
-"Manutention manuelle",
-"RPS / contact public",
-"Horaires atypiques / nuit"
-],
-"kw": "aide soignant soignante ehpad"
-},
-{
-"c": "562",
-"l": "Auxiliaire de puériculture, ATSEM",
-"g": "5",
-"naf": [
-"Q",
-"P"
-],
-"risques": [
-"Risque biologique",
-"TMS / Travail répétitif",
-"Bruit",
-"Postures contraignantes"
-],
-"kw": "auxiliaire puericulture atsem creche petite enfance"
-},
-{
-"c": "563",
-"l": "Aide à domicile, auxiliaire de vie",
-"g": "5",
-"naf": [
-"Q"
-],
-"risques": [
-"Manutention manuelle",
-"Risque routier",
-"TMS / Travail répétitif",
-"RPS / contact public",
-"Risque biologique",
-"Travail isolé"
-],
-"kw": "aide domicile auxiliaire vie saad admr"
-},
-{
-"c": "564",
-"l": "Assistant maternel",
-"g": "5",
-"naf": [
-"T",
-"Q"
-],
-"risques": [
-"Risque biologique",
-"TMS / Travail répétitif",
-"Postures contraignantes",
-"RPS / contact public"
-],
-"kw": "assistant maternel nounou garde enfant"
-},
-{
-"c": "568",
-"l": "Agent de service hospitalier (ASH)",
-"g": "5",
-"naf": [
-"Q"
-],
-"risques": [
-"Risque biologique",
-"Risque chimique (incl. radon, CMR)",
-"Manutention manuelle",
-"TMS / Travail répétitif"
-],
-"kw": "agent service hospitalier ash bio nettoyage"
-},
-{
-"c": "621",
-"l": "Ouvrier qualifié de la métallurgie",
-"g": "6",
-"naf": [
-"C"
-],
-"risques": [
-"Risque machine",
-"Bruit",
-"Risque chimique (incl. radon, CMR)",
-"Vibrations mécaniques",
-"Ambiance thermique",
-"TMS / Travail répétitif"
-],
-"kw": "ouvrier qualifie metallurgie soudeur usineur chaudronnier"
-},
-{
-"c": "622",
-"l": "Soudeur",
-"g": "6",
-"naf": [
-"C",
-"F"
-],
-"risques": [
-"Risque chimique (incl. radon, CMR)",
-"Bruit",
-"Éclairage / rayonnements",
-"Ambiance thermique",
-"Risque machine",
-"Incendie / explosion"
-],
-"kw": "soudeur soudure fumees metal"
-},
-{
-"c": "631",
-"l": "Maçon",
-"g": "6",
-"naf": [
-"F"
-],
-"risques": [
-"Chute de hauteur",
-"Manutention manuelle",
-"Postures contraignantes",
-"Risque chimique (incl. radon, CMR)",
-"Bruit",
-"Vibrations mécaniques"
-],
-"kw": "macon batiment gros oeuvre ciment"
-},
-{
-"c": "632",
-"l": "Charpentier, couvreur",
-"g": "6",
-"naf": [
-"F"
-],
-"risques": [
-"Chute de hauteur",
-"Manutention manuelle",
-"Postures contraignantes",
-"Risque machine",
-"Ambiance thermique"
-],
-"kw": "charpentier couvreur toiture zingueur"
-},
-{
-"c": "633",
-"l": "Électricien du bâtiment",
-"g": "6",
-"naf": [
-"F"
-],
-"risques": [
-"Risque électrique",
-"Chute de hauteur",
-"Postures contraignantes",
-"Manutention manuelle"
-],
-"kw": "electricien batiment installation cablage"
-},
-{
-"c": "634",
-"l": "Plombier, chauffagiste",
-"g": "6",
-"naf": [
-"F"
-],
-"risques": [
-"Postures contraignantes",
-"Manutention manuelle",
-"Risque chimique (incl. radon, CMR)",
-"Chute de hauteur",
-"Incendie / explosion"
-],
-"kw": "plombier chauffagiste sanitaire soudure"
-},
-{
-"c": "636",
-"l": "Peintre en bâtiment",
-"g": "6",
-"naf": [
-"F"
-],
-"risques": [
-"Risque chimique (incl. radon, CMR)",
-"Chute de hauteur",
-"Postures contraignantes",
-"TMS / Travail répétitif"
-],
-"kw": "peintre batiment ravalement solvant"
-},
-{
-"c": "641",
-"l": "Conducteur routier (poids lourd)",
-"g": "6",
-"naf": [
-"H"
-],
-"risques": [
-"Risque routier",
-"Vibrations mécaniques",
-"Manutention manuelle",
-"Postures contraignantes",
-"Horaires atypiques / nuit"
-],
-"kw": "conducteur routier poids lourd chauffeur camion"
-},
-{
-"c": "643",
-"l": "Conducteur livreur, chauffeur-livreur",
-"g": "6",
-"naf": [
-"H",
-"G"
-],
-"risques": [
-"Risque routier",
-"Manutention manuelle",
-"TMS / Travail répétitif",
-"Chute de plain-pied"
-],
-"kw": "conducteur livreur chauffeur livraison messagerie colis"
-},
-{
-"c": "644",
-"l": "Conducteur d'engins (BTP, manutention)",
-"g": "6",
-"naf": [
-"F",
-"H"
-],
-"risques": [
-"Vibrations mécaniques",
-"Bruit",
-"Coactivité",
-"Risque machine",
-"Risque routier"
-],
-"kw": "conducteur engins btp manutention engin cariste caces grue pelle"
-},
-{
-"c": "651",
-"l": "Ouvrier de manutention, magasinier",
-"g": "6",
-"naf": [
-"H"
-],
-"risques": [
-"Manutention manuelle",
-"Chute de plain-pied",
-"Risque machine",
-"Bruit",
-"TMS / Travail répétitif"
-],
-"kw": "ouvrier manutention magasinier manutentionnaire preparateur commande cariste"
-},
-{
-"c": "671",
-"l": "Ouvrier de l'agroalimentaire",
-"g": "6",
-"naf": [
-"C"
-],
-"risques": [
-"Ambiance thermique",
-"Risque machine",
-"TMS / Travail répétitif",
-"Bruit",
-"Risque biologique",
-"Postures contraignantes"
-],
-"kw": "ouvrier agroalimentaire abattoir conditionnement"
-},
-{
-"c": "681",
-"l": "Agent d'entretien, de nettoyage",
-"g": "6",
-"naf": [
-"N"
-],
-"risques": [
-"Risque chimique (incl. radon, CMR)",
-"Postures contraignantes",
-"TMS / Travail répétitif",
-"Chute de plain-pied",
-"Manutention manuelle"
-],
-"kw": "agent entretien nettoyage proprete menage"
-},
-{
-"c": "682",
-"l": "Éboueur, agent de collecte des déchets",
-"g": "6",
-"naf": [
-"E"
-],
-"risques": [
-"Risque routier",
-"Manutention manuelle",
-"Risque biologique",
-"Bruit",
-"TMS / Travail répétitif"
-],
-"kw": "eboueur agent collecte dechets ripeur ordures"
-},
-{
-"c": "691",
-"l": "Ouvrier paysagiste, jardinier",
-"g": "6",
-"naf": [
-"N",
-"A"
-],
-"risques": [
-"Vibrations mécaniques",
-"Bruit",
-"Risque machine",
-"Ambiance thermique",
-"Manutention manuelle",
-"Risque chimique (incl. radon, CMR)"
-],
-"kw": "ouvrier paysagiste jardinier espaces verts elagage"
-},
-{
-"c": "692",
-"l": "Ouvrier de la blanchisserie, pressing",
-"g": "6",
-"naf": [
-"S"
-],
-"risques": [
-"Risque chimique (incl. radon, CMR)",
-"Ambiance thermique",
-"Postures contraignantes",
-"TMS / Travail répétitif"
-],
-"kw": "ouvrier blanchisserie pressing teinturerie linge"
-}
-]
+  "meta": {
+    "source": "PCS 2020 (INSEE) — sélection enrichie santé au travail",
+    "niveau": "professions détaillées (curées SST)",
+    "nb_professions": 168,
+    "version": "2026-v2",
+    "note": "Nomenclature PCS 2020 élargie couvrant tous les secteurs NAF (A→T) et les 6 groupes socioprofessionnels."
+  },
+  "groupes": [
+    {
+      "g": "1",
+      "label": "Agriculteurs exploitants"
+    },
+    {
+      "g": "2",
+      "label": "Artisans, commerçants, chefs d'entreprise"
+    },
+    {
+      "g": "3",
+      "label": "Cadres et professions intellectuelles supérieures"
+    },
+    {
+      "g": "4",
+      "label": "Professions intermédiaires"
+    },
+    {
+      "g": "5",
+      "label": "Employés"
+    },
+    {
+      "g": "6",
+      "label": "Ouvriers"
+    }
+  ],
+  "professions": [
+    {
+      "c": "111",
+      "l": "Agriculteur / exploitant sur petite exploitation",
+      "g": "1",
+      "naf": [
+        "A"
+      ],
+      "risques": [
+        "Risque routier",
+        "Vibrations mécaniques",
+        "Risque machine",
+        "Risque chimique (incl. radon, CMR)",
+        "Manutention manuelle",
+        "Ambiance thermique",
+        "Risque biologique"
+      ],
+      "kw": "agriculteur exploitant ferme cerealier"
+    },
+    {
+      "c": "121",
+      "l": "Maraîcher, horticulteur",
+      "g": "1",
+      "naf": [
+        "A"
+      ],
+      "risques": [
+        "Risque chimique (incl. radon, CMR)",
+        "Postures contraignantes",
+        "Manutention manuelle",
+        "Ambiance thermique",
+        "TMS / Travail répétitif"
+      ],
+      "kw": "maraicher horticulteur legume serre"
+    },
+    {
+      "c": "130",
+      "l": "Éleveur",
+      "g": "1",
+      "naf": [
+        "A"
+      ],
+      "risques": [
+        "Risque biologique",
+        "Manutention manuelle",
+        "Risque machine",
+        "Ambiance thermique",
+        "Vibrations mécaniques"
+      ],
+      "kw": "eleveur bovin ovin caprin porc volaille"
+    },
+    {
+      "c": "131",
+      "l": "Viticulteur",
+      "g": "1",
+      "naf": [
+        "A"
+      ],
+      "risques": [
+        "Risque chimique (incl. radon, CMR)",
+        "Postures contraignantes",
+        "Manutention manuelle",
+        "Risque machine",
+        "Ambiance thermique",
+        "TMS / Travail répétitif"
+      ],
+      "kw": "viticulteur vigne vin vendange"
+    },
+    {
+      "c": "132",
+      "l": "Arboriculteur, pépiniériste",
+      "g": "1",
+      "naf": [
+        "A"
+      ],
+      "risques": [
+        "Chute de hauteur",
+        "Risque chimique (incl. radon, CMR)",
+        "Risque machine",
+        "Manutention manuelle",
+        "Ambiance thermique"
+      ],
+      "kw": "arboriculteur pepinieriste verger fruit"
+    },
+    {
+      "c": "140",
+      "l": "Pêcheur, aquaculteur",
+      "g": "1",
+      "naf": [
+        "A"
+      ],
+      "risques": [
+        "Risque biologique",
+        "Manutention manuelle",
+        "Ambiance thermique",
+        "Chute de plain-pied",
+        "Travail isolé"
+      ],
+      "kw": "pecheur aquaculteur conchyliculteur"
+    },
+    {
+      "c": "141",
+      "l": "Sylviculteur, bûcheron",
+      "g": "1",
+      "naf": [
+        "A"
+      ],
+      "risques": [
+        "Risque machine",
+        "Chute de hauteur",
+        "Manutention manuelle",
+        "Travail isolé",
+        "Vibrations mécaniques",
+        "Ambiance thermique"
+      ],
+      "kw": "sylviculteur bucheron forestier"
+    },
+    {
+      "c": "211",
+      "l": "Artisan maçon",
+      "g": "2",
+      "naf": [
+        "F"
+      ],
+      "risques": [
+        "Chute de hauteur",
+        "Manutention manuelle",
+        "Risque chimique (incl. radon, CMR)",
+        "Bruit",
+        "Vibrations mécaniques",
+        "Coactivité"
+      ],
+      "kw": "macon artisan batiment construction"
+    },
+    {
+      "c": "212",
+      "l": "Artisan électricien",
+      "g": "2",
+      "naf": [
+        "F"
+      ],
+      "risques": [
+        "Risque électrique",
+        "Chute de hauteur",
+        "Postures contraignantes",
+        "Coactivité",
+        "Manutention manuelle"
+      ],
+      "kw": "electricien artisan installation"
+    },
+    {
+      "c": "213",
+      "l": "Artisan plombier, chauffagiste",
+      "g": "2",
+      "naf": [
+        "F"
+      ],
+      "risques": [
+        "Postures contraignantes",
+        "Manutention manuelle",
+        "Risque chimique (incl. radon, CMR)",
+        "Risque biologique",
+        "Chute de hauteur"
+      ],
+      "kw": "plombier chauffagiste sanitaire"
+    },
+    {
+      "c": "214",
+      "l": "Artisan menuisier, charpentier",
+      "g": "2",
+      "naf": [
+        "F",
+        "C"
+      ],
+      "risques": [
+        "Risque machine",
+        "Bruit",
+        "Risque chimique (incl. radon, CMR)",
+        "Manutention manuelle",
+        "Chute de hauteur"
+      ],
+      "kw": "menuisier charpentier bois artisan"
+    },
+    {
+      "c": "215",
+      "l": "Artisan peintre en bâtiment",
+      "g": "2",
+      "naf": [
+        "F"
+      ],
+      "risques": [
+        "Risque chimique (incl. radon, CMR)",
+        "Chute de hauteur",
+        "Postures contraignantes",
+        "TMS / Travail répétitif"
+      ],
+      "kw": "peintre batiment finition artisan"
+    },
+    {
+      "c": "216",
+      "l": "Artisan couvreur, zingueur",
+      "g": "2",
+      "naf": [
+        "F"
+      ],
+      "risques": [
+        "Chute de hauteur",
+        "Manutention manuelle",
+        "Ambiance thermique",
+        "Coactivité"
+      ],
+      "kw": "couvreur zingueur toiture"
+    },
+    {
+      "c": "217",
+      "l": "Artisan carreleur, plaquiste",
+      "g": "2",
+      "naf": [
+        "F"
+      ],
+      "risques": [
+        "Postures contraignantes",
+        "Manutention manuelle",
+        "Risque chimique (incl. radon, CMR)",
+        "TMS / Travail répétitif",
+        "Bruit"
+      ],
+      "kw": "carreleur plaquiste sol faience"
+    },
+    {
+      "c": "221",
+      "l": "Artisan boulanger, pâtissier",
+      "g": "2",
+      "naf": [
+        "C",
+        "I"
+      ],
+      "risques": [
+        "Ambiance thermique",
+        "Horaires atypiques / nuit",
+        "TMS / Travail répétitif",
+        "Risque machine",
+        "Manutention manuelle",
+        "Risque biologique"
+      ],
+      "kw": "boulanger patissier artisan fournil"
+    },
+    {
+      "c": "222",
+      "l": "Artisan boucher, charcutier",
+      "g": "2",
+      "naf": [
+        "C",
+        "G"
+      ],
+      "risques": [
+        "Risque machine",
+        "TMS / Travail répétitif",
+        "Ambiance thermique",
+        "Risque biologique",
+        "Manutention manuelle"
+      ],
+      "kw": "boucher charcutier viande decoupe"
+    },
+    {
+      "c": "223",
+      "l": "Artisan coiffeur",
+      "g": "2",
+      "naf": [
+        "S"
+      ],
+      "risques": [
+        "Risque chimique (incl. radon, CMR)",
+        "TMS / Travail répétitif",
+        "Postures contraignantes",
+        "RPS / contact public"
+      ],
+      "kw": "coiffeur salon coiffure"
+    },
+    {
+      "c": "224",
+      "l": "Artisan fleuriste",
+      "g": "2",
+      "naf": [
+        "G"
+      ],
+      "risques": [
+        "TMS / Travail répétitif",
+        "Postures contraignantes",
+        "Risque chimique (incl. radon, CMR)",
+        "Manutention manuelle"
+      ],
+      "kw": "fleuriste composition florale"
+    },
+    {
+      "c": "225",
+      "l": "Artisan mécanicien automobile",
+      "g": "2",
+      "naf": [
+        "G"
+      ],
+      "risques": [
+        "Risque chimique (incl. radon, CMR)",
+        "Risque machine",
+        "Postures contraignantes",
+        "Bruit",
+        "Manutention manuelle"
+      ],
+      "kw": "mecanicien automobile garage reparation"
+    },
+    {
+      "c": "226",
+      "l": "Artisan carrossier",
+      "g": "2",
+      "naf": [
+        "G",
+        "C"
+      ],
+      "risques": [
+        "Risque chimique (incl. radon, CMR)",
+        "Bruit",
+        "Risque machine",
+        "Postures contraignantes"
+      ],
+      "kw": "carrossier peintre auto"
+    },
+    {
+      "c": "231",
+      "l": "Commerçant alimentaire",
+      "g": "2",
+      "naf": [
+        "G"
+      ],
+      "risques": [
+        "Manutention manuelle",
+        "RPS / contact public",
+        "TMS / Travail répétitif",
+        "Risque routier"
+      ],
+      "kw": "epicier primeur commerce alimentaire"
+    },
+    {
+      "c": "232",
+      "l": "Restaurateur, gérant de restaurant",
+      "g": "2",
+      "naf": [
+        "I"
+      ],
+      "risques": [
+        "Ambiance thermique",
+        "TMS / Travail répétitif",
+        "Horaires atypiques / nuit",
+        "Risque biologique",
+        "RPS / contact public",
+        "Manutention manuelle"
+      ],
+      "kw": "restaurateur gerant restaurant"
+    },
+    {
+      "c": "233",
+      "l": "Hôtelier",
+      "g": "2",
+      "naf": [
+        "I"
+      ],
+      "risques": [
+        "Horaires atypiques / nuit",
+        "RPS / contact public",
+        "Manutention manuelle",
+        "Risque biologique"
+      ],
+      "kw": "hotelier gerant hotel hebergement"
+    },
+    {
+      "c": "234",
+      "l": "Gérant de pressing",
+      "g": "2",
+      "naf": [
+        "S"
+      ],
+      "risques": [
+        "Risque chimique (incl. radon, CMR)",
+        "Ambiance thermique",
+        "TMS / Travail répétitif"
+      ],
+      "kw": "pressing teinturier nettoyage sec"
+    },
+    {
+      "c": "235",
+      "l": "Pharmacien titulaire d'officine",
+      "g": "2",
+      "naf": [
+        "G",
+        "Q"
+      ],
+      "risques": [
+        "RPS / contact public",
+        "Risque chimique (incl. radon, CMR)",
+        "Risque biologique",
+        "Postures contraignantes"
+      ],
+      "kw": "pharmacien officine pharmacie"
+    },
+    {
+      "c": "236",
+      "l": "Opticien",
+      "g": "2",
+      "naf": [
+        "G",
+        "Q"
+      ],
+      "risques": [
+        "Travail sur écran",
+        "RPS / contact public",
+        "Postures contraignantes"
+      ],
+      "kw": "opticien lunettier optique"
+    },
+    {
+      "c": "311",
+      "l": "Médecin généraliste",
+      "g": "3",
+      "naf": [
+        "Q"
+      ],
+      "risques": [
+        "Risque biologique",
+        "RPS / contact public",
+        "Horaires atypiques / nuit",
+        "Travail sur écran",
+        "Risque routier"
+      ],
+      "kw": "medecin generaliste docteur cabinet medical"
+    },
+    {
+      "c": "312",
+      "l": "Médecin spécialiste (hors chirurgie)",
+      "g": "3",
+      "naf": [
+        "Q"
+      ],
+      "risques": [
+        "Risque biologique",
+        "RPS / contact public",
+        "Travail sur écran",
+        "Horaires atypiques / nuit"
+      ],
+      "kw": "medecin specialiste cardiologue dermatologue pneumologue"
+    },
+    {
+      "c": "313",
+      "l": "Chirurgien",
+      "g": "3",
+      "naf": [
+        "Q"
+      ],
+      "risques": [
+        "Risque biologique",
+        "Postures contraignantes",
+        "RPS / contact public",
+        "Horaires atypiques / nuit"
+      ],
+      "kw": "chirurgien bloc operatoire"
+    },
+    {
+      "c": "314",
+      "l": "Médecin du travail",
+      "g": "3",
+      "naf": [
+        "Q"
+      ],
+      "risques": [
+        "RPS / contact public",
+        "Risque biologique",
+        "Travail sur écran",
+        "Risque routier"
+      ],
+      "kw": "medecin travail sante SPSTI"
+    },
+    {
+      "c": "315",
+      "l": "Psychiatre",
+      "g": "3",
+      "naf": [
+        "Q"
+      ],
+      "risques": [
+        "RPS / contact public",
+        "Horaires atypiques / nuit",
+        "Travail isolé"
+      ],
+      "kw": "psychiatre pedopsychiatre sante mentale"
+    },
+    {
+      "c": "316",
+      "l": "Dentiste, chirurgien-dentiste",
+      "g": "3",
+      "naf": [
+        "Q"
+      ],
+      "risques": [
+        "Risque biologique",
+        "Postures contraignantes",
+        "Vibrations mécaniques",
+        "Bruit",
+        "Risque chimique (incl. radon, CMR)"
+      ],
+      "kw": "dentiste chirurgien dentiste cabinet dentaire"
+    },
+    {
+      "c": "317",
+      "l": "Pharmacien hospitalier",
+      "g": "3",
+      "naf": [
+        "Q",
+        "C"
+      ],
+      "risques": [
+        "Risque chimique (incl. radon, CMR)",
+        "Risque biologique",
+        "Travail sur écran"
+      ],
+      "kw": "pharmacien hospitalier industrie pharmaceutique"
+    },
+    {
+      "c": "318",
+      "l": "Vétérinaire",
+      "g": "3",
+      "naf": [
+        "M",
+        "A"
+      ],
+      "risques": [
+        "Risque biologique",
+        "Risque chimique (incl. radon, CMR)",
+        "Manutention manuelle",
+        "Risque routier",
+        "Travail isolé"
+      ],
+      "kw": "veterinaire clinique animal"
+    },
+    {
+      "c": "321",
+      "l": "Avocat",
+      "g": "3",
+      "naf": [
+        "M"
+      ],
+      "risques": [
+        "RPS / contact public",
+        "Travail sur écran",
+        "Postures contraignantes"
+      ],
+      "kw": "avocat barreau juridique droit"
+    },
+    {
+      "c": "322",
+      "l": "Notaire",
+      "g": "3",
+      "naf": [
+        "M"
+      ],
+      "risques": [
+        "RPS / contact public",
+        "Travail sur écran",
+        "Postures contraignantes"
+      ],
+      "kw": "notaire etude notariale"
+    },
+    {
+      "c": "323",
+      "l": "Expert-comptable",
+      "g": "3",
+      "naf": [
+        "M"
+      ],
+      "risques": [
+        "Travail sur écran",
+        "RPS / contact public",
+        "Postures contraignantes"
+      ],
+      "kw": "expert comptable cabinet comptabilite"
+    },
+    {
+      "c": "331",
+      "l": "Ingénieur R&D",
+      "g": "3",
+      "naf": [
+        "C",
+        "M",
+        "J"
+      ],
+      "risques": [
+        "Travail sur écran",
+        "RPS / contact public",
+        "Postures contraignantes"
+      ],
+      "kw": "ingenieur recherche developpement etudes"
+    },
+    {
+      "c": "332",
+      "l": "Ingénieur production industrielle",
+      "g": "3",
+      "naf": [
+        "C"
+      ],
+      "risques": [
+        "Bruit",
+        "Risque chimique (incl. radon, CMR)",
+        "Risque machine",
+        "Travail sur écran",
+        "Coactivité"
+      ],
+      "kw": "ingenieur production usine industrielle"
+    },
+    {
+      "c": "333",
+      "l": "Ingénieur informatique",
+      "g": "3",
+      "naf": [
+        "J"
+      ],
+      "risques": [
+        "Travail sur écran",
+        "Postures contraignantes",
+        "RPS / contact public"
+      ],
+      "kw": "ingenieur informatique developpeur architecte logiciel"
+    },
+    {
+      "c": "334",
+      "l": "Ingénieur BTP",
+      "g": "3",
+      "naf": [
+        "F",
+        "M"
+      ],
+      "risques": [
+        "Chute de hauteur",
+        "Bruit",
+        "Risque routier",
+        "Coactivité",
+        "Travail sur écran"
+      ],
+      "kw": "ingenieur btp genie civil conducteur travaux"
+    },
+    {
+      "c": "335",
+      "l": "Ingénieur HSE / préventeur",
+      "g": "3",
+      "naf": [
+        "C",
+        "F",
+        "M"
+      ],
+      "risques": [
+        "Risque chimique (incl. radon, CMR)",
+        "Bruit",
+        "Risque routier",
+        "Travail sur écran"
+      ],
+      "kw": "ingenieur hse preventeur securite environnement"
+    },
+    {
+      "c": "336",
+      "l": "Ingénieur agronome",
+      "g": "3",
+      "naf": [
+        "A",
+        "M"
+      ],
+      "risques": [
+        "Risque chimique (incl. radon, CMR)",
+        "Risque biologique",
+        "Risque routier",
+        "Ambiance thermique"
+      ],
+      "kw": "ingenieur agronome agronomie"
+    },
+    {
+      "c": "341",
+      "l": "Directeur d'établissement de santé",
+      "g": "3",
+      "naf": [
+        "Q"
+      ],
+      "risques": [
+        "RPS / contact public",
+        "Travail sur écran",
+        "Horaires atypiques / nuit"
+      ],
+      "kw": "directeur hopital clinique ehpad"
+    },
+    {
+      "c": "342",
+      "l": "Cadre administratif, DRH",
+      "g": "3",
+      "naf": [
+        "M",
+        "N",
+        "O"
+      ],
+      "risques": [
+        "Travail sur écran",
+        "RPS / contact public",
+        "Postures contraignantes"
+      ],
+      "kw": "cadre administratif drh directeur rh"
+    },
+    {
+      "c": "343",
+      "l": "Cadre commercial",
+      "g": "3",
+      "naf": [
+        "G",
+        "M"
+      ],
+      "risques": [
+        "Risque routier",
+        "RPS / contact public",
+        "Travail sur écran"
+      ],
+      "kw": "cadre commercial directeur ventes"
+    },
+    {
+      "c": "344",
+      "l": "Cadre bancaire, financier",
+      "g": "3",
+      "naf": [
+        "K"
+      ],
+      "risques": [
+        "Travail sur écran",
+        "RPS / contact public",
+        "Postures contraignantes"
+      ],
+      "kw": "cadre banque finance assurance"
+    },
+    {
+      "c": "345",
+      "l": "Architecte",
+      "g": "3",
+      "naf": [
+        "M"
+      ],
+      "risques": [
+        "Travail sur écran",
+        "Risque routier",
+        "Postures contraignantes",
+        "Chute de hauteur"
+      ],
+      "kw": "architecte urbaniste cabinet"
+    },
+    {
+      "c": "346",
+      "l": "Journaliste",
+      "g": "3",
+      "naf": [
+        "J"
+      ],
+      "risques": [
+        "Travail sur écran",
+        "RPS / contact public",
+        "Risque routier"
+      ],
+      "kw": "journaliste redacteur presse media"
+    },
+    {
+      "c": "347",
+      "l": "Enseignant-chercheur",
+      "g": "3",
+      "naf": [
+        "P"
+      ],
+      "risques": [
+        "RPS / contact public",
+        "Travail sur écran",
+        "Postures contraignantes"
+      ],
+      "kw": "enseignant chercheur professeur universite"
+    },
+    {
+      "c": "348",
+      "l": "Chercheur en laboratoire",
+      "g": "3",
+      "naf": [
+        "M",
+        "Q"
+      ],
+      "risques": [
+        "Risque chimique (incl. radon, CMR)",
+        "Risque biologique",
+        "Travail sur écran"
+      ],
+      "kw": "chercheur laboratoire recherche scientifique"
+    },
+    {
+      "c": "349",
+      "l": "Data scientist, data engineer",
+      "g": "3",
+      "naf": [
+        "J",
+        "M"
+      ],
+      "risques": [
+        "Travail sur écran",
+        "Postures contraignantes",
+        "RPS / contact public"
+      ],
+      "kw": "data scientist engineer intelligence artificielle"
+    },
+    {
+      "c": "350",
+      "l": "Pilote de ligne",
+      "g": "3",
+      "naf": [
+        "H"
+      ],
+      "risques": [
+        "Horaires atypiques / nuit",
+        "Vibrations mécaniques",
+        "Bruit",
+        "RPS / contact public"
+      ],
+      "kw": "pilote ligne commandant bord aviation"
+    },
+    {
+      "c": "411",
+      "l": "Infirmier(ère) hospitalier(ère)",
+      "g": "4",
+      "naf": [
+        "Q"
+      ],
+      "risques": [
+        "Risque biologique",
+        "Manutention manuelle",
+        "Horaires atypiques / nuit",
+        "RPS / contact public",
+        "Risque chimique (incl. radon, CMR)",
+        "TMS / Travail répétitif"
+      ],
+      "kw": "infirmier infirmiere ide hopital clinique soins"
+    },
+    {
+      "c": "412",
+      "l": "Infirmier(ère) en santé au travail (IST)",
+      "g": "4",
+      "naf": [
+        "Q",
+        "M"
+      ],
+      "risques": [
+        "Risque biologique",
+        "Risque routier",
+        "RPS / contact public",
+        "Travail sur écran"
+      ],
+      "kw": "infirmier sante travail ist ide-st spsti prevention"
+    },
+    {
+      "c": "413",
+      "l": "Infirmier(ère) libéral(e)",
+      "g": "4",
+      "naf": [
+        "Q"
+      ],
+      "risques": [
+        "Risque biologique",
+        "Risque routier",
+        "Manutention manuelle",
+        "Travail isolé",
+        "Horaires atypiques / nuit",
+        "RPS / contact public"
+      ],
+      "kw": "infirmier liberal domicile soins"
+    },
+    {
+      "c": "414",
+      "l": "IBODE (infirmier de bloc opératoire)",
+      "g": "4",
+      "naf": [
+        "Q"
+      ],
+      "risques": [
+        "Risque biologique",
+        "Postures contraignantes",
+        "Horaires atypiques / nuit",
+        "Risque chimique (incl. radon, CMR)"
+      ],
+      "kw": "ibode infirmier bloc operatoire chirurgie"
+    },
+    {
+      "c": "415",
+      "l": "Sage-femme",
+      "g": "4",
+      "naf": [
+        "Q"
+      ],
+      "risques": [
+        "Risque biologique",
+        "Horaires atypiques / nuit",
+        "RPS / contact public",
+        "Manutention manuelle",
+        "Postures contraignantes"
+      ],
+      "kw": "sage femme maternite accouchement"
+    },
+    {
+      "c": "416",
+      "l": "Masseur-kinésithérapeute",
+      "g": "4",
+      "naf": [
+        "Q"
+      ],
+      "risques": [
+        "TMS / Travail répétitif",
+        "Postures contraignantes",
+        "Manutention manuelle",
+        "Risque biologique"
+      ],
+      "kw": "kinesitherapeute kine reeducation"
+    },
+    {
+      "c": "417",
+      "l": "Orthophoniste",
+      "g": "4",
+      "naf": [
+        "Q"
+      ],
+      "risques": [
+        "RPS / contact public",
+        "Postures contraignantes",
+        "Travail sur écran"
+      ],
+      "kw": "orthophoniste reeducation langage"
+    },
+    {
+      "c": "418",
+      "l": "Ergothérapeute",
+      "g": "4",
+      "naf": [
+        "Q"
+      ],
+      "risques": [
+        "TMS / Travail répétitif",
+        "Manutention manuelle",
+        "Postures contraignantes",
+        "RPS / contact public"
+      ],
+      "kw": "ergotherapeute readaptation autonomie"
+    },
+    {
+      "c": "419",
+      "l": "Psychologue",
+      "g": "4",
+      "naf": [
+        "Q"
+      ],
+      "risques": [
+        "RPS / contact public",
+        "Travail sur écran",
+        "Travail isolé"
+      ],
+      "kw": "psychologue psychologie clinique travail"
+    },
+    {
+      "c": "420",
+      "l": "Manipulateur en radiologie (MER)",
+      "g": "4",
+      "naf": [
+        "Q"
+      ],
+      "risques": [
+        "Risque biologique",
+        "Postures contraignantes",
+        "Manutention manuelle"
+      ],
+      "kw": "manipulateur radiologie imagerie scanner irm"
+    },
+    {
+      "c": "421",
+      "l": "Préparateur en pharmacie",
+      "g": "4",
+      "naf": [
+        "Q",
+        "G"
+      ],
+      "risques": [
+        "Risque chimique (incl. radon, CMR)",
+        "Postures contraignantes",
+        "RPS / contact public",
+        "TMS / Travail répétitif"
+      ],
+      "kw": "preparateur pharmacie officine medicament"
+    },
+    {
+      "c": "422",
+      "l": "Technicien de laboratoire médical",
+      "g": "4",
+      "naf": [
+        "Q"
+      ],
+      "risques": [
+        "Risque biologique",
+        "Risque chimique (incl. radon, CMR)",
+        "Postures contraignantes"
+      ],
+      "kw": "technicien laboratoire analyse medicale biologie"
+    },
+    {
+      "c": "423",
+      "l": "Aide-soignant(e)",
+      "g": "4",
+      "naf": [
+        "Q"
+      ],
+      "risques": [
+        "Risque biologique",
+        "Manutention manuelle",
+        "TMS / Travail répétitif",
+        "Horaires atypiques / nuit",
+        "RPS / contact public",
+        "Risque chimique (incl. radon, CMR)"
+      ],
+      "kw": "aide soignant soignante as hopital ehpad"
+    },
+    {
+      "c": "424",
+      "l": "Auxiliaire de puériculture",
+      "g": "4",
+      "naf": [
+        "Q"
+      ],
+      "risques": [
+        "Risque biologique",
+        "Manutention manuelle",
+        "Postures contraignantes",
+        "RPS / contact public",
+        "Bruit"
+      ],
+      "kw": "auxiliaire puericulture creche maternite"
+    },
+    {
+      "c": "425",
+      "l": "Ambulancier",
+      "g": "4",
+      "naf": [
+        "Q",
+        "H"
+      ],
+      "risques": [
+        "Risque routier",
+        "Manutention manuelle",
+        "Risque biologique",
+        "Horaires atypiques / nuit",
+        "RPS / contact public",
+        "Travail isolé"
+      ],
+      "kw": "ambulancier transport sanitaire urgence"
+    },
+    {
+      "c": "426",
+      "l": "Diététicien(ne)",
+      "g": "4",
+      "naf": [
+        "Q"
+      ],
+      "risques": [
+        "RPS / contact public",
+        "Travail sur écran",
+        "Postures contraignantes"
+      ],
+      "kw": "dieteticien nutritionniste alimentation"
+    },
+    {
+      "c": "431",
+      "l": "Technicien de maintenance industrielle",
+      "g": "4",
+      "naf": [
+        "C",
+        "D"
+      ],
+      "risques": [
+        "Risque électrique",
+        "Risque machine",
+        "Bruit",
+        "Risque chimique (incl. radon, CMR)",
+        "Manutention manuelle",
+        "Chute de hauteur"
+      ],
+      "kw": "technicien maintenance industrielle depannage"
+    },
+    {
+      "c": "432",
+      "l": "Technicien en électronique",
+      "g": "4",
+      "naf": [
+        "C",
+        "J"
+      ],
+      "risques": [
+        "Risque électrique",
+        "Postures contraignantes",
+        "Travail sur écran"
+      ],
+      "kw": "technicien electronique automatisme automate"
+    },
+    {
+      "c": "433",
+      "l": "Technicien chimiste, laborantin",
+      "g": "4",
+      "naf": [
+        "C",
+        "M"
+      ],
+      "risques": [
+        "Risque chimique (incl. radon, CMR)",
+        "Risque biologique",
+        "Incendie / explosion"
+      ],
+      "kw": "technicien chimiste laborantin analyse chimie"
+    },
+    {
+      "c": "434",
+      "l": "Technicien qualité",
+      "g": "4",
+      "naf": [
+        "C",
+        "M"
+      ],
+      "risques": [
+        "Risque chimique (incl. radon, CMR)",
+        "Travail sur écran",
+        "Bruit"
+      ],
+      "kw": "technicien qualite controle conformite"
+    },
+    {
+      "c": "435",
+      "l": "Technicien informatique",
+      "g": "4",
+      "naf": [
+        "J"
+      ],
+      "risques": [
+        "Travail sur écran",
+        "Postures contraignantes",
+        "Manutention manuelle"
+      ],
+      "kw": "technicien informatique support helpdesk reseau"
+    },
+    {
+      "c": "436",
+      "l": "Développeur web / logiciel",
+      "g": "4",
+      "naf": [
+        "J"
+      ],
+      "risques": [
+        "Travail sur écran",
+        "Postures contraignantes",
+        "RPS / contact public"
+      ],
+      "kw": "developpeur web logiciel programmeur frontend backend"
+    },
+    {
+      "c": "437",
+      "l": "Comptable",
+      "g": "4",
+      "naf": [
+        "M",
+        "N"
+      ],
+      "risques": [
+        "Travail sur écran",
+        "Postures contraignantes",
+        "RPS / contact public"
+      ],
+      "kw": "comptable comptabilite gestion bilan"
+    },
+    {
+      "c": "438",
+      "l": "Assistant(e) de direction",
+      "g": "4",
+      "naf": [
+        "M",
+        "N",
+        "O"
+      ],
+      "risques": [
+        "Travail sur écran",
+        "Postures contraignantes",
+        "RPS / contact public"
+      ],
+      "kw": "assistante direction secretaire administrative"
+    },
+    {
+      "c": "439",
+      "l": "Gestionnaire de paie",
+      "g": "4",
+      "naf": [
+        "M",
+        "N"
+      ],
+      "risques": [
+        "Travail sur écran",
+        "Postures contraignantes",
+        "RPS / contact public"
+      ],
+      "kw": "gestionnaire paie rh bulletin salaire"
+    },
+    {
+      "c": "440",
+      "l": "Éducateur spécialisé",
+      "g": "4",
+      "naf": [
+        "Q"
+      ],
+      "risques": [
+        "RPS / contact public",
+        "Manutention manuelle",
+        "Risque routier",
+        "Horaires atypiques / nuit"
+      ],
+      "kw": "educateur specialise social protection enfance handicap"
+    },
+    {
+      "c": "441",
+      "l": "Moniteur-éducateur",
+      "g": "4",
+      "naf": [
+        "Q"
+      ],
+      "risques": [
+        "RPS / contact public",
+        "Manutention manuelle",
+        "Horaires atypiques / nuit"
+      ],
+      "kw": "moniteur educateur foyer social medico"
+    },
+    {
+      "c": "442",
+      "l": "Assistant(e) social(e)",
+      "g": "4",
+      "naf": [
+        "Q",
+        "O"
+      ],
+      "risques": [
+        "RPS / contact public",
+        "Travail sur écran",
+        "Risque routier",
+        "Travail isolé"
+      ],
+      "kw": "assistante sociale travailleur social"
+    },
+    {
+      "c": "443",
+      "l": "Enseignant du primaire",
+      "g": "4",
+      "naf": [
+        "P"
+      ],
+      "risques": [
+        "RPS / contact public",
+        "Bruit",
+        "Postures contraignantes"
+      ],
+      "kw": "instituteur professeur ecoles primaire"
+    },
+    {
+      "c": "444",
+      "l": "Enseignant du secondaire",
+      "g": "4",
+      "naf": [
+        "P"
+      ],
+      "risques": [
+        "RPS / contact public",
+        "Bruit",
+        "Postures contraignantes",
+        "Travail sur écran"
+      ],
+      "kw": "professeur enseignant college lycee secondaire"
+    },
+    {
+      "c": "445",
+      "l": "Enseignant labo (chimie, biotech)",
+      "g": "4",
+      "naf": [
+        "P"
+      ],
+      "risques": [
+        "Risque chimique (incl. radon, CMR)",
+        "Risque biologique",
+        "Risque machine",
+        "Bruit"
+      ],
+      "kw": "enseignant labo chimie biotech atelier"
+    },
+    {
+      "c": "446",
+      "l": "Animateur socioculturel",
+      "g": "4",
+      "naf": [
+        "R",
+        "Q"
+      ],
+      "risques": [
+        "RPS / contact public",
+        "Bruit",
+        "Manutention manuelle"
+      ],
+      "kw": "animateur socioculturel centre loisirs"
+    },
+    {
+      "c": "447",
+      "l": "Commercial, attaché commercial",
+      "g": "4",
+      "naf": [
+        "G",
+        "M"
+      ],
+      "risques": [
+        "Risque routier",
+        "RPS / contact public",
+        "Travail sur écran",
+        "Postures contraignantes"
+      ],
+      "kw": "commercial attache vente terrain"
+    },
+    {
+      "c": "448",
+      "l": "Agent immobilier",
+      "g": "4",
+      "naf": [
+        "L"
+      ],
+      "risques": [
+        "Risque routier",
+        "RPS / contact public",
+        "Travail sur écran"
+      ],
+      "kw": "agent immobilier negociateur transaction"
+    },
+    {
+      "c": "449",
+      "l": "Responsable logistique",
+      "g": "4",
+      "naf": [
+        "H",
+        "N"
+      ],
+      "risques": [
+        "Risque routier",
+        "Manutention manuelle",
+        "Bruit",
+        "Travail sur écran"
+      ],
+      "kw": "responsable logistique supply chain entrepot"
+    },
+    {
+      "c": "450",
+      "l": "Chef de chantier",
+      "g": "4",
+      "naf": [
+        "F"
+      ],
+      "risques": [
+        "Chute de hauteur",
+        "Bruit",
+        "Risque routier",
+        "Coactivité",
+        "Manutention manuelle"
+      ],
+      "kw": "chef chantier conducteur travaux btp"
+    },
+    {
+      "c": "451",
+      "l": "Technicien en traitement de l'eau",
+      "g": "4",
+      "naf": [
+        "E"
+      ],
+      "risques": [
+        "Risque chimique (incl. radon, CMR)",
+        "Risque biologique",
+        "Chute de plain-pied",
+        "Travail isolé"
+      ],
+      "kw": "technicien eau assainissement station epuration"
+    },
+    {
+      "c": "452",
+      "l": "Technicien énergie, chaufferie",
+      "g": "4",
+      "naf": [
+        "D"
+      ],
+      "risques": [
+        "Risque électrique",
+        "Ambiance thermique",
+        "Incendie / explosion",
+        "Risque chimique (incl. radon, CMR)"
+      ],
+      "kw": "technicien energie chaufferie chaudiere"
+    },
+    {
+      "c": "453",
+      "l": "Technicien en environnement",
+      "g": "4",
+      "naf": [
+        "M",
+        "E"
+      ],
+      "risques": [
+        "Risque biologique",
+        "Risque chimique (incl. radon, CMR)",
+        "Risque routier",
+        "Ambiance thermique"
+      ],
+      "kw": "technicien environnement ecologue biodiversite"
+    },
+    {
+      "c": "454",
+      "l": "Technicien son / lumière / scène",
+      "g": "4",
+      "naf": [
+        "R"
+      ],
+      "risques": [
+        "Bruit",
+        "Risque électrique",
+        "Chute de hauteur",
+        "Horaires atypiques / nuit",
+        "Manutention manuelle"
+      ],
+      "kw": "technicien son lumiere scene spectacle"
+    },
+    {
+      "c": "455",
+      "l": "Graphiste, designer",
+      "g": "4",
+      "naf": [
+        "J",
+        "M"
+      ],
+      "risques": [
+        "Travail sur écran",
+        "Postures contraignantes",
+        "RPS / contact public"
+      ],
+      "kw": "graphiste designer infographiste"
+    },
+    {
+      "c": "456",
+      "l": "Agent de maîtrise en industrie",
+      "g": "4",
+      "naf": [
+        "C"
+      ],
+      "risques": [
+        "Bruit",
+        "Risque machine",
+        "Risque chimique (incl. radon, CMR)",
+        "Coactivité",
+        "Travail sur écran"
+      ],
+      "kw": "agent maitrise chef equipe industrie"
+    },
+    {
+      "c": "511",
+      "l": "Agent d'accueil",
+      "g": "5",
+      "naf": [
+        "N",
+        "O"
+      ],
+      "risques": [
+        "RPS / contact public",
+        "Postures contraignantes",
+        "Travail sur écran"
+      ],
+      "kw": "agent accueil hotesse reception standard"
+    },
+    {
+      "c": "512",
+      "l": "Secrétaire médicale",
+      "g": "5",
+      "naf": [
+        "Q"
+      ],
+      "risques": [
+        "Travail sur écran",
+        "RPS / contact public",
+        "Postures contraignantes",
+        "Risque biologique"
+      ],
+      "kw": "secretaire medicale accueil patient cabinet"
+    },
+    {
+      "c": "513",
+      "l": "Employé administratif",
+      "g": "5",
+      "naf": [
+        "N",
+        "O",
+        "M"
+      ],
+      "risques": [
+        "Travail sur écran",
+        "Postures contraignantes",
+        "RPS / contact public"
+      ],
+      "kw": "employe administratif bureau saisie classement"
+    },
+    {
+      "c": "514",
+      "l": "Employé de banque",
+      "g": "5",
+      "naf": [
+        "K"
+      ],
+      "risques": [
+        "Travail sur écran",
+        "RPS / contact public",
+        "Postures contraignantes",
+        "Addictions / sécurité"
+      ],
+      "kw": "employe banque guichetier conseiller agence"
+    },
+    {
+      "c": "515",
+      "l": "Agent de la fonction publique",
+      "g": "5",
+      "naf": [
+        "O"
+      ],
+      "risques": [
+        "Travail sur écran",
+        "RPS / contact public",
+        "Postures contraignantes"
+      ],
+      "kw": "agent fonction publique mairie administration"
+    },
+    {
+      "c": "516",
+      "l": "Opérateur de centre d'appels",
+      "g": "5",
+      "naf": [
+        "J",
+        "N"
+      ],
+      "risques": [
+        "Travail sur écran",
+        "RPS / contact public",
+        "Bruit",
+        "Postures contraignantes"
+      ],
+      "kw": "operateur centre appel teleconseiller call center"
+    },
+    {
+      "c": "521",
+      "l": "Caissier(ère)",
+      "g": "5",
+      "naf": [
+        "G"
+      ],
+      "risques": [
+        "TMS / Travail répétitif",
+        "Postures contraignantes",
+        "RPS / contact public",
+        "Manutention manuelle"
+      ],
+      "kw": "caissier caissiere supermarche magasin"
+    },
+    {
+      "c": "522",
+      "l": "Vendeur(se) en magasin",
+      "g": "5",
+      "naf": [
+        "G"
+      ],
+      "risques": [
+        "RPS / contact public",
+        "Manutention manuelle",
+        "Postures contraignantes",
+        "TMS / Travail répétitif"
+      ],
+      "kw": "vendeur vendeuse magasin boutique"
+    },
+    {
+      "c": "523",
+      "l": "Employé de libre-service",
+      "g": "5",
+      "naf": [
+        "G"
+      ],
+      "risques": [
+        "Manutention manuelle",
+        "TMS / Travail répétitif",
+        "Postures contraignantes",
+        "Horaires atypiques / nuit"
+      ],
+      "kw": "employe libre service mise rayon gondolier"
+    },
+    {
+      "c": "524",
+      "l": "Préparateur de commandes",
+      "g": "5",
+      "naf": [
+        "H",
+        "G"
+      ],
+      "risques": [
+        "Manutention manuelle",
+        "TMS / Travail répétitif",
+        "Risque machine",
+        "Ambiance thermique",
+        "Bruit"
+      ],
+      "kw": "preparateur commande logistique picking entrepot"
+    },
+    {
+      "c": "531",
+      "l": "Serveur(se) en restauration",
+      "g": "5",
+      "naf": [
+        "I"
+      ],
+      "risques": [
+        "TMS / Travail répétitif",
+        "Manutention manuelle",
+        "Horaires atypiques / nuit",
+        "RPS / contact public",
+        "Chute de plain-pied"
+      ],
+      "kw": "serveur serveuse restaurant salle"
+    },
+    {
+      "c": "532",
+      "l": "Cuisinier(ère)",
+      "g": "5",
+      "naf": [
+        "I"
+      ],
+      "risques": [
+        "Ambiance thermique",
+        "TMS / Travail répétitif",
+        "Risque machine",
+        "Manutention manuelle",
+        "Risque biologique",
+        "Horaires atypiques / nuit"
+      ],
+      "kw": "cuisinier cuisiniere chef cuisine restauration"
+    },
+    {
+      "c": "533",
+      "l": "Réceptionniste hôtelier",
+      "g": "5",
+      "naf": [
+        "I"
+      ],
+      "risques": [
+        "Horaires atypiques / nuit",
+        "RPS / contact public",
+        "Postures contraignantes",
+        "Manutention manuelle"
+      ],
+      "kw": "receptionniste hotel employe hotellerie"
+    },
+    {
+      "c": "534",
+      "l": "Aide à domicile, auxiliaire de vie",
+      "g": "5",
+      "naf": [
+        "Q",
+        "T"
+      ],
+      "risques": [
+        "Manutention manuelle",
+        "TMS / Travail répétitif",
+        "Risque biologique",
+        "Risque routier",
+        "Travail isolé",
+        "RPS / contact public",
+        "Horaires atypiques / nuit"
+      ],
+      "kw": "aide domicile auxiliaire vie avs aesh"
+    },
+    {
+      "c": "535",
+      "l": "Agent d'entretien",
+      "g": "5",
+      "naf": [
+        "N",
+        "T"
+      ],
+      "risques": [
+        "Risque chimique (incl. radon, CMR)",
+        "TMS / Travail répétitif",
+        "Postures contraignantes",
+        "Chute de plain-pied",
+        "Manutention manuelle",
+        "Horaires atypiques / nuit"
+      ],
+      "kw": "agent entretien menage nettoyage proprete"
+    },
+    {
+      "c": "536",
+      "l": "Agent de service hospitalier (ASH)",
+      "g": "5",
+      "naf": [
+        "Q"
+      ],
+      "risques": [
+        "Risque biologique",
+        "Risque chimique (incl. radon, CMR)",
+        "Manutention manuelle",
+        "TMS / Travail répétitif",
+        "Horaires atypiques / nuit"
+      ],
+      "kw": "ash agent service hospitalier bio nettoyage"
+    },
+    {
+      "c": "537",
+      "l": "ATSEM",
+      "g": "5",
+      "naf": [
+        "O",
+        "P"
+      ],
+      "risques": [
+        "Risque biologique",
+        "Bruit",
+        "Manutention manuelle",
+        "Postures contraignantes",
+        "RPS / contact public"
+      ],
+      "kw": "atsem agent territorial ecole maternelle enfant"
+    },
+    {
+      "c": "538",
+      "l": "Assistante maternelle",
+      "g": "5",
+      "naf": [
+        "Q",
+        "T"
+      ],
+      "risques": [
+        "Risque biologique",
+        "Manutention manuelle",
+        "RPS / contact public",
+        "Bruit",
+        "Travail isolé"
+      ],
+      "kw": "assistante maternelle nourrice garde enfant"
+    },
+    {
+      "c": "541",
+      "l": "Gardien d'immeuble",
+      "g": "5",
+      "naf": [
+        "L",
+        "N"
+      ],
+      "risques": [
+        "Manutention manuelle",
+        "Risque chimique (incl. radon, CMR)",
+        "RPS / contact public",
+        "Travail isolé",
+        "Chute de plain-pied"
+      ],
+      "kw": "gardien immeuble concierge residence"
+    },
+    {
+      "c": "542",
+      "l": "Facteur",
+      "g": "5",
+      "naf": [
+        "H"
+      ],
+      "risques": [
+        "Risque routier",
+        "Ambiance thermique",
+        "TMS / Travail répétitif",
+        "Manutention manuelle",
+        "Chute de plain-pied"
+      ],
+      "kw": "facteur postier distribution courrier"
+    },
+    {
+      "c": "543",
+      "l": "Agent de sécurité, vigile",
+      "g": "5",
+      "naf": [
+        "N"
+      ],
+      "risques": [
+        "RPS / contact public",
+        "Horaires atypiques / nuit",
+        "Postures contraignantes",
+        "Travail isolé",
+        "Addictions / sécurité"
+      ],
+      "kw": "agent securite vigile surveillance gardiennage"
+    },
+    {
+      "c": "544",
+      "l": "Pompier professionnel",
+      "g": "5",
+      "naf": [
+        "O"
+      ],
+      "risques": [
+        "Risque chimique (incl. radon, CMR)",
+        "Risque biologique",
+        "Ambiance thermique",
+        "Incendie / explosion",
+        "Manutention manuelle",
+        "Chute de hauteur",
+        "Horaires atypiques / nuit",
+        "RPS / contact public"
+      ],
+      "kw": "pompier sapeur professionnel sdis incendie secours"
+    },
+    {
+      "c": "545",
+      "l": "Policier, gendarme",
+      "g": "5",
+      "naf": [
+        "O"
+      ],
+      "risques": [
+        "RPS / contact public",
+        "Horaires atypiques / nuit",
+        "Risque routier",
+        "Addictions / sécurité",
+        "Travail isolé"
+      ],
+      "kw": "policier gendarme police nationale municipale"
+    },
+    {
+      "c": "546",
+      "l": "Agent funéraire",
+      "g": "5",
+      "naf": [
+        "S"
+      ],
+      "risques": [
+        "Risque biologique",
+        "Risque chimique (incl. radon, CMR)",
+        "Manutention manuelle",
+        "RPS / contact public"
+      ],
+      "kw": "agent funeraire thanatopracteur pompes funebres"
+    },
+    {
+      "c": "611",
+      "l": "Maçon",
+      "g": "6",
+      "naf": [
+        "F"
+      ],
+      "risques": [
+        "Chute de hauteur",
+        "Manutention manuelle",
+        "Bruit",
+        "Vibrations mécaniques",
+        "Risque chimique (incl. radon, CMR)",
+        "Coactivité",
+        "Ambiance thermique"
+      ],
+      "kw": "macon ouvrier batiment btp"
+    },
+    {
+      "c": "612",
+      "l": "Coffreur, ferrailleur",
+      "g": "6",
+      "naf": [
+        "F"
+      ],
+      "risques": [
+        "Chute de hauteur",
+        "Manutention manuelle",
+        "Risque machine",
+        "Bruit",
+        "Coactivité"
+      ],
+      "kw": "coffreur ferrailleur beton arme btp"
+    },
+    {
+      "c": "613",
+      "l": "Électricien du bâtiment",
+      "g": "6",
+      "naf": [
+        "F"
+      ],
+      "risques": [
+        "Risque électrique",
+        "Chute de hauteur",
+        "Postures contraignantes",
+        "Coactivité"
+      ],
+      "kw": "electricien batiment installation"
+    },
+    {
+      "c": "614",
+      "l": "Plombier",
+      "g": "6",
+      "naf": [
+        "F"
+      ],
+      "risques": [
+        "Postures contraignantes",
+        "Manutention manuelle",
+        "Risque chimique (incl. radon, CMR)",
+        "Chute de hauteur"
+      ],
+      "kw": "plombier installateur sanitaire tuyauterie"
+    },
+    {
+      "c": "615",
+      "l": "Menuisier poseur",
+      "g": "6",
+      "naf": [
+        "F"
+      ],
+      "risques": [
+        "Risque machine",
+        "Bruit",
+        "Chute de hauteur",
+        "Manutention manuelle",
+        "Risque chimique (incl. radon, CMR)"
+      ],
+      "kw": "menuisier poseur agencement bois"
+    },
+    {
+      "c": "616",
+      "l": "Peintre en bâtiment",
+      "g": "6",
+      "naf": [
+        "F"
+      ],
+      "risques": [
+        "Risque chimique (incl. radon, CMR)",
+        "Chute de hauteur",
+        "Postures contraignantes",
+        "TMS / Travail répétitif"
+      ],
+      "kw": "peintre batiment finition"
+    },
+    {
+      "c": "617",
+      "l": "Conducteur d'engins BTP",
+      "g": "6",
+      "naf": [
+        "F",
+        "B"
+      ],
+      "risques": [
+        "Vibrations mécaniques",
+        "Bruit",
+        "Risque machine",
+        "Chute de plain-pied",
+        "Risque routier"
+      ],
+      "kw": "conducteur engins btp pelleteuse grue caces"
+    },
+    {
+      "c": "618",
+      "l": "Grutier",
+      "g": "6",
+      "naf": [
+        "F"
+      ],
+      "risques": [
+        "Chute de hauteur",
+        "Vibrations mécaniques",
+        "Travail isolé",
+        "Bruit",
+        "Risque machine"
+      ],
+      "kw": "grutier grue levage caces"
+    },
+    {
+      "c": "619",
+      "l": "Étancheur, bardeur",
+      "g": "6",
+      "naf": [
+        "F"
+      ],
+      "risques": [
+        "Chute de hauteur",
+        "Risque chimique (incl. radon, CMR)",
+        "Ambiance thermique",
+        "Manutention manuelle"
+      ],
+      "kw": "etancheur bardeur toiture isolation"
+    },
+    {
+      "c": "620",
+      "l": "Canalisateur",
+      "g": "6",
+      "naf": [
+        "F",
+        "E"
+      ],
+      "risques": [
+        "Manutention manuelle",
+        "Vibrations mécaniques",
+        "Chute de plain-pied",
+        "Coactivité",
+        "Risque chimique (incl. radon, CMR)"
+      ],
+      "kw": "canalisateur poseur reseaux tranchee vrd"
+    },
+    {
+      "c": "631",
+      "l": "Soudeur",
+      "g": "6",
+      "naf": [
+        "C",
+        "F"
+      ],
+      "risques": [
+        "Risque chimique (incl. radon, CMR)",
+        "Bruit",
+        "Ambiance thermique",
+        "Incendie / explosion",
+        "Postures contraignantes"
+      ],
+      "kw": "soudeur soudure tig mig arc metal"
+    },
+    {
+      "c": "632",
+      "l": "Chaudronnier",
+      "g": "6",
+      "naf": [
+        "C"
+      ],
+      "risques": [
+        "Bruit",
+        "Risque machine",
+        "Manutention manuelle",
+        "Risque chimique (incl. radon, CMR)",
+        "Postures contraignantes"
+      ],
+      "kw": "chaudronnier tolier metallerie"
+    },
+    {
+      "c": "633",
+      "l": "Usineur (tourneur, fraiseur)",
+      "g": "6",
+      "naf": [
+        "C"
+      ],
+      "risques": [
+        "Risque machine",
+        "Bruit",
+        "Risque chimique (incl. radon, CMR)",
+        "TMS / Travail répétitif"
+      ],
+      "kw": "usineur tourneur fraiseur cnc usinage"
+    },
+    {
+      "c": "634",
+      "l": "Opérateur machine industrielle",
+      "g": "6",
+      "naf": [
+        "C"
+      ],
+      "risques": [
+        "Risque machine",
+        "Bruit",
+        "TMS / Travail répétitif",
+        "Risque chimique (incl. radon, CMR)"
+      ],
+      "kw": "operateur machine industrielle production"
+    },
+    {
+      "c": "635",
+      "l": "Opérateur agroalimentaire",
+      "g": "6",
+      "naf": [
+        "C"
+      ],
+      "risques": [
+        "Risque machine",
+        "TMS / Travail répétitif",
+        "Ambiance thermique",
+        "Risque biologique",
+        "Bruit",
+        "Manutention manuelle"
+      ],
+      "kw": "operateur agroalimentaire industrie alimentaire"
+    },
+    {
+      "c": "636",
+      "l": "Opérateur industrie chimique / pharma",
+      "g": "6",
+      "naf": [
+        "C"
+      ],
+      "risques": [
+        "Risque chimique (incl. radon, CMR)",
+        "Incendie / explosion",
+        "Risque machine",
+        "Horaires atypiques / nuit"
+      ],
+      "kw": "operateur chimie industrie pharmaceutique"
+    },
+    {
+      "c": "637",
+      "l": "Monteur, assembleur",
+      "g": "6",
+      "naf": [
+        "C"
+      ],
+      "risques": [
+        "TMS / Travail répétitif",
+        "Postures contraignantes",
+        "Bruit",
+        "Risque machine"
+      ],
+      "kw": "monteur assembleur industrie chaine montage"
+    },
+    {
+      "c": "638",
+      "l": "Agent de tri, opérateur déchets",
+      "g": "6",
+      "naf": [
+        "E"
+      ],
+      "risques": [
+        "Risque biologique",
+        "Risque chimique (incl. radon, CMR)",
+        "Manutention manuelle",
+        "TMS / Travail répétitif",
+        "Bruit"
+      ],
+      "kw": "agent tri dechets recyclage centre tri"
+    },
+    {
+      "c": "641",
+      "l": "Conducteur routier PL / SPL",
+      "g": "6",
+      "naf": [
+        "H"
+      ],
+      "risques": [
+        "Risque routier",
+        "Vibrations mécaniques",
+        "Horaires atypiques / nuit",
+        "Manutention manuelle",
+        "Travail isolé",
+        "Postures contraignantes"
+      ],
+      "kw": "chauffeur routier poids lourd conducteur spl"
+    },
+    {
+      "c": "642",
+      "l": "Conducteur de bus",
+      "g": "6",
+      "naf": [
+        "H"
+      ],
+      "risques": [
+        "Risque routier",
+        "Vibrations mécaniques",
+        "RPS / contact public",
+        "Horaires atypiques / nuit",
+        "Postures contraignantes"
+      ],
+      "kw": "conducteur bus car transport voyageurs"
+    },
+    {
+      "c": "643",
+      "l": "Conducteur de taxi, VTC",
+      "g": "6",
+      "naf": [
+        "H"
+      ],
+      "risques": [
+        "Risque routier",
+        "Postures contraignantes",
+        "Horaires atypiques / nuit",
+        "RPS / contact public",
+        "Travail isolé"
+      ],
+      "kw": "chauffeur taxi vtc transport personnes"
+    },
+    {
+      "c": "644",
+      "l": "Livreur, coursier",
+      "g": "6",
+      "naf": [
+        "H"
+      ],
+      "risques": [
+        "Risque routier",
+        "Manutention manuelle",
+        "TMS / Travail répétitif",
+        "Ambiance thermique",
+        "Travail isolé"
+      ],
+      "kw": "livreur coursier livraison colis"
+    },
+    {
+      "c": "645",
+      "l": "Conducteur de train",
+      "g": "6",
+      "naf": [
+        "H"
+      ],
+      "risques": [
+        "Horaires atypiques / nuit",
+        "Vibrations mécaniques",
+        "Bruit",
+        "RPS / contact public",
+        "Travail isolé"
+      ],
+      "kw": "conducteur train cheminot sncf"
+    },
+    {
+      "c": "646",
+      "l": "Docker",
+      "g": "6",
+      "naf": [
+        "H"
+      ],
+      "risques": [
+        "Manutention manuelle",
+        "Risque machine",
+        "Chute de hauteur",
+        "Bruit",
+        "Ambiance thermique"
+      ],
+      "kw": "docker manutentionnaire port portuaire"
+    },
+    {
+      "c": "651",
+      "l": "Cariste, magasinier",
+      "g": "6",
+      "naf": [
+        "H",
+        "G",
+        "C"
+      ],
+      "risques": [
+        "Risque machine",
+        "Manutention manuelle",
+        "Bruit",
+        "Chute de plain-pied",
+        "Risque routier"
+      ],
+      "kw": "cariste magasinier chariot elevateur caces entrepot"
+    },
+    {
+      "c": "652",
+      "l": "Déménageur",
+      "g": "6",
+      "naf": [
+        "H",
+        "N"
+      ],
+      "risques": [
+        "Manutention manuelle",
+        "Chute de hauteur",
+        "TMS / Travail répétitif",
+        "Risque routier"
+      ],
+      "kw": "demenageur demenagement transport mobilier"
+    },
+    {
+      "c": "653",
+      "l": "Éboueur",
+      "g": "6",
+      "naf": [
+        "E",
+        "N"
+      ],
+      "risques": [
+        "Risque biologique",
+        "Risque chimique (incl. radon, CMR)",
+        "Manutention manuelle",
+        "Risque routier",
+        "Ambiance thermique",
+        "Horaires atypiques / nuit"
+      ],
+      "kw": "eboueur ripeur agent collecte ordures"
+    },
+    {
+      "c": "654",
+      "l": "Agent d'assainissement",
+      "g": "6",
+      "naf": [
+        "E"
+      ],
+      "risques": [
+        "Risque biologique",
+        "Risque chimique (incl. radon, CMR)",
+        "Manutention manuelle",
+        "Travail isolé",
+        "Chute de plain-pied"
+      ],
+      "kw": "agent assainissement egoutier cureur"
+    },
+    {
+      "c": "661",
+      "l": "Couturier industriel",
+      "g": "6",
+      "naf": [
+        "C"
+      ],
+      "risques": [
+        "TMS / Travail répétitif",
+        "Postures contraignantes",
+        "Bruit",
+        "Risque machine"
+      ],
+      "kw": "couturier confection textile mecanicien"
+    },
+    {
+      "c": "662",
+      "l": "Boulanger industriel",
+      "g": "6",
+      "naf": [
+        "C"
+      ],
+      "risques": [
+        "Ambiance thermique",
+        "Horaires atypiques / nuit",
+        "TMS / Travail répétitif",
+        "Risque machine",
+        "Manutention manuelle"
+      ],
+      "kw": "boulanger industriel production pain"
+    },
+    {
+      "c": "663",
+      "l": "Opérateur en imprimerie",
+      "g": "6",
+      "naf": [
+        "C"
+      ],
+      "risques": [
+        "Risque chimique (incl. radon, CMR)",
+        "Bruit",
+        "Risque machine",
+        "TMS / Travail répétitif"
+      ],
+      "kw": "imprimeur operateur imprimerie offset"
+    },
+    {
+      "c": "671",
+      "l": "Ouvrier paysagiste, jardinier",
+      "g": "6",
+      "naf": [
+        "N",
+        "A"
+      ],
+      "risques": [
+        "Risque machine",
+        "Bruit",
+        "Risque chimique (incl. radon, CMR)",
+        "Manutention manuelle",
+        "Ambiance thermique",
+        "Vibrations mécaniques"
+      ],
+      "kw": "paysagiste jardinier espace vert"
+    },
+    {
+      "c": "672",
+      "l": "Agent de voirie, cantonnier",
+      "g": "6",
+      "naf": [
+        "O",
+        "F"
+      ],
+      "risques": [
+        "Risque routier",
+        "Manutention manuelle",
+        "Vibrations mécaniques",
+        "Ambiance thermique",
+        "Bruit"
+      ],
+      "kw": "cantonnier voirie agent communal"
+    },
+    {
+      "c": "673",
+      "l": "Monteur de lignes (télécom)",
+      "g": "6",
+      "naf": [
+        "D",
+        "J"
+      ],
+      "risques": [
+        "Risque électrique",
+        "Chute de hauteur",
+        "Travail isolé",
+        "Ambiance thermique"
+      ],
+      "kw": "monteur lignes telecom electricite fibre"
+    },
+    {
+      "c": "674",
+      "l": "Plongeur en restauration",
+      "g": "6",
+      "naf": [
+        "I"
+      ],
+      "risques": [
+        "Risque chimique (incl. radon, CMR)",
+        "Ambiance thermique",
+        "TMS / Travail répétitif",
+        "Postures contraignantes",
+        "Chute de plain-pied"
+      ],
+      "kw": "plongeur restaurant vaisselle laverie"
+    },
+    {
+      "c": "675",
+      "l": "Agent de laverie en laboratoire",
+      "g": "6",
+      "naf": [
+        "M",
+        "Q",
+        "C"
+      ],
+      "risques": [
+        "Risque chimique (incl. radon, CMR)",
+        "Risque biologique",
+        "Ambiance thermique",
+        "TMS / Travail répétitif",
+        "Manutention manuelle"
+      ],
+      "kw": "agent laverie laboratoire verrerie autoclave"
+    },
+    {
+      "c": "676",
+      "l": "Ouvrier de station d'épuration",
+      "g": "6",
+      "naf": [
+        "E"
+      ],
+      "risques": [
+        "Risque biologique",
+        "Risque chimique (incl. radon, CMR)",
+        "Chute de plain-pied",
+        "Travail isolé"
+      ],
+      "kw": "ouvrier station epuration step eau"
+    },
+    {
+      "c": "677",
+      "l": "Mineur, carrier",
+      "g": "6",
+      "naf": [
+        "B"
+      ],
+      "risques": [
+        "Bruit",
+        "Vibrations mécaniques",
+        "Risque chimique (incl. radon, CMR)",
+        "Chute de hauteur",
+        "Manutention manuelle",
+        "Incendie / explosion"
+      ],
+      "kw": "mineur carrier extraction mine carriere"
+    },
+    {
+      "c": "678",
+      "l": "Agent de nettoyage industriel",
+      "g": "6",
+      "naf": [
+        "N"
+      ],
+      "risques": [
+        "Risque chimique (incl. radon, CMR)",
+        "TMS / Travail répétitif",
+        "Horaires atypiques / nuit",
+        "Chute de plain-pied",
+        "Postures contraignantes",
+        "Travail isolé"
+      ],
+      "kw": "agent nettoyage industriel proprete"
+    },
+    {
+      "c": "679",
+      "l": "Ouvrier viticole, saisonnier",
+      "g": "6",
+      "naf": [
+        "A"
+      ],
+      "risques": [
+        "Risque chimique (incl. radon, CMR)",
+        "Postures contraignantes",
+        "Manutention manuelle",
+        "Ambiance thermique",
+        "TMS / Travail répétitif"
+      ],
+      "kw": "ouvrier viticole saisonnier agricole vendange"
+    },
+    {
+      "c": "680",
+      "l": "Brancardier",
+      "g": "6",
+      "naf": [
+        "Q"
+      ],
+      "risques": [
+        "Manutention manuelle",
+        "Risque biologique",
+        "TMS / Travail répétitif",
+        "Horaires atypiques / nuit",
+        "RPS / contact public"
+      ],
+      "kw": "brancardier transport patient hopital"
+    },
+    {
+      "c": "681",
+      "l": "Agent de blanchisserie hospitalière",
+      "g": "6",
+      "naf": [
+        "Q",
+        "N"
+      ],
+      "risques": [
+        "Risque biologique",
+        "Risque chimique (incl. radon, CMR)",
+        "Ambiance thermique",
+        "Manutention manuelle",
+        "TMS / Travail répétitif",
+        "Bruit"
+      ],
+      "kw": "blanchisserie hospitaliere linge buanderie"
+    },
+    {
+      "c": "682",
+      "l": "Agent de stérilisation hospitalière",
+      "g": "6",
+      "naf": [
+        "Q"
+      ],
+      "risques": [
+        "Risque biologique",
+        "Risque chimique (incl. radon, CMR)",
+        "Ambiance thermique",
+        "Manutention manuelle"
+      ],
+      "kw": "agent sterilisation hospitaliere autoclave"
+    },
+    {
+      "c": "683",
+      "l": "Opérateur de centrale nucléaire",
+      "g": "6",
+      "naf": [
+        "D"
+      ],
+      "risques": [
+        "Risque chimique (incl. radon, CMR)",
+        "Horaires atypiques / nuit",
+        "Risque machine",
+        "Incendie / explosion"
+      ],
+      "kw": "operateur centrale nucleaire edf"
+    },
+    {
+      "c": "684",
+      "l": "Agent de maintenance bâtiment",
+      "g": "6",
+      "naf": [
+        "N",
+        "L"
+      ],
+      "risques": [
+        "Risque électrique",
+        "Chute de hauteur",
+        "Manutention manuelle",
+        "Risque chimique (incl. radon, CMR)",
+        "Travail isolé"
+      ],
+      "kw": "agent maintenance batiment homme toutes mains"
+    },
+    {
+      "c": "685",
+      "l": "Agent de quai",
+      "g": "6",
+      "naf": [
+        "H"
+      ],
+      "risques": [
+        "Manutention manuelle",
+        "TMS / Travail répétitif",
+        "Risque machine",
+        "Bruit",
+        "Horaires atypiques / nuit"
+      ],
+      "kw": "agent quai manutentionnaire chargement"
+    },
+    {
+      "c": "686",
+      "l": "Monteur en échafaudage",
+      "g": "6",
+      "naf": [
+        "F"
+      ],
+      "risques": [
+        "Chute de hauteur",
+        "Manutention manuelle",
+        "Coactivité",
+        "Risque machine"
+      ],
+      "kw": "monteur echafaudage echafaudier btp"
+    },
+    {
+      "c": "687",
+      "l": "Désamianteur",
+      "g": "6",
+      "naf": [
+        "F"
+      ],
+      "risques": [
+        "Risque chimique (incl. radon, CMR)",
+        "Chute de hauteur",
+        "Ambiance thermique",
+        "Coactivité"
+      ],
+      "kw": "desamianteur amiante retrait ss3 ss4"
+    },
+    {
+      "c": "688",
+      "l": "Ripeur",
+      "g": "6",
+      "naf": [
+        "E",
+        "N"
+      ],
+      "risques": [
+        "Risque biologique",
+        "Manutention manuelle",
+        "Risque routier",
+        "Horaires atypiques / nuit",
+        "Ambiance thermique"
+      ],
+      "kw": "ripeur collecte selective recyclage"
+    }
+  ]
 }
