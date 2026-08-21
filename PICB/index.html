@@ -418,7 +418,7 @@ function renderReco(L){
 /* ═══ EXPORTS ═══ */
 function buildDataRecord(){if(!LAST)return null;var L=LAST;return{_version:"v26",_timestamp:new Date().toISOString(),mode:L.mode,entreprise:($("entreprise").value||"").trim()||"—",poste:($("poste").value||"").trim()||"—",date:$("date").value||"",intervenant:($("intervenant").value||"").trim(),qualite:$("qualite").value,service:($("service").value||"").trim(),taches:L.mode==="multi"?unites.map(function(u){return{nom:u.nom,zone:u.zone,source:u.source,spectre:u.spectre.slice(),duree:u.duree,lpc:u.lpc,caract:u.caract,leqA:r1(computeLeqU(u))}}):null,spectreRef:L.spec.slice(),leqA:r1(L.res.leqA),lcla:L.res.lcla?r1(L.res.lcla):null,lpcMax:L.lpc,creteAlerte:L.crDiag?L.crDiag.tag:null,noPicb:!!L.noPicb,picb:(!L.noPicb&&L.picb)?{nom:L.picb.nom,snr:L.picb.snr,type:L.picb.type,profil:L.picb.profil,isDouble:!!L.picb.isDouble}:null,la98:L.noPicb?null:r1(L.res.la98),diagnostic:L.diag?L.diag.tag:null,adequation:L.adq?L.adq.statut:null}}
 function exportJSON(){var r=buildDataRecord();if(!r)return;var b=new Blob([JSON.stringify(r,null,2)],{type:"application/json"});var u=URL.createObjectURL(b);var a=document.createElement("a");a.href=u;a.download="PICB_"+r.entreprise.replace(/[^a-z0-9]+/gi,"-").slice(0,30)+".json";document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(u);saveToHistory(r)}
-function exportWord(){if(!LAST)return;var L=LAST,res=L.res,adq=L.adq,spec=L.spec,isM=L.mode==="multi",np=!!L.noPicb;var d=$("date").value?new Date($("date").value).toLocaleDateString("fr-FR"):"—",intN=($("intervenant").value||"").trim()||"Nom";var hd=function(t){return'<td bgcolor="#102a43" style="border:1px solid #102a43;color:#fff;padding:5px 7px;text-align:center;font-weight:bold">'+t+'</td>'};var ctx=[["Entreprise",$("entreprise").value||"—"],["Poste/Fonction",$("poste").value||"—"],["Date",d],["Intervenant",intN+" — "+$("qualite").value],["Service",$("service").value||"—"],["Mode",isM?"Multi-sonométries ("+unites.length+" tâches)":"Évaluation simple"]].map(function(r){return'<tr><td bgcolor="#f0eddf" style="border:1px solid #c9c9c9;padding:5px 9px;font-weight:bold;width:42%">'+r[0]+'</td><td style="border:1px solid #c9c9c9;padding:5px 9px">'+esc(r[1])+'</td></tr>'}).join("");
+function exportWordLegacy(){if(!LAST)return;var L=LAST,res=L.res,adq=L.adq,spec=L.spec,isM=L.mode==="multi",np=!!L.noPicb;var d=$("date").value?new Date($("date").value).toLocaleDateString("fr-FR"):"—",intN=($("intervenant").value||"").trim()||"Nom";var hd=function(t){return'<td bgcolor="#102a43" style="border:1px solid #102a43;color:#fff;padding:5px 7px;text-align:center;font-weight:bold">'+t+'</td>'};var ctx=[["Entreprise",$("entreprise").value||"—"],["Poste/Fonction",$("poste").value||"—"],["Date",d],["Intervenant",intN+" — "+$("qualite").value],["Service",$("service").value||"—"],["Mode",isM?"Multi-sonométries ("+unites.length+" tâches)":"Évaluation simple"]].map(function(r){return'<tr><td bgcolor="#f0eddf" style="border:1px solid #c9c9c9;padding:5px 9px;font-weight:bold;width:42%">'+r[0]+'</td><td style="border:1px solid #c9c9c9;padding:5px 9px">'+esc(r[1])+'</td></tr>'}).join("");
   // Tableau tâches enrichi
   var tt="";if(isM&&unites.length>0){tt='<h2>2 · Tâches / Situations d\'exposition</h2><table><tr>'+hd("Tâche")+hd("Zone")+hd("Source");FREQS.forEach(function(f){tt+=hd(hz(f))});tt+=hd("Durée")+hd("Leq(A)")+hd("Lp,C")+hd("Caract.")+'</tr>';unites.forEach(function(u){var l=computeLeqU(u);tt+='<tr><td style="border:1px solid #c9c9c9;padding:4px 6px;font-weight:bold">'+esc(u.nom)+'</td><td style="border:1px solid #c9c9c9;padding:4px 6px">'+esc(u.zone)+'</td><td style="border:1px solid #c9c9c9;padding:4px 6px">'+esc(u.source)+'</td>';for(var i=0;i<8;i++)tt+='<td style="border:1px solid #c9c9c9;padding:4px;text-align:center">'+(u.spectre[i]!=null?f1(u.spectre[i]):"—")+'</td>';tt+='<td style="border:1px solid #c9c9c9;text-align:center">'+u.duree+'h</td><td style="border:1px solid #c9c9c9;text-align:center;font-weight:bold">'+f1(l)+'</td><td style="border:1px solid #c9c9c9;text-align:center">'+(u.lpc!=null?f1(u.lpc):"—")+'</td><td style="border:1px solid #c9c9c9;text-align:center">'+esc(u.caract)+'</td></tr>'});tt+='</table>'}
   // Crête
@@ -433,7 +433,39 @@ function exportWord(){if(!LAST)return;var L=LAST,res=L.res,adq=L.adq,spec=L.spec
     +crHtml+recoHtml
     +'<p class="sub" style="margin-top:18px;border-top:1px solid #c9c9c9;padding-top:6px">PréventIA-LaB v26 — double voie spectre + crête</p></body></html>';
   var blob=new Blob(["\ufeff",html],{type:"application/msword"});var u=URL.createObjectURL(blob);var a=document.createElement("a");a.href=u;a.download="PICB_v26_"+($("entreprise").value||"eval").replace(/[^a-z0-9]+/gi,"-").slice(0,30)+".doc";document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(u);var rec=buildDataRecord();if(rec)saveToHistory(rec);}
-
+function exportWord(){
+  if(!LAST)return;
+  var L=LAST, res=L.res, adq=L.adq;
+  var data={
+    entreprise:($("entreprise").value||"").trim(),
+    poste:($("poste").value||"").trim(),
+    date:$("date").value||"",
+    intervenant:($("intervenant").value||"").trim(),
+    qualite:$("qualite").value,
+    service:($("service").value||"").trim(),
+    lex:$("lex").value||"",
+    mode:L.mode,
+    spec:L.spec,
+    noPicb:!!L.noPicb,
+    formation:L.formation,
+    picb:L.picb?{nom:L.picb.nom,snr:L.picb.snr,type:L.picb.type,
+      typeLabel:TYPE_LABEL[L.picb.type],profil:L.picb.profil,isDouble:!!L.picb.isDouble}:null,
+    res:res, diag:L.diag, adq:adq,
+    lpc:L.lpc, crDiag:L.crDiag,
+    taches:L.mode==="multi"?unites.map(function(u){
+      return{nom:u.nom,zone:u.zone,source:u.source,spectre:u.spectre.slice(),
+        duree:u.duree,lpc:u.lpc,caract:u.caract,leqA:r1(computeLeqU(u))}
+    }):null,
+    recos:buildRecommandations(L.spec,res,L.diag,adq,L.lpc,L.crDiag)
+  };
+  if(typeof exportRapportWord==="function"){
+    exportRapportWord(data);
+  }else{
+    exportWordLegacy();
+  }
+  var rec=buildDataRecord();if(rec)saveToHistory(rec);
+}
+                            
 /* ═══ HISTORIQUE ═══ */
 function saveToHistory(r){try{var h=JSON.parse(localStorage.getItem(HISTO_KEY)||"[]");h.push(r);localStorage.setItem(HISTO_KEY,JSON.stringify(h))}catch(e){}updateHistoBar()}
 function updateHistoBar(){var e=($("entreprise").value||"").trim();if(!e){$("histoBar").style.display="none";return}try{var h=JSON.parse(localStorage.getItem(HISTO_KEY)||"[]"),f=h.filter(function(r){return r.entreprise===e});if(!f.length){$("histoBar").style.display="none";return}$("histoBar").style.display="flex";$("histoEntreprise").textContent=e;var txt=f.length+" éval.";if(f.length>=2){var d=(f[f.length-1].leqA||0)-(f[0].leqA||0);txt+=" · "+(d<0?"📉":"📈")+" "+f1(Math.abs(d))+" dB(A)"}$("histoCount").textContent=txt}catch(e){$("histoBar").style.display="none"}}
