@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Évaluation PICB — Méthode OB INRS | PréventIA-LaB v26</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#102a43;--navy:#1c4c7c;--paper:#f4f1ea;--card:#fff;--border:#e2dccd;--line:#eceadf;--mute:#5d6b7a;--soft:#8b94a0;--accent:#c2410c;--gold:#b78a2e;--green:#2f7d4f;--amber:#cd8a1c;--red:#c2392b;--darkred:#8a1c12;--teal:#1a7a6d}
+*{box-sizing:border-box;margin:0;padding:0}body{background:var(--paper);font-family:'DM Sans',sans-serif;color:var(--ink);padding:26px 16px 60px;-webkit-font-smoothing:antialiased}.wrap{max-width:1020px;margin:0 auto}h1,h2{font-weight:600}input,select,button{font-family:'DM Sans',sans-serif}input:focus,select:focus{outline:none;border-color:var(--navy)!important}::placeholder{color:#aab1bb}.mono{font-family:'IBM Plex Mono',monospace}
+header.hd{background:linear-gradient(135deg,var(--ink) 0%,#16395c 100%);border-radius:16px;padding:26px 28px;margin-bottom:20px;position:relative;overflow:hidden}header.hd .ring{position:absolute;border:1px solid rgba(183,138,46,.22);border-radius:50%}.kicker{font-size:11px;letter-spacing:3px;color:var(--gold);font-weight:700}header.hd h1{font-family:'DM Serif Display',serif;font-weight:400;color:#fff;font-size:28px;line-height:1.15;margin:6px 0 4px}header.hd p{color:#aebccb;font-size:13px}.tags{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}.tags span{font-size:11px;color:#cdd9e4;padding:4px 10px;border:1px solid rgba(255,255,255,.15);border-radius:20px}
+section.box{background:var(--card);border:1px solid var(--border);border-radius:14px;margin-bottom:18px;overflow:hidden}.sechd{display:flex;align-items:center;gap:12px;padding:14px 18px;border-bottom:1px solid var(--line);background:#faf8f2}.snum{width:34px;height:34px;border-radius:9px;background:var(--ink);color:#fff;display:grid;place-items:center;flex-shrink:0;font-family:'DM Serif Display',serif;font-size:17px}.snum.teal{background:var(--teal)}.snum.amber{background:var(--amber)}.sttl{font-size:15.5px}.ssub{font-size:11.5px;color:var(--soft);margin-top:2px}.secbody{padding:18px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}.grid4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:10px}
+.lbl{font-size:10.5px;font-weight:600;color:var(--mute);letter-spacing:.4px;text-transform:uppercase;margin-bottom:5px;display:block}.fld{width:100%;padding:8px 10px;border-radius:7px;border:1px solid var(--border);background:#fbfaf6;font-size:13.5px;color:var(--ink)}.num{width:100%;padding:8px 4px;border-radius:6px;border:1px solid var(--border);background:#fff;text-align:center;font-size:14px;color:var(--ink);font-family:'IBM Plex Mono',monospace}.bands{display:grid;grid-template-columns:repeat(8,1fr);gap:7px}.bandlab{font-size:10.5px;font-weight:600;text-align:center;margin-bottom:4px;font-family:'IBM Plex Mono',monospace;color:var(--navy)}
+.btn{display:inline-flex;align-items:center;gap:7px;padding:9px 16px;border-radius:8px;border:none;cursor:pointer;font-size:13px;font-weight:600;color:#fff;background:var(--accent)}.btn.dark{background:var(--ink)}.btn.teal{background:var(--teal)}.btn.ghost{background:#fff;color:var(--mute);border:1px solid var(--border)}.btn.sm{padding:7px 12px;font-size:12px;border-radius:6px}.btn:disabled{opacity:.55;cursor:default}
+.mode-toggle{display:flex;padding:4px;background:#ece9de;border-radius:11px;margin-bottom:18px}.mode-toggle button{flex:1;padding:10px 14px;border-radius:9px;border:none;cursor:pointer;font-size:13px;font-weight:600;background:transparent;color:var(--mute);transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px}.mode-toggle button.on{background:var(--ink);color:#fff;box-shadow:0 2px 8px rgba(16,42,67,.2)}.mode-toggle button .mtag{font-size:10px;padding:2px 7px;border-radius:10px;background:rgba(255,255,255,.15)}.mode-toggle button:not(.on) .mtag{background:rgba(0,0,0,.06)}
+.drop{border:2px dashed var(--border);border-radius:12px;padding:28px 16px;text-align:center;cursor:pointer;background:#fbfaf6}.drop:hover{border-color:var(--navy)}.upload-actions{display:flex;gap:8px;margin-top:8px}.btn-up{flex:1;padding:9px 8px;border-radius:8px;border:1px solid var(--navy);background:#fff;color:var(--navy);font-family:inherit;font-size:12.5px;font-weight:600;cursor:pointer}.btn-up.cam{background:var(--navy);color:#fff}.preview{display:flex;gap:12px;align-items:center;flex-wrap:wrap;border:1px solid var(--border);border-radius:10px;padding:10px;background:#fff}.preview img{width:120px;height:80px;object-fit:cover;border-radius:6px;border:1px solid var(--border)}.statusmsg{margin-top:8px;padding:8px 12px;border-radius:8px;font-size:12px}.statusmsg.ok{background:#eaf3ec;color:var(--green);border:1px solid #cfe5d6}.statusmsg.err{background:#fbeae7;color:var(--darkred);border:1px solid #f0cdc6}.statusmsg.info{background:#eef2f7;color:var(--navy);border:1px solid #d6dfe9}
+.seg{display:inline-flex;padding:3px;background:#ece9de;border-radius:9px;margin-bottom:12px}.seg button{padding:7px 16px;border-radius:7px;border:none;cursor:pointer;font-size:12.5px;font-weight:600;background:transparent;color:var(--mute)}.seg button.on{background:var(--ink);color:#fff}
+.unite-card{border:1px solid var(--border);border-radius:12px;margin-bottom:12px;background:#fbfaf6;overflow:hidden}.unite-card.active{border-color:var(--teal)}.unite-head{display:flex;align-items:center;gap:10px;padding:11px 14px;background:#f5f3eb;border-bottom:1px solid var(--line);cursor:pointer;user-select:none}.unite-head:hover{background:#efeadb}.unite-num{width:26px;height:26px;border-radius:7px;background:var(--teal);color:#fff;display:grid;place-items:center;font-size:12px;font-weight:700;flex-shrink:0}.unite-title{flex:1;font-size:13px;font-weight:600}.unite-meta{font-size:11px;color:var(--soft);font-family:'IBM Plex Mono',monospace}.unite-body{padding:14px;display:none}.unite-body.open{display:block}.unite-del{width:26px;height:26px;border-radius:6px;border:1px solid var(--border);background:#fff;cursor:pointer;display:grid;place-items:center;color:var(--red);font-size:15px;flex-shrink:0}.unite-del:hover{background:#fbeae7;border-color:var(--red)}
+.synth-bar{display:grid;grid-template-columns:repeat(8,1fr);gap:6px;margin-bottom:14px}.synth-cell{text-align:center;padding:8px 2px;border-radius:8px;background:#fff;border:1px solid var(--border)}.synth-cell .sv{font-size:16px;font-weight:700;font-family:'IBM Plex Mono',monospace;color:var(--teal)}.synth-cell .sl{font-size:9px;color:var(--soft);margin-bottom:2px;font-family:'IBM Plex Mono',monospace}
+.cfgrow{display:flex;align-items:center;gap:8px;margin-bottom:14px;font-size:12px;color:var(--mute)}.cfglink{color:var(--navy);cursor:pointer;text-decoration:underline;font-weight:600}.cfgpanel{border:1px solid var(--border);border-radius:10px;padding:12px;background:#fbfaf6;margin-bottom:14px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px}.stat{border:1px solid var(--border);background:#fbfaf6;border-radius:11px;padding:13px 12px;text-align:center}.stat.ref{border-color:var(--accent);background:#fdf2ea}.stat .sl{font-size:10px;font-weight:600;color:var(--mute);text-transform:uppercase;letter-spacing:.4px;min-height:26px}.stat .sv{font-size:30px;font-weight:600;line-height:1.1;font-family:'IBM Plex Mono',monospace}.stat .su{font-size:11px;color:var(--soft)}.badge{display:flex;align-items:center;gap:12px;padding:12px 16px;border-radius:11px;color:#fff;margin-bottom:8px}.badge .bt{font-size:14px;font-weight:700}.badge .bd{font-size:12px;opacity:.92}.lcla{display:flex;gap:16px;flex-wrap:wrap;font-size:12.5px;color:var(--mute);padding:8px 4px}.chartbox{margin-top:12px;border:1px solid var(--line);border-radius:11px;padding:14px 8px 8px;background:#fbfaf6}.charttitle{font-size:11px;font-weight:600;color:var(--mute);padding-left:10px;text-transform:uppercase;letter-spacing:.4px;margin-bottom:6px}
+table.ob{width:100%;border-collapse:collapse;font-size:12px;font-family:'IBM Plex Mono',monospace}table.ob th{background:var(--ink);color:#fff;padding:7px 4px;text-align:center;font-weight:600}table.ob th.lft{text-align:left;padding-left:8px}table.ob td{padding:6px 4px;text-align:center;border:1px solid var(--line)}table.ob td.rl{background:var(--navy);color:#fff;font-weight:600;text-align:left;padding-left:8px}.tint{background:#fdf2ea}
+.adq{border-left:5px solid var(--mute);background:#fbfaf6;border-radius:0 11px 11px 0;padding:14px 18px;margin-bottom:14px}.adq .at{font-size:15px;font-weight:700;margin-bottom:5px}.adq .am{font-size:13px;line-height:1.5}.acts{list-style:none;display:flex;flex-direction:column;gap:8px}.acts li{display:flex;gap:9px;font-size:13px;line-height:1.45}.acts .n{flex-shrink:0;width:18px;height:18px;border-radius:5px;background:var(--ink);color:#fff;font-size:10px;display:grid;place-items:center;margin-top:1px;font-family:'IBM Plex Mono',monospace}.captitle{font-size:11px;font-weight:600;color:var(--mute);margin:14px 0 7px;text-transform:uppercase;letter-spacing:.4px}
+/* alerte crête */
+.crete-alert{padding:12px 16px;border-radius:11px;margin-bottom:12px;display:flex;align-items:flex-start;gap:12px;font-size:13px;line-height:1.5}.crete-alert.c135{background:#fdf3e2;border:1px solid #e6c168;color:#8a6810}.crete-alert.c137{background:#fbeae7;border:1px solid #e0a59a;color:#8a1c12}.crete-alert.c140{background:#f5d5d0;border:2px solid var(--darkred);color:var(--darkred)}.crete-icon{font-size:22px;flex-shrink:0;margin-top:2px}
+/* reco contextualisée */
+.reco-card{border:1px solid var(--border);border-radius:11px;padding:14px 16px;margin-bottom:10px;background:#fbfaf6}.reco-card .reco-title{font-size:13px;font-weight:700;margin-bottom:6px;display:flex;align-items:center;gap:8px}.reco-card .reco-body{font-size:12.5px;line-height:1.55;color:var(--ink)}.reco-tag{font-size:10px;padding:3px 8px;border-radius:6px;font-weight:600;color:#fff}
+.exbar{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px 20px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;justify-content:space-between;margin-bottom:12px}.exbar .et{font-size:14px;font-weight:700}.exbar .es{font-size:12px;color:var(--soft);margin-top:2px}.export-btns{display:flex;gap:8px;flex-wrap:wrap}
+footer.ft{margin-top:22px;text-align:center;font-size:11px;color:var(--soft);line-height:1.6}.hint{font-size:10.5px;color:var(--soft);margin-top:6px;font-family:'IBM Plex Mono',monospace}
+@media(max-width:680px){.grid2,.grid3,.grid4,.stats{grid-template-columns:1fr}.bands,.synth-bar{grid-template-columns:repeat(4,1fr)}.mode-toggle{flex-direction:column}}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+<script src="exporteur-word.js"></script>
+</head>
+<body>
+<div class="wrap">
+  <header class="hd">
+    <div class="ring" style="right:-30px;top:-30px;width:180px;height:180px"></div>
+    <div class="kicker">PRÉVENTIA-LAB</div>
+    <h1>Évaluation des protections auditives</h1>
+    <p>Méthode OB · NF EN ISO 4869-2 · INRS PICB-VLE-V7.2 · Double voie spectre + crête</p>
+    <div class="tags"><span>Mono / multi-expositions</span><span>Analyse IA</span><span>Contrôle Lp,C crête</span><span>Recommandations contextualisées</span></div>
+  </header>
+
+  <!-- 1 · CONTEXTE -->
+  <section class="box"><div class="sechd"><div class="snum">1</div><div style="flex:1"><h2 class="sttl">Contexte de l'intervention</h2></div></div>
+    <div class="secbody"><div class="grid2">
+      <div><label class="lbl">Entreprise</label><input class="fld" id="entreprise" placeholder="Raison sociale"></div>
+      <div><label class="lbl">Poste / Fonction (descriptif)</label><input class="fld" id="poste" placeholder="Ex. : Chef d'équipe production"></div>
+      <div><label class="lbl">Date des mesures</label><input class="fld" id="date" type="date"></div>
+      <div><label class="lbl">Lₑₓ,₈ₕ mesuré — dB(A)</label><input class="fld" id="lex" placeholder="Optionnel" inputmode="decimal"></div>
+      <div><label class="lbl">Intervenant</label><input class="fld" id="intervenant" placeholder="Nom Prénom"></div>
+      <div style="display:flex;gap:10px"><div style="flex:1"><label class="lbl">Qualité</label><select class="fld" id="qualite"><option>IPRP</option><option>IST</option><option>Médecin du travail</option><option>Préventeur</option></select></div><div style="flex:1"><label class="lbl">Service</label><input class="fld" id="service" value="SPSTI 23/87"></div></div>
+      <div><label class="lbl">Adresse <span style="text-transform:none;font-weight:400">(facultatif — export SPSTI)</span></label><input class="fld" id="adresse" placeholder="N° et rue"></div>
+      <div><label class="lbl">CP — Ville <span style="text-transform:none;font-weight:400">(facultatif)</span></label><input class="fld" id="cp_ville" placeholder="87000 Limoges"></div>
+      <div style="grid-column:1/-1"><label class="lbl">Horaires d'intervention <span style="text-transform:none;font-weight:400">(facultatif — export SPSTI)</span></label><input class="fld" id="horaires" placeholder="Ex. : 08h30-12h30 / 13h30-16h30"></div>
+    </div></div>
+  </section>
+
+  <!-- 2 · TÂCHES / SITUATIONS D'EXPOSITION -->
+  <section class="box"><div class="sechd"><div class="snum teal">2</div><div style="flex:1"><h2 class="sttl">Tâches / Situations d'exposition</h2><div class="ssub" id="specSubtitle">Sonométries associées aux tâches réelles du salarié</div></div></div>
+    <div class="secbody">
+      <div class="mode-toggle" id="modeToggle">
+        <button class="on" data-mode="simple" onclick="setMode('simple')">🎯 Évaluation simple <span class="mtag">1 spectre</span></button>
+        <button data-mode="multi" onclick="setMode('multi')">📊 Multi-sonométries <span class="mtag">N tâches</span></button>
+      </div>
+      <div class="cfgrow"><span>Analyse IA :</span><span id="cfgstate"></span><span class="cfglink" id="cfgtoggle">configurer</span></div>
+      <div class="cfgpanel" id="cfgpanel" style="display:none"><label class="lbl">URL webhook Make.com</label><div style="display:flex;gap:8px"><input class="fld" id="webhookurl" style="flex:1" placeholder="https://hook.eu1.make.com/..."><button class="btn dark" id="cfgsave">OK</button></div></div>
+
+      <!-- SIMPLE -->
+      <div id="panelSimple">
+        <div class="seg" id="segSimple"><button data-m="import" class="on">Importer capture</button><button data-m="manuel">Saisie manuelle</button></div>
+        <div id="simpleImport" style="margin-bottom:14px">
+          <div class="drop" id="simpleDrop"><div style="font-size:14px;font-weight:600">Déposez la capture sonomètre</div><div style="font-size:12px;color:var(--soft)">PNG / JPG · bandes d'octave</div></div>
+          <div class="preview" id="simplePreview" style="display:none"><img id="simpleThumb" alt=""><div style="flex:1"><button class="btn sm" id="btnSA">📡 Analyser</button> <button class="btn ghost sm" id="btnSR">Reset</button></div></div>
+          <input type="file" id="simpleFile" accept="image/*" style="display:none"><input type="file" id="simpleCam" accept="image/*" capture="environment" style="display:none">
+          <div class="upload-actions"><button type="button" class="btn-up cam" id="btnSCam">📷 Photo</button><button type="button" class="btn-up" id="btnSGal">🖼️ Fichier</button></div>
+          <div id="simpleScan"></div>
+        </div>
+        <label class="lbl">Niveaux Lf (dB) — 63 Hz facultatif</label>
+        <div class="bands" id="bandsSpec"></div>
+        <div class="grid2" style="margin-top:14px">
+          <div><label class="lbl">Lp,C crête — dB(C) <span style="text-transform:none;font-weight:400">(si mesuré)</span></label><input class="fld" id="simpleLpc" placeholder="Ex. : 138" inputmode="decimal"></div>
+          <div><label class="lbl">Caractère du bruit</label><select class="fld" id="simpleCaract"><option value="continu">Continu / stable</option><option value="intermittent">Intermittent</option><option value="impulsionnel">Impulsionnel (chocs, impacts)</option></select></div>
+        </div>
+      </div>
+
+      <!-- MULTI -->
+      <div id="panelMulti" style="display:none"><div id="unitesContainer"></div><button class="btn teal sm" id="btnAddUnite" style="margin-top:10px">+ Ajouter une tâche</button></div>
+    </div>
+  </section>
+
+  <!-- 3 · SYNTHÈSE (multi) -->
+  <section class="box" id="synthSection" style="display:none"><div class="sechd"><div class="snum teal">3</div><div style="flex:1"><h2 class="sttl">Synthèse fréquentielle — Spectre dimensionnant</h2><div class="ssub">MAX par bande sur l'ensemble des tâches + contrôle crêtes</div></div></div>
+    <div class="secbody"><div id="synthContent"></div></div>
+  </section>
+
+  <!-- PICB -->
+  <section class="box"><div class="sechd"><div class="snum" id="snumPicb">3</div><div style="flex:1"><h2 class="sttl">Protecteur individuel contre le bruit</h2></div></div>
+    <div class="secbody">
+      <div style="display:grid;grid-template-columns:1fr 1.4fr 1fr;gap:14px" id="picbtop">
+        <div><label class="lbl">Type</label><select class="fld" id="picbtype"><option value="0">0 — Pas de PICB</option><option value="1">1 — Serre-tête</option><option value="2">2 — Sur casque</option><option value="3">3 — Bouchon</option><option value="4" selected>4 — Bouchon moulé</option></select></div>
+        <div id="wrapKey"><label class="lbl">Modèle</label><select class="fld" id="picbkey"></select></div>
+        <div id="wrapForm"><label class="lbl">Formation</label><select class="fld" id="formation"><option value="1" selected>Oui</option><option value="0" id="optFormNon">Non — décote INRS</option></select></div>
+      </div>
+      <div id="wrapDouble" style="display:none;margin-top:14px;padding:11px 14px;border-left:4px solid var(--gold);background:#fbfaf6;border-radius:0 8px 8px 0"><label style="display:flex;align-items:center;gap:9px;cursor:pointer"><input type="checkbox" id="doubleProt" style="width:16px;height:16px;cursor:pointer"><span style="font-size:13px;font-weight:600">Double protection</span></label><div id="wrapKey2" style="display:none;margin-top:12px"><label class="lbl">Casque</label><select class="fld" id="picbkey2"></select></div></div>
+      <div id="noPicbNote" style="display:none;margin-top:14px;padding:11px 14px;border-left:4px solid var(--mute);background:#f4f1ea;border-radius:0 8px 8px 0;font-size:13px"><b>Aucun PICB porté.</b></div>
+      <div id="picbinfo" style="margin-top:14px;font-size:12px;color:var(--mute);display:flex;gap:16px;flex-wrap:wrap"></div>
+      <div id="picbmanual" style="display:none;margin-top:14px"><label class="lbl">Mf (dB)</label><div class="bands" id="bandsMf" style="margin-bottom:12px"></div><label class="lbl">Sf (dB)</label><div class="bands" id="bandsSf"></div></div>
+    </div>
+  </section>
+
+  <div id="resultsWrap"></div>
+  <!-- Alertes crête insérées dynamiquement ici -->
+  <div id="creteWrap"></div>
+  <!-- Recommandations contextualisées -->
+  <div id="recoWrap"></div>
+
+  <div class="exbar"><div><div class="et">Exports</div><div class="es">Rapport Word · JSON Power BI · Historique CSV</div></div>
+    <div class="export-btns"><button class="btn dark" id="btnExport" disabled>📄 Word</button><button class="btn teal" id="btnExportJSON" disabled>📊 JSON</button></div>
+  </div>
+  <div class="exbar" id="histoBar" style="display:none"><div><div class="et">Historique — <span id="histoEntreprise"></span></div><div class="es" id="histoCount"></div></div><button class="btn ghost sm" id="btnHistoExport">CSV</button></div>
+
+  <footer class="ft">PréventIA-LaB v26 · Méthode OB — NF EN ISO 4869-2 · INRS PICB-VLE-V7.2<br>Double voie : spectre dimensionnant + contrôle crêtes Lp,C</footer>
+</div>
+
+<script>
+"use strict";
+/* ════════════════════════════════════════════════════════════
+   PRÉVENTIA-LAB — PICB v26
+   Double voie : spectre dimensionnant + crêtes Lp,C
+   Tâches / situations enrichies (zone, source, Lp,C, caractère)
+   Recommandations contextualisées
+   ════════════════════════════════════════════════════════════ */
+var FREQS=[63,125,250,500,1000,2000,4000,8000];
+var PA=[-26.2,-16.1,-8.6,-3.2,0,1.2,1.0,-1.1];
+var PC=[-0.8,-0.2,0.0,0.0,0.0,-0.2,-0.8,-3.0];
+var TYPE_LABEL={0:"Pas de PICB",1:"Serre-tête",2:"Sur casque",3:"Bouchon",4:"Bouchon moulé"};
+var DECOTE_INRS={1:5,2:7,3:10,4:5};
+var CATALOGUE={
+"peltor-h510a":{nom:"Peltor Optime I (H510A)",marque:"3M Peltor",snr:27,type:1,profil:"HFA",mf:[14.1,11.6,18.7,27.5,32.9,33.6,36.1,35.8],sf:[4.0,4.3,3.6,2.5,2.7,3.4,3.0,3.8]},
+"peltor-h510b":{nom:"Peltor Optime I (H510B)",marque:"3M Peltor",snr:26,type:1,profil:"HFA",mf:[13.3,10.9,17.1,25.4,31.5,32.6,36.3,34.8],sf:[4.1,3.5,2.8,1.8,2.6,4.3,3.4,3.6]},
+"peltor-h510f":{nom:"Peltor Optime I Pliable (H510F)",marque:"3M Peltor",snr:28,type:1,profil:"HFA",mf:[14.6,12.2,18.7,27.1,32.9,35.0,36.5,34.4],sf:[3.8,3.4,3.2,3.0,2.1,4.0,2.9,3.9]},
+"peltor-h510p3":{nom:"Peltor Optime I Casque (H510P3)",marque:"3M Peltor",snr:26,type:2,profil:"HFA",mf:[13.1,11.2,13.4,26.9,33.9,32.0,33.5,36.9],sf:[2.3,2.0,1.9,1.8,1.9,2.4,1.8,1.8]},
+"3m-ultrafit":{nom:"3M E-A-R UltraFit",marque:"3M",snr:32,type:3,profil:"HFA",mf:[29.2,29.4,29.4,32.2,32.3,36.1,44.3,44.8],sf:[6.0,7.4,6.6,5.3,5.0,3.2,6.0,6.4]},
+"moldex-rockets":{nom:"Moldex Rockets (6400)",marque:"Moldex",snr:30,type:3,profil:"uniforme",mf:[31.3,32.0,30.4,31.9,32.4,34.5,42.0,41.8],sf:[5.7,8.2,7.2,8.8,6.6,4.8,3.1,3.6]},
+"green-h":{nom:"Cotral QEOS Green H",marque:"Cotral",snr:17,type:4,profil:"uniforme",mf:[23.7,22.5,21.1,20.3,17.3,21.4,22.9,27.8],sf:[5.5,4.9,5.1,5.6,4.9,4.6,4.9,3.9]},
+"green-k":{nom:"Cotral QEOS Green K",marque:"Cotral",snr:20,type:4,profil:"uniforme",mf:[27.1,23.6,22.9,23.8,23.8,20.9,23.1,29.4],sf:[5.9,4.4,3.9,4.1,4.8,4.5,2.7,7.5]},
+"green-o":{nom:"Cotral QEOS Green O",marque:"Cotral",snr:24,type:4,profil:"uniforme",mf:[26.9,26.0,25.0,26.7,26.3,25.1,26.4,31.2],sf:[5.2,4.2,3.4,3.7,3.4,5.4,3.5,4.9]},
+"green-s":{nom:"Cotral QEOS Green S",marque:"Cotral",snr:28,type:4,profil:"uniforme",mf:[28.8,28.2,26.7,29.8,29.4,30.4,32.3,34.8],sf:[4.0,4.4,3.7,3.9,3.9,4.7,5.2,3.7]},
+"orange-a7":{nom:"Cotral QEOS Orange A7",marque:"Cotral",snr:17,type:4,profil:"HFA",mf:[8.7,9.5,10.7,14.8,16.8,22.2,23.3,27.5],sf:[4.3,2.9,1.8,2.6,2.8,3.3,3.4,4.0]},
+"orange-b3":{nom:"Cotral QEOS Orange B3",marque:"Cotral",snr:23,type:4,profil:"HFA",mf:[15.4,16.4,18.8,21.0,22.6,26.0,29.6,31.4],sf:[5.6,4.6,4.3,3.0,2.7,3.2,3.6,4.1]},
+"orange-b6":{nom:"Cotral QEOS Orange B6",marque:"Cotral",snr:26,type:4,profil:"HFA",mf:[22.0,21.8,21.4,26.5,25.3,28.7,34.7,37.6],sf:[4.1,3.0,2.6,3.3,2.6,4.2,3.5,6.9]},
+"orange-c0":{nom:"Cotral QEOS Orange C0",marque:"Cotral",snr:30,type:4,profil:"HFA",mf:[31.1,31.7,31.4,34.2,34.9,33.6,39.7,41.3],sf:[4.5,3.2,3.8,4.3,4.8,4.4,3.7,4.7]},
+"passtop-os-plus":{nom:"Earow Passtop O.S+",marque:"Earow",snr:30,type:4,profil:"uniforme",mf:[27.0,25.7,24.6,26.5,26.7,33.8,31.5,36.7],sf:[5.7,4.5,4.8,4.8,3.8,4.5,5.0,5.3]},
+"passtop-os1":{nom:"Earow Passtop O.S1",marque:"Earow",snr:30,type:4,profil:"uniforme",mf:[18.3,21.2,23.3,26.0,27.6,31.3,32.2,38.9],sf:[4.5,5.1,4.5,4.3,3.7,3.4,3.0,5.8]},
+"passtop-os2":{nom:"Earow Passtop O.S2",marque:"Earow",snr:27,type:4,profil:"HFA",mf:[14.5,18.3,19.7,23.0,25.4,29.9,30.8,36.9],sf:[3.8,3.1,3.8,3.7,3.3,4.2,2.4,5.5]},
+"elacin-rc25":{nom:"Elacin RC-25",marque:"Elacin",snr:25,type:4,profil:"uniforme",mf:[28.2,28.2,27.4,26.8,26.9,33.3,30.4,24.5],sf:[3.7,3.7,3.3,4.0,3.7,3.1,5.0,5.6]},
+"elacin-rc29":{nom:"Elacin RC-29",marque:"Elacin",snr:29,type:4,profil:"uniforme",mf:[28.7,28.7,26.4,27.3,27.4,32.0,33.6,38.9],sf:[3.6,3.6,2.7,2.5,2.9,3.9,2.1,8.0]},
+"manuel":{nom:"Saisie manuelle",marque:"",snr:null,type:0,profil:"—",mf:[0,0,0,0,0,0,0,0],sf:[0,0,0,0,0,0,0,0]}
+};
+var INRS_DBL={spectres:[[51.4,62.6,70.8,81.0,90.4,96.2,94.7,92.3],[59.5,68.9,78.3,84.3,92.8,96.3,94.0,90.0],[59.8,71.1,80.8,88.0,95.0,94.4,94.1,89.0],[65.4,77.2,84.5,89.8,95.5,94.3,92.5,88.8],[65.3,77.4,86.5,92.5,96.4,93.0,90.4,83.7],[70.7,82.0,89.3,93.3,95.6,93.0,90.1,83.0],[75.6,84.2,90.1,93.6,96.2,91.3,87.9,81.9],[77.6,88.0,93.4,93.8,94.2,91.4,87.9,79.9]],di:[-1.2,-.49,.14,1.56,-2.98,-1.01,.85,3.14],coefs:{63:[.5,.2,.45,0,0,4],125:[.5,.2,.35,0,0,7],250:[.5,.2,.2,.1,0,10],2000:[.25,.25,0,0,-.15,25],4000:[.4,.2,0,0,-.5,40],8000:[.05,.05,0,0,.3,30]},boneCond:[53,53,60,64,52,44,53,53],apvMinCasque:[3,3,5,10,20,20,20,20],apvMinBouchon:[5,5,5,10,10,15,15,15]};
+var WEBHOOK_KEY="previa_picb_webhook",WEBHOOK_DEFAULT="https://hook.eu1.make.com/y91ilwbt4jpfgt4m42gzurbbmolkxj2x",WEBHOOK_TOKEN="previa_vision_2026_xxx",HISTO_KEY="previa_picb_historique";
+function r1(x){return typeof x==="number"&&isFinite(x)?Math.round(x*10)/10:null}function f1(x){var v=r1(x);return v===null?"—":v.toFixed(1)}function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}function $(id){return document.getElementById(id)}function hz(f){return f>=1000?(f/1000)+"k":""+f}
+
+/* ═══ MOTEUR OB (identique) ═══ */
+function computeHML(mf,sf,k){var apv=mf.map(function(m,i){return Math.max(0,m-k*sf[i])});var pnr=INRS_DBL.spectres.map(function(spec){var s=0;for(var i=0;i<8;i++)s+=Math.pow(10,.1*(spec[i]-apv[i]));return 100-10*Math.log10(s)});var di=INRS_DBL.di;var s14=pnr[0]+pnr[1]+pnr[2]+pnr[3],d14=di[0]*pnr[0]+di[1]*pnr[1]+di[2]*pnr[2]+di[3]*pnr[3],s58=pnr[4]+pnr[5]+pnr[6]+pnr[7],d58=di[4]*pnr[4]+di[5]*pnr[5]+di[6]*pnr[6]+di[7]*pnr[7];return{H:.25*s14-.48*d14,M:.25*s58-.16*d58,L:.25*s58+.23*d58}}
+function computeDoubleProtINRS(pb,pc){var a84b=pb.mf.map(function(m,i){return Math.max(0,m-pb.sf[i])}),a98b=pb.mf.map(function(m,i){return Math.max(0,m-2*pb.sf[i])}),a84c=pc.mf.map(function(m,i){return Math.max(0,m-pc.sf[i])}),a98c=pc.mf.map(function(m,i){return Math.max(0,m-2*pc.sf[i])});var h84b=computeHML(pb.mf,pb.sf,1),h84c=computeHML(pc.mf,pc.sf,1),h98b=computeHML(pb.mf,pb.sf,2),h98c=computeHML(pc.mf,pc.sf,2);var L84=(h84b.L+h84c.L)/2,M84=(h84b.M+h84c.M)/2,H84=(h84b.H+h84c.H)/2,L98=(h98b.L+h98c.L)/2,M98=(h98b.M+h98c.M)/2,H98=(h98b.H+h98c.H)/2;var warn=[];for(var i=0;i<8;i++){if(a84b[i]<INRS_DBL.apvMinBouchon[i])warn.push("APV bouchon < min à "+FREQS[i]+" Hz");if(a84c[i]<INRS_DBL.apvMinCasque[i])warn.push("APV casque < min à "+FREQS[i]+" Hz")}var a84C=[],a98C=[];for(var i=0;i<8;i++){var f=FREQS[i],v84,v98;if(f===500||f===1000){v84=a84b[i]/(1+.5/(1+Math.exp(-.9*(a84b[i]-14))))+a84c[i]/(.5+1.1/(1+Math.exp(-.3*(a84c[i]-20))));v98=a98b[i]/(1+.5/(1+Math.exp(-.9*(a98b[i]-14))))+a98c[i]/(.5+1.1/(1+Math.exp(-.3*(a98c[i]-20))))}else{var c=INRS_DBL.coefs[f];v84=c[0]*a84b[i]+c[1]*a84c[i]+c[2]*L84+c[3]*M84+c[4]*H84+c[5];v98=c[0]*a98b[i]+c[1]*a98c[i]+c[2]*L98+c[3]*M98+c[4]*H98+c[5]}var bc=INRS_DBL.boneCond[i];a84C.push(Math.round(-10*Math.log10(Math.pow(10,-v84/10)+Math.pow(10,-bc/10))*10)/10);a98C.push(Math.round(-10*Math.log10(Math.pow(10,-v98/10)+Math.pow(10,-bc/10))*10)/10)}var mfC=[],sfC=[];for(var i=0;i<8;i++){var s=Math.max(0,a84C[i]-a98C[i]);sfC.push(s);mfC.push(a84C[i]+s)}return{mf:mfC,sf:sfC,apv84:a84C,apv98:a98C,warn:warn}}
+function computeOB(spec,mf,sf,fo,type){var idx=[];for(var i=0;i<8;i++)if(spec[i]!=null&&isFinite(spec[i]))idx.push(i);var apv84=mf.map(function(m,i){return Math.max(0,m-sf[i])});var dT=DECOTE_INRS[type]||0,dA=fo?0:dT;var apv98=mf.map(function(m,i){return Math.max(0,m-2*sf[i]-dA)});var sA=0,sC=0,s84=0,s98=0;idx.forEach(function(i){sA+=Math.pow(10,(spec[i]+PA[i])/10);sC+=Math.pow(10,(spec[i]+PC[i])/10);s84+=Math.pow(10,(spec[i]-apv84[i]+PA[i])/10);s98+=Math.pow(10,(spec[i]-apv98[i]+PA[i])/10)});var lA=10*Math.log10(sA),lC=10*Math.log10(sC),l84=10*Math.log10(s84),l98=Math.min(lA,10*Math.log10(s98));return{idx:idx,apv84:apv84,apv98:apv98,leqA:lA,leqC:lC,lcla:lC-lA,la84:l84,la98:l98,ref:l98,decote:dA,decoteType:dT,formation:fo}}
+function computeNoPicb(spec){var idx=[];for(var i=0;i<8;i++)if(spec[i]!=null&&isFinite(spec[i]))idx.push(i);var sA=0,sC=0;idx.forEach(function(i){sA+=Math.pow(10,(spec[i]+PA[i])/10);sC+=Math.pow(10,(spec[i]+PC[i])/10)});return{idx:idx,leqA:10*Math.log10(sA),leqC:10*Math.log10(sC),lcla:10*Math.log10(sC)-10*Math.log10(sA)}}
+function diagnostic(ref){if(!isFinite(ref))return null;if(ref<70)return{key:"sur",label:"Surprotection",color:"var(--amber)",hex:"#cd8a1c",tag:"À CORRIGER",txt:"Atténuation excessive."};if(ref<80)return{key:"ok",label:"Conforme — zone cible INRS",color:"var(--green)",hex:"#2f7d4f",tag:"CONFORME",txt:"Zone cible 70-80 dB(A)."};if(ref<=85)return{key:"lim",label:"Conforme limite",color:"var(--amber)",hex:"#cd8a1c",tag:"VIGILANCE",txt:"Proche de la VAS."};if(ref<=87)return{key:"nc",label:"Non conforme",color:"var(--red)",hex:"#c2392b",tag:"NON CONFORME",txt:"Protection insuffisante."};return{key:"vle",label:"VLE dépassée",color:"var(--darkred)",hex:"#8a1c12",tag:"VLE DÉPASSÉE",txt:"Situation urgente."}}
+function diagnosticNoPicb(l){if(!isFinite(l))return null;if(l<80)return{key:"ok",label:"Sous seuil",color:"var(--green)",hex:"#2f7d4f",tag:"CONFORME",txt:"< 80 dB(A)."};if(l<=85)return{key:"vai",label:"VAI",color:"var(--amber)",hex:"#cd8a1c",tag:"VAI",txt:"Mise à dispo PICB."};if(l<=87)return{key:"vas",label:"VAS",color:"var(--red)",hex:"#c2392b",tag:"VAS",txt:"Port obligatoire."};return{key:"vle",label:"VLE",color:"var(--darkred)",hex:"#8a1c12",tag:"VLE",txt:"Action immédiate."}}
+function adequation(res,picb,diag,fo){if(!res||!diag)return null;var lf=res.lcla>5,hfa=picb.profil==="HFA",acts=[],db=!!picb.isDouble,st,t,m,h;if(diag.key==="vle"||diag.key==="nc"){st="inadapte";h="#c2392b";t="PICB inadapté";m="Bruit résiduel "+f1(res.ref)+" dB(A).";if(!db)acts.push("Retenir SNR supérieur ou double protection.");else{acts.push("Réduction à la source prioritaire.");acts.push("Limiter temps d'exposition.")}}else if(diag.key==="sur"){st="inadapte";h="#cd8a1c";t="PICB surdimensionné";m="Atténuation trop forte ("+f1(res.ref)+" dB(A)).";acts.push(db?"Double protection non nécessaire.":"Retenir filtre moins atténuant.")}else if(diag.key==="lim"){st="vigilance";h="#cd8a1c";t="Acceptable sans marge";m="Bruit résiduel "+f1(res.ref)+" dB(A)."}else{st="ok";h="#2f7d4f";t=(db?"Double protection":"PICB")+" adapté(e)";m="Zone cible INRS ("+f1(res.ref)+" dB(A))."}if(lf&&hfa&&!db){st="inadapte";h="#c2392b";t="Profil fréquentiel incorrect";m="Bruit BF + PICB HFA.";acts.unshift("Remplacer par atténuation uniforme.")}else if(lf&&!db)acts.push("Bruit BF : conserver filtre uniforme.");if(!fo){acts.push("Former au port du PICB (décote "+(DECOTE_INRS[picb.type]||5)+" dB).")}acts.push("Vérifier port réel et continu.");acts.push("Contrôle in situ recommandé (CAPA/EARFIT).");return{statut:st,titre:t,message:m,hex:h,actions:acts}}
+function adequationNoPicb(l){var acts=[],t,m,h,st;if(l<80){st="ok";h="#2f7d4f";t="Pas de PICB obligatoire";m=f1(l)+" dB(A) < 80.";acts.push("Surveillance périodique.")}else if(l<=85){st="vigilance";h="#cd8a1c";t="Mise à disposition PICB";m=f1(l)+" dB(A) ≥ 80.";acts.push("Mettre à dispo PICB.");acts.push("Formation salariés.")}else if(l<=87){st="inadapte";h="#c2392b";t="Port PICB obligatoire";m=f1(l)+" dB(A) ≥ 85.";acts.push("Port effectif obligatoire.");acts.push("Programme réduction bruit.")}else{st="inadapte";h="#8a1c12";t="VLE dépassée";m=f1(l)+" dB(A) > 87.";acts.push("Action immédiate.")}return{statut:st,titre:t,message:m,hex:h,actions:acts}}
+
+/* ═══ VOIE 2 — CONTRÔLE CRÊTES Lp,C ═══ */
+function getMaxLpc(){
+  if(currentMode==="simple"){var v=parseFloat(($("simpleLpc").value||"").replace(",","."));return isFinite(v)?v:null}
+  var max=null;unites.forEach(function(u){if(u.lpc!=null&&isFinite(u.lpc)){if(max===null||u.lpc>max)max=u.lpc}});return max;
+}
+function diagnosticCrete(lpc){
+  if(lpc==null||!isFinite(lpc))return null;
+  if(lpc>=140)return{level:3,tag:"VALEUR LIMITE CRÊTE",cls:"c140",icon:"🔴",
+    msg:"Lp,C ≥ 140 dB(C) — valeur limite dépassée. Action immédiate : suspendre l'exposition, réduire le bruit à la source, évaluer les mesures techniques et organisationnelles. La VLE de crête ne doit en aucun cas être dépassée, PICB pris en compte.",
+    actions:["Suspendre l'activité génératrice de la crête jusqu'à mise en œuvre de mesures de réduction.","Encoffrement, amortissement ou traitement de la source impulsionnelle.","Si PICB porté : vérifier que l'atténuation couvre le niveau de crête aux fréquences dominantes.","Envisager une double protection si le calcul d'atténuation l'exige après analyse.","Surveillance audiométrique immédiate des salariés exposés."]};
+  if(lpc>=137)return{level:2,tag:"PROTECTION RENFORCÉE",cls:"c137",icon:"🟠",
+    msg:"Lp,C ≥ 137 dB(C) — valeur d'action supérieure de crête dépassée. Le port effectif du PICB est obligatoire. Évaluer le besoin d'une protection renforcée et les mesures de réduction du bruit impulsionnel à la source.",
+    actions:["Imposer le port effectif d'un PICB à atténuation adaptée aux fréquences dominantes du bruit impulsionnel.","Vérifier que le PICB retenu protège aussi contre les crêtes (certains filtres à atténuation progressive sont moins efficaces sur les chocs).","Évaluer les mesures techniques de réduction : amortisseurs, silentblocs, encoffrement partiel.","Si nécessaire après analyse : envisager une double protection.","Organiser le suivi audiométrique renforcé."]};
+  if(lpc>=135)return{level:1,tag:"CRÊTE SONORE",cls:"c135",icon:"🟡",
+    msg:"Lp,C ≥ 135 dB(C) — valeur d'action inférieure de crête dépassée. Mise à disposition de PICB obligatoire, information et formation des salariés sur le risque impulsionnel.",
+    actions:["Mettre à disposition des PICB adaptés au bruit impulsionnel.","Informer les salariés sur le risque spécifique des bruits impulsionnels (chocs, impacts, tirs).","Identifier les sources de crêtes et évaluer les possibilités de réduction à la source.","Envisager des protections avec filtrage adapté au caractère impulsionnel."]};
+  return null;
+}
+
+/* ═══ RECOMMANDATIONS CONTEXTUALISÉES ═══ */
+function buildRecommandations(spec,res,diag,adq,lpc,crDiag){
+  var recos=[];
+  var leqA=res.leqA,lcla=res.lcla,isLF=lcla>5;
+  var allCaract=getAllCaract();
+  var hasImpuls=allCaract.indexOf("impulsionnel")>=0;
+  var hasInterm=allCaract.indexOf("intermittent")>=0;
+  var allSources=getAllSources();
+  var allZones=getAllZones();
+  // 1. Réduction à la source (toujours si > 80)
+  if(leqA>=80){
+    var srcTxt=allSources.length?"Sources identifiées : "+allSources.join(", ")+". ":"";
+    recos.push({cat:"source",title:"Réduction du bruit à la source",color:"#1a7a6d",
+      body:srcTxt+"La hiérarchie de prévention impose d'évaluer en priorité les mesures de réduction à la source (art. R.4434-3 CT) : encoffrement, silentblocs, remplacement d'équipements, traitement acoustique des locaux, entretien préventif des machines."
+      +(isLF?" Le spectre présente une dominante basse fréquence (Lc-La = "+f1(lcla)+" dB) : privilégier les solutions de masse (cloisons lourdes, capotages) plutôt que les traitements absorbants classiques.":"")});
+  }
+  // 2. Organisation du travail
+  if(leqA>=85||hasImpuls){
+    var durTxt=currentMode==="multi"?" Durées cumulées : "+unites.map(function(u){return u.nom+" ("+u.duree+"h)"}).join(", ")+".":"";
+    recos.push({cat:"orga",title:"Mesures organisationnelles",color:"#1c4c7c",
+      body:"Limiter la durée d'exposition par rotation de personnel, éloignement des postes non exposés, planification des tâches bruyantes en dehors des heures de pointe."+durTxt
+      +(hasImpuls?" Bruit impulsionnel identifié : planifier les opérations de choc/impact en dehors de la présence d'autres salariés lorsque possible.":"")});
+  }
+  // 3. Signalisation et accès
+  if(leqA>=85){
+    var zoneTxt=allZones.length?"Zones concernées : "+allZones.join(", ")+".":"";
+    recos.push({cat:"signal",title:"Signalisation et limitation d'accès",color:"var(--amber)",
+      body:"Signaler les zones de bruit ≥ 85 dB(A) par affichage réglementaire (pictogramme EPI bruit). Limiter l'accès aux personnes équipées de PICB. "+zoneTxt+" (art. R.4434-7 CT)"});
+  }
+  // 4. Bruit impulsionnel spécifique
+  if(hasImpuls||(crDiag&&crDiag.level>=1)){
+    recos.push({cat:"impuls",title:"Analyse du bruit impulsionnel",color:"var(--red)",
+      body:"Le caractère impulsionnel du bruit (chocs, impacts, détonations) induit un risque auditif majoré par rapport à un bruit continu de même niveau. "
+      +"Les PICB à filtrage passif uniforme offrent généralement une protection suffisante ; les bouchons avec filtres acoustiques (type musicien) peuvent être moins efficaces sur les impulsions. "
+      +"Envisager des PICB à atténuation non linéaire (type ANR/actif) ou des protections à filtre mécanique conçues pour les bruits d'impact."
+      +(lpc!=null?" Lp,C maximal mesuré : "+f1(lpc)+" dB(C).":"")});
+  }
+  // 5. Suivi médical
+  if(leqA>=80){
+    recos.push({cat:"medical",title:"Suivi médical et audiométrique",color:"#5d6b7a",
+      body:(leqA>=85?"Surveillance audiométrique renforcée obligatoire (audiogramme de référence puis contrôle périodique). ":"Proposer un audiogramme de référence. ")
+      +"Vérifier l'absence de dégradation auditive par comparaison des seuils par fréquence. "
+      +"En cas de perte ≥ 10 dB sur les fréquences 2000-4000 Hz : réévaluer le PICB et l'exposition."
+      +(hasImpuls?" Le bruit impulsionnel induit un risque accru de traumatisme sonore aigu : signaler au médecin du travail.":"")});
+  }
+  // 6. Compatibilité EPI
+  recos.push({cat:"epi",title:"Compatibilité EPI et confort",color:"var(--gold)",
+    body:"Vérifier la compatibilité du PICB avec les autres EPI portés (lunettes, casque de chantier, visière, masque respiratoire). "
+    +"Vérifier le confort thermique (bouchons moulés vs serre-tête en environnement chaud). "
+    +"Un PICB inconfortable ne sera pas porté : le meilleur PICB est celui qui est réellement porté."});
+  return recos;
+}
+function getAllCaract(){
+  if(currentMode==="simple")return [$("simpleCaract").value];
+  return unites.map(function(u){return u.caract||"continu"});
+}
+function getAllSources(){
+  if(currentMode==="simple")return [];
+  return unites.map(function(u){return u.source}).filter(function(s){return s&&s.trim()});
+}
+function getAllZones(){
+  if(currentMode==="simple")return [];
+  return unites.map(function(u){return u.zone}).filter(function(s){return s&&s.trim()});
+}
+
+/* ═══ MODE ═══ */
+var currentMode="simple";
+function setMode(mode){
+  currentMode=mode;
+  Array.prototype.forEach.call($("modeToggle").children,function(b){b.classList.toggle("on",b.dataset.mode===mode)});
+  $("panelSimple").style.display=mode==="simple"?"block":"none";
+  $("panelMulti").style.display=mode==="multi"?"block":"none";
+  $("synthSection").style.display="none";
+  $("snumPicb").textContent=mode==="simple"?"3":"4";
+  if(mode==="multi"&&unites.length===0)createUnite("Tâche 1",null,8);
+  recompute();
+}
+
+/* ═══ SIMPLE MODE ═══ */
+var simpleImg={};
+function getSimpleSpectrum(){return FREQS.map(function(f,i){var v=$("spec"+i).value.trim();return v===""?null:parseFloat(v.replace(",","."))})}
+function simpleOnFile(file){if(!file||file.type.indexOf("image/")!==0)return;var r=new FileReader();r.onload=function(){var img=new Image();img.onload=function(){var M=1500,w=img.width,h=img.height;if(w>M||h>M){if(w>=h){h=Math.round(h*M/w);w=M}else{w=Math.round(w*M/h);h=M}}var c=document.createElement("canvas");c.width=w;c.height=h;c.getContext("2d").drawImage(img,0,0,w,h);var d=c.toDataURL("image/jpeg",.85);simpleImg={dataUrl:d,b64:d.split(",")[1],type:"image/jpeg"};$("simpleThumb").src=d;$("simpleDrop").style.display="none";$("simplePreview").style.display="flex"};img.src=r.result};r.readAsDataURL(file)}
+function simpleReset(){simpleImg={};$("simplePreview").style.display="none";$("simpleDrop").style.display="block";$("simpleScan").innerHTML=""}
+function simpleAnalyse(){var url=(localStorage.getItem(WEBHOOK_KEY)||"").trim();if(!url){$("cfgpanel").style.display="block";showS("simpleScan","err","Configurez le webhook.");return}if(!simpleImg.b64)return;showS("simpleScan","info","Analyse en cours…");var p="Tu es un assistant spécialisé dans l'analyse de captures d'écran de sonomètres. Extrais les niveaux par bande d'octave (Lf en dB). Réponds STRICTEMENT en JSON: "+'{\"bandes\":{\"63\":<n|null>,\"125\":<n>,\"250\":<n>,\"500\":<n>,\"1000\":<n>,\"2000\":<n>,\"4000\":<n>,\"8000\":<n>},\"lex\":<Lex|null>,\"lpc\":<Lpc crete|null>,\"confiance\":\"haute\"|\"moyenne\"|\"faible\",\"remarque\":\"\"}';var pl={model:"claude-sonnet-4-6",max_tokens:2000,messages:[{role:"user",content:[{type:"image",source:{type:"base64",media_type:simpleImg.type,data:simpleImg.b64}},{type:"text",text:p}]}]};fetch(url,{method:"POST",headers:{"Content-Type":"text/plain"},body:JSON.stringify({token:WEBHOOK_TOKEN,payload:JSON.stringify(pl)})}).then(function(r){return r.text()}).then(function(raw){var txt=raw;try{var api=JSON.parse(raw);if(api&&api.content&&api.content.length)txt=api.content.filter(function(b){return b.type==="text"}).map(function(b){return b.text}).join("")}catch(e){}var parsed=JSON.parse(txt.replace(/```json/g,"").replace(/```/g,"").trim());FREQS.forEach(function(f,i){var v=parsed.bandes?parsed.bandes[String(f)]:null;$("spec"+i).value=(v==null||isNaN(v))?"":String(v)});if(parsed.lex!=null&&!isNaN(parsed.lex))$("lex").value=String(parsed.lex);if(parsed.lpc!=null&&!isNaN(parsed.lpc))$("simpleLpc").value=String(parsed.lpc);showS("simpleScan","ok","Spectre extrait (confiance "+(parsed.confiance||"?")+").");recompute()}).catch(function(err){showS("simpleScan","err","Erreur : "+(err&&err.message?err.message:err))})}
+function showS(id,t,m){var el=$(id);if(!el)return;el.innerHTML=t?'<div class="statusmsg '+t+'">'+esc(m)+'</div>':""}
+
+/* ═══ MULTI MODE — tâches enrichies ═══ */
+var unites=[],uniteIdCounter=0,activeUniteId=null,uniteImgState={};
+function createUnite(nom,spec,dur){var id=++uniteIdCounter;unites.push({id:id,nom:nom||"Tâche "+id,spectre:spec||[null,null,null,null,null,null,null,null],duree:dur||1,zone:"",source:"",lpc:null,caract:"continu"});renderUnites();toggleUnite(id,true);recompute()}
+function removeUnite(id){unites=unites.filter(function(u){return u.id!==id});renderUnites();recompute()}
+function renameUnite(id,v){var u=unites.find(function(u){return u.id===id});if(u)u.nom=v}
+function updateUField(id,field,val){var u=unites.find(function(u){return u.id===id});if(!u)return;if(field==="duree")u.duree=parseFloat(val)||0;else if(field==="lpc"){u.lpc=val.trim()===""?null:parseFloat(val.replace(",","."))}else if(field==="zone")u.zone=val;else if(field==="source")u.source=val;else if(field==="caract")u.caract=val;recompute()}
+function updateUniteSpec(id,band,val){var u=unites.find(function(u){return u.id===id});if(!u)return;u.spectre[band]=val.trim()===""?null:parseFloat(val.replace(",","."));recompute()}
+function computeLeqU(u){var s=0,n=0;for(var i=0;i<8;i++)if(u.spectre[i]!=null&&isFinite(u.spectre[i])){s+=Math.pow(10,(u.spectre[i]+PA[i])/10);n++}return n>0?10*Math.log10(s):NaN}
+function toggleUnite(id,force){unites.forEach(function(u){var b=$("ub"+u.id);if(b)b.classList.remove("open");var c=$("uc"+u.id);if(c)c.classList.remove("active")});var body=$("ub"+id);if(!body)return;if(force||!body.classList.contains("open")){body.classList.add("open");var c=$("uc"+id);if(c)c.classList.add("active");activeUniteId=id}}
+
+function renderUnites(){
+  var html="";unites.forEach(function(u,idx){
+    var leq=computeLeqU(u),ls=isFinite(leq)?f1(leq)+" dB(A)":"—",open=activeUniteId===u.id;
+    html+='<div class="unite-card'+(open?" active":"")+'" id="uc'+u.id+'"><div class="unite-head" onclick="toggleUnite('+u.id+')">'
+      +'<div class="unite-num">'+(idx+1)+'</div>'
+      +'<div class="unite-title"><input class="fld" style="padding:4px 8px;font-size:13px;font-weight:600;border:none;background:transparent" value="'+esc(u.nom)+'" onchange="renameUnite('+u.id+',this.value)" onclick="event.stopPropagation()"></div>'
+      +'<div class="unite-meta">'+u.duree+'h · '+ls+'</div>'
+      +(unites.length>1?'<div class="unite-del" onclick="event.stopPropagation();removeUnite('+u.id+')">×</div>':'')
+      +'</div><div class="unite-body'+(open?" open":"")+'" id="ub'+u.id+'">';
+    // Champs enrichis §3 spec
+    html+='<div class="grid4" style="margin-bottom:12px">'
+      +'<div><label class="lbl">Zone / Environnement</label><input class="fld" value="'+esc(u.zone)+'" placeholder="Ex. : Atelier B" onchange="updateUField('+u.id+',\'zone\',this.value)"></div>'
+      +'<div><label class="lbl">Source sonore</label><input class="fld" value="'+esc(u.source)+'" placeholder="Ex. : Broyeur" onchange="updateUField('+u.id+',\'source\',this.value)"></div>'
+      +'<div><label class="lbl">Durée (h)</label><input class="fld" type="number" step="0.5" min="0" max="12" value="'+u.duree+'" onchange="updateUField('+u.id+',\'duree\',this.value)"></div>'
+      +'<div><label class="lbl">Caractère</label><select class="fld" onchange="updateUField('+u.id+',\'caract\',this.value)"><option value="continu"'+(u.caract==="continu"?" selected":"")+'>Continu</option><option value="intermittent"'+(u.caract==="intermittent"?" selected":"")+'>Intermittent</option><option value="impulsionnel"'+(u.caract==="impulsionnel"?" selected":"")+'>Impulsionnel</option></select></div>'
+      +'</div>';
+    html+='<div class="grid2" style="margin-bottom:12px">'
+      +'<div><label class="lbl">Lp,C crête — dB(C)</label><input class="fld" value="'+(u.lpc!=null?u.lpc:"")+'" placeholder="Si mesuré" inputmode="decimal" onchange="updateUField('+u.id+',\'lpc\',this.value)"></div>'
+      +'<div><label class="lbl">Leq(A) calculé</label><div class="fld" style="background:#eaf3ec;color:var(--green);font-weight:700;font-family:\'IBM Plex Mono\',monospace">'+ls+'</div></div></div>';
+    // Bandes
+    html+='<label class="lbl">Niveaux Lf (dB)</label><div class="bands">';
+    FREQS.forEach(function(f,i){
+      var val=(u.spectre[i]!=null&&isFinite(u.spectre[i]))?u.spectre[i]:"";
+      html+='<div style="text-align:center"><div class="bandlab" style="color:'+(i===0?"var(--soft)":"var(--navy)")+'">'+hz(f)+'</div><input class="num" id="uspec'+u.id+'_'+i+'" value="'+val+'" inputmode="decimal" onchange="updateUniteSpec('+u.id+','+i+',this.value)"></div>';
+    });
+    html+='</div><div class="hint">Hz — bandes d\'octave · Importer via 📷 : bientôt par tâche</div>';
+    html+='</div></div>';
+  });$("unitesContainer").innerHTML=html;
+}
+
+/* ═══ SYNTHÈSE ═══ */
+function computeEnveloppeMax(){var valid=unites.filter(function(u){return u.spectre.slice(1).some(function(v){return v!=null&&isFinite(v)})});if(!valid.length)return null;var env=FREQS.map(function(f,i){var vs=valid.map(function(u){return u.spectre[i]}).filter(function(v){return v!=null&&isFinite(v)});return vs.length?Math.max.apply(null,vs):null});return{spectre:env,nbUnites:valid.length,unites:valid}}
+function renderSynthese(){var env=computeEnveloppeMax(),sec=$("synthSection");if(!env||env.nbUnites<2){sec.style.display="none";return}sec.style.display="block";var lpc=getMaxLpc(),crD=diagnosticCrete(lpc);
+  var html='<div style="margin-bottom:14px;padding:10px 14px;background:#eef8f6;border-left:4px solid var(--teal);border-radius:0 8px 8px 0;font-size:13px"><b>VOIE 1 — Spectre dimensionnant</b> · '+env.nbUnites+' tâches · MAX par bande d\'octave</div>';
+  html+='<div class="synth-bar">';FREQS.forEach(function(f,i){var v=env.spectre[i];html+='<div class="synth-cell"><div class="sl">'+hz(f)+'</div><div class="sv">'+(v!=null?f1(v):"—")+'</div></div>'});html+='</div>';
+  // Tableau
+  html+='<div style="overflow-x:auto;margin-bottom:14px"><table class="ob"><thead><tr><th class="lft">Tâche</th>';FREQS.forEach(function(f){html+='<th>'+hz(f)+'</th>'});html+='<th>Durée</th><th>Leq(A)</th><th>Lp,C</th></tr></thead><tbody>';
+  env.unites.forEach(function(u){var l=computeLeqU(u);html+='<tr><td class="rl" title="'+esc(u.zone?u.zone+" · ":"")+'">'+esc(u.nom)+'</td>';for(var i=0;i<8;i++)html+='<td>'+(u.spectre[i]!=null?f1(u.spectre[i]):"—")+'</td>';html+='<td>'+u.duree+'h</td><td style="font-weight:700">'+f1(l)+'</td><td>'+(u.lpc!=null?f1(u.lpc):"—")+'</td></tr>'});
+  html+='<tr style="background:#e6f5f2"><td class="rl" style="background:var(--teal)">ENVELOPPE MAX</td>';for(var i=0;i<8;i++)html+='<td style="font-weight:700;color:var(--teal)">'+(env.spectre[i]!=null?f1(env.spectre[i]):"—")+'</td>';html+='<td>—</td><td>—</td><td style="font-weight:700;color:'+(crD?"var(--red)":"var(--teal)")+'">'+(lpc!=null?f1(lpc):"—")+'</td></tr></tbody></table></div>';
+  // VOIE 2 — crêtes
+  if(lpc!=null){html+='<div style="margin-top:14px;padding:10px 14px;background:#fbfaf6;border-left:4px solid var(--amber);border-radius:0 8px 8px 0;font-size:13px"><b>VOIE 2 — Contrôle crêtes</b> · Lp,C maximal observé : <b class="mono" style="color:'+(crD?"var(--red)":"var(--green)")+'">'+f1(lpc)+' dB(C)</b>'+(crD?" — "+crD.tag:" — sous seuils")+'</div>'}
+  $("synthContent").innerHTML=html;
+}
+
+/* ═══ GRAPHIQUE ═══ */
+function chartSVG(data,noPicb){var W=860,H=300,mt=18,mr=64,mb=44,ml=46,pw=W-ml-mr,ph=H-mt-mb;var vals=[];data.forEach(function(d){vals.push(d.brut);if(!noPicb){vals.push(d.l84);vals.push(d.l98)}});vals.push(80,85);var mn=Math.max(0,Math.floor((Math.min.apply(null,vals)-8)/10)*10),mx=Math.ceil((Math.max.apply(null,vals)+8)/10)*10;var X=function(i){return data.length<=1?ml+pw/2:ml+i*pw/(data.length-1)};var Y=function(v){return mt+ph-(v-mn)/(mx-mn)*ph};var s='<svg viewBox="0 0 '+W+' '+H+'" width="100%" style="font-family:IBM Plex Mono,monospace">';for(var g=mn;g<=mx;g+=10){s+='<line x1="'+ml+'" y1="'+Y(g)+'" x2="'+(W-mr)+'" y2="'+Y(g)+'" stroke="#eceadf"/>';s+='<text x="'+(ml-7)+'" y="'+(Y(g)+3)+'" font-size="10" fill="#8b94a0" text-anchor="end">'+g+'</text>'}[[80,"#cd8a1c"],[85,"#c2392b"]].forEach(function(t){if(t[0]>=mn&&t[0]<=mx){s+='<line x1="'+ml+'" y1="'+Y(t[0])+'" x2="'+(W-mr)+'" y2="'+Y(t[0])+'" stroke="'+t[1]+'" stroke-dasharray="5 4"/>';s+='<text x="'+(W-mr+5)+'" y="'+(Y(t[0])+3)+'" font-size="9" fill="'+t[1]+'">'+t[0]+'</text>'}});data.forEach(function(d,i){s+='<text x="'+X(i)+'" y="'+(H-mb+16)+'" font-size="10" fill="#5d6b7a" text-anchor="middle">'+d.f+'</text>'});function po(k,c,w,da){var pts=data.map(function(d,i){return X(i)+","+Y(d[k])}).join(" ");s+='<polyline points="'+pts+'" fill="none" stroke="'+c+'" stroke-width="'+w+'"'+(da?' stroke-dasharray="'+da+'"':'')+'/>';data.forEach(function(d,i){s+='<circle cx="'+X(i)+'" cy="'+Y(d[k])+'" r="3" fill="'+c+'"/>'})}po("brut","#1c4c7c",2.6,"");if(!noPicb){po("l84","#b78a2e",1.8,"5 4");po("l98","#c2410c",2.8,"")}s+='</svg>';return s}
+
+/* ═══ PICB UI ═══ */
+function buildBands(){var m="",s="";FREQS.forEach(function(f,i){var l=hz(f);m+='<div><div class="bandlab" style="color:var(--soft)">'+l+'</div><input class="num" id="mf'+i+'" inputmode="decimal"></div>';s+='<div><div class="bandlab" style="color:var(--soft)">'+l+'</div><input class="num" id="sf'+i+'" inputmode="decimal"></div>'});$("bandsMf").innerHTML=m;$("bandsSf").innerHTML=s}
+function buildSimpleBands(){var h="";FREQS.forEach(function(f,i){h+='<div style="text-align:center"><div class="bandlab" style="color:'+(i===0?"var(--soft)":"var(--navy)")+'">'+hz(f)+'</div><input class="num" id="spec'+i+'" inputmode="decimal" placeholder="'+(i===0?"opt.":"—")+'"></div>'});$("bandsSpec").innerHTML=h}
+function populatePicbKey(type){var sel=$("picbkey"),cur=sel.value,g={};Object.keys(CATALOGUE).forEach(function(k){if(k==="manuel")return;var c=CATALOGUE[k];if(c.type!==type)return;var gr=c.marque+" — "+(c.profil==="HFA"?"HFA":"uniforme");if(!g[gr])g[gr]=[];g[gr].push({key:k,c:c})});var h="";Object.keys(g).forEach(function(gr){h+='<optgroup label="'+esc(gr)+'">';g[gr].forEach(function(o){h+='<option value="'+o.key+'">'+esc(o.c.nom)+' — SNR '+o.c.snr+'</option>'});h+='</optgroup>'});h+='<optgroup label="Autre"><option value="manuel">Saisie manuelle</option></optgroup>';sel.innerHTML=h;if(cur&&sel.querySelector('option[value="'+cur+'"]'))sel.value=cur}
+function populatePicbKey2(){var sel=$("picbkey2"),cur=sel.value,g={};Object.keys(CATALOGUE).forEach(function(k){if(k==="manuel")return;var c=CATALOGUE[k];if(c.type!==1&&c.type!==2)return;var gr=c.marque;if(!g[gr])g[gr]=[];g[gr].push({key:k,c:c})});var h="";Object.keys(g).forEach(function(gr){h+='<optgroup label="'+esc(gr)+'">';g[gr].forEach(function(o){h+='<option value="'+o.key+'">'+esc(o.c.nom)+'</option>'});h+='</optgroup>'});sel.innerHTML=h;if(cur&&sel.querySelector('option[value="'+cur+'"]'))sel.value=cur}
+function updatePicbUI(){var type=parseInt($("picbtype").value,10),np=type===0;$("wrapKey").style.display=np?"none":"block";$("wrapForm").style.display=np?"none":"block";$("noPicbNote").style.display=np?"block":"none";$("picbtop").style.gridTemplateColumns=np?"1fr":"1fr 1.4fr 1fr";var cd=type===3||type===4;$("wrapDouble").style.display=cd?"block":"none";if(!cd&&$("doubleProt").checked)$("doubleProt").checked=false;$("wrapKey2").style.display=cd&&$("doubleProt").checked?"block":"none";if(np){$("picbinfo").innerHTML="";$("picbmanual").style.display="none";return}populatePicbKey(type);if(cd&&$("doubleProt").checked)populatePicbKey2();var key=$("picbkey").value,man=key==="manuel";$("picbmanual").style.display=man?"block":"none";if(!man&&CATALOGUE[key]){var c=CATALOGUE[key];$("picbinfo").innerHTML='<span><b>'+c.nom+'</b></span><span>SNR '+c.snr+'</span>'}else $("picbinfo").innerHTML=""}
+function getPicb(){var key=$("picbkey").value,p1;if(key==="manuel"){var mf=[],sf=[],ok=true;for(var i=0;i<8;i++){var m=parseFloat(($("mf"+i).value||"").replace(",",".")),s=parseFloat(($("sf"+i).value||"").replace(",","."));mf.push(m);sf.push(s);if(!isFinite(m)||!isFinite(s))ok=false}p1={nom:"PICB manuel",marque:"",snr:null,type:parseInt($("picbtype").value,10),profil:"—",mf:mf,sf:sf,valid:ok}}else{var c=CATALOGUE[key];p1={nom:c.nom,marque:c.marque,snr:c.snr,type:c.type,profil:c.profil,mf:c.mf,sf:c.sf,valid:true}}var dbl=$("doubleProt")&&$("doubleProt").checked&&$("wrapDouble").style.display!=="none";if(dbl&&p1.valid){var k2=$("picbkey2").value,c2=CATALOGUE[k2];if(!c2||k2==="manuel"){p1.valid=false;return p1}var p2={nom:c2.nom,marque:c2.marque,snr:c2.snr,type:c2.type,profil:c2.profil,mf:c2.mf,sf:c2.sf};var cb=computeDoubleProtINRS(p1,p2);return{nom:p1.nom+" + "+p2.nom,marque:"Double",snr:null,type:p1.type,profil:"double",mf:cb.mf,sf:cb.sf,valid:true,isDouble:true,picb1:p1,picb2:p2,warn:cb.warn}}return p1}
+
+/* ═══ RECALCUL PRINCIPAL — double voie ═══ */
+var LAST=null;
+function recompute(){
+  var spec,env=null,isM=currentMode==="multi";
+  if(isM){renderSynthese();env=computeEnveloppeMax();spec=env?env.spectre:[null,null,null,null,null,null,null,null]}else{$("synthSection").style.display="none";spec=getSimpleSpectrum()}
+  var type=parseInt($("picbtype").value,10),np=type===0,fo=$("formation").value==="1";
+  var mandOk=true;for(var i=1;i<8;i++)if(spec[i]==null||!isFinite(spec[i]))mandOk=false;
+  if(!mandOk){LAST=null;$("btnExport").disabled=true;$("btnExportJSON").disabled=true;$("resultsWrap").innerHTML='<div class="placeholder" style="padding:34px 20px;text-align:center;border:1px dashed var(--border);border-radius:14px"><div style="font-size:14px;font-weight:600;color:var(--mute)">En attente</div><div style="font-size:12px;margin-top:4px">'+(isM?"Ajoutez une tâche avec bandes 125–8000 Hz.":"Renseignez les bandes 125–8000 Hz.")+'</div></div>';$("creteWrap").innerHTML="";$("recoWrap").innerHTML="";return}
+  // VOIE 2 — crête
+  var lpc=getMaxLpc(),crDiag=diagnosticCrete(lpc);
+  if(np){var rN=computeNoPicb(spec),dN=diagnosticNoPicb(rN.leqA),aN=adequationNoPicb(rN.leqA);LAST={spec:spec,noPicb:true,type:0,res:rN,diag:dN,adq:aN,env:env,mode:currentMode,lpc:lpc,crDiag:crDiag};$("btnExport").disabled=false;$("btnExportJSON").disabled=false;renderResults();return}
+  var picb=getPicb();if(!picb.valid){LAST=null;$("btnExport").disabled=true;$("btnExportJSON").disabled=true;$("resultsWrap").innerHTML='<div class="placeholder" style="padding:34px;text-align:center;border:1px dashed var(--border);border-radius:14px"><div style="font-size:14px;font-weight:600">Complétez les données PICB</div></div>';$("creteWrap").innerHTML="";$("recoWrap").innerHTML="";return}
+  var tC=picb.isDouble?null:picb.type;var res=computeOB(spec,picb.mf,picb.sf,fo,tC),diag=diagnostic(res.ref),adq=adequation(res,picb,diag,fo);
+  LAST={spec:spec,picb:picb,formation:fo,res:res,diag:diag,adq:adq,noPicb:false,type:picb.type,env:env,mode:currentMode,lpc:lpc,crDiag:crDiag};
+  $("btnExport").disabled=false;$("btnExportJSON").disabled=false;renderResults();
+}
+
+/* ═══ RENDU ═══ */
+function renderResults(){
+  if(!LAST)return;var L=LAST,res=L.res,diag=L.diag,adq=L.adq,spec=L.spec,isM=L.mode==="multi";
+  var sn=isM?"5":"4",snA=isM?"6":"5";
+  if(L.noPicb){
+    $("resultsWrap").innerHTML='<section class="box"><div class="sechd"><div class="snum">'+sn+'</div><div style="flex:1"><h2 class="sttl">Exposition ambiante</h2></div></div><div class="secbody"><div class="stats" style="grid-template-columns:1fr"><div class="stat" style="border-color:'+diag.color+'"><div class="sl">Leq(A)</div><div class="sv" style="color:'+diag.color+';font-size:46px">'+f1(res.leqA)+'</div><div class="su">dB(A)</div></div></div><div class="badge" style="background:'+diag.color+'"><div><div class="bt">'+diag.tag+'</div><div class="bd">'+diag.txt+'</div></div></div></div></section><section class="box"><div class="sechd"><div class="snum">'+snA+'</div><div style="flex:1"><h2 class="sttl">Conformité</h2></div></div><div class="secbody"><div class="adq" style="border-left-color:'+adq.hex+'"><div class="at" style="color:'+adq.hex+'">'+esc(adq.titre)+'</div><div class="am">'+esc(adq.message)+'</div></div><div class="captitle">Préconisations</div><ul class="acts">'+adq.actions.map(function(a,i){return'<li><span class="n">'+(i+1)+'</span><span>'+esc(a)+'</span></li>'}).join("")+'</ul></div></section>';
+    renderCrete(L);renderReco(L);updateHistoBar();return;
+  }
+  var picb=L.picb,fo=L.formation;var data=res.idx.map(function(i){return{f:hz(FREQS[i]),brut:r1(spec[i]),l84:r1(spec[i]-res.apv84[i]),l98:r1(spec[i]-res.apv98[i])}});
+  var srcLbl=isM&&L.env&&L.env.nbUnites>1?"spectre dimensionnant ("+L.env.nbUnites+" tâches)":"spectre mesuré";
+  var sub98=(res.decote>0)?"RETENU · décote "+res.decote+" dB":(picb.isDouble?"RETENU · INRS V7.2":"RETENU · INRS k=2");
+  var html='<section class="box"><div class="sechd"><div class="snum">'+sn+'</div><div style="flex:1"><h2 class="sttl">Résultats — Méthode OB</h2><div class="ssub">Sur '+srcLbl+' · '+esc(picb.nom)+'</div></div></div><div class="secbody">';
+  if(isM&&L.env&&L.env.nbUnites>1)html+='<div style="margin-bottom:14px;padding:8px 12px;background:#eef8f6;border-radius:8px;font-size:12px;color:var(--teal)">Calcul sur le spectre dimensionnant de <b>'+L.env.nbUnites+' tâches</b></div>';
+  html+='<div class="stats">';
+  [{l:"Leq(A)",v:res.leqA,c:"var(--ink)",ref:false,sub:"Bruit"},{l:"L'A 84%",v:res.la84,c:"var(--navy)",ref:false,sub:"ISO"},{l:"L'A 98%",v:res.la98,c:"var(--accent)",ref:true,sub:sub98}].forEach(function(k){html+='<div class="stat'+(k.ref?" ref":"")+'"><div class="sl">'+k.l+'</div><div class="sv" style="color:'+k.c+'">'+f1(k.v)+'</div><div class="su">dB(A)</div><div class="su" style="margin-top:3px;font-weight:'+(k.ref?"700":"400")+'">'+k.sub+'</div></div>'});
+  html+='</div><div class="badge" style="background:'+diag.color+'"><div><div class="bt">'+diag.tag+' — '+diag.label+'</div><div class="bd">L\'A = '+f1(res.ref)+' dB(A) · '+diag.txt+'</div></div></div>';
+  html+='<div class="lcla"><span>Leq(C) = <b class="mono">'+f1(res.leqC)+'</b></span><span>Lc−La = <b class="mono" style="color:'+(res.lcla>5?"var(--red)":"var(--ink)")+'">'+f1(res.lcla)+'</b> dB'+(res.lcla>5?" — BF":" — équilibré")+'</span></div>';
+  html+='<div class="chartbox"><div class="charttitle">Spectre dimensionnant vs bruit à l\'oreille</div>'+chartSVG(data,false)+'</div>';
+  // Tableau OB
+  html+='<div style="margin-top:14px;overflow-x:auto"><table class="ob"><thead><tr><th class="lft">Bande</th>';FREQS.forEach(function(f){html+='<th>'+hz(f)+'</th>'});html+='</tr></thead><tbody>';
+  var aL=(res.decote>0)?"APV₉₈₊(−"+res.decote+")":"APV₉₈₊";
+  [["Lf",function(i){return spec[i]},false],["APV₈₄",function(i){return res.apv84[i]},false],[aL,function(i){return res.apv98[i]},true],["L'₈₄",function(i){return spec[i]-res.apv84[i]},false],["L'₉₈",function(i){return Math.min(spec[i],spec[i]-res.apv98[i])},true]].forEach(function(rw){html+='<tr><td class="rl">'+rw[0]+'</td>';for(var i=0;i<8;i++)html+='<td class="'+(rw[2]?"tint":"")+'">'+(res.idx.indexOf(i)>=0?f1(rw[1](i)):"—")+'</td>';html+='</tr>'});
+  html+='</tbody></table></div></div></section>';
+  // Adéquation
+  html+='<section class="box"><div class="sechd"><div class="snum">'+snA+'</div><div style="flex:1"><h2 class="sttl">Adéquation au poste</h2></div></div><div class="secbody"><div class="adq" style="border-left-color:'+adq.hex+'"><div class="at" style="color:'+adq.hex+'">'+esc(adq.titre)+'</div><div class="am">'+esc(adq.message)+'</div></div><div class="captitle">Préconisations</div><ul class="acts">'+adq.actions.map(function(a,i){return'<li><span class="n">'+(i+1)+'</span><span>'+esc(a)+'</span></li>'}).join("")+'</ul></div></section>';
+  $("resultsWrap").innerHTML=html;
+  renderCrete(L);renderReco(L);updateHistoBar();
+}
+
+/* ═══ ALERTE CRÊTE ═══ */
+function renderCrete(L){
+  var crD=L.crDiag,lpc=L.lpc;
+  if(!crD){$("creteWrap").innerHTML="";return}
+  var html='<section class="box"><div class="sechd"><div class="snum amber">'+(L.mode==="multi"?"7":"6")+'</div><div style="flex:1"><h2 class="sttl">VOIE 2 — Contrôle crête Lp,C</h2><div class="ssub">Seuils réglementaires 135 / 137 / 140 dB(C)</div></div></div><div class="secbody">';
+  html+='<div class="crete-alert '+crD.cls+'"><div class="crete-icon">'+crD.icon+'</div><div><b>'+crD.tag+' — Lp,C maximal : '+f1(lpc)+' dB(C)</b><br>'+crD.msg+'</div></div>';
+  html+='<div class="captitle">Actions de prévention — crêtes</div><ul class="acts">';
+  crD.actions.forEach(function(a,i){html+='<li><span class="n">'+(i+1)+'</span><span>'+esc(a)+'</span></li>'});
+  html+='</ul></div></section>';
+  $("creteWrap").innerHTML=html;
+}
+
+/* ═══ RECOMMANDATIONS CONTEXTUALISÉES ═══ */
+function renderReco(L){
+  if(!L.res||!L.diag){$("recoWrap").innerHTML="";return}
+  var recos=buildRecommandations(L.spec,L.res,L.diag,L.adq,L.lpc,L.crDiag);
+  if(!recos.length){$("recoWrap").innerHTML="";return}
+  var sn=L.mode==="multi"?(L.crDiag?"8":"7"):(L.crDiag?"7":"6");
+  var html='<section class="box"><div class="sechd"><div class="snum" style="background:var(--gold)">'+sn+'</div><div style="flex:1"><h2 class="sttl">Pistes de prévention contextualisées</h2><div class="ssub">Propositions issues du croisement source × environnement × tâche × spectre × durée × crêtes — à valider par le préventeur</div></div></div><div class="secbody">';
+  html+='<div style="margin-bottom:14px;padding:10px 14px;background:#f5f1e1;border-left:4px solid var(--gold);border-radius:0 8px 8px 0;font-size:12.5px;line-height:1.5"><b>⚠ Ces pistes sont des propositions automatisées à valider par le préventeur.</b> Elles constituent une aide à la décision, pas un avis réglementaire. Le choix définitif des mesures de prévention relève de l\'analyse de l\'IPRP signataire.</div>';
+  recos.forEach(function(r){
+    html+='<div class="reco-card"><div class="reco-title"><span class="reco-tag" style="background:'+r.color+'">'+esc(r.cat.toUpperCase())+'</span>'+esc(r.title)+'</div><div class="reco-body">'+esc(r.body)+'</div></div>';
+  });
+  html+='</div></section>';
+  $("recoWrap").innerHTML=html;
+}
+
+/* ═══ EXPORTS ═══ */
+function buildDataRecord(){if(!LAST)return null;var L=LAST;return{_version:"v26",_timestamp:new Date().toISOString(),mode:L.mode,entreprise:($("entreprise").value||"").trim()||"—",poste:($("poste").value||"").trim()||"—",date:$("date").value||"",intervenant:($("intervenant").value||"").trim(),qualite:$("qualite").value,service:($("service").value||"").trim(),taches:L.mode==="multi"?unites.map(function(u){return{nom:u.nom,zone:u.zone,source:u.source,spectre:u.spectre.slice(),duree:u.duree,lpc:u.lpc,caract:u.caract,leqA:r1(computeLeqU(u))}}):null,spectreRef:L.spec.slice(),leqA:r1(L.res.leqA),lcla:L.res.lcla?r1(L.res.lcla):null,lpcMax:L.lpc,creteAlerte:L.crDiag?L.crDiag.tag:null,noPicb:!!L.noPicb,picb:(!L.noPicb&&L.picb)?{nom:L.picb.nom,snr:L.picb.snr,type:L.picb.type,profil:L.picb.profil,isDouble:!!L.picb.isDouble}:null,la98:L.noPicb?null:r1(L.res.la98),diagnostic:L.diag?L.diag.tag:null,adequation:L.adq?L.adq.statut:null}}
+function exportJSON(){var r=buildDataRecord();if(!r)return;var b=new Blob([JSON.stringify(r,null,2)],{type:"application/json"});var u=URL.createObjectURL(b);var a=document.createElement("a");a.href=u;a.download="PICB_"+r.entreprise.replace(/[^a-z0-9]+/gi,"-").slice(0,30)+".json";document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(u);saveToHistory(r)}
+function exportWordLegacy(){if(!LAST)return;var L=LAST,res=L.res,adq=L.adq,spec=L.spec,isM=L.mode==="multi",np=!!L.noPicb;var d=$("date").value?new Date($("date").value).toLocaleDateString("fr-FR"):"—",intN=($("intervenant").value||"").trim()||"Nom";var hd=function(t){return'<td bgcolor="#102a43" style="border:1px solid #102a43;color:#fff;padding:5px 7px;text-align:center;font-weight:bold">'+t+'</td>'};var ctx=[["Entreprise",$("entreprise").value||"—"],["Poste/Fonction",$("poste").value||"—"],["Date",d],["Intervenant",intN+" — "+$("qualite").value],["Service",$("service").value||"—"],["Mode",isM?"Multi-sonométries ("+unites.length+" tâches)":"Évaluation simple"]].map(function(r){return'<tr><td bgcolor="#f0eddf" style="border:1px solid #c9c9c9;padding:5px 9px;font-weight:bold;width:42%">'+r[0]+'</td><td style="border:1px solid #c9c9c9;padding:5px 9px">'+esc(r[1])+'</td></tr>'}).join("");
+  // Tableau tâches enrichi
+  var tt="";if(isM&&unites.length>0){tt='<h2>2 · Tâches / Situations d\'exposition</h2><table><tr>'+hd("Tâche")+hd("Zone")+hd("Source");FREQS.forEach(function(f){tt+=hd(hz(f))});tt+=hd("Durée")+hd("Leq(A)")+hd("Lp,C")+hd("Caract.")+'</tr>';unites.forEach(function(u){var l=computeLeqU(u);tt+='<tr><td style="border:1px solid #c9c9c9;padding:4px 6px;font-weight:bold">'+esc(u.nom)+'</td><td style="border:1px solid #c9c9c9;padding:4px 6px">'+esc(u.zone)+'</td><td style="border:1px solid #c9c9c9;padding:4px 6px">'+esc(u.source)+'</td>';for(var i=0;i<8;i++)tt+='<td style="border:1px solid #c9c9c9;padding:4px;text-align:center">'+(u.spectre[i]!=null?f1(u.spectre[i]):"—")+'</td>';tt+='<td style="border:1px solid #c9c9c9;text-align:center">'+u.duree+'h</td><td style="border:1px solid #c9c9c9;text-align:center;font-weight:bold">'+f1(l)+'</td><td style="border:1px solid #c9c9c9;text-align:center">'+(u.lpc!=null?f1(u.lpc):"—")+'</td><td style="border:1px solid #c9c9c9;text-align:center">'+esc(u.caract)+'</td></tr>'});tt+='</table>'}
+  // Crête
+  var crHtml="";if(L.crDiag){crHtml='<h2>Contrôle crête Lp,C</h2><table><tr><td bgcolor="'+L.crDiag.cls.replace("c135","#cd8a1c").replace("c137","#c2392b").replace("c140","#8a1c12")+'" style="padding:9px 14px;color:#fff;font-weight:bold">'+L.crDiag.tag+' — Lp,C max = '+f1(L.lpc)+' dB(C)</td></tr></table><p style="margin-top:6px">'+esc(L.crDiag.msg)+'</p>'}
+  // Recos
+  var recos=buildRecommandations(spec,res,L.diag,adq,L.lpc,L.crDiag);var recoHtml="";if(recos.length){recoHtml='<h2>Pistes de prévention contextualisées</h2><p class="sub" style="background:#f5f1e1;border-left:3px solid #b78a2e;padding:6px 10px;margin-bottom:8px"><b>Propositions à valider par le préventeur.</b></p>';recos.forEach(function(r){recoHtml+='<p style="margin:8px 0"><b>['+esc(r.cat.toUpperCase())+'] '+esc(r.title)+'</b><br>'+esc(r.body)+'</p>'})}
+  var acts=adq.actions.map(function(a){return'<li style="margin:3px 0">'+esc(a)+'</li>'}).join("");
+  var html='<!DOCTYPE html><html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word"><head><meta charset="utf-8"><title>PICB v26</title><style>@page{size:A4;margin:2cm}body{font-family:Calibri,sans-serif;font-size:11pt;color:#1d2733;line-height:1.45}h2{font-size:12.5pt;color:#102a43;border-bottom:2px solid #1a7a6d;padding-bottom:3px;margin:20px 0 8px}table{border-collapse:collapse;width:100%;font-size:9pt}.sub{color:#5d6b7a;font-size:9.5pt}</style></head><body>'
+    +'<table><tr><td bgcolor="#102a43" style="padding:14px 18px"><div style="color:#b78a2e;font-size:9pt;letter-spacing:2px;font-weight:bold">PRÉVENTIA-LAB v26</div><div style="color:#fff;font-size:17pt;font-weight:bold;margin-top:3px">Évaluation PICB — Double voie spectre + crête</div><div style="color:#c7d2dd;font-size:9.5pt">Méthode OB · NF EN ISO 4869-2 · INRS PICB-VLE-V7.2</div></td></tr></table>'
+    +'<h2>1 · Contexte</h2><table>'+ctx+'</table>'+tt
+    +'<h2>Adéquation</h2><table><tr><td bgcolor="'+adq.hex+'" style="padding:9px 14px;color:#fff;font-weight:bold">'+esc(adq.titre)+'</td></tr></table><p>'+esc(adq.message)+'</p><ul>'+acts+'</ul>'
+    +crHtml+recoHtml
+    +'<p class="sub" style="margin-top:18px;border-top:1px solid #c9c9c9;padding-top:6px">PréventIA-LaB v26 — double voie spectre + crête</p></body></html>';
+  var blob=new Blob(["\ufeff",html],{type:"application/msword"});var u=URL.createObjectURL(blob);var a=document.createElement("a");a.href=u;a.download="PICB_v26_"+($("entreprise").value||"eval").replace(/[^a-z0-9]+/gi,"-").slice(0,30)+".doc";document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(u);var rec=buildDataRecord();if(rec)saveToHistory(rec);}
+function exportWord(){
+  if(!LAST)return;
+  var L=LAST, res=L.res, adq=L.adq;
+  var data={
+    entreprise:($("entreprise").value||"").trim(),
+    poste:($("poste").value||"").trim(),
+    date:$("date").value||"",
+    intervenant:($("intervenant").value||"").trim(),
+    qualite:$("qualite").value,
+    service:($("service").value||"").trim(),
+    lex:$("lex").value||"",
+    adresse:($("adresse").value||"").trim(),
+    cp_ville:($("cp_ville").value||"").trim(),
+    horaires:($("horaires").value||"").trim(),
+    mode:L.mode,
+    spec:L.spec,
+    noPicb:!!L.noPicb,
+    formation:L.formation,
+    picb:L.picb?{nom:L.picb.nom,snr:L.picb.snr,type:L.picb.type,
+      typeLabel:TYPE_LABEL[L.picb.type],profil:L.picb.profil,isDouble:!!L.picb.isDouble}:null,
+    res:res, diag:L.diag, adq:adq,
+    lpc:L.lpc, crDiag:L.crDiag,
+    taches:L.mode==="multi"?unites.map(function(u){
+      return{nom:u.nom,zone:u.zone,source:u.source,spectre:u.spectre.slice(),
+        duree:u.duree,lpc:u.lpc,caract:u.caract,leqA:r1(computeLeqU(u))}
+    }):null,
+    recos:buildRecommandations(L.spec,res,L.diag,adq,L.lpc,L.crDiag)
+  };
+  if(typeof exportRapportWord==="function"){
+    exportRapportWord(data);
+  }else{
+    exportWordLegacy();
+  }
+  var rec=buildDataRecord();if(rec)saveToHistory(rec);
+}
+                            
+/* ═══ HISTORIQUE ═══ */
+function saveToHistory(r){try{var h=JSON.parse(localStorage.getItem(HISTO_KEY)||"[]");h.push(r);localStorage.setItem(HISTO_KEY,JSON.stringify(h))}catch(e){}updateHistoBar()}
+function updateHistoBar(){var e=($("entreprise").value||"").trim();if(!e){$("histoBar").style.display="none";return}try{var h=JSON.parse(localStorage.getItem(HISTO_KEY)||"[]"),f=h.filter(function(r){return r.entreprise===e});if(!f.length){$("histoBar").style.display="none";return}$("histoBar").style.display="flex";$("histoEntreprise").textContent=e;var txt=f.length+" éval.";if(f.length>=2){var d=(f[f.length-1].leqA||0)-(f[0].leqA||0);txt+=" · "+(d<0?"📉":"📈")+" "+f1(Math.abs(d))+" dB(A)"}$("histoCount").textContent=txt}catch(e){$("histoBar").style.display="none"}}
+function exportHistoCSV(){try{var h=JSON.parse(localStorage.getItem(HISTO_KEY)||"[]"),e=($("entreprise").value||"").trim();var f=e?h.filter(function(r){return r.entreprise===e}):h;if(!f.length)return;var csv="date;entreprise;poste;mode;leqA;la98;lpcMax;creteAlerte;diagnostic;picb\n"+f.map(function(r){return[r.date,r.entreprise,r.poste,r.mode,r.leqA,r.la98||"",r.lpcMax||"",r.creteAlerte||"",r.diagnostic||"",r.picb?r.picb.nom:"aucun"].join(";")}).join("\n");var b=new Blob(["\ufeff"+csv],{type:"text/csv"});var u=URL.createObjectURL(b);var a=document.createElement("a");a.href=u;a.download="historique_PICB.csv";document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(u)}catch(e){}}
+
+/* ═══ INIT ═══ */
+function init(){
+  buildBands();buildSimpleBands();$("date").value=new Date().toISOString().slice(0,10);
+  updatePicbUI();if(CATALOGUE["green-o"])$("picbkey").value="green-o";updatePicbUI();
+  if(!(localStorage.getItem(WEBHOOK_KEY)||"").trim()&&WEBHOOK_DEFAULT)localStorage.setItem(WEBHOOK_KEY,WEBHOOK_DEFAULT);
+  var u=(localStorage.getItem(WEBHOOK_KEY)||"").trim();$("cfgstate").textContent=u?"configurée ✓":"non configurée";$("cfgstate").style.color=u?"var(--green)":"var(--soft)";if(u)$("webhookurl").value=u;
+  $("simpleDrop").addEventListener("click",function(){$("simpleFile").click()});$("simpleDrop").addEventListener("dragover",function(e){e.preventDefault()});$("simpleDrop").addEventListener("drop",function(e){e.preventDefault();simpleOnFile(e.dataTransfer.files[0])});$("simpleFile").addEventListener("change",function(e){simpleOnFile(e.target.files[0])});$("simpleCam").addEventListener("change",function(e){simpleOnFile(e.target.files[0])});$("btnSCam").addEventListener("click",function(){$("simpleCam").click()});$("btnSGal").addEventListener("click",function(){$("simpleFile").click()});$("btnSA").addEventListener("click",simpleAnalyse);$("btnSR").addEventListener("click",simpleReset);
+  Array.prototype.forEach.call($("segSimple").children,function(b){b.addEventListener("click",function(){Array.prototype.forEach.call($("segSimple").children,function(x){x.classList.remove("on")});b.classList.add("on");$("simpleImport").style.display=b.dataset.m==="import"?"block":"none"})});
+  for(var i=0;i<8;i++){$("spec"+i).addEventListener("input",recompute);["mf"+i,"sf"+i].forEach(function(id){$(id).addEventListener("input",recompute)})}
+  $("simpleLpc").addEventListener("input",recompute);$("simpleCaract").addEventListener("change",recompute);
+  $("btnAddUnite").addEventListener("click",function(){createUnite("",null,1)});
+  $("cfgtoggle").addEventListener("click",function(){var p=$("cfgpanel");p.style.display=p.style.display==="none"?"block":"none"});
+  $("cfgsave").addEventListener("click",function(){var v=$("webhookurl").value.trim();if(v)localStorage.setItem(WEBHOOK_KEY,v);else localStorage.removeItem(WEBHOOK_KEY);var u=(localStorage.getItem(WEBHOOK_KEY)||"").trim();$("cfgstate").textContent=u?"✓":"—";$("cfgstate").style.color=u?"var(--green)":"var(--soft)";$("cfgpanel").style.display="none"});
+  $("picbkey").addEventListener("change",function(){updatePicbUI();recompute()});$("picbtype").addEventListener("change",function(){updatePicbUI();recompute()});$("formation").addEventListener("change",recompute);$("doubleProt").addEventListener("change",function(){updatePicbUI();recompute()});$("picbkey2").addEventListener("change",function(){updatePicbUI();recompute()});
+  $("btnExport").addEventListener("click",exportWord);$("btnExportJSON").addEventListener("click",exportJSON);$("btnHistoExport").addEventListener("click",exportHistoCSV);$("entreprise").addEventListener("change",updateHistoBar);
+  recompute();
+}
+document.addEventListener("DOMContentLoaded",init);
+</script>
+</body>
+</html>
