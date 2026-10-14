@@ -82,6 +82,64 @@
     return out;
   }
 
+  /* ── Tableaux de l'améliorateur (mode B) : synthèse + risques + préconisations ── */
+  const NAVY = '17428F', ZEBRA = 'F2F2F2', BORD = 'BFBFBF';
+  const STAT = { ok: ['Maîtrisé', 'AFCA0C'], warn: ['Partiel', 'EB7420'], no: ['Non maîtrisé', 'C0392B'] };
+  const PRIO = { urgent: ['URGENT', 'C0392B'], importante: ['IMPORTANTE', 'EB7420'], recommandee: ['RECOMMANDÉE', '7A9A00'] };
+
+  const XML_H = t =>
+    '<w:p><w:pPr><w:spacing w:before="240" w:after="120"/></w:pPr>' +
+    '<w:r><w:rPr><w:b/><w:color w:val="' + NAVY + '"/><w:sz w:val="26"/><w:szCs w:val="26"/></w:rPr>' +
+    '<w:t xml:space="preserve">' + escapeXml(t) + '</w:t></w:r></w:p>';
+
+  function xmlCell(txt, o) {
+    o = o || {};
+    const fill = o.fill ? '<w:shd w:val="clear" w:color="auto" w:fill="' + o.fill + '"/>' : '';
+    const rpr = '<w:rPr>' + (o.bold ? '<w:b/>' : '') +
+      '<w:color w:val="' + (o.color || '000000') + '"/><w:sz w:val="' + (o.sz || 18) + '"/><w:szCs w:val="' + (o.sz || 18) + '"/></w:rPr>';
+    return '<w:tc><w:tcPr><w:tcW w:w="' + o.w + '" w:type="dxa"/>' + fill + '</w:tcPr>' +
+      '<w:p><w:pPr><w:spacing w:before="40" w:after="40"/></w:pPr><w:r>' + rpr +
+      '<w:t xml:space="preserve">' + escapeXml(txt) + '</w:t></w:r></w:p></w:tc>';
+  }
+
+  function xmlTable(widths, header, rows) {
+    const b = t => '<w:' + t + ' w:val="single" w:sz="4" w:space="0" w:color="' + BORD + '"/>';
+    let x = '<w:tbl><w:tblPr><w:tblW w:w="' + widths.reduce((a, c) => a + c, 0) + '" w:type="dxa"/>' +
+      '<w:tblBorders>' + ['top', 'left', 'bottom', 'right', 'insideH', 'insideV'].map(b).join('') + '</w:tblBorders>' +
+      '<w:tblLayout w:type="fixed"/><w:tblCellMar><w:left w:w="80" w:type="dxa"/><w:right w:w="80" w:type="dxa"/></w:tblCellMar></w:tblPr>' +
+      '<w:tblGrid>' + widths.map(w => '<w:gridCol w:w="' + w + '"/>').join('') + '</w:tblGrid>';
+    x += '<w:tr><w:trPr><w:tblHeader/></w:trPr>' +
+      header.map((h, i) => xmlCell(h, { w: widths[i], fill: NAVY, color: 'FFFFFF', bold: true, sz: 17 })).join('') + '</w:tr>';
+    rows.forEach((r, ri) => {
+      x += '<w:tr><w:trPr><w:cantSplit/></w:trPr>' +
+        r.map((c, i) => xmlCell(c.t, Object.assign({ w: widths[i], fill: ri % 2 ? ZEBRA : null }, c))).join('') + '</w:tr>';
+    });
+    return x + '</w:tbl>' + XML_VIDE;
+  }
+
+  function genererTableaux(V) {
+    const rq = V.risqueRows || [], pr = V.precoRows || [];
+    if (!rq.length && !pr.length) return '';
+    let out = XML_TITRE('Analyse PréventIA-LaB de la fiche d’entreprise');
+    if (V.synthese) out += XML_H('Synthèse de l’analyse') + XML_PARA(V.synthese);
+    if (rq.length) {
+      out += XML_H('Tableau synthétique des risques');
+      out += xmlTable([2000, 3900, 1300, 2400], ['Famille de risque', 'Moyens en place (observés)', 'Statut', 'Référence'],
+        rq.map(r => {
+          const s = STAT[r.statut] || STAT.warn;
+          return [{ t: r.risque, bold: true }, { t: r.moyens }, { t: s[0], bold: true, color: s[1] }, { t: r.ref, color: '44546A' }];
+        }));
+    }
+    out += XML_H('Préconisations employeur priorisées');
+    const prRows = pr.length ? pr : [{ texte: 'Aucune préconisation restante après déduplication.', ref: '—', prio: 'recommandee', delai: '—' }];
+    out += xmlTable([3800, 2500, 2000, 1300], ['Préconisation', 'Référence réglementaire', 'Priorité', 'Échéance'],
+      prRows.map(p => {
+        const q = PRIO[p.prio] || PRIO.recommandee;
+        return [{ t: p.texte }, { t: p.ref, color: '44546A' }, { t: q[0], bold: true, color: q[1] }, { t: p.delai }];
+      }));
+    return out;
+  }
+
   /**
    * Construit le XML complet du bloc conclusions.
    * @param {string[]} risquesActifs  ids de risques (ex: ['ecran','rps','tms'])
@@ -164,7 +222,7 @@
     }
 
     // 2. Injection des conclusions dynamiques
-    const blocXml = genererConclusions(V.risquesActifs || [], cat);
+    const blocXml = genererTableaux(V) + genererConclusions(V.risquesActifs || [], cat);
     xml = xml.replace(
       '<w:p><w:r><w:t>{{BLOC_CONCLUSIONS}}</w:t></w:r></w:p>',
       blocXml
@@ -212,22 +270,39 @@
   // ─────────────────────────────────────────────────────────────────────
   // Fonction pont : lit l'état courant de l'UI et lance l'export
   // ─────────────────────────────────────────────────────────────────────
-  function exportSPSTI() {
-    // Récupérer les risques évalués depuis l'outil
-    let risquesActifs = risquesDepuisOutil();
+  // 2026-10-14 → 14/10/2026
+  const dateFR = d => /^\d{4}-\d{2}-\d{2}$/.test(d) ? d.split('-').reverse().join('/') : d;
 
-    // Si aucun risque évalué, prendre TOUS les risques détectés (non évalués = présents quand même)
-    if (!risquesActifs.length && typeof aggregate === 'function') {
-      risquesActifs = aggregate().risks.map(r => r.id);
+  function exportSPSTI() {
+    // Onglet « Améliorateur » actif + fiche importée → on lit l'améliorateur (AME)
+    const paneB = document.getElementById('paneB');
+    const ame = global.AME;
+    const modeB = !!(paneB && !paneB.classList.contains('hidden') && ame && ame.state && ame.state.risqueRows.length);
+
+    let risquesActifs = [];
+    let m = (typeof M !== 'undefined') ? M : {};
+    let tableaux = {};
+
+    if (modeB) {
+      ame.collect();                                   // récupère les corrections faites à l'écran
+      const st = ame.state;
+      risquesActifs = [...new Set(st.risqueRows
+        .map(r => (typeof ame.matchRisk === 'function') ? ame.matchRisk(r.risque) : null)
+        .filter(Boolean).map(r => r.id))];
+      m = Object.assign({}, m, st.meta);
+      tableaux = { risqueRows: st.risqueRows, precoRows: st.precoRows, synthese: st.synthese || '' };
+    } else {
+      // Onglet « Création » : risques évalués, sinon tous les risques détectés
+      risquesActifs = risquesDepuisOutil();
+      if (!risquesActifs.length && typeof aggregate === 'function') {
+        risquesActifs = aggregate().risks.map(r => r.id);
+      }
     }
 
-    if (!risquesActifs.length) {
-      alert('Sélectionnez d\'abord un NAF, une unité de travail ou un métier pour détecter les risques.');
+    if (!risquesActifs.length && !(tableaux.risqueRows || []).length) {
+      alert('Aucun risque détecté : importez une fiche (onglet Améliorateur) ou sélectionnez un NAF, une unité de travail ou un métier (onglet Création).');
       return;
     }
-
-    // Lire les métadonnées depuis l'objet global M de index.html
-    const m = (typeof M !== 'undefined') ? M : {};
     const s = (typeof S !== 'undefined') ? S : {};
     const db = (typeof DB !== 'undefined') ? DB : {};
 
@@ -246,25 +321,30 @@
       nomEntreprise:      m.entreprise || '',
       naf:                m.naf || '',
       activite:           m.nafLib || '',
-      dateVisite:         m.date || new Date().toISOString().slice(0, 10),
+      dateVisite:         dateFR(m.date || new Date().toISOString().slice(0, 10)),
       redacteur:          m.preventeur || '',
       gheNom:             gheNom,
       risquesActifs:      risquesActifs,
+      risqueRows:         tableaux.risqueRows || [],
+      precoRows:          tableaux.precoRows || [],
+      synthese:           tableaux.synthese || '',
     };
 
     // Feedback visuel
-    const btn = document.querySelector('[onclick="exportSPSTI()"]');
+    const btn = (typeof event !== 'undefined' && event && event.target && event.target.closest)
+      ? event.target.closest('button') : document.querySelector('[onclick="exportSPSTI()"]');
+    const label = btn ? btn.textContent : '';
     if (btn) { btn.textContent = '⏳ Génération en cours…'; btn.disabled = true; }
 
     exporterFicheSPSTI(donnees)
       .then(nom => {
         console.log('✅ Fiche SPSTI générée :', nom);
-        if (btn) { btn.textContent = '✅ Téléchargé !'; setTimeout(() => { btn.textContent = '📋 Export SPSTI officiel'; btn.disabled = false; }, 2000); }
+        if (btn) { btn.textContent = '✅ Téléchargé !'; setTimeout(() => { btn.textContent = label; btn.disabled = false; }, 2000); }
       })
       .catch(err => {
         console.error('❌ Export SPSTI échoué :', err);
-        alert('Erreur : ' + err.message + '\n\nVérifiez que les fichiers fiche-spsti-template.docx et conclusions-fe.json sont bien dans le dossier fiche-entreprise/ sur GitHub.');
-        if (btn) { btn.textContent = '📋 Export SPSTI officiel'; btn.disabled = false; }
+        alert('Erreur : ' + err.message + '\n\nVérifiez que les fichiers fiche-entreprise-spsti-template.docx et conclusions-fe.json sont bien dans le dossier fiche-entreprise/ sur GitHub.');
+        if (btn) { btn.textContent = label; btn.disabled = false; }
       });
   }
 
