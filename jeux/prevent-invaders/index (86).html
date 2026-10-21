@@ -1,0 +1,1813 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Prévent'Invaders — Défendez votre santé</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;height:100%;overflow:hidden;background:#0a0014;font-family:'Segoe UI',system-ui,sans-serif}
+#gameCanvas{display:block;margin:0 auto;image-rendering:pixelated;cursor:none;touch-action:none}
+#overlay{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:10;pointer-events:none;opacity:0;visibility:hidden;transition:opacity .3s}
+#overlay.active{pointer-events:all;opacity:1;visibility:visible}
+.menu-panel{background:rgba(10,0,20,.92);border:2px solid rgba(236,130,180,.5);border-radius:18px;padding:40px 36px;text-align:center;max-width:520px;width:90%;backdrop-filter:blur(12px);box-shadow:0 0 60px rgba(236,130,180,.15);max-height:90vh;overflow-y:auto}
+.menu-panel h1{font-size:2.2em;color:#f472b6;text-shadow:0 0 20px rgba(244,114,182,.5);margin-bottom:4px;letter-spacing:1px}
+.menu-panel h2{font-size:1em;color:#c4b5fd;margin-bottom:24px;font-weight:400}
+.menu-panel p{color:#e2d9f3;font-size:.9em;line-height:1.5;margin-bottom:16px}
+.btn{display:inline-block;padding:14px 40px;font-size:1.1em;font-weight:700;color:#fff;background:linear-gradient(135deg,#ec4899,#a855f7);border:none;border-radius:30px;cursor:pointer;transition:all .2s;text-transform:uppercase;letter-spacing:2px;box-shadow:0 4px 20px rgba(236,72,153,.4);margin:6px}
+.btn:hover{transform:scale(1.05);box-shadow:0 6px 30px rgba(236,72,153,.6)}
+.btn.secondary{background:linear-gradient(135deg,#6366f1,#8b5cf6);box-shadow:0 4px 20px rgba(99,102,241,.4)}
+.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0}
+.stat-item{background:rgba(255,255,255,.06);border-radius:10px;padding:10px}
+.stat-item .label{font-size:.7em;color:#a78bfa;text-transform:uppercase;letter-spacing:1px}
+.stat-item .value{font-size:1.4em;color:#f9a8d4;font-weight:700}
+.tip-box{background:rgba(236,130,180,.1);border-left:3px solid #ec4899;padding:12px 16px;border-radius:0 8px 8px 0;margin:16px 0;text-align:left}
+.tip-box p{color:#fce7f3;font-size:.85em;margin:0}
+#mobileControls{position:fixed;bottom:20px;left:0;right:0;display:none;justify-content:space-between;padding:0 20px;z-index:20;pointer-events:none}
+.touch-btn{width:70px;height:70px;border-radius:50%;background:rgba(236,130,180,.2);border:2px solid rgba(236,130,180,.4);display:flex;align-items:center;justify-content:center;font-size:28px;color:rgba(255,255,255,.7);pointer-events:all;-webkit-tap-highlight-color:transparent}
+.touch-btn:active{background:rgba(236,130,180,.5)}
+.dpad{display:flex;gap:8px}
+@media(max-width:768px){
+  #mobileControls{display:flex}
+  .menu-panel{padding:24px 20px}
+  .menu-panel h1{font-size:1.6em}
+}
+</style>
+</head>
+<body>
+<canvas id="gameCanvas"></canvas>
+<div id="overlay" class="active">
+  <div class="menu-panel" id="menuPanel"></div>
+</div>
+<div id="mobileControls">
+  <div class="dpad">
+    <button class="touch-btn" id="btnLeft">◀</button>
+    <button class="touch-btn" id="btnRight">▶</button>
+  </div>
+  <button class="touch-btn" id="btnFire">🎀</button>
+</div>
+
+<script>
+/* ===== STATS SUPABASE ===== */
+const SB_URL='https://vjiryvqyijfljzsaekee.supabase.co';
+const SB_KEY='sb_publishable_I7Ao0-YCve34t6qTrhGc7A_M5Fduxg1';
+const SID=sessionStorage.sid||=crypto.randomUUID();
+function track(game,event,extra={}){
+  fetch(SB_URL+'/rest/v1/game_events',{method:'POST',keepalive:true,
+    headers:{apikey:SB_KEY,'Content-Type':'application/json',Prefer:'return=minimal'},
+    body:JSON.stringify({game,event,session_id:SID,
+      device:/Mobi/.test(navigator.userAgent)?'mobile':'desktop',...extra})
+  }).catch(()=>{});
+}
+track('invaders','visit');
+// ═══════════════════════════════════════════════════════════════
+// PRÉVENT'INVADERS — Défendez votre santé
+// Jeu HTML5 Canvas — Octobre Rose — PréventIA-LaB
+// Architecture : Game Loop + Entity System + Particle Engine
+// ═══════════════════════════════════════════════════════════════
+
+// ─── CONSTANTES ───────────────────────────────────────────────
+const GAME_W = 800, GAME_H = 600;
+const PINK = '#f472b6', ROSE = '#ec4899', VIOLET = '#a855f7',
+      BLUE_NIGHT = '#1e1b4b', TURQUOISE = '#2dd4bf', GOLD = '#fbbf24',
+      WHITE = '#fff', SOFT_PINK = '#fce7f3', DEEP_PURPLE = '#581c87';
+
+// Messages pédagogiques (sources : INCa, Santé publique France)
+const EDU_MESSAGES = [
+  "L'activité physique régulière réduit le risque de cancer du sein de 20 %.",
+  "Le dépistage organisé est recommandé tous les 2 ans entre 50 et 74 ans.",
+  "L'alcool augmente le risque de cancer du sein, même à faible dose.",
+  "Le tabac est un facteur de risque majeur de nombreux cancers.",
+  "Une alimentation riche en fruits et légumes aide à prévenir les cancers.",
+  "L'allaitement maternel réduit le risque de cancer du sein.",
+  "Le surpoids après la ménopause augmente le risque de cancer du sein.",
+  "Le travail de nuit est un facteur de risque probable (CIRC groupe 2A).",
+  "En cas d'anomalie au dépistage, consultez rapidement votre médecin.",
+  "80 % des cancers du sein surviennent après 50 ans.",
+  "Détecté tôt, le cancer du sein se guérit dans 9 cas sur 10.",
+  "La mammographie permet de détecter des cancers non palpables.",
+  "La sédentarité favorise le surpoids, facteur de risque établi.",
+  "La prévention primaire peut éviter 40 % des cancers.",
+  "Connaître ses antécédents familiaux permet un suivi adapté."
+];
+
+// ─── CANVAS & CONTEXTE ───────────────────────────────────────
+const canvas = document.getElementById('gameCanvas');
+const ctx = canvas.getContext('2d');
+let dpr = 1, cW, cH, scale = 1;
+
+function resizeCanvas() {
+  dpr = Math.min(window.devicePixelRatio || 1, 2);
+  const aspect = GAME_W / GAME_H;
+  let w = window.innerWidth, h = window.innerHeight;
+  if (w / h > aspect) { cH = h; cW = h * aspect; }
+  else { cW = w; cH = w / aspect; }
+  scale = cW / GAME_W;
+  canvas.width = cW * dpr;
+  canvas.height = cH * dpr;
+  canvas.style.width = cW + 'px';
+  canvas.style.height = cH + 'px';
+  ctx.setTransform(dpr * scale, 0, 0, dpr * scale, 0, 0);
+}
+window.addEventListener('resize', resizeCanvas);
+resizeCanvas();
+
+// ─── AUDIO ENGINE (Web Audio API) ────────────────────────────
+const AudioCtx = window.AudioContext || window.webkitAudioContext;
+let audioCtx = null;
+let audioEnabled = true;
+
+function ensureAudio() {
+  if (!audioCtx) audioCtx = new AudioCtx();
+  if (audioCtx.state === 'suspended') audioCtx.resume();
+}
+
+function playSound(type) {
+  if (!audioEnabled || !audioCtx) return;
+  try {
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+    const t = audioCtx.currentTime;
+    switch (type) {
+      case 'shoot':
+        osc.type = 'sine'; osc.frequency.setValueAtTime(880, t);
+        osc.frequency.exponentialRampToValueAtTime(440, t + .08);
+        gain.gain.setValueAtTime(.12, t); gain.gain.exponentialRampToValueAtTime(.001, t + .1);
+        osc.start(t); osc.stop(t + .1); break;
+      case 'hit':
+        osc.type = 'square'; osc.frequency.setValueAtTime(200, t);
+        osc.frequency.exponentialRampToValueAtTime(60, t + .15);
+        gain.gain.setValueAtTime(.15, t); gain.gain.exponentialRampToValueAtTime(.001, t + .2);
+        osc.start(t); osc.stop(t + .2); break;
+      case 'bonus':
+        osc.type = 'sine'; osc.frequency.setValueAtTime(523, t);
+        osc.frequency.setValueAtTime(659, t + .08);
+        osc.frequency.setValueAtTime(784, t + .16);
+        gain.gain.setValueAtTime(.12, t); gain.gain.exponentialRampToValueAtTime(.001, t + .3);
+        osc.start(t); osc.stop(t + .3); break;
+      case 'malus':
+        osc.type = 'sawtooth'; osc.frequency.setValueAtTime(300, t);
+        osc.frequency.exponentialRampToValueAtTime(80, t + .3);
+        gain.gain.setValueAtTime(.1, t); gain.gain.exponentialRampToValueAtTime(.001, t + .35);
+        osc.start(t); osc.stop(t + .35); break;
+      case 'levelup':
+        osc.type = 'sine';
+        [523,659,784,1047].forEach((f,i) => osc.frequency.setValueAtTime(f, t + i*.1));
+        gain.gain.setValueAtTime(.1, t); gain.gain.exponentialRampToValueAtTime(.001, t + .5);
+        osc.start(t); osc.stop(t + .5); break;
+      case 'gameover':
+        osc.type = 'triangle'; osc.frequency.setValueAtTime(440, t);
+        osc.frequency.exponentialRampToValueAtTime(110, t + .6);
+        gain.gain.setValueAtTime(.12, t); gain.gain.exponentialRampToValueAtTime(.001, t + .7);
+        osc.start(t); osc.stop(t + .7); break;
+      case 'boss':
+        osc.type = 'sawtooth'; osc.frequency.setValueAtTime(110, t);
+        osc.frequency.setValueAtTime(130, t + .1);
+        osc.frequency.setValueAtTime(110, t + .2);
+        gain.gain.setValueAtTime(.08, t); gain.gain.exponentialRampToValueAtTime(.001, t + .4);
+        osc.start(t); osc.stop(t + .4); break;
+    }
+  } catch(e) {}
+}
+
+// ─── INPUT ────────────────────────────────────────────────────
+const keys = {};
+document.addEventListener('keydown', e => { keys[e.code] = true; e.preventDefault(); });
+document.addEventListener('keyup', e => { keys[e.code] = false; });
+
+// Touch controls
+let touchLeft = false, touchRight = false, touchFire = false;
+['btnLeft','btnRight','btnFire'].forEach(id => {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.addEventListener('touchstart', e => { e.preventDefault();
+    if (id==='btnLeft') touchLeft=true;
+    if (id==='btnRight') touchRight=true;
+    if (id==='btnFire') touchFire=true;
+  });
+  el.addEventListener('touchend', e => { e.preventDefault();
+    if (id==='btnLeft') touchLeft=false;
+    if (id==='btnRight') touchRight=false;
+    if (id==='btnFire') touchFire=false;
+  });
+});
+
+function isLeft() { return keys['ArrowLeft']||keys['KeyA']||touchLeft; }
+function isRight() { return keys['ArrowRight']||keys['KeyD']||touchRight; }
+function isFire() { return keys['Space']||keys['ArrowUp']||keys['KeyW']||touchFire; }
+
+// ─── PARTICLE SYSTEM ─────────────────────────────────────────
+class Particle {
+  constructor(x, y, opts = {}) {
+    this.x = x; this.y = y;
+    this.vx = opts.vx || (Math.random() - .5) * 4;
+    this.vy = opts.vy || (Math.random() - .5) * 4 - 2;
+    this.life = opts.life || 30 + Math.random() * 30;
+    this.maxLife = this.life;
+    this.size = opts.size || 2 + Math.random() * 3;
+    this.color = opts.color || PINK;
+    this.type = opts.type || 'circle'; // circle, star, ribbon
+    this.gravity = opts.gravity || 0;
+    this.friction = opts.friction || .98;
+  }
+  update() {
+    this.x += this.vx; this.y += this.vy;
+    this.vy += this.gravity;
+    this.vx *= this.friction; this.vy *= this.friction;
+    this.life--;
+    return this.life > 0;
+  }
+  draw(ctx) {
+    const alpha = this.life / this.maxLife;
+    ctx.globalAlpha = alpha;
+    ctx.fillStyle = this.color;
+    if (this.type === 'star') {
+      drawStar(ctx, this.x, this.y, this.size, this.color);
+    } else if (this.type === 'ribbon') {
+      ctx.save();
+      ctx.translate(this.x, this.y);
+      ctx.rotate(Math.atan2(this.vy, this.vx));
+      ctx.fillRect(-this.size*2, -1, this.size*4, 2);
+      ctx.restore();
+    } else {
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.size * alpha, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+  }
+}
+
+let particles = [];
+
+function spawnExplosion(x, y, color = PINK, count = 15) {
+  for (let i = 0; i < count; i++) {
+    const angle = (i / count) * Math.PI * 2;
+    const speed = 1.5 + Math.random() * 3;
+    particles.push(new Particle(x, y, {
+      vx: Math.cos(angle) * speed, vy: Math.sin(angle) * speed,
+      color, size: 1.5 + Math.random() * 2.5,
+      type: Math.random() > .6 ? 'star' : 'circle',
+      life: 20 + Math.random() * 25, gravity: .03
+    }));
+  }
+}
+
+function spawnBonusEffect(x, y) {
+  for (let i = 0; i < 20; i++) {
+    particles.push(new Particle(x, y, {
+      vx: (Math.random()-.5)*5, vy: -Math.random()*4 -1,
+      color: [GOLD, TURQUOISE, SOFT_PINK][i%3],
+      size: 2 + Math.random()*3, type: 'star',
+      life: 30 + Math.random()*20, gravity: .04
+    }));
+  }
+}
+
+function drawStar(ctx, x, y, r, color) {
+  ctx.fillStyle = color;
+  ctx.beginPath();
+  for (let i = 0; i < 5; i++) {
+    const angle = (i * 4 * Math.PI / 5) - Math.PI / 2;
+    const method = i === 0 ? 'moveTo' : 'lineTo';
+    ctx[method](x + Math.cos(angle) * r, y + Math.sin(angle) * r);
+  }
+  ctx.closePath(); ctx.fill();
+}
+
+// ─── BACKGROUND (parallax étoilé) ────────────────────────────
+class StarField {
+  constructor() {
+    this.layers = [
+      this.makeStars(80, .2, 1),
+      this.makeStars(50, .5, 1.5),
+      this.makeStars(30, 1, 2.5)
+    ];
+    this.nebulae = [];
+    for (let i = 0; i < 4; i++) {
+      this.nebulae.push({
+        x: Math.random() * GAME_W, y: Math.random() * GAME_H * .6,
+        r: 60 + Math.random() * 100,
+        color: [
+          'rgba(236,72,153,.04)', 'rgba(168,85,247,.04)',
+          'rgba(45,212,191,.03)', 'rgba(99,102,241,.03)'
+        ][i % 4]
+      });
+    }
+    this.ribbonParticles = [];
+    for (let i = 0; i < 8; i++) {
+      this.ribbonParticles.push({
+        x: Math.random()*GAME_W, y: Math.random()*GAME_H,
+        speed: .1 + Math.random()*.3, size: 10+Math.random()*15,
+        phase: Math.random()*Math.PI*2, alpha: .06+Math.random()*.08
+      });
+    }
+  }
+  makeStars(count, speed, size) {
+    const stars = [];
+    for (let i = 0; i < count; i++)
+      stars.push({ x: Math.random()*GAME_W, y: Math.random()*GAME_H,
+        speed, size: size * (.5 + Math.random()), twinkle: Math.random()*Math.PI*2 });
+    return stars;
+  }
+  update(dt) {
+    for (const layer of this.layers)
+      for (const s of layer) {
+        s.y += s.speed * dt;
+        s.twinkle += .02 * dt;
+        if (s.y > GAME_H) { s.y = 0; s.x = Math.random() * GAME_W; }
+      }
+    for (const r of this.ribbonParticles) {
+      r.y += r.speed * dt;
+      r.x += Math.sin(r.phase + game.time * .01) * .3;
+      if (r.y > GAME_H + 20) { r.y = -20; r.x = Math.random() * GAME_W; }
+    }
+  }
+  draw(ctx) {
+    // Gradient de fond
+    const grad = ctx.createLinearGradient(0, 0, 0, GAME_H);
+    grad.addColorStop(0, '#0a0020');
+    grad.addColorStop(.4, '#150030');
+    grad.addColorStop(.7, '#1a0a2e');
+    grad.addColorStop(1, '#0f0525');
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, GAME_W, GAME_H);
+
+    // Nébuleuses
+    for (const n of this.nebulae) {
+      const g = ctx.createRadialGradient(n.x, n.y, 0, n.x, n.y, n.r);
+      g.addColorStop(0, n.color);
+      g.addColorStop(1, 'transparent');
+      ctx.fillStyle = g;
+      ctx.fillRect(n.x - n.r, n.y - n.r, n.r * 2, n.r * 2);
+    }
+
+    // Étoiles
+    for (const layer of this.layers) {
+      for (const s of layer) {
+        const alpha = .4 + Math.sin(s.twinkle) * .3;
+        ctx.globalAlpha = alpha;
+        ctx.fillStyle = WHITE;
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+    ctx.globalAlpha = 1;
+
+    // Rubans flottants
+    for (const r of this.ribbonParticles) {
+      ctx.globalAlpha = r.alpha;
+      ctx.fillStyle = PINK;
+      ctx.save();
+      ctx.translate(r.x, r.y);
+      ctx.rotate(Math.sin(r.phase + game.time * .005) * .3);
+      drawRibbonShape(ctx, 0, 0, r.size);
+      ctx.restore();
+    }
+    ctx.globalAlpha = 1;
+
+    // Skyline
+    drawSkyline(ctx);
+  }
+}
+
+function drawShieldRibbon(ctx, x, y) {
+  ctx.save();
+  ctx.translate(x, y);
+  ctx.scale(.75, .75);
+  ctx.fillStyle = '#ec4899';
+  // boucle gauche
+  ctx.beginPath();
+  ctx.moveTo(0, 0);
+  ctx.bezierCurveTo(-14, -14, -22, -5, -8, 7);
+  ctx.lineTo(0, 13); ctx.lineTo(4, 5);
+  ctx.closePath(); ctx.fill();
+  // boucle droite
+  ctx.beginPath();
+  ctx.moveTo(0, 0);
+  ctx.bezierCurveTo(14, -14, 22, -5, 8, 7);
+  ctx.lineTo(0, 13); ctx.lineTo(-4, 5);
+  ctx.closePath(); ctx.fill();
+  // pan gauche
+  ctx.beginPath();
+  ctx.moveTo(-3, 7); ctx.lineTo(-14, 24);
+  ctx.lineTo(-3, 18); ctx.lineTo(2, 7);
+  ctx.closePath(); ctx.fill();
+  // pan droit
+  ctx.beginPath();
+  ctx.moveTo(3, 7); ctx.lineTo(14, 24);
+  ctx.lineTo(3, 18); ctx.lineTo(-2, 7);
+  ctx.closePath(); ctx.fill();
+  ctx.restore();
+}
+
+function drawRibbonShape(ctx, x, y, s) {
+  const sc = s / 20;
+  ctx.fillStyle = PINK;
+  ctx.beginPath();
+  ctx.moveTo(x, y - 8*sc);
+  ctx.bezierCurveTo(x - 6*sc, y - 12*sc, x - 10*sc, y - 4*sc, x, y + 2*sc);
+  ctx.bezierCurveTo(x + 10*sc, y - 4*sc, x + 6*sc, y - 12*sc, x, y - 8*sc);
+  ctx.fill();
+  ctx.beginPath();
+  ctx.moveTo(x - 2*sc, y + 2*sc);
+  ctx.lineTo(x - 4*sc, y + 10*sc);
+  ctx.lineTo(x, y + 6*sc);
+  ctx.lineTo(x + 4*sc, y + 10*sc);
+  ctx.lineTo(x + 2*sc, y + 2*sc);
+  ctx.fill();
+}
+
+function drawSkyline(ctx) {
+  ctx.fillStyle = 'rgba(15,5,30,.9)';
+  const buildings = [
+    {x:0,w:60,h:80},{x:55,w:40,h:120},{x:90,w:50,h:90},
+    {x:150,w:30,h:140},{x:175,w:55,h:100},{x:240,w:45,h:70},
+    {x:300,w:35,h:130},{x:330,w:60,h:85},{x:400,w:40,h:150},
+    {x:435,w:50,h:95},{x:500,w:35,h:110},{x:530,w:55,h:75},
+    {x:590,w:40,h:135},{x:625,w:50,h:90},{x:680,w:45,h:105},
+    {x:730,w:70,h:80}
+  ];
+  for (const b of buildings) {
+    ctx.fillRect(b.x, GAME_H - b.h, b.w, b.h);
+    // Fenêtres
+    ctx.fillStyle = 'rgba(236,130,180,.15)';
+    for (let wy = GAME_H - b.h + 8; wy < GAME_H - 10; wy += 14) {
+      for (let wx = b.x + 6; wx < b.x + b.w - 6; wx += 10) {
+        if (Math.random() > .4)
+          ctx.fillRect(wx, wy, 4, 6);
+      }
+    }
+    ctx.fillStyle = 'rgba(15,5,30,.9)';
+  }
+}
+
+// ─── PLAYER (Infirmière sur plateforme volante) ──────────────
+class Player {
+  constructor() {
+    this.x = GAME_W / 2; this.y = GAME_H - 60;
+    this.w = 40; this.h = 36;
+    this.speed = 5; this.lives = 3;
+    this.shootCooldown = 0; this.shootRate = 12;
+    this.invincible = 0;
+    this.bobPhase = 0;
+  }
+  update(dt) {
+    if (isLeft()) this.x -= this.speed * dt;
+    if (isRight()) this.x += this.speed * dt;
+    this.x = Math.max(this.w/2, Math.min(GAME_W - this.w/2, this.x));
+    this.bobPhase += .08 * dt;
+    if (this.shootCooldown > 0) this.shootCooldown -= dt;
+    if (this.invincible > 0) this.invincible -= dt;
+
+    if (isFire() && this.shootCooldown <= 0) {
+      game.bullets.push(new Bullet(this.x, this.y - this.h/2));
+      this.shootCooldown = this.shootRate;
+      playSound('shoot');
+      // Traînée de tir
+      for (let i=0;i<3;i++)
+        particles.push(new Particle(this.x + (Math.random()-.5)*6, this.y - this.h/2, {
+          vx:(Math.random()-.5)*1, vy: -1-Math.random()*2,
+          color: SOFT_PINK, size:1.5, life:10, type:'ribbon'
+        }));
+    }
+  }
+  draw(ctx) {
+    if (this.invincible > 0 && Math.floor(game.time / 4) % 2 === 0) return;
+
+    const bob = Math.sin(this.bobPhase) * 2;
+    const cx = this.x;
+    const cy = this.y + bob;
+
+    // ─── Scale 0.6 pour garder l'encombrement cohérent avec le jeu ───
+    ctx.save();
+    ctx.translate(cx, cy);
+    ctx.scale(.6, .6);
+    ctx.translate(-cx, -cy);
+
+    // ═══ GLOW DU PERSONNAGE ═══
+    ctx.shadowBlur = 12;
+    ctx.shadowColor = 'rgba(244,114,182,.45)';
+
+    // ═══ PLATEFORME FUTURISTE ═══
+    ctx.fillStyle = '#312e81';
+    ctx.beginPath();
+    ctx.ellipse(cx, cy + 32, 38, 10, 0, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.fillStyle = '#6366f1';
+    ctx.beginPath();
+    ctx.ellipse(cx, cy + 28, 38, 9, 0, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.fillStyle = '#2dd4bf';
+    ctx.globalAlpha = .6 + Math.sin(game.time * .15) * .2;
+    ctx.beginPath();
+    ctx.ellipse(cx, cy + 27, 25, 3, 0, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.globalAlpha = 1;
+
+    // ═══ JAMBES ═══
+    ctx.fillStyle = '#ec4899';
+    ctx.fillRect(cx - 11, cy + 11, 8, 15);
+    ctx.fillRect(cx + 3, cy + 11, 8, 15);
+    // Chaussures
+    ctx.fillStyle = WHITE;
+    ctx.fillRect(cx - 14, cy + 24, 11, 4);
+    ctx.fillRect(cx + 3, cy + 24, 11, 4);
+
+    // ═══ CORPS / BLOUSE ═══
+    ctx.fillStyle = WHITE;
+    ctx.beginPath();
+    ctx.moveTo(cx - 18, cy - 13);
+    ctx.lineTo(cx + 18, cy - 13);
+    ctx.lineTo(cx + 16, cy + 13);
+    ctx.lineTo(cx + 10, cy + 17);
+    ctx.lineTo(cx - 10, cy + 17);
+    ctx.lineTo(cx - 16, cy + 13);
+    ctx.closePath();
+    ctx.fill();
+    ctx.strokeStyle = '#ec4899';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+
+    // ═══ COL V ═══
+    ctx.fillStyle = '#ec4899';
+    ctx.beginPath();
+    ctx.moveTo(cx - 9, cy - 13);
+    ctx.lineTo(cx, cy - 3);
+    ctx.lineTo(cx + 9, cy - 13);
+    ctx.lineTo(cx + 5, cy - 13);
+    ctx.lineTo(cx, cy - 7);
+    ctx.lineTo(cx - 5, cy - 13);
+    ctx.closePath();
+    ctx.fill();
+
+    // ═══ BRAS GAUCHE — SERINGUE ═══
+    ctx.strokeStyle = WHITE;
+    ctx.lineWidth = 7;
+    ctx.lineCap = 'round';
+    ctx.beginPath();
+    ctx.moveTo(cx - 14, cy - 7);
+    ctx.lineTo(cx - 29, cy - 14);
+    ctx.stroke();
+    // manche rose
+    ctx.strokeStyle = '#ec4899';
+    ctx.lineWidth = 8;
+    ctx.beginPath();
+    ctx.moveTo(cx - 13, cy - 7);
+    ctx.lineTo(cx - 21, cy - 11);
+    ctx.stroke();
+    // main
+    ctx.fillStyle = '#f0c8a0';
+    ctx.beginPath();
+    ctx.arc(cx - 30, cy - 14, 4, 0, Math.PI * 2);
+    ctx.fill();
+
+    // ═══ SERINGUE FUTURISTE ═══
+    const gunX = cx - 43;
+    const gunY = cy - 18;
+    ctx.fillStyle = '#e5e7eb';
+    ctx.fillRect(gunX, gunY, 24, 8);
+    ctx.fillStyle = '#f472b6';
+    ctx.fillRect(gunX + 5, gunY + 2, 13, 4);
+    ctx.fillStyle = '#94a3b8';
+    ctx.fillRect(gunX - 8, gunY + 3, 8, 2);
+    ctx.fillStyle = '#ec4899';
+    ctx.fillRect(gunX + 20, gunY - 2, 4, 12);
+    ctx.fillStyle = WHITE;
+    ctx.fillRect(gunX + 7, gunY + 2, 3, 2);
+
+    // ═══ BRAS DROIT — BOUCLIER ═══
+    ctx.strokeStyle = WHITE;
+    ctx.lineWidth = 7;
+    ctx.beginPath();
+    ctx.moveTo(cx + 14, cy - 7);
+    ctx.lineTo(cx + 29, cy - 10);
+    ctx.stroke();
+    ctx.strokeStyle = '#ec4899';
+    ctx.lineWidth = 8;
+    ctx.beginPath();
+    ctx.moveTo(cx + 13, cy - 7);
+    ctx.lineTo(cx + 21, cy - 9);
+    ctx.stroke();
+    ctx.fillStyle = '#f0c8a0';
+    ctx.beginPath();
+    ctx.arc(cx + 30, cy - 10, 4, 0, Math.PI * 2);
+    ctx.fill();
+
+    // ═══ BOUCLIER ═══
+    const shX = cx + 43;
+    const shY = cy - 7;
+    ctx.shadowBlur = 10;
+    ctx.shadowColor = '#ec4899';
+    // extérieur
+    ctx.fillStyle = '#ec4899';
+    ctx.beginPath();
+    ctx.moveTo(shX, shY - 22);
+    ctx.lineTo(shX + 20, shY - 14);
+    ctx.lineTo(shX + 17, shY + 10);
+    ctx.quadraticCurveTo(shX, shY + 27, shX, shY + 27);
+    ctx.quadraticCurveTo(shX, shY + 27, shX - 17, shY + 10);
+    ctx.lineTo(shX - 20, shY - 14);
+    ctx.closePath();
+    ctx.fill();
+    // intérieur
+    ctx.fillStyle = '#fff';
+    ctx.beginPath();
+    ctx.moveTo(shX, shY - 16);
+    ctx.lineTo(shX + 13, shY - 10);
+    ctx.lineTo(shX + 11, shY + 7);
+    ctx.quadraticCurveTo(shX, shY + 19, shX, shY + 19);
+    ctx.quadraticCurveTo(shX, shY + 19, shX - 11, shY + 7);
+    ctx.lineTo(shX - 13, shY - 10);
+    ctx.closePath();
+    ctx.fill();
+    // Ruban rose sur le bouclier
+    drawShieldRibbon(ctx, shX, shY);
+
+    ctx.shadowBlur = 0;
+    ctx.shadowColor = 'transparent';
+
+    // ═══ TÊTE ═══
+    // cheveux arrière
+    ctx.fillStyle = '#5c2d0e';
+    ctx.beginPath();
+    ctx.arc(cx, cy - 31, 17, 0, Math.PI * 2);
+    ctx.fill();
+    // visage
+    ctx.fillStyle = '#f0c8a0';
+    ctx.beginPath();
+    ctx.arc(cx, cy - 30, 14, 0, Math.PI * 2);
+    ctx.fill();
+    // cheveux dessus
+    ctx.fillStyle = '#5c2d0e';
+    ctx.beginPath();
+    ctx.arc(cx, cy - 35, 14, Math.PI, Math.PI * 2);
+    ctx.fill();
+    // mèches
+    ctx.fillRect(cx - 15, cy - 35, 4, 13);
+    ctx.fillRect(cx + 11, cy - 35, 4, 13);
+
+    // ═══ COIFFE INFIRMIÈRE ═══
+    ctx.fillStyle = WHITE;
+    roundRect(ctx, cx - 13, cy - 51, 26, 11, 3);
+    ctx.fill();
+    ctx.fillStyle = '#ec4899';
+    ctx.fillRect(cx - 2, cy - 49, 4, 8);
+    ctx.fillRect(cx - 6, cy - 46, 12, 4);
+
+    // ═══ YEUX ═══
+    const blinkPhase = Math.sin(game.time * .05);
+    if (blinkPhase > .95) {
+      ctx.strokeStyle = '#1e3a5f';
+      ctx.lineWidth = 1.5;
+      ctx.beginPath(); ctx.moveTo(cx - 7, cy - 31); ctx.lineTo(cx - 3, cy - 30); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(cx + 3, cy - 31); ctx.lineTo(cx + 7, cy - 30); ctx.stroke();
+    } else {
+      ctx.fillStyle = '#1e3a5f';
+      ctx.beginPath(); ctx.arc(cx - 5, cy - 30, 2, 0, Math.PI * 2); ctx.fill();
+      ctx.beginPath(); ctx.arc(cx + 5, cy - 30, 2, 0, Math.PI * 2); ctx.fill();
+      // Reflets
+      ctx.fillStyle = WHITE;
+      ctx.beginPath(); ctx.arc(cx - 4, cy - 31, .8, 0, Math.PI * 2); ctx.fill();
+      ctx.beginPath(); ctx.arc(cx + 6, cy - 31, .8, 0, Math.PI * 2); ctx.fill();
+    }
+
+    // ═══ SOURIRE ═══
+    ctx.strokeStyle = '#b4536b';
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.arc(cx, cy - 25, 4, 0.1, Math.PI - 0.1);
+    ctx.stroke();
+    // Joues roses
+    ctx.fillStyle = 'rgba(236,72,153,.25)';
+    ctx.beginPath(); ctx.arc(cx - 9, cy - 27, 2.5, 0, Math.PI * 2); ctx.fill();
+    ctx.beginPath(); ctx.arc(cx + 9, cy - 27, 2.5, 0, Math.PI * 2); ctx.fill();
+
+    // ═══ BADGE OCTOBRE ROSE ═══
+    ctx.fillStyle = '#ec4899';
+    ctx.fillRect(cx + 7, cy - 3, 6, 6);
+
+    // ═══ ÉTOILES ORBITALES ═══
+    ctx.globalAlpha = .4 + Math.sin(game.time * .08) * .3;
+    ctx.fillStyle = PINK;
+    const starTime = game.time * .03;
+    for (let i = 0; i < 3; i++) {
+      const angle = starTime + i * 2.1;
+      const dist = 30 + Math.sin(game.time * .05 + i) * 5;
+      const sx = cx + Math.cos(angle) * dist;
+      const sy = cy - 10 + Math.sin(angle) * 14;
+      ctx.fillRect(sx - 1.5, sy - 1.5, 3, 3);
+    }
+    ctx.globalAlpha = 1;
+
+    ctx.restore();
+  }
+  hit() {
+    if (this.invincible > 0) return;
+    this.lives--;
+    this.invincible = 90;
+    spawnExplosion(this.x, this.y, '#ef4444', 20);
+    playSound('malus');
+    game.screenShake = 8;
+  }
+}
+
+// ─── BULLET ──────────────────────────────────────────────────
+class Bullet {
+  constructor(x, y) {
+    this.x = x; this.y = y; this.speed = 7;
+    this.w = 4; this.h = 12; this.alive = true;
+  }
+  update(dt) {
+    this.y -= this.speed * dt;
+    if (this.y < -20) this.alive = false;
+    // Trail
+    if (Math.random() > .5)
+      particles.push(new Particle(this.x + (Math.random()-.5)*3, this.y + 6, {
+        vx: 0, vy: .5, color: SOFT_PINK, size: 1, life: 8, type: 'circle'
+      }));
+  }
+  draw(ctx) {
+    // Halo
+    ctx.globalAlpha = .25;
+    ctx.fillStyle = '#ec4899';
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, 9, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.globalAlpha = 1;
+    // Missile diamant
+    ctx.fillStyle = '#f472b6';
+    ctx.beginPath();
+    ctx.moveTo(this.x, this.y - 10);
+    ctx.lineTo(this.x + 5, this.y);
+    ctx.lineTo(this.x, this.y + 10);
+    ctx.lineTo(this.x - 5, this.y);
+    ctx.closePath();
+    ctx.fill();
+    // Cœur lumineux
+    ctx.fillStyle = WHITE;
+    ctx.fillRect(this.x - 2, this.y - 5, 4, 8);
+    // Traînée rose
+    ctx.fillStyle = '#ec4899';
+    ctx.fillRect(this.x - 2, this.y + 8, 4, 8);
+    // Étincelles
+    ctx.fillStyle = '#fce7f3';
+    ctx.fillRect(this.x - 5, this.y + 13, 2, 2);
+    ctx.fillRect(this.x + 3, this.y + 16, 2, 2);
+  }
+}
+
+// ─── ENEMY (Facteur de risque) ───────────────────────────────
+const ENEMY_TYPES = [
+  { name:'Alcool', emoji:'🍷', color:'#dc2626', colors:['#7f1d1d','#dc2626','#fca5a5'] },
+  { name:'Tabac', emoji:'🚬', color:'#a3a3a3', colors:['#525252','#a3a3a3','#e5e5e5'] },
+  { name:'Sédentarité', emoji:'🛋️', color:'#ca8a04', colors:['#713f12','#ca8a04','#fef08a'] },
+  { name:'Malbouffe', emoji:'🍔', color:'#ea580c', colors:['#7c2d12','#ea580c','#fed7aa'] },
+  { name:'Surpoids', emoji:'⚖️', color:'#9333ea', colors:['#581c87','#9333ea','#e9d5ff'] },
+  { name:'Travail nuit', emoji:'🌙', color:'#1d4ed8', colors:['#1e3a5f','#1d4ed8','#bfdbfe'] }
+];
+
+class Enemy {
+  constructor(x, y, typeIdx, row) {
+    this.x = x; this.y = y;
+    this.type = ENEMY_TYPES[typeIdx % ENEMY_TYPES.length];
+    this.typeIdx = typeIdx;
+    this.w = 44; this.h = 44;
+    this.alive = true;
+    this.animPhase = Math.random() * Math.PI * 2;
+    this.row = row;
+    this.hp = 1;
+    this.flashTimer = 0;
+  }
+  draw(ctx) {
+    const bob = Math.sin(this.animPhase + game.time * .06) * 2;
+    const cx = this.x, cy = this.y + bob;
+    const w = this.w, h = this.h;
+
+    if (this.flashTimer > 0) {
+      ctx.globalAlpha = .6;
+      this.flashTimer--;
+    }
+
+    // Ombre au sol
+    ctx.globalAlpha = .15;
+    ctx.fillStyle = this.type.color;
+    ctx.beginPath();
+    ctx.ellipse(cx, cy + 22, 14, 4, 0, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.globalAlpha = this.flashTimer > 0 ? .6 : 1;
+
+    // Petites pattes animées (courtes, stylisées)
+    ctx.strokeStyle = this.type.colors[0];
+    ctx.lineWidth = 2;
+    ctx.lineCap = 'round';
+    const legs = [-8, 8];
+    for (let i = 0; i < 2; i++) {
+      const sp = legs[i];
+      const lp = this.animPhase + game.time * .12 + i * 2.5;
+      const fx = cx + sp * 2 + Math.sin(lp) * 2;
+      const fy = cy + 20 + Math.abs(Math.sin(lp)) * 2;
+      ctx.beginPath();
+      ctx.moveTo(cx + sp * .8, cy + 14);
+      ctx.lineTo(fx, fy);
+      ctx.stroke();
+      ctx.fillStyle = this.type.colors[0];
+      ctx.beginPath();
+      ctx.arc(fx, fy, 2, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    ctx.lineCap = 'butt';
+
+    // ─── SPRITES SPÉCIFIQUES ───
+    const name = this.type.name;
+
+    if (name === 'Alcool') {
+      // 🍾 Bouteille de vin
+      ctx.fillStyle = '#2a5e30'; ctx.strokeStyle = '#1a3e20'; ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.moveTo(cx-5,cy-18);ctx.lineTo(cx-5,cy-12);ctx.lineTo(cx-10,cy-6);
+      ctx.lineTo(cx-10,cy+12);ctx.quadraticCurveTo(cx-10,cy+16,cx,cy+16);
+      ctx.quadraticCurveTo(cx+10,cy+16,cx+10,cy+12);
+      ctx.lineTo(cx+10,cy-6);ctx.lineTo(cx+5,cy-12);ctx.lineTo(cx+5,cy-18);
+      ctx.closePath();ctx.fill();ctx.stroke();
+      // Bouchon
+      ctx.fillStyle='#8b4513';ctx.fillRect(cx-3,cy-21,6,4);
+      // Étiquette
+      ctx.fillStyle='#f5e6c8';ctx.fillRect(cx-8,cy-3,16,10);
+      ctx.fillStyle='#8b0020';ctx.font='bold 7px sans-serif';ctx.textAlign='center';
+      ctx.fillText('VIN',cx,cy+5);
+      // Yeux méchants sur la bouteille
+      ctx.fillStyle='#ff2222';
+      ctx.beginPath();ctx.arc(cx-4,cy-9,2.5,0,Math.PI*2);ctx.arc(cx+4,cy-9,2.5,0,Math.PI*2);ctx.fill();
+      ctx.fillStyle='#fff';
+      ctx.beginPath();ctx.arc(cx-3.5,cy-9.5,1,0,Math.PI*2);ctx.arc(cx+4.5,cy-9.5,1,0,Math.PI*2);ctx.fill();
+
+    } else if (name === 'Tabac') {
+      // 🚬 Cigarette
+      ctx.fillStyle='#f0e8d8';ctx.strokeStyle='#ccc';ctx.lineWidth=1;
+      ctx.fillRect(cx-16,cy-5,24,10);ctx.strokeRect(cx-16,cy-5,24,10);
+      // Filtre
+      ctx.fillStyle='#cc8844';ctx.fillRect(cx-16,cy-5,7,10);
+      ctx.strokeStyle='#aa6622';ctx.strokeRect(cx-16,cy-5,7,10);
+      // Bout incandescent
+      ctx.fillStyle='#ff3300';ctx.fillRect(cx+8,cy-5,5,10);
+      ctx.fillStyle='#ffaa22';ctx.fillRect(cx+9,cy-3,3,6);
+      // Fumée
+      ctx.strokeStyle='rgba(200,200,220,.4)';ctx.lineWidth=1.5;
+      const st=game.time*.04;
+      ctx.beginPath();ctx.moveTo(cx+13,cy-4);ctx.quadraticCurveTo(cx+16+Math.sin(st)*4,cy-14,cx+14+Math.sin(st+1)*5,cy-22);ctx.stroke();
+      ctx.beginPath();ctx.moveTo(cx+14,cy);ctx.quadraticCurveTo(cx+18+Math.sin(st+2)*3,cy-10,cx+15+Math.sin(st+3)*4,cy-18);ctx.stroke();
+      // Yeux méchants
+      ctx.fillStyle='#333';
+      ctx.beginPath();ctx.arc(cx-6,cy,2.5,0,Math.PI*2);ctx.arc(cx+3,cy,2.5,0,Math.PI*2);ctx.fill();
+      ctx.strokeStyle='#555';ctx.lineWidth=1.2;
+      ctx.beginPath();ctx.arc(cx-1.5,cy+3,4,0,Math.PI);ctx.stroke();
+
+    } else if (name === 'Malbouffe') {
+      // 🍔 Burger avec yeux méchants
+      const bw=20,bh=16;
+      ctx.fillStyle='#d4882a';
+      ctx.beginPath();ctx.ellipse(cx,cy-5,bw,bh*.5,0,Math.PI,0);ctx.fill();
+      ctx.fillStyle='#f5e6c8';
+      ctx.fillRect(cx-4,cy-12,3,2);ctx.fillRect(cx+2,cy-13,3,2);
+      ctx.fillStyle='#55aa33';
+      for(let i=-3;i<4;i++)ctx.fillRect(cx+i*4-2,cy-2,5,2.5);
+      ctx.fillStyle='#6b3310';ctx.fillRect(cx-bw+2,cy,bw*2-4,5);
+      ctx.fillStyle='#f0c030';ctx.fillRect(cx-bw+1,cy+2,bw*2-2,3);
+      ctx.fillRect(cx-bw-1,cy+3,4,4);ctx.fillRect(cx+bw-3,cy+4,4,3);
+      ctx.fillStyle='#c07820';ctx.fillRect(cx-bw+2,cy+5,bw*2-4,4);
+      ctx.beginPath();ctx.ellipse(cx,cy+9,bw-1,2.5,0,0,Math.PI);ctx.fill();
+      // Angry eyes on bun
+      ctx.fillStyle='#fff';
+      ctx.beginPath();ctx.arc(cx-7,cy-6,3,0,Math.PI*2);ctx.arc(cx+7,cy-6,3,0,Math.PI*2);ctx.fill();
+      ctx.fillStyle='#330000';
+      ctx.beginPath();ctx.arc(cx-6,cy-5.5,1.5,0,Math.PI*2);ctx.arc(cx+8,cy-5.5,1.5,0,Math.PI*2);ctx.fill();
+      ctx.strokeStyle='#6b3310';ctx.lineWidth=1.5;
+      ctx.beginPath();ctx.moveTo(cx-11,cy-9);ctx.lineTo(cx-4,cy-8);ctx.stroke();
+      ctx.beginPath();ctx.moveTo(cx+11,cy-9);ctx.lineTo(cx+4,cy-8);ctx.stroke();
+
+    } else if (name === 'Sédentarité') {
+      // 🛋️ Canapé stylisé
+      ctx.fillStyle='#a16207';
+      // Assise
+      ctx.fillRect(cx-14,cy-2,28,10);
+      // Dossier
+      ctx.fillRect(cx-14,cy-10,28,10);
+      // Accoudoirs
+      ctx.fillRect(cx-18,cy-8,5,18);
+      ctx.fillRect(cx+13,cy-8,5,18);
+      // Coussin
+      ctx.fillStyle='#ca8a04';
+      ctx.fillRect(cx-10,cy-8,20,7);
+      // Angry eyes
+      ctx.fillStyle='#ff2222';
+      ctx.beginPath();ctx.arc(cx-5,cy-4,2.5,0,Math.PI*2);ctx.arc(cx+5,cy-4,2.5,0,Math.PI*2);ctx.fill();
+      ctx.fillStyle='#fff';
+      ctx.beginPath();ctx.arc(cx-4.5,cy-4.5,1,0,Math.PI*2);ctx.arc(cx+5.5,cy-4.5,1,0,Math.PI*2);ctx.fill();
+      // Zzz
+      ctx.fillStyle='#fef08a';ctx.font='bold 8px sans-serif';ctx.textAlign='center';
+      ctx.fillText('Z',cx+12,cy-12);
+      ctx.font='bold 6px sans-serif';
+      ctx.fillText('z',cx+16,cy-17);
+
+    } else if (name === 'Surpoids') {
+      // ⚖️ Balance déséquilibrée
+      ctx.strokeStyle='#9333ea';ctx.lineWidth=2.5;
+      ctx.beginPath();ctx.moveTo(cx,cy-14);ctx.lineTo(cx,cy+8);ctx.stroke();
+      // Base
+      ctx.fillStyle='#9333ea';ctx.fillRect(cx-10,cy+6,20,4);
+      // Fléau penché
+      ctx.beginPath();ctx.moveTo(cx-16,cy-8);ctx.lineTo(cx+16,cy-14);ctx.stroke();
+      // Plateaux
+      ctx.fillStyle='#e9d5ff';
+      ctx.beginPath();ctx.arc(cx-16,cy-6,6,0,Math.PI);ctx.fill();
+      ctx.beginPath();ctx.arc(cx+16,cy-12,6,0,Math.PI);ctx.fill();
+      // Angry eyes on pillar
+      ctx.fillStyle='#ff3333';
+      ctx.beginPath();ctx.arc(cx-3,cy-5,2,0,Math.PI*2);ctx.arc(cx+3,cy-5,2,0,Math.PI*2);ctx.fill();
+
+    } else if (name === 'Travail nuit') {
+      // 🌙 Lune méchante
+      ctx.fillStyle='#fbbf24';
+      ctx.beginPath();ctx.arc(cx,cy,14,0,Math.PI*2);ctx.fill();
+      // Crescent shadow
+      ctx.fillStyle='#1e1b4b';
+      ctx.beginPath();ctx.arc(cx+6,cy-3,11,0,Math.PI*2);ctx.fill();
+      // Angry eyes on visible part
+      ctx.fillStyle='#ff2222';
+      ctx.beginPath();ctx.arc(cx-6,cy-3,2.5,0,Math.PI*2);ctx.arc(cx-1,cy+2,2.5,0,Math.PI*2);ctx.fill();
+      ctx.fillStyle='#fff';
+      ctx.beginPath();ctx.arc(cx-5.5,cy-3.5,1,0,Math.PI*2);ctx.arc(cx-0.5,cy+1.5,1,0,Math.PI*2);ctx.fill();
+      // Stars around
+      ctx.fillStyle='#fef08a';ctx.font='8px sans-serif';
+      ctx.fillText('✦',cx-16,cy-10);ctx.fillText('✦',cx+10,cy-14);
+
+    } else {
+      // Fallback — emoji gros + yeux
+      ctx.fillStyle = '#ff3333';
+      ctx.beginPath();ctx.arc(cx-6,cy-16,3,0,Math.PI*2);ctx.fill();
+      ctx.beginPath();ctx.arc(cx+6,cy-16,3,0,Math.PI*2);ctx.fill();
+      ctx.fillStyle=WHITE;
+      ctx.beginPath();ctx.arc(cx-5,cy-17,1.2,0,Math.PI*2);ctx.fill();
+      ctx.beginPath();ctx.arc(cx+7,cy-17,1.2,0,Math.PI*2);ctx.fill();
+      ctx.font='28px sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';
+      ctx.fillText(this.type.emoji,cx,cy+2);ctx.textBaseline='alphabetic';
+    }
+
+    // Label en dessous
+    ctx.fillStyle = this.type.colors[2];
+    ctx.font = 'bold 7px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.globalAlpha = .7;
+    ctx.fillText(this.type.name, cx, cy + 28);
+
+    ctx.globalAlpha = 1;
+  }
+}
+
+// ─── BONUS (Geste protecteur) ────────────────────────────────
+const BONUS_TYPES = [
+  { name:'Dépistage', emoji:'🎀', points:200 },
+  { name:'Sport', emoji:'🏃', points:150 },
+  { name:'Fruits/Légumes', emoji:'🥦', points:150 },
+  { name:'Mammographie', emoji:'📋', points:250 },
+  { name:'Consultation', emoji:'🩺', points:200 },
+  { name:'Allaitement', emoji:'🤱', points:200 },
+  { name:'Sensibilisation', emoji:'❤️', points:150 }
+];
+
+class BonusItem {
+  constructor() {
+    this.type = BONUS_TYPES[Math.floor(Math.random() * BONUS_TYPES.length)];
+    this.x = Math.random() > .5 ? -20 : GAME_W + 20;
+    this.y = 100 + Math.random() * 200;
+    this.dir = this.x < 0 ? 1 : -1;
+    this.speed = 1 + Math.random() * 1.5;
+    this.w = 24; this.h = 24;
+    this.alive = true;
+    this.phase = Math.random() * Math.PI * 2;
+  }
+  update(dt) {
+    this.x += this.dir * this.speed * dt;
+    this.phase += .05 * dt;
+    if (this.x < -40 || this.x > GAME_W + 40) this.alive = false;
+  }
+  draw(ctx) {
+    const bob = Math.sin(this.phase) * 3;
+    // Halo protecteur
+    ctx.globalAlpha = .15 + Math.sin(this.phase) * .08;
+    ctx.fillStyle = TURQUOISE;
+    ctx.beginPath();
+    ctx.arc(this.x, this.y + bob, 18, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.globalAlpha = 1;
+    // Bouclier
+    ctx.strokeStyle = TURQUOISE;
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.arc(this.x, this.y + bob, 14, 0, Math.PI * 2);
+    ctx.stroke();
+    // Emoji
+    ctx.font = '16px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(this.type.emoji, this.x, this.y + bob);
+  }
+}
+
+// ─── BOSS ────────────────────────────────────────────────────
+const BOSS_DEFS = [
+  { name:'Baron Tabac', emoji:'🚬', color:'#6b7280', maxHp:25 },
+  { name:'Monstre Alcool', emoji:'🍷', color:'#b91c1c', maxHp:35 },
+  { name:'Roi Sédentarité', emoji:'🛋️', color:'#a16207', maxHp:45 },
+  { name:'Géant Désinformation', emoji:'📵', color:'#7c3aed', maxHp:55 },
+  { name:'Titan Travail Nuit', emoji:'🌙', color:'#1e40af', maxHp:65 }
+];
+
+class Boss {
+  constructor(level) {
+    const def = BOSS_DEFS[Math.floor((level/5 - 1) % BOSS_DEFS.length)];
+    this.name = def.name; this.emoji = def.emoji;
+    this.color = def.color;
+    this.x = GAME_W / 2; this.y = -60;
+    this.targetY = 80;
+    this.w = 64; this.h = 64;
+    this.hp = def.maxHp; this.maxHp = def.maxHp;
+    this.alive = true; this.phase = 0;
+    this.shootTimer = 0;
+    this.entered = false;
+    this.projectiles = [];
+  }
+  update(dt) {
+    if (!this.entered) {
+      this.y += 1 * dt;
+      if (this.y >= this.targetY) { this.y = this.targetY; this.entered = true; }
+      return;
+    }
+    this.phase += .02 * dt;
+    this.x = GAME_W / 2 + Math.sin(this.phase) * 200;
+    this.y = this.targetY + Math.sin(this.phase * 1.5) * 20;
+
+    this.shootTimer += dt;
+    if (this.shootTimer > 60) {
+      this.shootTimer = 0;
+      // Boss tire
+      for (let i = -1; i <= 1; i++) {
+        this.projectiles.push({
+          x: this.x + i * 20, y: this.y + 30,
+          vx: i * 1.5, vy: 3, alive: true
+        });
+      }
+    }
+    // Mise à jour projectiles boss
+    for (const p of this.projectiles) {
+      p.x += p.vx * dt; p.y += p.vy * dt;
+      if (p.y > GAME_H + 20) p.alive = false;
+    }
+    this.projectiles = this.projectiles.filter(p => p.alive);
+  }
+  draw(ctx) {
+    // Ombre
+    ctx.globalAlpha = .3;
+    ctx.fillStyle = this.color;
+    ctx.beginPath();
+    ctx.ellipse(this.x, this.y + 40, 35, 10, 0, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.globalAlpha = 1;
+
+    // Corps
+    ctx.fillStyle = this.color;
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, 30, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Aura
+    ctx.globalAlpha = .1 + Math.sin(game.time * .1) * .05;
+    ctx.fillStyle = this.color;
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, 40, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.globalAlpha = 1;
+
+    // Yeux
+    ctx.fillStyle = '#fef3c7';
+    ctx.fillRect(this.x - 14, this.y - 10, 10, 10);
+    ctx.fillRect(this.x + 4, this.y - 10, 10, 10);
+    ctx.fillStyle = '#7f1d1d';
+    ctx.fillRect(this.x - 11, this.y - 7, 5, 6);
+    ctx.fillRect(this.x + 6, this.y - 7, 5, 6);
+
+    // Emoji
+    ctx.font = '20px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText(this.emoji, this.x, this.y + 18);
+
+    // Barre de vie
+    const barW = 60, barH = 6;
+    const barX = this.x - barW / 2, barY = this.y - 42;
+    ctx.fillStyle = 'rgba(0,0,0,.5)';
+    ctx.fillRect(barX, barY, barW, barH);
+    const ratio = this.hp / this.maxHp;
+    ctx.fillStyle = ratio > .5 ? ROSE : (ratio > .25 ? GOLD : '#ef4444');
+    ctx.fillRect(barX, barY, barW * ratio, barH);
+    ctx.strokeStyle = 'rgba(255,255,255,.3)';
+    ctx.strokeRect(barX, barY, barW, barH);
+
+    // Nom
+    ctx.fillStyle = WHITE;
+    ctx.font = 'bold 9px sans-serif';
+    ctx.fillText(this.name, this.x, barY - 4);
+
+    // Projectiles du boss — grosses bombes vives
+    for (const p of this.projectiles) {
+      // Halo externe
+      ctx.fillStyle = 'rgba(255,50,0,.2)';
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, 16, 0, Math.PI * 2);
+      ctx.fill();
+      // Boule principale
+      ctx.fillStyle = '#ff2200';
+      ctx.shadowColor = '#ff4400';
+      ctx.shadowBlur = 18;
+      ctx.globalAlpha = .9;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, 8, 0, Math.PI * 2);
+      ctx.fill();
+      // Cœur incandescent
+      ctx.fillStyle = '#ffcc00';
+      ctx.shadowColor = '#ffaa00';
+      ctx.shadowBlur = 8;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y - 1, 3.5, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.shadowBlur = 0;
+      // Traînée
+      ctx.fillStyle = '#ff6622';
+      ctx.globalAlpha = .4;
+      ctx.fillRect(p.x - 1.5, p.y - 14, 3, 8);
+      ctx.globalAlpha = 1;
+    }
+  }
+  hit() {
+    this.hp--;
+    game.screenShake = 3;
+    if (this.hp <= 0) { this.alive = false; return true; }
+    return false;
+  }
+}
+
+// ─── FLOATING TEXT ───────────────────────────────────────────
+class FloatingText {
+  constructor(x, y, text, color = GOLD, size = 12) {
+    this.x = x; this.y = y; this.text = text;
+    this.color = color; this.size = size;
+    this.life = 50; this.maxLife = 50;
+  }
+  update(dt) { this.y -= .8 * dt; this.life -= dt; return this.life > 0; }
+  draw(ctx) {
+    ctx.globalAlpha = this.life / this.maxLife;
+    ctx.fillStyle = this.color;
+    ctx.font = `bold ${this.size}px sans-serif`;
+    ctx.textAlign = 'center';
+    ctx.fillText(this.text, this.x, this.y);
+    ctx.globalAlpha = 1;
+  }
+}
+
+// ─── EDU MESSAGE BUBBLE ──────────────────────────────────────
+class EduBubble {
+  constructor(text) {
+    this.text = text;
+    this.life = 180;
+    this.maxLife = 180;
+  }
+  update(dt) { this.life -= dt; return this.life > 0; }
+  draw(ctx) {
+    const alpha = Math.min(1, this.life / 30, (this.maxLife - (this.maxLife - this.life)) / 30);
+    ctx.globalAlpha = Math.min(alpha, .95);
+
+    // Full overlay dim
+    ctx.fillStyle = 'rgba(10,0,30,.55)';
+    ctx.fillRect(0, 0, GAME_W, GAME_H);
+
+    // Big centered box
+    const w = 650, h = 110;
+    const x = GAME_W / 2 - w / 2, y = GAME_H / 2 - h / 2;
+
+    // Glow border
+    ctx.shadowColor = '#ec4899';
+    ctx.shadowBlur = 25;
+    ctx.fillStyle = 'rgba(20,0,40,.92)';
+    roundRect(ctx, x, y, w, h, 16);
+    ctx.fill();
+    ctx.strokeStyle = 'rgba(236,130,180,.7)';
+    ctx.lineWidth = 2.5;
+    roundRect(ctx, x, y, w, h, 16);
+    ctx.stroke();
+    ctx.shadowBlur = 0;
+
+    // Inner subtle border
+    ctx.strokeStyle = 'rgba(255,105,180,.2)';
+    ctx.lineWidth = 1;
+    roundRect(ctx, x + 6, y + 6, w - 12, h - 12, 12);
+    ctx.stroke();
+
+    // Title
+    ctx.fillStyle = '#f472b6';
+    ctx.font = 'bold 16px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('💡 LE SAVIEZ-VOUS ?', GAME_W / 2, y + 28);
+
+    // Separator
+    ctx.strokeStyle = 'rgba(236,130,180,.3)';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(x + 40, y + 42);
+    ctx.lineTo(x + w - 40, y + 42);
+    ctx.stroke();
+
+    // Message — BIG
+    ctx.fillStyle = WHITE;
+    ctx.font = 'bold 15px sans-serif';
+    ctx.fillText(this.text, GAME_W / 2, y + h / 2 + 18);
+    ctx.textBaseline = 'alphabetic';
+
+    // Ribbon decorations
+    drawRibbonShape(ctx, x + 22, y + 20, 14);
+    drawRibbonShape(ctx, x + w - 22, y + 20, 14);
+
+    ctx.globalAlpha = 1;
+  }
+}
+
+function roundRect(ctx, x, y, w, h, r) {
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.lineTo(x + w - r, y);
+  ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+  ctx.lineTo(x + w, y + h - r);
+  ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+  ctx.lineTo(x + r, y + h);
+  ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+  ctx.lineTo(x, y + r);
+  ctx.quadraticCurveTo(x, y, x + r, y);
+  ctx.closePath();
+}
+
+// ─── FORMATION DES VAGUES ────────────────────────────────────
+function spawnWave(level) {
+  const enemies = [];
+  const cols = Math.min(8, 5 + Math.floor(level / 3));
+  const rows = Math.min(5, 2 + Math.floor(level / 2));
+  const spacing = 58;
+  const startX = (GAME_W - (cols - 1) * spacing) / 2;
+  const startY = 50;
+
+  for (let r = 0; r < rows; r++) {
+    for (let c = 0; c < cols; c++) {
+      const typeIdx = (r + Math.floor(level / 2)) % ENEMY_TYPES.length;
+      const e = new Enemy(startX + c * spacing, startY + r * 50, typeIdx, r);
+      e.hp = 1 + Math.floor(level / 5);
+      enemies.push(e);
+    }
+  }
+  return enemies;
+}
+
+// ─── GAME STATE ──────────────────────────────────────────────
+const game = {
+  state: 'menu', // menu, playing, gameover, paused
+  time: 0,
+  player: null,
+  enemies: [],
+  bullets: [],
+  bonusItems: [],
+  boss: null,
+  floatingTexts: [],
+  eduBubbles: [],
+  starField: new StarField(),
+  score: 0,
+  highScore: parseInt(localStorage.getItem('preventInvaders_hi') || '0'),
+  level: 1,
+  combo: 0,
+  maxCombo: 0,
+  totalKills: 0,
+  totalBonuses: 0,
+  shotsFired: 0,
+  shotsHit: 0,
+  bonusSpawnTimer: 0,
+  enemyDir: 1,
+  enemySpeed: .3,
+  enemyMoveTimer: 0,
+  enemyDropAmount: 0,
+  screenShake: 0,
+  waveCleared: false,
+  waveTransition: 0,
+  bossWarning: 0,
+  lastEduMsg: -1
+};
+
+function startGame() {
+  ensureAudio();
+  game.state = 'playing';
+  game.player = new Player();
+  game.score = 0; game.level = 1;
+  game.combo = 0; game.maxCombo = 0;
+  game.totalKills = 0; game.totalBonuses = 0;
+  game.shotsFired = 0; game.shotsHit = 0;
+  game.bullets = []; game.bonusItems = [];
+  game.floatingTexts = []; game.eduBubbles = [];
+  game.boss = null; game.waveCleared = false;
+  game.waveTransition = 0; game.bossWarning = 0;
+  game.enemyDir = 1; game.enemySpeed = .3;
+  particles = [];
+  game.enemies = spawnWave(1);
+  document.getElementById('overlay').classList.remove('active');
+  game.t0=Date.now(); track('invaders','start');
+}
+
+function gameOver() {
+  game.state = 'gameover';
+  playSound('gameover');
+  if (game.score > game.highScore) {
+    game.highScore = game.score;
+    localStorage.setItem('preventInvaders_hi', game.highScore);
+  }
+  track('invaders','end',{score:game.score,level:game.level,duration_s:Math.round((Date.now()-game.t0)/1000)});
+  showGameOverMenu();
+}
+
+function nextLevel() {
+  game.level++;
+  game.waveCleared = false;
+  game.enemyDir = 1;
+  game.enemySpeed = .3 + game.level * .05;
+  game.combo = 0;
+
+  // Boss tous les 5 niveaux
+  if (game.level % 5 === 0) {
+    game.boss = new Boss(game.level);
+    game.enemies = [];
+    game.bossWarning = 90;
+    playSound('boss');
+  } else {
+    game.enemies = spawnWave(game.level);
+    game.boss = null;
+  }
+  playSound('levelup');
+}
+
+// ─── COLLISION ───────────────────────────────────────────────
+function boxCollide(a, b) {
+  return Math.abs(a.x - b.x) < (a.w + b.w) / 2 &&
+         Math.abs(a.y - b.y) < (a.h + b.h) / 2;
+}
+
+// ─── RANDOM EDU MESSAGE ──────────────────────────────────────
+function showRandomEdu() {
+  if (game.eduBubbles.length > 0) return;
+  let idx;
+  do { idx = Math.floor(Math.random() * EDU_MESSAGES.length); }
+  while (idx === game.lastEduMsg && EDU_MESSAGES.length > 1);
+  game.lastEduMsg = idx;
+  game.eduBubbles.push(new EduBubble(EDU_MESSAGES[idx]));
+}
+
+// ─── UPDATE ──────────────────────────────────────────────────
+function update(dt) {
+  if (game.state !== 'playing') return;
+  game.time += dt;
+
+  game.starField.update(dt);
+  game.player.update(dt);
+
+  // Bullets
+  for (const b of game.bullets) b.update(dt);
+  game.bullets = game.bullets.filter(b => b.alive);
+
+  // Boss warning
+  if (game.bossWarning > 0) {
+    game.bossWarning -= dt;
+    return;
+  }
+
+  // Boss
+  if (game.boss) {
+    game.boss.update(dt);
+    // Collision bullets vs boss
+    for (const b of game.bullets) {
+      if (!b.alive) continue;
+      if (Math.abs(b.x - game.boss.x) < game.boss.w/2 &&
+          Math.abs(b.y - game.boss.y) < game.boss.h/2) {
+        b.alive = false;
+        game.shotsHit++;
+        spawnExplosion(b.x, b.y, PINK, 8);
+        if (game.boss.hit()) {
+          // Boss vaincu
+          game.score += 1000 * game.level;
+          game.totalKills++;
+          spawnExplosion(game.boss.x, game.boss.y, GOLD, 40);
+          spawnExplosion(game.boss.x, game.boss.y, PINK, 30);
+          game.floatingTexts.push(new FloatingText(game.boss.x, game.boss.y, '+' + (1000*game.level), GOLD, 16));
+          showRandomEdu();
+          game.boss = null;
+          game.waveCleared = true;
+          game.waveTransition = 90;
+        }
+      }
+    }
+    // Boss projectiles vs player
+    if (game.boss) {
+      for (const p of game.boss.projectiles) {
+        if (!p.alive) continue;
+        if (Math.abs(p.x - game.player.x) < 16 && Math.abs(p.y - game.player.y) < 16) {
+          p.alive = false;
+          game.player.hit();
+          if (game.player.lives <= 0) { gameOver(); return; }
+        }
+      }
+    }
+  }
+
+  // Enemies movement
+  if (game.enemies.length > 0) {
+    game.enemyMoveTimer += dt;
+    if (game.enemyMoveTimer > 2) {
+      game.enemyMoveTimer = 0;
+      let hitEdge = false;
+      for (const e of game.enemies) {
+        e.x += game.enemyDir * game.enemySpeed * 12;
+        if (e.x < 30 || e.x > GAME_W - 30) hitEdge = true;
+      }
+      if (hitEdge) {
+        game.enemyDir *= -1;
+        game.enemyDropAmount++;
+        if (game.enemyDropAmount > 2) {
+          for (const e of game.enemies) e.y += 8;
+          game.enemyDropAmount = 0;
+        }
+      }
+    }
+
+    // Collision bullets vs enemies
+    for (const b of game.bullets) {
+      if (!b.alive) continue;
+      for (const e of game.enemies) {
+        if (!e.alive) continue;
+        if (boxCollide(b, e)) {
+          b.alive = false;
+          game.shotsHit++;
+          e.hp--;
+          e.flashTimer = 4;
+          if (e.hp <= 0) {
+            e.alive = false;
+            game.score += 100 * (1 + Math.floor(game.combo / 5));
+            game.combo++;
+            if (game.combo > game.maxCombo) game.maxCombo = game.combo;
+            game.totalKills++;
+            spawnExplosion(e.x, e.y, e.type.color, 12);
+            game.floatingTexts.push(new FloatingText(e.x, e.y - 10,
+              '+' + (100 * (1 + Math.floor(game.combo / 5))), GOLD));
+            if (game.combo > 1)
+              game.floatingTexts.push(new FloatingText(e.x, e.y - 22,
+                'x' + game.combo, PINK, 10));
+            // Message éducatif aléatoire (1 chance sur 4)
+            if (Math.random() < .25) showRandomEdu();
+          } else {
+            spawnExplosion(e.x, e.y, PINK, 5);
+          }
+          break;
+        }
+      }
+    }
+
+    // Enemies reaching player
+    for (const e of game.enemies) {
+      if (!e.alive) continue;
+      if (e.y + 14 > game.player.y - 18) {
+        game.player.hit();
+        e.alive = false;
+        game.combo = 0;
+        if (game.player.lives <= 0) { gameOver(); return; }
+      }
+    }
+
+    game.enemies = game.enemies.filter(e => e.alive);
+
+    if (game.enemies.length === 0 && !game.boss) {
+      game.waveCleared = true;
+      game.waveTransition = 90;
+    }
+  }
+
+  // Wave transition
+  if (game.waveCleared) {
+    game.waveTransition -= dt;
+    if (game.waveTransition <= 0) {
+      nextLevel();
+    }
+  }
+
+  // Bonus items
+  game.bonusSpawnTimer += dt;
+  if (game.bonusSpawnTimer > 300 + Math.random() * 200) {
+    game.bonusSpawnTimer = 0;
+    game.bonusItems.push(new BonusItem());
+  }
+  for (const bi of game.bonusItems) bi.update(dt);
+
+  // Collision bullets vs bonus (MALUS!)
+  for (const b of game.bullets) {
+    if (!b.alive) continue;
+    for (const bi of game.bonusItems) {
+      if (!bi.alive) continue;
+      if (boxCollide(b, bi)) {
+        b.alive = false;
+        bi.alive = false;
+        game.score = Math.max(0, game.score - 200);
+        game.combo = 0;
+        spawnExplosion(bi.x, bi.y, '#ef4444', 15);
+        game.floatingTexts.push(new FloatingText(bi.x, bi.y, '-200 ⚠️', '#ef4444', 14));
+        playSound('malus');
+        game.screenShake = 5;
+      }
+    }
+  }
+
+  // Collision player vs bonus (BONUS!)
+  for (const bi of game.bonusItems) {
+    if (!bi.alive) continue;
+    if (boxCollide(game.player, bi)) {
+      bi.alive = false;
+      game.score += bi.type.points;
+      game.totalBonuses++;
+      spawnBonusEffect(bi.x, bi.y);
+      game.floatingTexts.push(new FloatingText(bi.x, bi.y - 10,
+        '+' + bi.type.points + ' ' + bi.type.emoji, TURQUOISE, 14));
+      playSound('bonus');
+    }
+  }
+  game.bonusItems = game.bonusItems.filter(bi => bi.alive);
+
+  // Floating texts
+  game.floatingTexts = game.floatingTexts.filter(ft => ft.update(dt));
+  game.eduBubbles = game.eduBubbles.filter(eb => eb.update(dt));
+
+  // Particles
+  particles = particles.filter(p => p.update());
+
+  // Screen shake decay
+  if (game.screenShake > 0) game.screenShake *= .9;
+  if (game.screenShake < .3) game.screenShake = 0;
+
+  // Count shots
+  if (isFire() && game.player.shootCooldown <= 0) game.shotsFired++;
+}
+
+// ─── DRAW ────────────────────────────────────────────────────
+function draw() {
+  ctx.save();
+
+  // Screen shake
+  if (game.screenShake > 0) {
+    const sx = (Math.random() - .5) * game.screenShake * 2;
+    const sy = (Math.random() - .5) * game.screenShake * 2;
+    ctx.translate(sx, sy);
+  }
+
+  // Background
+  game.starField.draw(ctx);
+
+  if (game.state === 'playing' || game.state === 'gameover') {
+    // Bonus items
+    for (const bi of game.bonusItems) bi.draw(ctx);
+
+    // Enemies
+    for (const e of game.enemies) e.draw(ctx);
+
+    // Boss
+    if (game.boss) game.boss.draw(ctx);
+
+    // Boss warning
+    if (game.bossWarning > 0) {
+      ctx.globalAlpha = .5 + Math.sin(game.time * .3) * .3;
+      ctx.fillStyle = '#ef4444';
+      ctx.font = 'bold 24px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('⚠️ BOSS APPROCHE ⚠️', GAME_W / 2, GAME_H / 2);
+      ctx.globalAlpha = 1;
+    }
+
+    // Bullets
+    for (const b of game.bullets) b.draw(ctx);
+
+    // Player
+    game.player.draw(ctx);
+
+    // Particles
+    for (const p of particles) p.draw(ctx);
+
+    // Floating texts
+    for (const ft of game.floatingTexts) ft.draw(ctx);
+
+    // Edu bubbles
+    for (const eb of game.eduBubbles) eb.draw(ctx);
+
+    // Wave cleared message
+    if (game.waveCleared && game.waveTransition > 30) {
+      ctx.globalAlpha = Math.min(1, (game.waveTransition - 30) / 30);
+      ctx.fillStyle = GOLD;
+      ctx.font = 'bold 20px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('✨ VAGUE ' + (game.level) + ' TERMINÉE ✨', GAME_W / 2, GAME_H / 2 - 10);
+      ctx.fillStyle = SOFT_PINK;
+      ctx.font = '12px sans-serif';
+      ctx.fillText('Préparez-vous…', GAME_W / 2, GAME_H / 2 + 15);
+      ctx.globalAlpha = 1;
+    }
+
+    // ─── HUD ─────────────────────────────────────────────────
+    drawHUD(ctx);
+  }
+
+  ctx.restore();
+}
+
+function drawHUD(ctx) {
+  // Fond HUD haut
+  ctx.fillStyle = 'rgba(10,0,25,.6)';
+  ctx.fillRect(0, 0, GAME_W, 28);
+
+  ctx.font = 'bold 11px sans-serif';
+  ctx.textBaseline = 'middle';
+
+  // Score
+  ctx.fillStyle = GOLD;
+  ctx.textAlign = 'left';
+  ctx.fillText('⭐ ' + game.score.toLocaleString(), 8, 14);
+
+  // High Score
+  ctx.fillStyle = '#a78bfa';
+  ctx.fillText('🏆 ' + game.highScore.toLocaleString(), 130, 14);
+
+  // Niveau
+  ctx.fillStyle = TURQUOISE;
+  ctx.textAlign = 'center';
+  ctx.fillText('Niv. ' + game.level, GAME_W / 2, 14);
+
+  // Combo
+  if (game.combo > 1) {
+    ctx.fillStyle = PINK;
+    ctx.fillText('🔥 x' + game.combo, GAME_W / 2 + 70, 14);
+  }
+
+  // Vies
+  ctx.textAlign = 'right';
+  let hearts = '';
+  for (let i = 0; i < game.player.lives; i++) hearts += '💖';
+  for (let i = game.player.lives; i < 3; i++) hearts += '🖤';
+  ctx.fillText(hearts, GAME_W - 8, 14);
+
+  // Précision
+  const accuracy = game.shotsHit > 0 ? Math.round(game.shotsHit / Math.max(1, game.shotsFired) * 100) : 0;
+  ctx.fillStyle = '#94a3b8';
+  ctx.font = '9px sans-serif';
+  ctx.fillText('Précision: ' + accuracy + '%', GAME_W - 8, 25);
+}
+
+// ─── MENUS ───────────────────────────────────────────────────
+function showMainMenu() {
+  const panel = document.getElementById('menuPanel');
+  panel.innerHTML = `
+    <div style="margin-bottom:16px">
+      <span style="font-size:2.5em">🎀</span>
+    </div>
+    <h1>Prévent'Invaders</h1>
+    <h2>🩺 Mission : Infirmière en prévention</h2>
+    <p style="color:#f9a8d4;font-size:.85em;line-height:1.6">
+      Incarnez une <strong>infirmière en prévention santé</strong> et détruisez
+      les facteurs de risque du cancer du sein !<br>
+      Armée de sa seringue et de son bouclier 🎀, elle combat
+      l'alcool 🍷, le tabac 🚬, la sédentarité 🛋️ et la malbouffe 🍔
+    </p>
+    <p style="color:#c4b5fd;font-size:.82em;line-height:1.6">
+      Récoltez les gestes protecteurs 🏃🥦🩺🤱<br>
+      <strong style="color:#2dd4bf">Ne tirez pas sur les bonus !</strong>
+    </p>
+    <div class="tip-box">
+      <p>🎮 <strong>Flèches</strong> ou <strong>A/D</strong> : Déplacer &nbsp;|&nbsp; <strong>Espace</strong> : Tirer</p>
+    </div>
+    <button class="btn" onclick="startGame()">▶ COMMENCER</button>
+    <p style="color:#64748b;font-size:.7em;margin-top:16px">PréventIA-LaB · Octobre Rose 🎀</p>
+  `;
+  document.getElementById('overlay').classList.add('active');
+}
+
+function showGameOverMenu() {
+  const accuracy = game.shotsHit > 0 ? Math.round(game.shotsHit / Math.max(1, game.shotsFired) * 100) : 0;
+  const isNewRecord = game.score >= game.highScore && game.score > 0;
+  const panel = document.getElementById('menuPanel');
+  panel.style.maxWidth = '620px';
+  panel.innerHTML = `
+    <h1 style="font-size:1.6em">${isNewRecord ? '🏆 Nouveau record !' : 'Partie terminée'}</h1>
+    <h2>L'infirmière préventrice vous remercie !</h2>
+    <div class="stat-grid">
+      <div class="stat-item"><div class="label">Score</div><div class="value">${game.score.toLocaleString()}</div></div>
+      <div class="stat-item"><div class="label">Niveau</div><div class="value">${game.level}</div></div>
+      <div class="stat-item"><div class="label">Risques neutralisés</div><div class="value">${game.totalKills}</div></div>
+      <div class="stat-item"><div class="label">Bonus collectés</div><div class="value">${game.totalBonuses}</div></div>
+      <div class="stat-item"><div class="label">Combo max</div><div class="value">x${game.maxCombo}</div></div>
+      <div class="stat-item"><div class="label">Précision</div><div class="value">${accuracy}%</div></div>
+    </div>
+
+    <div style="margin:18px 0 6px;text-align:left">
+      <p style="color:#f472b6;font-weight:700;font-size:.95em;margin-bottom:10px">⚠️ Facteurs de risque du cancer du sein</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;font-size:.78em">
+        <div style="background:rgba(220,38,38,.12);border-radius:8px;padding:8px">
+          <span style="font-size:1.3em">🍷</span> <strong style="color:#fca5a5">Alcool</strong><br>
+          <span style="color:#d4d4d4">+7 % de risque par verre/jour<br><em style="color:#a3a3a3">Source : INCa 2023</em></span>
+        </div>
+        <div style="background:rgba(163,163,163,.1);border-radius:8px;padding:8px">
+          <span style="font-size:1.3em">🚬</span> <strong style="color:#e5e5e5">Tabac</strong><br>
+          <span style="color:#d4d4d4">+20 à 30 % de risque chez les fumeuses<br><em style="color:#a3a3a3">Source : CIRC</em></span>
+        </div>
+        <div style="background:rgba(202,138,4,.1);border-radius:8px;padding:8px">
+          <span style="font-size:1.3em">🛋️</span> <strong style="color:#fef08a">Sédentarité</strong><br>
+          <span style="color:#d4d4d4">Favorise surpoids et déséquilibres hormonaux<br><em style="color:#a3a3a3">Source : OMS</em></span>
+        </div>
+        <div style="background:rgba(234,88,12,.1);border-radius:8px;padding:8px">
+          <span style="font-size:1.3em">🍔</span> <strong style="color:#fed7aa">Malbouffe</strong><br>
+          <span style="color:#d4d4d4">Alimentation ultra-transformée : risque accru<br><em style="color:#a3a3a3">Source : NutriNet-Santé</em></span>
+        </div>
+        <div style="background:rgba(147,51,234,.1);border-radius:8px;padding:8px">
+          <span style="font-size:1.3em">⚖️</span> <strong style="color:#e9d5ff">Surpoids</strong><br>
+          <span style="color:#d4d4d4">+30 à 50 % post-ménopause<br><em style="color:#a3a3a3">Source : INCa / WCRF</em></span>
+        </div>
+        <div style="background:rgba(29,78,216,.1);border-radius:8px;padding:8px">
+          <span style="font-size:1.3em">🌙</span> <strong style="color:#bfdbfe">Travail de nuit</strong><br>
+          <span style="color:#d4d4d4">Classé cancérogène probable (2A)<br><em style="color:#a3a3a3">Source : CIRC 2019</em></span>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin:14px 0 6px;text-align:left">
+      <p style="color:#2dd4bf;font-weight:700;font-size:.95em;margin-bottom:10px">🛡️ Gestes protecteurs</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;font-size:.78em">
+        <div style="background:rgba(45,212,191,.08);border-radius:8px;padding:8px">
+          <span style="font-size:1.3em">🎀</span> <strong style="color:#99f6e4">Dépistage organisé</strong><br>
+          <span style="color:#d4d4d4">Mammographie tous les 2 ans (50–74 ans)<br>Guérison dans <strong>9 cas sur 10</strong> si détecté tôt</span>
+        </div>
+        <div style="background:rgba(45,212,191,.08);border-radius:8px;padding:8px">
+          <span style="font-size:1.3em">🏃</span> <strong style="color:#99f6e4">Activité physique</strong><br>
+          <span style="color:#d4d4d4"><strong>−20 %</strong> de risque avec 30 min/jour<br><em style="color:#a3a3a3">Source : SPF</em></span>
+        </div>
+        <div style="background:rgba(45,212,191,.08);border-radius:8px;padding:8px">
+          <span style="font-size:1.3em">🥦</span> <strong style="color:#99f6e4">Fruits & légumes</strong><br>
+          <span style="color:#d4d4d4">5 portions/jour, limiter viande rouge et charcuterie</span>
+        </div>
+        <div style="background:rgba(45,212,191,.08);border-radius:8px;padding:8px">
+          <span style="font-size:1.3em">🤱</span> <strong style="color:#99f6e4">Allaitement</strong><br>
+          <span style="color:#d4d4d4"><strong>−4,3 %</strong> par tranche de 12 mois<br><em style="color:#a3a3a3">Source : Lancet 2002</em></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="tip-box" style="margin-top:14px">
+      <p>📊 <strong>En France</strong> : 61 000 nouveaux cas/an · 1 femme sur 8 concernée · <strong>La prévention peut éviter 40 % des cancers</strong> (INCa)</p>
+    </div>
+
+    <div style="margin-top:14px">
+      <button class="btn" onclick="startGame()">🔄 REJOUER</button>
+      <button class="btn secondary" onclick="showMainMenu()">🏠 MENU</button>
+    </div>
+  `;
+  document.getElementById('overlay').classList.add('active');
+}
+
+// ─── GAME LOOP ───────────────────────────────────────────────
+let lastTime = 0;
+function gameLoop(timestamp) {
+  const dt = Math.min((timestamp - lastTime) / 16.667, 3); // cap à ~3 frames
+  lastTime = timestamp;
+
+  update(dt);
+  draw();
+
+  requestAnimationFrame(gameLoop);
+}
+
+// ─── INIT ────────────────────────────────────────────────────
+showMainMenu();
+
+// Click/tap pour activer audio
+document.addEventListener('click', ensureAudio, { once: true });
+document.addEventListener('touchstart', ensureAudio, { once: true });
+
+requestAnimationFrame(gameLoop);
+</script>
+</body>
+</html>
