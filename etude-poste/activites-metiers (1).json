@@ -1,0 +1,3623 @@
+{
+ "meta": {
+  "objet": "Activités types et exigences physiques par métier — PréventIA-LaB",
+  "usage": "Propositions de tâches et pré-remplissage des exigences (étude de poste, fiche d'entreprise, fiches métiers…). Toujours à valider sur le terrain.",
+  "cles": "Identifiants de base-metiers/metiers.json (M001…M119) ; X01… = métiers absents de cette base.",
+  "frequences": "Rarement < 2 h/sem · Quelquefois 2–10 h · Souvent 10–20 h · Très souvent > 20 h",
+  "exigences": "1 = occasionnel · 2 = fréquent · 3 = permanent",
+  "maj": "2026-10"
+ },
+ "metiers": {
+  "M001": {
+   "metier": "Exploitant agricole / Agriculteur",
+   "secteur": "A. Agriculture, sylviculture, pêche",
+   "taches": [
+    {
+     "t": "Conduite d'engins agricoles (tracteur, moissonneuse)",
+     "f": "Très souvent",
+     "c": "Vibrations corps entier, montée/descente de cabine"
+    },
+    {
+     "t": "Soins aux animaux et alimentation",
+     "f": "Souvent",
+     "c": "Port de sacs, seaux, flexions"
+    },
+    {
+     "t": "Entretien et réparation du matériel",
+     "f": "Quelquefois",
+     "c": "Postures contraignantes, outils portatifs"
+    },
+    {
+     "t": "Traitements phytosanitaires",
+     "f": "Quelquefois",
+     "c": "Préparation des bouillies, port d'EPI"
+    },
+    {
+     "t": "Gestion administrative de l'exploitation",
+     "f": "Quelquefois",
+     "c": "Travail sur écran"
+    }
+   ],
+   "exigences": {
+    "Conduite de véhicule ou d'engin": 3,
+    "Travail en extérieur": 3,
+    "Port de charges": 2,
+    "Flexions / rotations du tronc": 2,
+    "Escaliers, échelles, escabeaux": 2,
+    "Marche / déplacements": 2
+   }
+  },
+  "M002": {
+   "metier": "Maraîcher / Horticulteur",
+   "secteur": "A. Agriculture, sylviculture, pêche",
+   "taches": [
+    {
+     "t": "Semis, plantation et repiquage",
+     "f": "Très souvent",
+     "c": "Position accroupie ou penchée prolongée"
+    },
+    {
+     "t": "Récolte et conditionnement",
+     "f": "Très souvent",
+     "c": "Gestes répétitifs, port de caisses"
+    },
+    {
+     "t": "Désherbage et entretien des cultures",
+     "f": "Souvent",
+     "c": "Flexions du tronc, outils manuels"
+    },
+    {
+     "t": "Arrosage et traitements",
+     "f": "Quelquefois",
+     "c": "Port de pulvérisateur dorsal"
+    },
+    {
+     "t": "Vente sur marché ou à la ferme",
+     "f": "Quelquefois",
+     "c": "Station debout, contact client"
+    }
+   ],
+   "exigences": {
+    "Flexions / rotations du tronc": 3,
+    "Position accroupie / à genoux": 3,
+    "Gestes répétitifs des membres supérieurs": 2,
+    "Port de charges": 2,
+    "Travail en extérieur": 3,
+    "Station debout prolongée": 2,
+    "Contact avec le public": 1
+   }
+  },
+  "M003": {
+   "metier": "Viticulteur / Ouvrier viticole",
+   "secteur": "A. Agriculture, sylviculture, pêche",
+   "taches": [
+    {
+     "t": "Taille de la vigne",
+     "f": "Très souvent",
+     "c": "Gestes répétitifs main/poignet (sécateur), froid"
+    },
+    {
+     "t": "Vendanges manuelles",
+     "f": "Souvent",
+     "c": "Flexions, port de hottes et caisses"
+    },
+    {
+     "t": "Travaux en vert (ébourgeonnage, relevage)",
+     "f": "Souvent",
+     "c": "Bras au-dessus des épaules"
+    },
+    {
+     "t": "Conduite de tracteur enjambeur",
+     "f": "Souvent",
+     "c": "Vibrations, traitements"
+    },
+    {
+     "t": "Travaux de chai",
+     "f": "Quelquefois",
+     "c": "Manutention de fûts, produits œnologiques"
+    }
+   ],
+   "exigences": {
+    "Gestes répétitifs des membres supérieurs": 3,
+    "Préhension fine / force de serrage": 3,
+    "Flexions / rotations du tronc": 2,
+    "Bras au-dessus des épaules": 2,
+    "Travail en extérieur": 3,
+    "Port de charges": 2,
+    "Conduite de véhicule ou d'engin": 2
+   }
+  },
+  "M004": {
+   "metier": "Éleveur (bovin, ovin, porcin, volailles)",
+   "secteur": "A. Agriculture, sylviculture, pêche",
+   "taches": [
+    {
+     "t": "Alimentation et paillage des animaux",
+     "f": "Très souvent",
+     "c": "Port de seaux, balles, fourches"
+    },
+    {
+     "t": "Traite",
+     "f": "Très souvent",
+     "c": "Gestes répétitifs bras levés, station debout"
+    },
+    {
+     "t": "Soins vétérinaires courants et contention",
+     "f": "Souvent",
+     "c": "Risque de coups, écrasement"
+    },
+    {
+     "t": "Curage et nettoyage des bâtiments",
+     "f": "Souvent",
+     "c": "Poussières, ammoniac, vibrations"
+    },
+    {
+     "t": "Conduite d'engins (télescopique, tracteur)",
+     "f": "Souvent",
+     "c": "Vibrations corps entier"
+    }
+   ],
+   "exigences": {
+    "Port de charges": 3,
+    "Station debout prolongée": 2,
+    "Bras au-dessus des épaules": 2,
+    "Flexions / rotations du tronc": 2,
+    "Travail en extérieur": 3,
+    "Conduite de véhicule ou d'engin": 2,
+    "Marche / déplacements": 2
+   }
+  },
+  "M005": {
+   "metier": "Apiculteur",
+   "secteur": "A. Agriculture, sylviculture, pêche",
+   "taches": [
+    {
+     "t": "Visite et entretien des ruches",
+     "f": "Très souvent",
+     "c": "Port de hausses (20–30 kg), piqûres"
+    },
+    {
+     "t": "Récolte et extraction du miel",
+     "f": "Souvent",
+     "c": "Station debout, manutention"
+    },
+    {
+     "t": "Transhumance des ruches",
+     "f": "Quelquefois",
+     "c": "Conduite, port de charges de nuit"
+    },
+    {
+     "t": "Mise en pots et vente",
+     "f": "Quelquefois",
+     "c": "Gestes répétitifs, contact client"
+    }
+   ],
+   "exigences": {
+    "Port de charges": 3,
+    "Flexions / rotations du tronc": 2,
+    "Travail en extérieur": 3,
+    "Conduite de véhicule ou d'engin": 2,
+    "Gestes répétitifs des membres supérieurs": 1,
+    "Contact avec le public": 1
+   }
+  },
+  "M006": {
+   "metier": "Pêcheur professionnel / Marin pêcheur",
+   "secteur": "A. Agriculture, sylviculture, pêche",
+   "taches": [
+    {
+     "t": "Manœuvre des filets, casiers et treuils",
+     "f": "Très souvent",
+     "c": "Efforts importants, sol mouvant"
+    },
+    {
+     "t": "Tri et conditionnement du poisson",
+     "f": "Très souvent",
+     "c": "Gestes répétitifs, froid, humidité"
+    },
+    {
+     "t": "Navigation et quarts",
+     "f": "Souvent",
+     "c": "Horaires décalés, fatigue"
+    },
+    {
+     "t": "Entretien du navire et des engins",
+     "f": "Quelquefois",
+     "c": "Postures contraignantes"
+    }
+   ],
+   "exigences": {
+    "Port de charges": 3,
+    "Poussée / traction (chariots, transpalettes…)": 3,
+    "Gestes répétitifs des membres supérieurs": 2,
+    "Flexions / rotations du tronc": 2,
+    "Travail en extérieur": 3,
+    "Escaliers, échelles, escabeaux": 2
+   }
+  },
+  "M007": {
+   "metier": "Bûcheron / Élagueur",
+   "secteur": "A. Agriculture, sylviculture, pêche",
+   "taches": [
+    {
+     "t": "Abattage et façonnage à la tronçonneuse",
+     "f": "Très souvent",
+     "c": "Vibrations main-bras, bruit, port de la machine"
+    },
+    {
+     "t": "Élagage en hauteur (grimpe, nacelle)",
+     "f": "Souvent",
+     "c": "Travail en hauteur, bras levés"
+    },
+    {
+     "t": "Débardage et rangement des bois",
+     "f": "Souvent",
+     "c": "Port de charges, terrain accidenté"
+    },
+    {
+     "t": "Entretien du matériel",
+     "f": "Quelquefois",
+     "c": "Affûtage, mécanique"
+    }
+   ],
+   "exigences": {
+    "Port de charges": 3,
+    "Travail en extérieur": 3,
+    "Bras au-dessus des épaules": 2,
+    "Flexions / rotations du tronc": 2,
+    "Préhension fine / force de serrage": 2,
+    "Marche / déplacements": 2,
+    "Escaliers, échelles, escabeaux": 2
+   }
+  },
+  "M008": {
+   "metier": "Conducteur d'engin agricole / forestier",
+   "secteur": "A. Agriculture, sylviculture, pêche",
+   "taches": [
+    {
+     "t": "Conduite d'engins agricoles ou forestiers",
+     "f": "Très souvent",
+     "c": "Vibrations corps entier, rotations du cou"
+    },
+    {
+     "t": "Attelage et réglage des outils",
+     "f": "Souvent",
+     "c": "Port de pièces lourdes, montées/descentes"
+    },
+    {
+     "t": "Entretien et graissage",
+     "f": "Quelquefois",
+     "c": "Postures au sol"
+    }
+   ],
+   "exigences": {
+    "Station assise prolongée": 3,
+    "Conduite de véhicule ou d'engin": 3,
+    "Travail en extérieur": 2,
+    "Flexions / rotations du tronc": 1,
+    "Escaliers, échelles, escabeaux": 2,
+    "Position accroupie / à genoux": 1
+   }
+  },
+  "M009": {
+   "metier": "Mineur de fond / Ouvrier de mine",
+   "secteur": "B. Industries extractives",
+   "taches": [
+    {
+     "t": "Abattage, forage et soutènement",
+     "f": "Très souvent",
+     "c": "Vibrations, bruit, poussières"
+    },
+    {
+     "t": "Conduite d'engins de fond",
+     "f": "Souvent",
+     "c": "Vibrations, espace restreint"
+    },
+    {
+     "t": "Manutention de matériel",
+     "f": "Souvent",
+     "c": "Port de charges, postures accroupies"
+    }
+   ],
+   "exigences": {
+    "Port de charges": 3,
+    "Position accroupie / à genoux": 2,
+    "Flexions / rotations du tronc": 2,
+    "Préhension fine / force de serrage": 2,
+    "Conduite de véhicule ou d'engin": 2
+   }
+  },
+  "M010": {
+   "metier": "Ouvrier de carrière",
+   "secteur": "B. Industries extractives",
+   "taches": [
+    {
+     "t": "Conduite d'engins (chargeuse, tombereau)",
+     "f": "Très souvent",
+     "c": "Vibrations corps entier, poussières"
+    },
+    {
+     "t": "Surveillance du concasseur et des cribles",
+     "f": "Souvent",
+     "c": "Bruit, poussières de silice"
+    },
+    {
+     "t": "Entretien et nettoyage des installations",
+     "f": "Souvent",
+     "c": "Postures contraignantes, hauteur"
+    }
+   ],
+   "exigences": {
+    "Conduite de véhicule ou d'engin": 3,
+    "Station assise prolongée": 2,
+    "Travail en extérieur": 3,
+    "Escaliers, échelles, escabeaux": 2,
+    "Flexions / rotations du tronc": 1
+   }
+  },
+  "M011": {
+   "metier": "Foreur (eau, géothermie, pétrole)",
+   "secteur": "B. Industries extractives",
+   "taches": [
+    {
+     "t": "Mise en place et conduite de l'atelier de forage",
+     "f": "Très souvent",
+     "c": "Bruit, vibrations, extérieur"
+    },
+    {
+     "t": "Manutention des tiges et outils",
+     "f": "Souvent",
+     "c": "Charges lourdes, risque d'écrasement"
+    },
+    {
+     "t": "Préparation des boues et produits",
+     "f": "Quelquefois",
+     "c": "Produits chimiques"
+    },
+    {
+     "t": "Déplacements entre chantiers",
+     "f": "Souvent",
+     "c": "Conduite, grands déplacements"
+    }
+   ],
+   "exigences": {
+    "Port de charges": 3,
+    "Travail en extérieur": 3,
+    "Station debout prolongée": 2,
+    "Flexions / rotations du tronc": 2,
+    "Conduite de véhicule ou d'engin": 2
+   }
+  },
+  "M012": {
+   "metier": "Ouvrier d'abattoir / Découpe viande",
+   "secteur": "C. Industrie manufacturière",
+   "taches": [
+    {
+     "t": "Découpe et désossage",
+     "f": "Très souvent",
+     "c": "Gestes répétitifs au couteau, froid"
+    },
+    {
+     "t": "Manutention de carcasses et de bacs",
+     "f": "Souvent",
+     "c": "Charges lourdes, sol glissant"
+    },
+    {
+     "t": "Conditionnement et emballage",
+     "f": "Souvent",
+     "c": "Cadence, station debout"
+    },
+    {
+     "t": "Nettoyage du poste et affûtage",
+     "f": "Quelquefois",
+     "c": "Produits de nettoyage, eau"
+    }
+   ],
+   "exigences": {
+    "Gestes répétitifs des membres supérieurs": 3,
+    "Préhension fine / force de serrage": 3,
+    "Station debout prolongée": 3,
+    "Port de charges": 2,
+    "Bras au-dessus des épaules": 2
+   }
+  },
+  "M013": {
+   "metier": "Boulanger / Pâtissier industriel",
+   "secteur": "C. Industrie manufacturière",
+   "taches": [
+    {
+     "t": "Pétrissage, façonnage et dosage",
+     "f": "Très souvent",
+     "c": "Poussières de farine, gestes répétitifs"
+    },
+    {
+     "t": "Enfournement et défournement",
+     "f": "Souvent",
+     "c": "Chaleur, port de plaques"
+    },
+    {
+     "t": "Conditionnement en ligne",
+     "f": "Souvent",
+     "c": "Cadence, station debout"
+    },
+    {
+     "t": "Nettoyage des équipements",
+     "f": "Quelquefois",
+     "c": "Produits de nettoyage"
+    }
+   ],
+   "exigences": {
+    "Station debout prolongée": 3,
+    "Gestes répétitifs des membres supérieurs": 2,
+    "Port de charges": 2,
+    "Flexions / rotations du tronc": 1
+   }
+  },
+  "M014": {
+   "metier": "Opérateur de fabrication chimique",
+   "secteur": "C. Industrie manufacturière",
+   "taches": [
+    {
+     "t": "Conduite et surveillance des réacteurs",
+     "f": "Très souvent",
+     "c": "Écrans de contrôle, rondes"
+    },
+    {
+     "t": "Chargement des matières premières",
+     "f": "Souvent",
+     "c": "Port de sacs, produits dangereux"
+    },
+    {
+     "t": "Prélèvements et contrôles",
+     "f": "Souvent",
+     "c": "Port d'EPI respiratoires"
+    },
+    {
+     "t": "Nettoyage et préparation des équipements",
+     "f": "Quelquefois",
+     "c": "Espaces confinés possibles"
+    }
+   ],
+   "exigences": {
+    "Marche / déplacements": 2,
+    "Travail sur écran": 2,
+    "Port de charges": 2,
+    "Escaliers, échelles, escabeaux": 2,
+    "Exigences visuelles (précision, contrôle)": 2
+   }
+  },
+  "M015": {
+   "metier": "Préparateur cytotoxiques / Pharmacie",
+   "secteur": "C. Industrie manufacturière",
+   "taches": [
+    {
+     "t": "Préparation des médicaments cytotoxiques sous isolateur",
+     "f": "Très souvent",
+     "c": "Gestes fins répétitifs, bras tendus"
+    },
+    {
+     "t": "Contrôle des préparations et traçabilité",
+     "f": "Souvent",
+     "c": "Précision, écran"
+    },
+    {
+     "t": "Réception et rangement des produits",
+     "f": "Quelquefois",
+     "c": "Manutention de cartons"
+    },
+    {
+     "t": "Nettoyage et décontamination de l'isolateur",
+     "f": "Quelquefois",
+     "c": "Produits de décontamination"
+    }
+   ],
+   "exigences": {
+    "Gestes répétitifs des membres supérieurs": 3,
+    "Préhension fine / force de serrage": 3,
+    "Exigences visuelles (précision, contrôle)": 3,
+    "Station assise prolongée": 2,
+    "Travail sur écran": 2
+   }
+  },
+  "M016": {
+   "metier": "Laborantin R&D / contrôle qualité",
+   "secteur": "C. Industrie manufacturière",
+   "taches": [
+    {
+     "t": "Analyses et manipulations de laboratoire",
+     "f": "Très souvent",
+     "c": "Gestes fins, produits chimiques"
+    },
+    {
+     "t": "Préparation des échantillons",
+     "f": "Souvent",
+     "c": "Pipetage répétitif"
+    },
+    {
+     "t": "Saisie des résultats et rapports",
+     "f": "Souvent",
+     "c": "Travail sur écran"
+    },
+    {
+     "t": "Entretien des appareils",
+     "f": "Quelquefois",
+     "c": ""
+    }
+   ],
+   "exigences": {
+    "Gestes répétitifs des membres supérieurs": 2,
+    "Préhension fine / force de serrage": 2,
+    "Exigences visuelles (précision, contrôle)": 3,
+    "Travail sur écran": 2,
+    "Station debout prolongée": 2
+   }
+  },
+  "M017": {
+   "metier": "Fondeur / Mouleur métal",
+   "secteur": "C. Industrie manufacturière",
+   "taches": [
+    {
+     "t": "Préparation des moules et noyaux",
+     "f": "Très souvent",
+     "c": "Sables, poussières de silice"
+    },
+    {
+     "t": "Coulée du métal",
+     "f": "Souvent",
+     "c": "Chaleur radiante, projections"
+    },
+    {
+     "t": "Décochage et ébarbage",
+     "f": "Souvent",
+     "c": "Vibrations, bruit, poussières"
+    },
+    {
+     "t": "Manutention des pièces",
+     "f": "Souvent",
+     "c": "Charges lourdes, pont roulant"
+    }
+   ],
+   "exigences": {
+    "Port de charges": 3,
+    "Station debout prolongée": 3,
+    "Flexions / rotations du tronc": 2,
+    "Préhension fine / force de serrage": 2,
+    "Bras au-dessus des épaules": 1
+   }
+  },
+  "M018": {
+   "metier": "Soudeur (arc, MIG/MAG, TIG)",
+   "secteur": "C. Industrie manufacturière",
+   "taches": [
+    {
+     "t": "Soudage à l'arc, MIG/MAG ou TIG",
+     "f": "Très souvent",
+     "c": "Fumées, rayonnements, postures figées"
+    },
+    {
+     "t": "Préparation et meulage des pièces",
+     "f": "Souvent",
+     "c": "Vibrations, bruit"
+    },
+    {
+     "t": "Lecture de plans et traçage",
+     "f": "Quelquefois",
+     "c": ""
+    },
+    {
+     "t": "Manutention des pièces et bouteilles",
+     "f": "Souvent",
+     "c": "Port de charges, pont roulant"
+    }
+   ],
+   "exigences": {
+    "Station debout prolongée": 3,
+    "Flexions / rotations du tronc": 2,
+    "Bras au-dessus des épaules": 2,
+    "Position accroupie / à genoux": 2,
+    "Port de charges": 2,
+    "Exigences visuelles (précision, contrôle)": 2
+   }
+  },
+  "M019": {
+   "metier": "Chaudronnier / Tôlier",
+   "secteur": "C. Industrie manufacturière",
+   "taches": [
+    {
+     "t": "Découpe, pliage et roulage de tôles",
+     "f": "Très souvent",
+     "c": "Bruit, risque de coupure"
+    },
+    {
+     "t": "Assemblage et soudage",
+     "f": "Souvent",
+     "c": "Postures contraignantes, fumées"
+    },
+    {
+     "t": "Meulage et finition",
+     "f": "Souvent",
+     "c": "Vibrations"
+    },
+    {
+     "t": "Manutention des tôles et pièces",
+     "f": "Souvent",
+     "c": "Port de charges, pont roulant"
+    }
+   ],
+   "exigences": {
+    "Station debout prolongée": 3,
+    "Port de charges": 2,
+    "Flexions / rotations du tronc": 2,
+    "Bras au-dessus des épaules": 2,
+    "Préhension fine / force de serrage": 2
+   }
+  },
+  "M020": {
+   "metier": "Tourneur-fraiseur sur machines-outils",
+   "secteur": "C. Industrie manufacturière",
+   "taches": [
+    {
+     "t": "Réglage et conduite de machines-outils (tour, fraiseuse, CN)",
+     "f": "Très souvent",
+     "c": "Station debout, fluides de coupe"
+    },
+    {
+     "t": "Contrôle dimensionnel des pièces",
+     "f": "Souvent",
+     "c": "Précision visuelle"
+    },
+    {
+     "t": "Chargement des pièces",
+     "f": "Souvent",
+     "c": "Port de charges"
+    },
+    {
+     "t": "Programmation sur commande numérique",
+     "f": "Quelquefois",
+     "c": "Écran"
+    }
+   ],
+   "exigences": {
+    "Station debout prolongée": 3,
+    "Exigences visuelles (précision, contrôle)": 3,
+    "Port de charges": 2,
+    "Gestes répétitifs des membres supérieurs": 2,
+    "Travail sur écran": 1
+   }
+  },
+  "M021": {
+   "metier": "Mécanicien de maintenance industrielle",
+   "secteur": "C. Industrie manufacturière",
+   "taches": [
+    {
+     "t": "Dépannage mécanique, électrique et hydraulique",
+     "f": "Très souvent",
+     "c": "Postures contraignantes, interventions en urgence"
+    },
+    {
+     "t": "Maintenance préventive des équipements",
+     "f": "Souvent",
+     "c": "Accès difficiles, hauteur"
+    },
+    {
+     "t": "Démontage et remontage de pièces",
+     "f": "Souvent",
+     "c": "Port de charges, force"
+    },
+    {
+     "t": "Traçabilité des interventions (GMAO)",
+     "f": "Quelquefois",
+     "c": "Écran"
+    }
+   ],
+   "exigences": {
+    "Station debout prolongée": 2,
+    "Marche / déplacements": 3,
+    "Flexions / rotations du tronc": 2,
+    "Position accroupie / à genoux": 2,
+    "Bras au-dessus des épaules": 2,
+    "Escaliers, échelles, escabeaux": 2,
+    "Port de charges": 2,
+    "Préhension fine / force de serrage": 2
+   }
+  },
+  "M022": {
+   "metier": "Menuisier / Ébéniste industriel",
+   "secteur": "C. Industrie manufacturière",
+   "taches": [
+    {
+     "t": "Usinage du bois sur machines (scie, toupie, raboteuse)",
+     "f": "Très souvent",
+     "c": "Bruit, poussières de bois"
+    },
+    {
+     "t": "Assemblage et montage des meubles",
+     "f": "Souvent",
+     "c": "Port de panneaux"
+    },
+    {
+     "t": "Ponçage et finition",
+     "f": "Souvent",
+     "c": "Vibrations, vernis"
+    }
+   ],
+   "exigences": {
+    "Station debout prolongée": 3,
+    "Port de charges": 2,
+    "Flexions / rotations du tronc": 2,
+    "Gestes répétitifs des membres supérieurs": 2,
+    "Préhension fine / force de serrage": 2
+   }
+  },
+  "M023": {
+   "metier": "Opérateur plasturgie / Injection",
+   "secteur": "C. Industrie manufacturière",
+   "taches": [
+    {
+     "t": "Conduite de presses à injecter",
+     "f": "Très souvent",
+     "c": "Station debout, chaleur"
+    },
+    {
+     "t": "Changement de moules et réglages",
+     "f": "Souvent",
+     "c": "Charges lourdes, pont roulant"
+    },
+    {
+     "t": "Contrôle et ébavurage des pièces",
+     "f": "Très souvent",
+     "c": "Gestes répétitifs"
+    },
+    {
+     "t": "Approvisionnement en matière",
+     "f": "Quelquefois",
+     "c": "Port de sacs"
+    }
+   ],
+   "exigences": {
+    "Station debout prolongée": 3,
+    "Gestes répétitifs des membres supérieurs": 3,
+    "Port de charges": 2,
+    "Exigences visuelles (précision, contrôle)": 2
+   }
+  },
+  "M024": {
+   "metier": "Verrier / Souffleur de verre",
+   "secteur": "C. Industrie manufacturière",
+   "taches": [
+    {
+     "t": "Cueillage et soufflage du verre",
+     "f": "Très souvent",
+     "c": "Chaleur radiante, rayonnement infrarouge"
+    },
+    {
+     "t": "Façonnage à la canne",
+     "f": "Très souvent",
+     "c": "Gestes répétitifs, bras tendus"
+    },
+    {
+     "t": "Recuisson et finition",
+     "f": "Souvent",
+     "c": "Station debout"
+    }
+   ],
+   "exigences": {
+    "Station debout prolongée": 3,
+    "Gestes répétitifs des membres supérieurs": 2,
+    "Bras au-dessus des épaules": 2,
+    "Préhension fine / force de serrage": 2,
+    "Exigences visuelles (précision, contrôle)": 2
+   }
+  },
+  "M025": {
+   "metier": "Teinturier industriel / Pressing",
+   "secteur": "C. Industrie manufacturière",
+   "taches": [
+    {
+     "t": "Chargement et déchargement des machines",
+     "f": "Très souvent",
+     "c": "Linge humide lourd, flexions"
+    },
+    {
+     "t": "Repassage et pressage",
+     "f": "Très souvent",
+     "c": "Chaleur, gestes répétitifs"
+    },
+    {
+     "t": "Détachage",
+     "f": "Souvent",
+     "c": "Solvants"
+    },
+    {
+     "t": "Accueil des clients",
+     "f": "Quelquefois",
+     "c": "Contact public"
+    }
+   ],
+   "exigences": {
+    "Station debout prolongée": 3,
+    "Gestes répétitifs des membres supérieurs": 3,
+    "Flexions / rotations du tronc": 2,
+    "Port de charges": 2,
+    "Contact avec le public": 1
+   }
+  },
+  "M026": {
+   "metier": "Ouvrier textile / Confection",
+   "secteur": "C. Industrie manufacturière",
+   "taches": [
+    {
+     "t": "Piqûre et assemblage en machine",
+     "f": "Très souvent",
+     "c": "Posture assise figée, cadence"
+    },
+    {
+     "t": "Coupe des tissus",
+     "f": "Souvent",
+     "c": "Station debout, ciseaux"
+    },
+    {
+     "t": "Contrôle qualité et finition",
+     "f": "Souvent",
+     "c": "Précision visuelle"
+    }
+   ],
+   "exigences": {
+    "Station assise prolongée": 3,
+    "Gestes répétitifs des membres supérieurs": 3,
+    "Préhension fine / force de serrage": 2,
+    "Exigences visuelles (précision, contrôle)": 3
+   }
+  },
+  "M027": {
+   "metier": "Technicien centrale nucléaire (cat. A)",
+   "secteur": "D. Énergie",
+   "taches": [
+    {
+     "t": "Conduite et surveillance d'installations",
+     "f": "Très souvent",
+     "c": "Salle de commande, horaires postés"
+    },
+    {
+     "t": "Interventions en zone contrôlée",
+     "f": "Souvent",
+     "c": "Tenues, dosimétrie"
+    },
+    {
+     "t": "Maintenance et arrêts de tranche",
+     "f": "Quelquefois",
+     "c": "Postures contraignantes, hauteur"
+    }
+   ],
+   "exigences": {
+    "Travail sur écran": 2,
+    "Marche / déplacements": 2,
+    "Escaliers, échelles, escabeaux": 2,
+    "Exigences visuelles (précision, contrôle)": 2
+   }
+  },
+  "M028": {
+   "metier": "Électricien réseau / haute tension",
+   "secteur": "D. Énergie",
+   "taches": [
+    {
+     "t": "Interventions sur réseaux aériens",
+     "f": "Très souvent",
+     "c": "Travail en hauteur (nacelle, poteau)"
+    },
+    {
+     "t": "Travaux sur réseaux souterrains",
+     "f": "Souvent",
+     "c": "Tranchées, postures accroupies"
+    },
+    {
+     "t": "Consignations et manœuvres",
+     "f": "Souvent",
+     "c": "Rigueur, poste de sécurité"
+    },
+    {
+     "t": "Déplacements sur les chantiers",
+     "f": "Souvent",
+     "c": "Conduite"
+    }
+   ],
+   "exigences": {
+    "Travail en extérieur": 3,
+    "Escaliers, échelles, escabeaux": 3,
+    "Bras au-dessus des épaules": 2,
+    "Position accroupie / à genoux": 2,
+    "Conduite de véhicule ou d'engin": 2,
+    "Port de charges": 2
+   }
+  },
+  "M029": {
+   "metier": "Électricien d'équipement industriel / Automaticien",
+   "secteur": "D. Énergie",
+   "taches": [
+    {
+     "t": "Câblage et raccordement d'armoires",
+     "f": "Très souvent",
+     "c": "Gestes fins, postures"
+    },
+    {
+     "t": "Dépannage et mise en service",
+     "f": "Souvent",
+     "c": "Accès difficiles"
+    },
+    {
+     "t": "Programmation d'automates",
+     "f": "Souvent",
+     "c": "Écran"
+    }
+   ],
+   "exigences": {
+    "Préhension fine / force de serrage": 3,
+    "Exigences visuelles (précision, contrôle)": 2,
+    "Position accroupie / à genoux": 2,
+    "Bras au-dessus des épaules": 2,
+    "Travail sur écran": 2,
+    "Station debout prolongée": 2
+   }
+  },
+  "M030": {
+   "metier": "Technicien maintenance éolienne",
+   "secteur": "D. Énergie",
+   "taches": [
+    {
+     "t": "Ascension des mâts et travaux en nacelle",
+     "f": "Très souvent",
+     "c": "Hauteur, échelles"
+    },
+    {
+     "t": "Maintenance mécanique et électrique",
+     "f": "Souvent",
+     "c": "Espaces exigus"
+    },
+    {
+     "t": "Déplacements entre parcs",
+     "f": "Souvent",
+     "c": "Conduite, grands déplacements"
+    }
+   ],
+   "exigences": {
+    "Escaliers, échelles, escabeaux": 3,
+    "Travail en extérieur": 3,
+    "Position accroupie / à genoux": 2,
+    "Port de charges": 2,
+    "Conduite de véhicule ou d'engin": 2
+   }
+  },
+  "M031": {
+   "metier": "Égoutier / Curage réseaux",
+   "secteur": "E. Eau, déchets",
+   "taches": [
+    {
+     "t": "Curage et inspection des réseaux",
+     "f": "Très souvent",
+     "c": "Espaces confinés, atmosphères dangereuses"
+    },
+    {
+     "t": "Descente dans les regards",
+     "f": "Souvent",
+     "c": "Échelles, port d'équipements"
+    },
+    {
+     "t": "Conduite d'hydrocureuse",
+     "f": "Souvent",
+     "c": "Vibrations"
+    }
+   ],
+   "exigences": {
+    "Escaliers, échelles, escabeaux": 3,
+    "Travail en extérieur": 3,
+    "Position accroupie / à genoux": 2,
+    "Flexions / rotations du tronc": 2,
+    "Port de charges": 2,
+    "Conduite de véhicule ou d'engin": 2
+   }
+  },
+  "M032": {
+   "metier": "Ripeur / Éboueur",
+   "secteur": "E. Eau, déchets",
+   "taches": [
+    {
+     "t": "Collecte des bacs et sacs",
+     "f": "Très souvent",
+     "c": "Montées/descentes du marchepied, port et poussée"
+    },
+    {
+     "t": "Marche et course derrière le camion",
+     "f": "Très souvent",
+     "c": "Circulation routière, intempéries"
+    },
+    {
+     "t": "Vidage des bacs au lève-conteneur",
+     "f": "Très souvent",
+     "c": "Gestes répétitifs"
+    }
+   ],
+   "exigences": {
+    "Marche / déplacements": 3,
+    "Travail en extérieur": 3,
+    "Poussée / traction (chariots, transpalettes…)": 3,
+    "Port de charges": 2,
+    "Gestes répétitifs des membres supérieurs": 2,
+    "Escaliers, échelles, escabeaux": 2
+   }
+  },
+  "M033": {
+   "metier": "Agent station d'épuration",
+   "secteur": "E. Eau, déchets",
+   "taches": [
+    {
+     "t": "Rondes et contrôles des installations",
+     "f": "Très souvent",
+     "c": "Marche, escaliers, extérieur"
+    },
+    {
+     "t": "Prélèvements et analyses",
+     "f": "Souvent",
+     "c": "Agents biologiques"
+    },
+    {
+     "t": "Maintenance des pompes et équipements",
+     "f": "Souvent",
+     "c": "Postures contraignantes"
+    },
+    {
+     "t": "Gestion des boues et réactifs",
+     "f": "Quelquefois",
+     "c": "Produits chimiques"
+    }
+   ],
+   "exigences": {
+    "Marche / déplacements": 3,
+    "Escaliers, échelles, escabeaux": 2,
+    "Travail en extérieur": 2,
+    "Flexions / rotations du tronc": 2,
+    "Position accroupie / à genoux": 1
+   }
+  },
+  "M034": {
+   "metier": "Agent de déchèterie",
+   "secteur": "E. Eau, déchets",
+   "taches": [
+    {
+     "t": "Accueil et orientation des usagers",
+     "f": "Très souvent",
+     "c": "Contact public, extérieur"
+    },
+    {
+     "t": "Manutention des déchets et objets encombrants",
+     "f": "Souvent",
+     "c": "Port de charges"
+    },
+    {
+     "t": "Entretien et rangement du site",
+     "f": "Souvent",
+     "c": "Bennes, quai"
+    }
+   ],
+   "exigences": {
+    "Contact avec le public": 3,
+    "Travail en extérieur": 3,
+    "Station debout prolongée": 2,
+    "Port de charges": 2,
+    "Flexions / rotations du tronc": 2
+   }
+  },
+  "M035": {
+   "metier": "Opérateur d'incinérateur / UIOM",
+   "secteur": "E. Eau, déchets",
+   "taches": [
+    {
+     "t": "Conduite de l'installation en salle de commande",
+     "f": "Très souvent",
+     "c": "Écrans, horaires postés"
+    },
+    {
+     "t": "Rondes et interventions sur l'installation",
+     "f": "Souvent",
+     "c": "Chaleur, poussières"
+    },
+    {
+     "t": "Nettoyage et maintenance",
+     "f": "Quelquefois",
+     "c": "Postures contraignantes"
+    }
+   ],
+   "exigences": {
+    "Travail sur écran": 3,
+    "Marche / déplacements": 2,
+    "Escaliers, échelles, escabeaux": 2
+   }
+  },
+  "M036": {
+   "metier": "Maçon / Coffreur",
+   "secteur": "F. Construction / BTP",
+   "taches": [
+    {
+     "t": "Montage de murs, coffrage et ferraillage",
+     "f": "Très souvent",
+     "c": "Port de parpaings et banches"
+    },
+    {
+     "t": "Préparation et mise en œuvre du béton",
+     "f": "Souvent",
+     "c": "Ciment, vibrations"
+    },
+    {
+     "t": "Travail sur échafaudage",
+     "f": "Souvent",
+     "c": "Hauteur"
+    },
+    {
+     "t": "Manutention des matériaux",
+     "f": "Très souvent",
+     "c": "Charges lourdes"
+    }
+   ],
+   "exigences": {
+    "Port de charges": 3,
+    "Flexions / rotations du tronc": 3,
+    "Travail en extérieur": 3,
+    "Bras au-dessus des épaules": 2,
+    "Position accroupie / à genoux": 2,
+    "Escaliers, échelles, escabeaux": 2,
+    "Station debout prolongée": 3
+   }
+  },
+  "M037": {
+   "metier": "Couvreur / Zingueur",
+   "secteur": "F. Construction / BTP",
+   "taches": [
+    {
+     "t": "Pose de couvertures (tuiles, ardoises, zinc)",
+     "f": "Très souvent",
+     "c": "Travail en hauteur, pente"
+    },
+    {
+     "t": "Manutention des matériaux en toiture",
+     "f": "Souvent",
+     "c": "Port de charges"
+    },
+    {
+     "t": "Travaux de zinguerie et soudure",
+     "f": "Souvent",
+     "c": "Chalumeau"
+    }
+   ],
+   "exigences": {
+    "Escaliers, échelles, escabeaux": 3,
+    "Travail en extérieur": 3,
+    "Position accroupie / à genoux": 3,
+    "Port de charges": 2,
+    "Flexions / rotations du tronc": 2
+   }
+  },
+  "M038": {
+   "metier": "Charpentier de chantier",
+   "secteur": "F. Construction / BTP",
+   "taches": [
+    {
+     "t": "Taille et assemblage des bois",
+     "f": "Très souvent",
+     "c": "Machines, bruit"
+    },
+    {
+     "t": "Levage et pose des charpentes",
+     "f": "Souvent",
+     "c": "Hauteur, port de pièces lourdes"
+    },
+    {
+     "t": "Travail sur échafaudage ou nacelle",
+     "f": "Souvent",
+     "c": "Hauteur"
+    }
+   ],
+   "exigences": {
+    "Port de charges": 3,
+    "Escaliers, échelles, escabeaux": 3,
+    "Travail en extérieur": 3,
+    "Bras au-dessus des épaules": 2,
+    "Flexions / rotations du tronc": 2
+   }
+  },
+  "M039": {
+   "metier": "Plombier-chauffagiste",
+   "secteur": "F. Construction / BTP",
+   "taches": [
+    {
+     "t": "Installation de réseaux et équipements sanitaires",
+     "f": "Très souvent",
+     "c": "Postures accroupies, espaces exigus"
+    },
+    {
+     "t": "Dépannages chez les particuliers",
+     "f": "Souvent",
+     "c": "Contact client, déplacements"
+    },
+    {
+     "t": "Soudure et brasure",
+     "f": "Souvent",
+     "c": "Chalumeau, fumées"
+    },
+    {
+     "t": "Manutention de chaudières et ballons",
+     "f": "Quelquefois",
+     "c": "Charges lourdes"
+    }
+   ],
+   "exigences": {
+    "Position accroupie / à genoux": 3,
+    "Flexions / rotations du tronc": 2,
+    "Bras au-dessus des épaules": 2,
+    "Port de charges": 2,
+    "Conduite de véhicule ou d'engin": 2,
+    "Contact avec le public": 2
+   }
+  },
+  "M040": {
+   "metier": "Électricien bâtiment",
+   "secteur": "F. Construction / BTP",
+   "taches": [
+    {
+     "t": "Passage de câbles et pose d'appareillage",
+     "f": "Très souvent",
+     "c": "Bras levés, escabeau"
+    },
+    {
+     "t": "Raccordement des tableaux",
+     "f": "Souvent",
+     "c": "Gestes fins"
+    },
+    {
+     "t": "Saignées et percements",
+     "f": "Souvent",
+     "c": "Poussières, vibrations"
+    }
+   ],
+   "exigences": {
+    "Bras au-dessus des épaules": 3,
+    "Escaliers, échelles, escabeaux": 3,
+    "Position accroupie / à genoux": 2,
+    "Préhension fine / force de serrage": 2,
+    "Flexions / rotations du tronc": 2
+   }
+  },
+  "M041": {
+   "metier": "Peintre en bâtiment",
+   "secteur": "F. Construction / BTP",
+   "taches": [
+    {
+     "t": "Préparation des supports (ponçage, enduit)",
+     "f": "Très souvent",
+     "c": "Poussières, bras levés"
+    },
+    {
+     "t": "Application des peintures",
+     "f": "Très souvent",
+     "c": "Solvants, gestes répétitifs"
+    },
+    {
+     "t": "Travail sur escabeau ou échafaudage",
+     "f": "Souvent",
+     "c": "Hauteur"
+    }
+   ],
+   "exigences": {
+    "Bras au-dessus des épaules": 3,
+    "Gestes répétitifs des membres supérieurs": 3,
+    "Escaliers, échelles, escabeaux": 2,
+    "Position accroupie / à genoux": 2,
+    "Flexions / rotations du tronc": 2
+   }
+  },
+  "M042": {
+   "metier": "Conducteur d'engin de chantier (pelle, bull)",
+   "secteur": "F. Construction / BTP",
+   "taches": [
+    {
+     "t": "Conduite d'engins de terrassement",
+     "f": "Très souvent",
+     "c": "Vibrations corps entier, poste assis"
+    },
+    {
+     "t": "Entretien quotidien de l'engin",
+     "f": "Souvent",
+     "c": "Montées/descentes"
+    }
+   ],
+   "exigences": {
+    "Station assise prolongée": 3,
+    "Conduite de véhicule ou d'engin": 3,
+    "Travail en extérieur": 3,
+    "Escaliers, échelles, escabeaux": 1
+   }
+  },
+  "M043": {
+   "metier": "Grutier (tour, mobile)",
+   "secteur": "F. Construction / BTP",
+   "taches": [
+    {
+     "t": "Conduite de grue depuis la cabine ou en radiocommande",
+     "f": "Très souvent",
+     "c": "Vigilance continue, hauteur"
+    },
+    {
+     "t": "Montée à la cabine",
+     "f": "Souvent",
+     "c": "Échelles verticales"
+    },
+    {
+     "t": "Vérifications et élingage",
+     "f": "Quelquefois",
+     "c": ""
+    }
+   ],
+   "exigences": {
+    "Station assise prolongée": 3,
+    "Escaliers, échelles, escabeaux": 3,
+    "Exigences visuelles (précision, contrôle)": 3,
+    "Travail en extérieur": 2
+   }
+  },
+  "M044": {
+   "metier": "Désamianteur (SS3)",
+   "secteur": "F. Construction / BTP",
+   "taches": [
+    {
+     "t": "Retrait d'amiante en zone confinée",
+     "f": "Très souvent",
+     "c": "APR, combinaison, chaleur"
+    },
+    {
+     "t": "Préparation et confinement de la zone",
+     "f": "Souvent",
+     "c": "Port de matériel"
+    },
+    {
+     "t": "Décontamination",
+     "f": "Très souvent",
+     "c": "Procédures d'entrée/sortie"
+    }
+   ],
+   "exigences": {
+    "Station debout prolongée": 3,
+    "Bras au-dessus des épaules": 2,
+    "Flexions / rotations du tronc": 2,
+    "Position accroupie / à genoux": 2,
+    "Port de charges": 2
+   }
+  },
+  "M045": {
+   "metier": "Démolisseur",
+   "secteur": "F. Construction / BTP",
+   "taches": [
+    {
+     "t": "Démolition manuelle et mécanisée",
+     "f": "Très souvent",
+     "c": "Vibrations, bruit, poussières"
+    },
+    {
+     "t": "Tri et évacuation des gravats",
+     "f": "Souvent",
+     "c": "Port de charges"
+    },
+    {
+     "t": "Conduite de mini-engins",
+     "f": "Souvent",
+     "c": "Vibrations"
+    }
+   ],
+   "exigences": {
+    "Port de charges": 3,
+    "Travail en extérieur": 3,
+    "Flexions / rotations du tronc": 2,
+    "Préhension fine / force de serrage": 2,
+    "Conduite de véhicule ou d'engin": 2
+   }
+  },
+  "M046": {
+   "metier": "Poseur revêtements sols / Carreleur",
+   "secteur": "F. Construction / BTP",
+   "taches": [
+    {
+     "t": "Pose de carrelage et revêtements",
+     "f": "Très souvent",
+     "c": "Position à genoux prolongée"
+    },
+    {
+     "t": "Préparation des colles et ragréages",
+     "f": "Souvent",
+     "c": "Port de sacs, poussières"
+    },
+    {
+     "t": "Découpe des carreaux",
+     "f": "Souvent",
+     "c": "Bruit, poussières"
+    }
+   ],
+   "exigences": {
+    "Position accroupie / à genoux": 3,
+    "Flexions / rotations du tronc": 3,
+    "Port de charges": 2,
+    "Gestes répétitifs des membres supérieurs": 2
+   }
+  },
+  "M047": {
+   "metier": "Façadier / Ravaleur",
+   "secteur": "F. Construction / BTP",
+   "taches": [
+    {
+     "t": "Ravalement et enduits de façade",
+     "f": "Très souvent",
+     "c": "Échafaudage, bras levés"
+    },
+    {
+     "t": "Nettoyage haute pression",
+     "f": "Souvent",
+     "c": "Vibrations, projections"
+    },
+    {
+     "t": "Manutention des sacs et matériels",
+     "f": "Souvent",
+     "c": "Port de charges"
+    }
+   ],
+   "exigences": {
+    "Escaliers, échelles, escabeaux": 3,
+    "Travail en extérieur": 3,
+    "Bras au-dessus des épaules": 3,
+    "Port de charges": 2
+   }
+  },
+  "M048": {
+   "metier": "Caissier / Vendeur de magasin",
+   "secteur": "G. Commerce",
+   "taches": [
+    {
+     "t": "Encaissement",
+     "f": "Très souvent",
+     "c": "Gestes répétitifs, posture assise ou debout"
+    },
+    {
+     "t": "Mise en rayon et réassort",
+     "f": "Souvent",
+     "c": "Port de colis, bras levés, flexions"
+    },
+    {
+     "t": "Conseil et accueil des clients",
+     "f": "Souvent",
+     "c": "Contact public"
+    },
+    {
+     "t": "Inventaires",
+     "f": "Quelquefois",
+     "c": ""
+    }
+   ],
+   "exigences": {
+    "Gestes répétitifs des membres supérieurs": 3,
+    "Station debout prolongée": 2,
+    "Contact avec le public": 3,
+    "Port de charges": 2,
+    "Flexions / rotations du tronc": 2,
+    "Bras au-dessus des épaules": 1
+   }
+  },
+  "M049": {
+   "metier": "Préparateur de commandes / Cariste",
+   "secteur": "G. Commerce",
+   "taches": [
+    {
+     "t": "Préparation de commandes (picking)",
+     "f": "Très souvent",
+     "c": "Port de colis, cadence, marche"
+    },
+    {
+     "t": "Conduite de chariot élévateur ou de transpalette",
+     "f": "Souvent",
+     "c": "Vibrations"
+    },
+    {
+     "t": "Filmage et chargement des palettes",
+     "f": "Souvent",
+     "c": "Flexions"
+    }
+   ],
+   "exigences": {
+    "Marche / déplacements": 3,
+    "Port de charges": 3,
+    "Flexions / rotations du tronc": 2,
+    "Poussée / traction (chariots, transpalettes…)": 2,
+    "Conduite de véhicule ou d'engin": 2
+   }
+  },
+  "M050": {
+   "metier": "Mécanicien automobile",
+   "secteur": "G. Commerce",
+   "taches": [
+    {
+     "t": "Diagnostic et réparation des véhicules",
+     "f": "Très souvent",
+     "c": "Postures sous véhicule, bras levés"
+    },
+    {
+     "t": "Entretien courant (vidanges, pneus)",
+     "f": "Très souvent",
+     "c": "Huiles, port de roues"
+    },
+    {
+     "t": "Accueil des clients",
+     "f": "Quelquefois",
+     "c": ""
+    }
+   ],
+   "exigences": {
+    "Bras au-dessus des épaules": 3,
+    "Position accroupie / à genoux": 2,
+    "Flexions / rotations du tronc": 2,
+    "Port de charges": 2,
+    "Station debout prolongée": 2
+   }
+  },
+  "M051": {
+   "metier": "Carrossier-peintre automobile",
+   "secteur": "G. Commerce",
+   "taches": [
+    {
+     "t": "Débosselage et préparation des surfaces",
+     "f": "Très souvent",
+     "c": "Ponçage, poussières"
+    },
+    {
+     "t": "Peinture en cabine",
+     "f": "Souvent",
+     "c": "Isocyanates, port d'APR"
+    },
+    {
+     "t": "Démontage et remontage d'éléments",
+     "f": "Souvent",
+     "c": "Postures"
+    }
+   ],
+   "exigences": {
+    "Station debout prolongée": 2,
+    "Bras au-dessus des épaules": 2,
+    "Position accroupie / à genoux": 2,
+    "Flexions / rotations du tronc": 2
+   }
+  },
+  "M052": {
+   "metier": "Boucher détail / Charcutier artisan",
+   "secteur": "G. Commerce",
+   "taches": [
+    {
+     "t": "Découpe et préparation des viandes",
+     "f": "Très souvent",
+     "c": "Couteau, gestes répétitifs, froid"
+    },
+    {
+     "t": "Manutention de carcasses et bacs",
+     "f": "Souvent",
+     "c": "Charges lourdes"
+    },
+    {
+     "t": "Vente au comptoir",
+     "f": "Souvent",
+     "c": "Station debout, contact client"
+    }
+   ],
+   "exigences": {
+    "Gestes répétitifs des membres supérieurs": 3,
+    "Préhension fine / force de serrage": 3,
+    "Station debout prolongée": 3,
+    "Port de charges": 2,
+    "Contact avec le public": 2
+   }
+  },
+  "M053": {
+   "metier": "Boulanger artisan",
+   "secteur": "G. Commerce",
+   "taches": [
+    {
+     "t": "Pétrissage et façonnage",
+     "f": "Très souvent",
+     "c": "Poussières de farine, horaires de nuit"
+    },
+    {
+     "t": "Cuisson au four",
+     "f": "Souvent",
+     "c": "Chaleur, port de plaques"
+    },
+    {
+     "t": "Manutention des sacs de farine",
+     "f": "Quelquefois",
+     "c": "25 kg"
+    },
+    {
+     "t": "Vente",
+     "f": "Quelquefois",
+     "c": "Contact client"
+    }
+   ],
+   "exigences": {
+    "Station debout prolongée": 3,
+    "Port de charges": 2,
+    "Gestes répétitifs des membres supérieurs": 2,
+    "Flexions / rotations du tronc": 1
+   }
+  },
+  "M054": {
+   "metier": "Poissonnier détail",
+   "secteur": "G. Commerce",
+   "taches": [
+    {
+     "t": "Préparation et découpe du poisson",
+     "f": "Très souvent",
+     "c": "Froid, humidité, couteau"
+    },
+    {
+     "t": "Mise en place de l'étal (glace)",
+     "f": "Souvent",
+     "c": "Port de caisses"
+    },
+    {
+     "t": "Vente et conseil",
+     "f": "Souvent",
+     "c": "Contact client"
+    }
+   ],
+   "exigences": {
+    "Station debout prolongée": 3,
+    "Gestes répétitifs des membres supérieurs": 2,
+    "Port de charges": 2,
+    "Contact avec le public": 2
+   }
+  },
+  "M055": {
+   "metier": "Chauffeur routier PL / SPL",
+   "secteur": "H. Transport, logistique",
+   "taches": [
+    {
+     "t": "Conduite de poids lourd",
+     "f": "Très souvent",
+     "c": "Vibrations, longues durées, horaires décalés"
+    },
+    {
+     "t": "Chargement et déchargement",
+     "f": "Souvent",
+     "c": "Hayon, transpalette"
+    },
+    {
+     "t": "Arrimage et bâchage",
+     "f": "Quelquefois",
+     "c": "Bras levés, hauteur"
+    },
+    {
+     "t": "Tâches administratives (lettres de voiture)",
+     "f": "Quelquefois",
+     "c": ""
+    }
+   ],
+   "exigences": {
+    "Station assise prolongée": 3,
+    "Conduite de véhicule ou d'engin": 3,
+    "Travail en extérieur": 2,
+    "Port de charges": 2,
+    "Escaliers, échelles, escabeaux": 2
+   }
+  },
+  "M056": {
+   "metier": "Chauffeur de bus / car / VTC",
+   "secteur": "H. Transport, logistique",
+   "taches": [
+    {
+     "t": "Conduite de bus, car ou VTC",
+     "f": "Très souvent",
+     "c": "Posture assise, vigilance"
+    },
+    {
+     "t": "Relation avec les voyageurs",
+     "f": "Très souvent",
+     "c": "Incivilités possibles"
+    },
+    {
+     "t": "Contrôles du véhicule",
+     "f": "Quelquefois",
+     "c": ""
+    }
+   ],
+   "exigences": {
+    "Station assise prolongée": 3,
+    "Conduite de véhicule ou d'engin": 3,
+    "Contact avec le public": 3,
+    "Exigences visuelles (précision, contrôle)": 2
+   }
+  },
+  "M057": {
+   "metier": "Cariste / Conducteur chariot élévateur",
+   "secteur": "H. Transport, logistique",
+   "taches": [
+    {
+     "t": "Conduite de chariot élévateur",
+     "f": "Très souvent",
+     "c": "Vibrations, rotations du cou"
+    },
+    {
+     "t": "Chargement et déchargement des camions",
+     "f": "Souvent",
+     "c": "Quais"
+    },
+    {
+     "t": "Rangement en stock",
+     "f": "Souvent",
+     "c": "Hauteur de levée"
+    }
+   ],
+   "exigences": {
+    "Station assise prolongée": 3,
+    "Conduite de véhicule ou d'engin": 3,
+    "Exigences visuelles (précision, contrôle)": 2,
+    "Marche / déplacements": 1
+   }
+  },
+  "M058": {
+   "metier": "Marin marchand",
+   "secteur": "H. Transport, logistique",
+   "taches": [
+    {
+     "t": "Quarts à la passerelle ou à la machine",
+     "f": "Très souvent",
+     "c": "Horaires décalés"
+    },
+    {
+     "t": "Manœuvres et amarrage",
+     "f": "Souvent",
+     "c": "Efforts, extérieur"
+    },
+    {
+     "t": "Maintenance du navire",
+     "f": "Souvent",
+     "c": "Postures, espaces confinés"
+    }
+   ],
+   "exigences": {
+    "Travail en extérieur": 3,
+    "Escaliers, échelles, escabeaux": 3,
+    "Port de charges": 2,
+    "Flexions / rotations du tronc": 2
+   }
+  },
+  "M059": {
+   "metier": "Pilote de ligne / PNT",
+   "secteur": "H. Transport, logistique",
+   "taches": [
+    {
+     "t": "Pilotage et gestion du vol",
+     "f": "Très souvent",
+     "c": "Vigilance, décalage horaire"
+    },
+    {
+     "t": "Préparation du vol",
+     "f": "Souvent",
+     "c": "Écrans"
+    }
+   ],
+   "exigences": {
+    "Station assise prolongée": 3,
+    "Exigences visuelles (précision, contrôle)": 3,
+    "Travail sur écran": 2
+   }
+  },
+  "M060": {
+   "metier": "Personnel navigant commercial (PNC)",
+   "secteur": "H. Transport, logistique",
+   "taches": [
+    {
+     "t": "Service à bord",
+     "f": "Très souvent",
+     "c": "Poussée de trolleys, station debout"
+    },
+    {
+     "t": "Accueil et sécurité des passagers",
+     "f": "Très souvent",
+     "c": "Contact public"
+    },
+    {
+     "t": "Préparation de la cabine",
+     "f": "Souvent",
+     "c": "Bras levés (coffres)"
+    }
+   ],
+   "exigences": {
+    "Station debout prolongée": 3,
+    "Poussée / traction (chariots, transpalettes…)": 2,
+    "Bras au-dessus des épaules": 2,
+    "Contact avec le public": 3
+   }
+  },
+  "M061": {
+   "metier": "Agent de piste / Bagagiste aéroport",
+   "secteur": "H. Transport, logistique",
+   "taches": [
+    {
+     "t": "Chargement et déchargement des bagages",
+     "f": "Très souvent",
+     "c": "Port de charges, soute exiguë"
+    },
+    {
+     "t": "Conduite d'engins de piste",
+     "f": "Souvent",
+     "c": "Extérieur, bruit"
+    },
+    {
+     "t": "Guidage des avions",
+     "f": "Quelquefois",
+     "c": "Bruit"
+    }
+   ],
+   "exigences": {
+    "Port de charges": 3,
+    "Flexions / rotations du tronc": 3,
+    "Position accroupie / à genoux": 2,
+    "Travail en extérieur": 3,
+    "Conduite de véhicule ou d'engin": 2
+   }
+  },
+  "M062": {
+   "metier": "Déménageur / Manutentionnaire lourd",
+   "secteur": "H. Transport, logistique",
+   "taches": [
+    {
+     "t": "Port et déplacement de meubles",
+     "f": "Très souvent",
+     "c": "Charges lourdes, escaliers"
+    },
+    {
+     "t": "Emballage et démontage",
+     "f": "Souvent",
+     "c": "Flexions"
+    },
+    {
+     "t": "Chargement des camions",
+     "f": "Souvent",
+     "c": "Hayon, sangles"
+    },
+    {
+     "t": "Conduite du véhicule",
+     "f": "Quelquefois",
+     "c": ""
+    }
+   ],
+   "exigences": {
+    "Port de charges": 3,
+    "Escaliers, échelles, escabeaux": 3,
+    "Flexions / rotations du tronc": 3,
+    "Poussée / traction (chariots, transpalettes…)": 2,
+    "Conduite de véhicule ou d'engin": 1
+   }
+  },
+  "M063": {
+   "metier": "Cuisinier / Chef de cuisine",
+   "secteur": "I. Hébergement, restauration",
+   "taches": [
+    {
+     "t": "Préparation et cuisson des plats",
+     "f": "Très souvent",
+     "c": "Chaleur, station debout, couteaux"
+    },
+    {
+     "t": "Réception et rangement des marchandises",
+     "f": "Souvent",
+     "c": "Port de caisses, chambres froides"
+    },
+    {
+     "t": "Nettoyage de la cuisine",
+     "f": "Souvent",
+     "c": "Produits de nettoyage"
+    },
+    {
+     "t": "Organisation et commandes",
+     "f": "Quelquefois",
+     "c": ""
+    }
+   ],
+   "exigences": {
+    "Station debout prolongée": 3,
+    "Port de charges": 2,
+    "Gestes répétitifs des membres supérieurs": 2,
+    "Flexions / rotations du tronc": 2,
+    "Marche / déplacements": 2
+   }
+  },
+  "M064": {
+   "metier": "Serveur / Maître d'hôtel",
+   "secteur": "I. Hébergement, restauration",
+   "taches": [
+    {
+     "t": "Service en salle",
+     "f": "Très souvent",
+     "c": "Port de plateaux, marche continue"
+    },
+    {
+     "t": "Mise en place et débarrassage",
+     "f": "Souvent",
+     "c": "Flexions"
+    },
+    {
+     "t": "Accueil et encaissement",
+     "f": "Souvent",
+     "c": "Contact public"
+    }
+   ],
+   "exigences": {
+    "Station debout prolongée": 3,
+    "Marche / déplacements": 3,
+    "Port de charges": 2,
+    "Contact avec le public": 3
+   }
+  },
+  "M065": {
+   "metier": "Plongeur de restaurant",
+   "secteur": "I. Hébergement, restauration",
+   "taches": [
+    {
+     "t": "Lavage de la vaisselle",
+     "f": "Très souvent",
+     "c": "Humidité, chaleur, gestes répétitifs"
+    },
+    {
+     "t": "Manutention de casiers et bacs",
+     "f": "Souvent",
+     "c": "Port de charges"
+    },
+    {
+     "t": "Nettoyage des sols",
+     "f": "Souvent",
+     "c": "Produits"
+    }
+   ],
+   "exigences": {
+    "Station debout prolongée": 3,
+    "Gestes répétitifs des membres supérieurs": 3,
+    "Port de charges": 2,
+    "Flexions / rotations du tronc": 2
+   }
+  },
+  "M066": {
+   "metier": "Femme/Valet de chambre",
+   "secteur": "I. Hébergement, restauration",
+   "taches": [
+    {
+     "t": "Réfection des lits",
+     "f": "Très souvent",
+     "c": "Flexions, poussée des matelas"
+    },
+    {
+     "t": "Nettoyage des chambres et salles de bains",
+     "f": "Très souvent",
+     "c": "Produits, positions accroupies"
+    },
+    {
+     "t": "Poussée du chariot d'étage",
+     "f": "Souvent",
+     "c": ""
+    }
+   ],
+   "exigences": {
+    "Flexions / rotations du tronc": 3,
+    "Position accroupie / à genoux": 2,
+    "Poussée / traction (chariots, transpalettes…)": 2,
+    "Station debout prolongée": 3,
+    "Bras au-dessus des épaules": 2
+   }
+  },
+  "M067": {
+   "metier": "Réceptionniste / Veilleur de nuit",
+   "secteur": "I. Hébergement, restauration",
+   "taches": [
+    {
+     "t": "Accueil, check-in et check-out",
+     "f": "Très souvent",
+     "c": "Contact client"
+    },
+    {
+     "t": "Réservations et facturation",
+     "f": "Très souvent",
+     "c": "Écran"
+    },
+    {
+     "t": "Veille et rondes de nuit",
+     "f": "Souvent",
+     "c": "Travail isolé, nuit"
+    }
+   ],
+   "exigences": {
+    "Contact avec le public": 3,
+    "Travail sur écran": 3,
+    "Station debout prolongée": 2,
+    "Travail isolé": 2
+   }
+  },
+  "M068": {
+   "metier": "Développeur / Ingénieur informatique",
+   "secteur": "J. Information, communication",
+   "taches": [
+    {
+     "t": "Développement et tests de logiciels",
+     "f": "Très souvent",
+     "c": "Écran, posture assise prolongée"
+    },
+    {
+     "t": "Réunions et échanges avec l'équipe",
+     "f": "Souvent",
+     "c": ""
+    },
+    {
+     "t": "Support et résolution d'incidents",
+     "f": "Quelquefois",
+     "c": "Urgences"
+    }
+   ],
+   "exigences": {
+    "Station assise prolongée": 3,
+    "Travail sur écran": 3,
+    "Exigences visuelles (précision, contrôle)": 2
+   }
+  },
+  "M069": {
+   "metier": "Journaliste reporter / Correspondant",
+   "secteur": "J. Information, communication",
+   "taches": [
+    {
+     "t": "Reportages sur le terrain",
+     "f": "Souvent",
+     "c": "Déplacements, port de matériel"
+    },
+    {
+     "t": "Rédaction et montage",
+     "f": "Très souvent",
+     "c": "Écran"
+    },
+    {
+     "t": "Entretiens",
+     "f": "Souvent",
+     "c": "Contact public"
+    }
+   ],
+   "exigences": {
+    "Travail sur écran": 3,
+    "Conduite de véhicule ou d'engin": 2,
+    "Travail en extérieur": 2,
+    "Contact avec le public": 2,
+    "Port de charges": 1
+   }
+  },
+  "M070": {
+   "metier": "Technicien audiovisuel / Régie",
+   "secteur": "J. Information, communication",
+   "taches": [
+    {
+     "t": "Installation du matériel (son, lumière, vidéo)",
+     "f": "Souvent",
+     "c": "Port de charges, hauteur"
+    },
+    {
+     "t": "Exploitation en régie",
+     "f": "Très souvent",
+     "c": "Écrans, horaires décalés"
+    },
+    {
+     "t": "Démontage et chargement",
+     "f": "Souvent",
+     "c": ""
+    }
+   ],
+   "exigences": {
+    "Travail sur écran": 3,
+    "Port de charges": 2,
+    "Escaliers, échelles, escabeaux": 2,
+    "Bras au-dessus des épaules": 2
+   }
+  },
+  "M071": {
+   "metier": "Conseiller bancaire",
+   "secteur": "K. Finance, assurance",
+   "taches": [
+    {
+     "t": "Accueil et conseil des clients",
+     "f": "Très souvent",
+     "c": "Contact public"
+    },
+    {
+     "t": "Montage des dossiers",
+     "f": "Très souvent",
+     "c": "Écran"
+    },
+    {
+     "t": "Prospection téléphonique",
+     "f": "Souvent",
+     "c": ""
+    }
+   ],
+   "exigences": {
+    "Station assise prolongée": 3,
+    "Travail sur écran": 3,
+    "Contact avec le public": 3
+   }
+  },
+  "M072": {
+   "metier": "Trader / Analyste financier",
+   "secteur": "K. Finance, assurance",
+   "taches": [
+    {
+     "t": "Analyse des marchés",
+     "f": "Très souvent",
+     "c": "Écrans multiples, pression temporelle"
+    },
+    {
+     "t": "Passage d'ordres",
+     "f": "Très souvent",
+     "c": "Vigilance"
+    }
+   ],
+   "exigences": {
+    "Station assise prolongée": 3,
+    "Travail sur écran": 3,
+    "Exigences visuelles (précision, contrôle)": 3
+   }
+  },
+  "M073": {
+   "metier": "Agent immobilier",
+   "secteur": "L. Immobilier",
+   "taches": [
+    {
+     "t": "Visites de biens avec les clients",
+     "f": "Très souvent",
+     "c": "Déplacements, escaliers"
+    },
+    {
+     "t": "Prospection et rendez-vous",
+     "f": "Souvent",
+     "c": "Conduite"
+    },
+    {
+     "t": "Rédaction des mandats et compromis",
+     "f": "Souvent",
+     "c": "Écran"
+    }
+   ],
+   "exigences": {
+    "Conduite de véhicule ou d'engin": 3,
+    "Contact avec le public": 3,
+    "Travail sur écran": 2,
+    "Escaliers, échelles, escabeaux": 2
+   }
+  },
+  "M074": {
+   "metier": "Gardien d'immeuble / Concierge",
+   "secteur": "L. Immobilier",
+   "taches": [
+    {
+     "t": "Sortie des conteneurs à déchets",
+     "f": "Très souvent",
+     "c": "Poussée, port"
+    },
+    {
+     "t": "Entretien des parties communes",
+     "f": "Très souvent",
+     "c": "Produits, escaliers"
+    },
+    {
+     "t": "Petites réparations",
+     "f": "Quelquefois",
+     "c": ""
+    },
+    {
+     "t": "Relations avec les résidents",
+     "f": "Souvent",
+     "c": ""
+    }
+   ],
+   "exigences": {
+    "Poussée / traction (chariots, transpalettes…)": 3,
+    "Escaliers, échelles, escabeaux": 3,
+    "Flexions / rotations du tronc": 2,
+    "Port de charges": 2,
+    "Contact avec le public": 2
+   }
+  },
+  "M075": {
+   "metier": "Architecte",
+   "secteur": "M. Activités scientifiques, techniques",
+   "taches": [
+    {
+     "t": "Conception de projets",
+     "f": "Très souvent",
+     "c": "Écran"
+    },
+    {
+     "t": "Visites de chantier",
+     "f": "Souvent",
+     "c": "Déplacements, terrain"
+    },
+    {
+     "t": "Réunions avec les clients",
+     "f": "Souvent",
+     "c": ""
+    }
+   ],
+   "exigences": {
+    "Travail sur écran": 3,
+    "Station assise prolongée": 3,
+    "Conduite de véhicule ou d'engin": 2
+   }
+  },
+  "M076": {
+   "metier": "Ingénieur d'études (bureau)",
+   "secteur": "M. Activités scientifiques, techniques",
+   "taches": [
+    {
+     "t": "Études et calculs",
+     "f": "Très souvent",
+     "c": "Écran"
+    },
+    {
+     "t": "Réunions et rédaction de rapports",
+     "f": "Souvent",
+     "c": ""
+    }
+   ],
+   "exigences": {
+    "Station assise prolongée": 3,
+    "Travail sur écran": 3
+   }
+  },
+  "M077": {
+   "metier": "Vétérinaire",
+   "secteur": "M. Activités scientifiques, techniques",
+   "taches": [
+    {
+     "t": "Consultations et soins aux animaux",
+     "f": "Très souvent",
+     "c": "Contention, morsures"
+    },
+    {
+     "t": "Chirurgie",
+     "f": "Souvent",
+     "c": "Station debout prolongée, gaz anesthésiques"
+    },
+    {
+     "t": "Radiologie",
+     "f": "Souvent",
+     "c": "Rayonnements ionisants"
+    },
+    {
+     "t": "Visites en élevage",
+     "f": "Souvent",
+     "c": "Conduite, extérieur"
+    }
+   ],
+   "exigences": {
+    "Station debout prolongée": 3,
+    "Port de charges": 2,
+    "Flexions / rotations du tronc": 2,
+    "Conduite de véhicule ou d'engin": 2,
+    "Contact avec le public": 2
+   }
+  },
+  "M078": {
+   "metier": "Géomètre / Topographe",
+   "secteur": "M. Activités scientifiques, techniques",
+   "taches": [
+    {
+     "t": "Relevés topographiques sur le terrain",
+     "f": "Très souvent",
+     "c": "Extérieur, marche, port du matériel"
+    },
+    {
+     "t": "Traitement des données et plans",
+     "f": "Souvent",
+     "c": "Écran"
+    }
+   ],
+   "exigences": {
+    "Marche / déplacements": 3,
+    "Travail en extérieur": 3,
+    "Travail sur écran": 2,
+    "Conduite de véhicule ou d'engin": 2,
+    "Port de charges": 1
+   }
+  },
+  "M079": {
+   "metier": "Technicien laboratoire biologie médicale",
+   "secteur": "M. Activités scientifiques, techniques",
+   "taches": [
+    {
+     "t": "Analyses biologiques sur automates",
+     "f": "Très souvent",
+     "c": "Station debout ou assise"
+    },
+    {
+     "t": "Prélèvements et manipulation d'échantillons",
+     "f": "Souvent",
+     "c": "Agents biologiques"
+    },
+    {
+     "t": "Validation technique",
+     "f": "Souvent",
+     "c": "Écran"
+    }
+   ],
+   "exigences": {
+    "Gestes répétitifs des membres supérieurs": 2,
+    "Préhension fine / force de serrage": 2,
+    "Exigences visuelles (précision, contrôle)": 3,
+    "Travail sur écran": 2
+   }
+  },
+  "M080": {
+   "metier": "Agent d'entretien / Nettoyage",
+   "secteur": "N. Services administratifs, soutien",
+   "taches": [
+    {
+     "t": "Nettoyage des sols (balai, autolaveuse)",
+     "f": "Très souvent",
+     "c": "Marche, poussée"
+    },
+    {
+     "t": "Nettoyage des sanitaires et surfaces",
+     "f": "Très souvent",
+     "c": "Produits, flexions"
+    },
+    {
+     "t": "Vidage des corbeilles et poubelles",
+     "f": "Souvent",
+     "c": "Port de sacs"
+    },
+    {
+     "t": "Vitrerie",
+     "f": "Quelquefois",
+     "c": "Bras levés"
+    }
+   ],
+   "exigences": {
+    "Marche / déplacements": 3,
+    "Poussée / traction (chariots, transpalettes…)": 2,
+    "Flexions / rotations du tronc": 2,
+    "Bras au-dessus des épaules": 2,
+    "Gestes répétitifs des membres supérieurs": 2,
+    "Position accroupie / à genoux": 1,
+    "Travail isolé": 2
+   }
+  },
+  "M081": {
+   "metier": "Agent de sécurité / Gardiennage",
+   "secteur": "N. Services administratifs, soutien",
+   "taches": [
+    {
+     "t": "Surveillance des locaux et rondes",
+     "f": "Très souvent",
+     "c": "Marche, nuit, isolement"
+    },
+    {
+     "t": "Contrôle d'accès",
+     "f": "Souvent",
+     "c": "Contact public, conflits"
+    },
+    {
+     "t": "Surveillance vidéo",
+     "f": "Souvent",
+     "c": "Écrans"
+    }
+   ],
+   "exigences": {
+    "Marche / déplacements": 3,
+    "Station debout prolongée": 3,
+    "Contact avec le public": 3,
+    "Travail isolé": 2,
+    "Travail sur écran": 2
+   }
+  },
+  "M082": {
+   "metier": "Convoyeur de fonds",
+   "secteur": "N. Services administratifs, soutien",
+   "taches": [
+    {
+     "t": "Transport de fonds en véhicule blindé",
+     "f": "Très souvent",
+     "c": "Vigilance, risque d'agression"
+    },
+    {
+     "t": "Ramassage et dépôt des valises",
+     "f": "Très souvent",
+     "c": "Port de charges"
+    }
+   ],
+   "exigences": {
+    "Conduite de véhicule ou d'engin": 3,
+    "Port de charges": 2,
+    "Exigences visuelles (précision, contrôle)": 3
+   }
+  },
+  "M083": {
+   "metier": "Secrétaire / Assistant administratif",
+   "secteur": "N. Services administratifs, soutien",
+   "taches": [
+    {
+     "t": "Saisie et traitement de documents",
+     "f": "Très souvent",
+     "c": "Écran"
+    },
+    {
+     "t": "Accueil téléphonique et physique",
+     "f": "Souvent",
+     "c": "Contact public"
+    },
+    {
+     "t": "Classement et archivage",
+     "f": "Quelquefois",
+     "c": "Flexions, bras levés"
+    }
+   ],
+   "exigences": {
+    "Station assise prolongée": 3,
+    "Travail sur écran": 3,
+    "Contact avec le public": 2
+   }
+  },
+  "M084": {
+   "metier": "Téléopérateur / Centre d'appels",
+   "secteur": "N. Services administratifs, soutien",
+   "taches": [
+    {
+     "t": "Appels entrants et sortants",
+     "f": "Très souvent",
+     "c": "Écran, casque, scripts"
+    },
+    {
+     "t": "Saisie dans les logiciels",
+     "f": "Très souvent",
+     "c": ""
+    }
+   ],
+   "exigences": {
+    "Station assise prolongée": 3,
+    "Travail sur écran": 3,
+    "Contact avec le public": 3
+   }
+  },
+  "M085": {
+   "metier": "Policier / Gendarme / Police municipale",
+   "secteur": "O. Administration publique, sécurité",
+   "taches": [
+    {
+     "t": "Patrouilles et interventions",
+     "f": "Très souvent",
+     "c": "Conduite, situations violentes"
+    },
+    {
+     "t": "Accueil du public",
+     "f": "Souvent",
+     "c": "Conflits"
+    },
+    {
+     "t": "Rédaction de procédures",
+     "f": "Souvent",
+     "c": "Écran"
+    }
+   ],
+   "exigences": {
+    "Conduite de véhicule ou d'engin": 3,
+    "Marche / déplacements": 2,
+    "Contact avec le public": 3,
+    "Travail en extérieur": 2
+   }
+  },
+  "M086": {
+   "metier": "Sapeur-pompier (SPP / SPV)",
+   "secteur": "O. Administration publique, sécurité",
+   "taches": [
+    {
+     "t": "Interventions de secours et incendie",
+     "f": "Très souvent",
+     "c": "Efforts intenses, chaleur"
+    },
+    {
+     "t": "Port du matériel et de victimes",
+     "f": "Souvent",
+     "c": "Charges lourdes"
+    },
+    {
+     "t": "Entraînement physique et manœuvres",
+     "f": "Souvent",
+     "c": ""
+    },
+    {
+     "t": "Entretien de la caserne et du matériel",
+     "f": "Quelquefois",
+     "c": ""
+    }
+   ],
+   "exigences": {
+    "Port de charges": 3,
+    "Escaliers, échelles, escabeaux": 3,
+    "Travail en extérieur": 3,
+    "Flexions / rotations du tronc": 2,
+    "Conduite de véhicule ou d'engin": 2
+   }
+  },
+  "M087": {
+   "metier": "Surveillant pénitentiaire",
+   "secteur": "O. Administration publique, sécurité",
+   "taches": [
+    {
+     "t": "Surveillance des détenus",
+     "f": "Très souvent",
+     "c": "Station debout, tension"
+    },
+    {
+     "t": "Fouilles et mouvements",
+     "f": "Souvent",
+     "c": ""
+    },
+    {
+     "t": "Rondes",
+     "f": "Souvent",
+     "c": "Marche, escaliers"
+    }
+   ],
+   "exigences": {
+    "Station debout prolongée": 3,
+    "Marche / déplacements": 3,
+    "Contact avec le public": 3,
+    "Escaliers, échelles, escabeaux": 2
+   }
+  },
+  "M088": {
+   "metier": "Enseignant 1er degré (maternelle, élémentaire)",
+   "secteur": "P. Enseignement",
+   "taches": [
+    {
+     "t": "Enseignement en classe",
+     "f": "Très souvent",
+     "c": "Station debout, voix"
+    },
+    {
+     "t": "Accompagnement des enfants (récréation, sorties)",
+     "f": "Souvent",
+     "c": "Surveillance"
+    },
+    {
+     "t": "Préparation des cours et corrections",
+     "f": "Souvent",
+     "c": ""
+    }
+   ],
+   "exigences": {
+    "Station debout prolongée": 3,
+    "Contact avec le public": 3,
+    "Flexions / rotations du tronc": 1
+   }
+  },
+  "M089": {
+   "metier": "Enseignant 2nd degré (collège, lycée)",
+   "secteur": "P. Enseignement",
+   "taches": [
+    {
+     "t": "Enseignement en classe",
+     "f": "Très souvent",
+     "c": "Station debout, voix"
+    },
+    {
+     "t": "Préparation des cours et corrections",
+     "f": "Souvent",
+     "c": "Écran"
+    }
+   ],
+   "exigences": {
+    "Station debout prolongée": 3,
+    "Contact avec le public": 3,
+    "Travail sur écran": 2
+   }
+  },
+  "M090": {
+   "metier": "Enseignant labo (chimie, biotech, atelier)",
+   "secteur": "P. Enseignement",
+   "taches": [
+    {
+     "t": "Enseignement en laboratoire ou atelier",
+     "f": "Très souvent",
+     "c": "Station debout, produits"
+    },
+    {
+     "t": "Préparation des manipulations",
+     "f": "Souvent",
+     "c": ""
+    }
+   ],
+   "exigences": {
+    "Station debout prolongée": 3,
+    "Contact avec le public": 3,
+    "Exigences visuelles (précision, contrôle)": 2
+   }
+  },
+  "M091": {
+   "metier": "Animateur périscolaire / Petite enfance",
+   "secteur": "P. Enseignement",
+   "taches": [
+    {
+     "t": "Animation d'activités avec les enfants",
+     "f": "Très souvent",
+     "c": "Postures basses, bruit"
+    },
+    {
+     "t": "Accompagnement des repas et de la sieste",
+     "f": "Souvent",
+     "c": ""
+    },
+    {
+     "t": "Surveillance des déplacements",
+     "f": "Souvent",
+     "c": "Marche"
+    }
+   ],
+   "exigences": {
+    "Station debout prolongée": 2,
+    "Position accroupie / à genoux": 3,
+    "Flexions / rotations du tronc": 2,
+    "Contact avec le public": 2,
+    "Marche / déplacements": 2
+   }
+  },
+  "M092": {
+   "metier": "Médecin hospitalier",
+   "secteur": "Q. Santé, action sociale",
+   "taches": [
+    {
+     "t": "Consultations et visites",
+     "f": "Très souvent",
+     "c": "Station debout et assise"
+    },
+    {
+     "t": "Gestes techniques et actes",
+     "f": "Souvent",
+     "c": ""
+    },
+    {
+     "t": "Gardes",
+     "f": "Souvent",
+     "c": "Nuit"
+    }
+   ],
+   "exigences": {
+    "Station debout prolongée": 2,
+    "Contact avec le public": 3,
+    "Travail sur écran": 2
+   }
+  },
+  "M093": {
+   "metier": "Infirmier diplômé d'État (IDE)",
+   "secteur": "Q. Santé, action sociale",
+   "taches": [
+    {
+     "t": "Soins techniques (injections, pansements, perfusions)",
+     "f": "Très souvent",
+     "c": "AES, gestes précis"
+    },
+    {
+     "t": "Surveillance et évaluation des patients",
+     "f": "Très souvent",
+     "c": "Marche, nuit"
+    },
+    {
+     "t": "Distribution des médicaments",
+     "f": "Souvent",
+     "c": "Chariot"
+    },
+    {
+     "t": "Transmissions et traçabilité",
+     "f": "Souvent",
+     "c": "Écran"
+    }
+   ],
+   "exigences": {
+    "Station debout prolongée": 3,
+    "Marche / déplacements": 3,
+    "Flexions / rotations du tronc": 2,
+    "Préhension fine / force de serrage": 2,
+    "Travail sur écran": 2,
+    "Contact avec le public": 2
+   }
+  },
+  "M094": {
+   "metier": "Infirmier de bloc opératoire (IBODE)",
+   "secteur": "Q. Santé, action sociale",
+   "taches": [
+    {
+     "t": "Instrumentation au bloc opératoire",
+     "f": "Très souvent",
+     "c": "Station debout prolongée, bras tendus"
+    },
+    {
+     "t": "Préparation de la salle et du matériel",
+     "f": "Souvent",
+     "c": "Port de plateaux"
+    },
+    {
+     "t": "Installation des patients",
+     "f": "Souvent",
+     "c": "Manutention"
+    }
+   ],
+   "exigences": {
+    "Station debout prolongée": 3,
+    "Bras au-dessus des épaules": 2,
+    "Préhension fine / force de serrage": 3,
+    "Exigences visuelles (précision, contrôle)": 3,
+    "Port de charges": 2
+   }
+  },
+  "M095": {
+   "metier": "Infirmier anesthésiste (IADE)",
+   "secteur": "Q. Santé, action sociale",
+   "taches": [
+    {
+     "t": "Anesthésie et surveillance per-opératoire",
+     "f": "Très souvent",
+     "c": "Station debout, vigilance"
+    },
+    {
+     "t": "Installation et mobilisation des patients",
+     "f": "Souvent",
+     "c": "Manutention"
+    },
+    {
+     "t": "Préparation des produits",
+     "f": "Souvent",
+     "c": ""
+    }
+   ],
+   "exigences": {
+    "Station debout prolongée": 3,
+    "Exigences visuelles (précision, contrôle)": 3,
+    "Port de charges": 2,
+    "Flexions / rotations du tronc": 2
+   }
+  },
+  "M096": {
+   "metier": "Aide-soignant",
+   "secteur": "Q. Santé, action sociale",
+   "taches": [
+    {
+     "t": "Toilettes et soins d'hygiène",
+     "f": "Très souvent",
+     "c": "Flexions du tronc, manutention patient"
+    },
+    {
+     "t": "Transferts lit-fauteuil et aide à la marche",
+     "f": "Très souvent",
+     "c": "Lève-personne, draps de glisse"
+    },
+    {
+     "t": "Aide et service des repas",
+     "f": "Souvent",
+     "c": "Station debout, chariot"
+    },
+    {
+     "t": "Réfection des lits",
+     "f": "Souvent",
+     "c": "Flexions"
+    },
+    {
+     "t": "Transmissions",
+     "f": "Quelquefois",
+     "c": "Écran"
+    }
+   ],
+   "exigences": {
+    "Station debout prolongée": 3,
+    "Port de charges": 3,
+    "Flexions / rotations du tronc": 3,
+    "Poussée / traction (chariots, transpalettes…)": 2,
+    "Marche / déplacements": 2
+   }
+  },
+  "M097": {
+   "metier": "Auxiliaire de puériculture",
+   "secteur": "Q. Santé, action sociale",
+   "taches": [
+    {
+     "t": "Soins et change des enfants",
+     "f": "Très souvent",
+     "c": "Flexions, port d'enfants"
+    },
+    {
+     "t": "Aide aux repas et biberons",
+     "f": "Souvent",
+     "c": "Postures basses"
+    },
+    {
+     "t": "Jeux et activités au sol",
+     "f": "Souvent",
+     "c": "Position à genoux"
+    }
+   ],
+   "exigences": {
+    "Port de charges": 2,
+    "Flexions / rotations du tronc": 3,
+    "Position accroupie / à genoux": 3,
+    "Station debout prolongée": 2
+   }
+  },
+  "M098": {
+   "metier": "Sage-femme",
+   "secteur": "Q. Santé, action sociale",
+   "taches": [
+    {
+     "t": "Suivi des grossesses et accouchements",
+     "f": "Très souvent",
+     "c": "Station debout, nuit"
+    },
+    {
+     "t": "Consultations",
+     "f": "Souvent",
+     "c": ""
+    }
+   ],
+   "exigences": {
+    "Station debout prolongée": 3,
+    "Flexions / rotations du tronc": 2,
+    "Contact avec le public": 3
+   }
+  },
+  "M099": {
+   "metier": "Manipulateur en électroradiologie médicale (MERM)",
+   "secteur": "Q. Santé, action sociale",
+   "taches": [
+    {
+     "t": "Installation des patients",
+     "f": "Très souvent",
+     "c": "Manutention"
+    },
+    {
+     "t": "Réalisation des examens d'imagerie",
+     "f": "Très souvent",
+     "c": "Rayonnements ionisants"
+    },
+    {
+     "t": "Accueil des patients",
+     "f": "Souvent",
+     "c": ""
+    }
+   ],
+   "exigences": {
+    "Station debout prolongée": 3,
+    "Port de charges": 2,
+    "Flexions / rotations du tronc": 2,
+    "Contact avec le public": 2,
+    "Travail sur écran": 2
+   }
+  },
+  "M100": {
+   "metier": "Pharmacien hospitalier / Préparateur UPCO (chimio)",
+   "secteur": "Q. Santé, action sociale",
+   "taches": [
+    {
+     "t": "Préparation des chimiothérapies sous isolateur",
+     "f": "Très souvent",
+     "c": "Gestes fins répétitifs"
+    },
+    {
+     "t": "Validation pharmaceutique",
+     "f": "Souvent",
+     "c": "Écran"
+    },
+    {
+     "t": "Gestion des stocks",
+     "f": "Quelquefois",
+     "c": "Manutention"
+    }
+   ],
+   "exigences": {
+    "Gestes répétitifs des membres supérieurs": 3,
+    "Préhension fine / force de serrage": 3,
+    "Exigences visuelles (précision, contrôle)": 3,
+    "Station assise prolongée": 2,
+    "Travail sur écran": 2
+   }
+  },
+  "M101": {
+   "metier": "Kinésithérapeute",
+   "secteur": "Q. Santé, action sociale",
+   "taches": [
+    {
+     "t": "Séances de rééducation",
+     "f": "Très souvent",
+     "c": "Efforts, postures penchées"
+    },
+    {
+     "t": "Massages et mobilisations",
+     "f": "Très souvent",
+     "c": "Gestes répétitifs des mains"
+    },
+    {
+     "t": "Bilans et écrits",
+     "f": "Souvent",
+     "c": "Écran"
+    }
+   ],
+   "exigences": {
+    "Station debout prolongée": 3,
+    "Flexions / rotations du tronc": 2,
+    "Gestes répétitifs des membres supérieurs": 2,
+    "Préhension fine / force de serrage": 3,
+    "Contact avec le public": 2
+   }
+  },
+  "M102": {
+   "metier": "Chirurgien-dentiste / Assistant dentaire",
+   "secteur": "Q. Santé, action sociale",
+   "taches": [
+    {
+     "t": "Soins dentaires au fauteuil",
+     "f": "Très souvent",
+     "c": "Postures statiques, cou fléchi"
+    },
+    {
+     "t": "Radiographies",
+     "f": "Souvent",
+     "c": "Rayonnements ionisants"
+    },
+    {
+     "t": "Stérilisation et préparation",
+     "f": "Souvent",
+     "c": ""
+    }
+   ],
+   "exigences": {
+    "Station assise prolongée": 3,
+    "Préhension fine / force de serrage": 3,
+    "Exigences visuelles (précision, contrôle)": 3,
+    "Flexions / rotations du tronc": 2
+   }
+  },
+  "M103": {
+   "metier": "Brancardier",
+   "secteur": "Q. Santé, action sociale",
+   "taches": [
+    {
+     "t": "Transport des patients en lit ou fauteuil",
+     "f": "Très souvent",
+     "c": "Poussée, marche"
+    },
+    {
+     "t": "Transferts patients",
+     "f": "Souvent",
+     "c": "Manutention"
+    },
+    {
+     "t": "Transport de prélèvements et matériel",
+     "f": "Souvent",
+     "c": ""
+    }
+   ],
+   "exigences": {
+    "Marche / déplacements": 3,
+    "Poussée / traction (chariots, transpalettes…)": 3,
+    "Port de charges": 2,
+    "Flexions / rotations du tronc": 2
+   }
+  },
+  "M104": {
+   "metier": "Agent de stérilisation (DM)",
+   "secteur": "Q. Santé, action sociale",
+   "taches": [
+    {
+     "t": "Lavage et conditionnement des dispositifs médicaux",
+     "f": "Très souvent",
+     "c": "Station debout, gestes répétitifs"
+    },
+    {
+     "t": "Conduite des autoclaves et laveurs",
+     "f": "Souvent",
+     "c": "Chaleur"
+    },
+    {
+     "t": "Manutention des paniers et conteneurs",
+     "f": "Souvent",
+     "c": "Port de charges"
+    }
+   ],
+   "exigences": {
+    "Station debout prolongée": 3,
+    "Gestes répétitifs des membres supérieurs": 3,
+    "Port de charges": 2,
+    "Préhension fine / force de serrage": 2
+   }
+  },
+  "M105": {
+   "metier": "Ambulancier (DEA)",
+   "secteur": "Q. Santé, action sociale",
+   "taches": [
+    {
+     "t": "Conduite du véhicule sanitaire",
+     "f": "Très souvent",
+     "c": "Conduite en urgence"
+    },
+    {
+     "t": "Brancardage et transferts",
+     "f": "Très souvent",
+     "c": "Escaliers, patients lourds"
+    },
+    {
+     "t": "Désinfection du véhicule",
+     "f": "Souvent",
+     "c": "Produits"
+    }
+   ],
+   "exigences": {
+    "Conduite de véhicule ou d'engin": 3,
+    "Port de charges": 3,
+    "Escaliers, échelles, escabeaux": 3,
+    "Flexions / rotations du tronc": 2,
+    "Contact avec le public": 2
+   }
+  },
+  "M106": {
+   "metier": "Agent de service hospitalier (ASH)",
+   "secteur": "Q. Santé, action sociale",
+   "taches": [
+    {
+     "t": "Bionettoyage des chambres et locaux",
+     "f": "Très souvent",
+     "c": "Produits, flexions"
+    },
+    {
+     "t": "Distribution des repas",
+     "f": "Souvent",
+     "c": "Chariot"
+    },
+    {
+     "t": "Évacuation des déchets et du linge",
+     "f": "Souvent",
+     "c": "Port de sacs"
+    }
+   ],
+   "exigences": {
+    "Marche / déplacements": 3,
+    "Flexions / rotations du tronc": 2,
+    "Poussée / traction (chariots, transpalettes…)": 2,
+    "Gestes répétitifs des membres supérieurs": 2,
+    "Station debout prolongée": 3
+   }
+  },
+  "M107": {
+   "metier": "Auxiliaire de vie sociale / AVS / AESH domicile",
+   "secteur": "Q. Santé, action sociale",
+   "taches": [
+    {
+     "t": "Aide à la toilette et à l'habillage",
+     "f": "Très souvent",
+     "c": "Flexions, transferts"
+    },
+    {
+     "t": "Entretien du logement et du linge",
+     "f": "Très souvent",
+     "c": "Produits, bras levés"
+    },
+    {
+     "t": "Courses et préparation des repas",
+     "f": "Souvent",
+     "c": "Port de sacs"
+    },
+    {
+     "t": "Déplacements entre domiciles",
+     "f": "Très souvent",
+     "c": "Conduite"
+    }
+   ],
+   "exigences": {
+    "Conduite de véhicule ou d'engin": 3,
+    "Flexions / rotations du tronc": 3,
+    "Port de charges": 2,
+    "Bras au-dessus des épaules": 2,
+    "Marche / déplacements": 2,
+    "Travail isolé": 3
+   }
+  },
+  "M108": {
+   "metier": "Travailleur social / Éducateur spécialisé",
+   "secteur": "Q. Santé, action sociale",
+   "taches": [
+    {
+     "t": "Accompagnement des personnes",
+     "f": "Très souvent",
+     "c": "Situations de tension"
+    },
+    {
+     "t": "Entretiens et réunions",
+     "f": "Souvent",
+     "c": ""
+    },
+    {
+     "t": "Rédaction des écrits",
+     "f": "Souvent",
+     "c": "Écran"
+    }
+   ],
+   "exigences": {
+    "Contact avec le public": 3,
+    "Conduite de véhicule ou d'engin": 2,
+    "Travail sur écran": 2
+   }
+  },
+  "M109": {
+   "metier": "Psychologue / Psychothérapeute",
+   "secteur": "Q. Santé, action sociale",
+   "taches": [
+    {
+     "t": "Consultations et entretiens",
+     "f": "Très souvent",
+     "c": "Posture assise, charge émotionnelle"
+    },
+    {
+     "t": "Rédaction et bilans",
+     "f": "Souvent",
+     "c": "Écran"
+    }
+   ],
+   "exigences": {
+    "Station assise prolongée": 3,
+    "Contact avec le public": 3,
+    "Travail sur écran": 2
+   }
+  },
+  "M110": {
+   "metier": "Thanatopracteur / Pompes funèbres",
+   "secteur": "Q. Santé, action sociale",
+   "taches": [
+    {
+     "t": "Soins de conservation des corps",
+     "f": "Très souvent",
+     "c": "Station debout, produits (formol)"
+    },
+    {
+     "t": "Manutention des corps et cercueils",
+     "f": "Souvent",
+     "c": "Charges lourdes"
+    },
+    {
+     "t": "Accueil des familles",
+     "f": "Souvent",
+     "c": "Charge émotionnelle"
+    }
+   ],
+   "exigences": {
+    "Station debout prolongée": 3,
+    "Port de charges": 3,
+    "Flexions / rotations du tronc": 2,
+    "Contact avec le public": 2
+   }
+  },
+  "M111": {
+   "metier": "Musicien d'orchestre / Pro de scène",
+   "secteur": "R. Arts, spectacles, loisirs",
+   "taches": [
+    {
+     "t": "Répétitions et concerts",
+     "f": "Très souvent",
+     "c": "Postures instrumentales, bruit"
+    },
+    {
+     "t": "Transport et installation du matériel",
+     "f": "Quelquefois",
+     "c": ""
+    }
+   ],
+   "exigences": {
+    "Gestes répétitifs des membres supérieurs": 3,
+    "Bras au-dessus des épaules": 2,
+    "Station assise prolongée": 2,
+    "Préhension fine / force de serrage": 2
+   }
+  },
+  "M112": {
+   "metier": "Maître-nageur sauveteur (MNS)",
+   "secteur": "R. Arts, spectacles, loisirs",
+   "taches": [
+    {
+     "t": "Surveillance des bassins",
+     "f": "Très souvent",
+     "c": "Station debout, chaleur, humidité"
+    },
+    {
+     "t": "Enseignement de la natation",
+     "f": "Souvent",
+     "c": "Voix, dans l'eau"
+    },
+    {
+     "t": "Entretien du matériel",
+     "f": "Quelquefois",
+     "c": ""
+    }
+   ],
+   "exigences": {
+    "Station debout prolongée": 3,
+    "Exigences visuelles (précision, contrôle)": 3,
+    "Contact avec le public": 2
+   }
+  },
+  "M113": {
+   "metier": "Pisteur secouriste / Moniteur ski",
+   "secteur": "R. Arts, spectacles, loisirs",
+   "taches": [
+    {
+     "t": "Sécurisation et damage des pistes",
+     "f": "Très souvent",
+     "c": "Froid, extérieur"
+    },
+    {
+     "t": "Secours et évacuation des blessés",
+     "f": "Souvent",
+     "c": "Efforts intenses"
+    },
+    {
+     "t": "Enseignement du ski",
+     "f": "Souvent",
+     "c": ""
+    }
+   ],
+   "exigences": {
+    "Travail en extérieur": 3,
+    "Port de charges": 3,
+    "Contact avec le public": 2
+   }
+  },
+  "M114": {
+   "metier": "Cascadeur / Régisseur SFX",
+   "secteur": "R. Arts, spectacles, loisirs",
+   "taches": [
+    {
+     "t": "Réalisation de cascades et effets spéciaux",
+     "f": "Souvent",
+     "c": "Chutes, efforts intenses"
+    },
+    {
+     "t": "Préparation et répétitions",
+     "f": "Très souvent",
+     "c": ""
+    }
+   ],
+   "exigences": {
+    "Travail en extérieur": 2,
+    "Port de charges": 2,
+    "Escaliers, échelles, escabeaux": 2
+   }
+  },
+  "M115": {
+   "metier": "Coiffeur",
+   "secteur": "S. Autres services",
+   "taches": [
+    {
+     "t": "Coupe et coiffage",
+     "f": "Très souvent",
+     "c": "Station debout, bras levés"
+    },
+    {
+     "t": "Shampooings",
+     "f": "Souvent",
+     "c": "Flexions, produits"
+    },
+    {
+     "t": "Colorations et permanentes",
+     "f": "Souvent",
+     "c": "Produits allergisants"
+    },
+    {
+     "t": "Accueil et encaissement",
+     "f": "Souvent",
+     "c": "Contact client"
+    }
+   ],
+   "exigences": {
+    "Station debout prolongée": 3,
+    "Bras au-dessus des épaules": 3,
+    "Gestes répétitifs des membres supérieurs": 3,
+    "Contact avec le public": 3
+   }
+  },
+  "M116": {
+   "metier": "Esthéticien(ne)",
+   "secteur": "S. Autres services",
+   "taches": [
+    {
+     "t": "Soins du visage et du corps",
+     "f": "Très souvent",
+     "c": "Postures penchées"
+    },
+    {
+     "t": "Épilation et maquillage",
+     "f": "Souvent",
+     "c": "Gestes fins"
+    },
+    {
+     "t": "Accueil et vente",
+     "f": "Souvent",
+     "c": "Contact client"
+    }
+   ],
+   "exigences": {
+    "Station debout prolongée": 2,
+    "Flexions / rotations du tronc": 2,
+    "Préhension fine / force de serrage": 3,
+    "Contact avec le public": 3
+   }
+  },
+  "M117": {
+   "metier": "Prothésiste ongulaire (manucure semi-perm., gel, capsule)",
+   "secteur": "S. Autres services",
+   "taches": [
+    {
+     "t": "Pose de gel, capsules et semi-permanent",
+     "f": "Très souvent",
+     "c": "Posture assise penchée, gestes fins, poussières"
+    },
+    {
+     "t": "Accueil des clientes",
+     "f": "Souvent",
+     "c": ""
+    }
+   ],
+   "exigences": {
+    "Station assise prolongée": 3,
+    "Préhension fine / force de serrage": 3,
+    "Exigences visuelles (précision, contrôle)": 3,
+    "Contact avec le public": 3,
+    "Gestes répétitifs des membres supérieurs": 3
+   }
+  },
+  "M118": {
+   "metier": "Tatoueur / Perceur",
+   "secteur": "S. Autres services",
+   "taches": [
+    {
+     "t": "Tatouage et perçage",
+     "f": "Très souvent",
+     "c": "Posture statique, gestes fins"
+    },
+    {
+     "t": "Hygiène et stérilisation",
+     "f": "Souvent",
+     "c": ""
+    },
+    {
+     "t": "Accueil des clients",
+     "f": "Souvent",
+     "c": ""
+    }
+   ],
+   "exigences": {
+    "Station assise prolongée": 3,
+    "Préhension fine / force de serrage": 3,
+    "Exigences visuelles (précision, contrôle)": 3,
+    "Contact avec le public": 3
+   }
+  },
+  "M119": {
+   "metier": "Toiletteur animalier",
+   "secteur": "S. Autres services",
+   "taches": [
+    {
+     "t": "Bain, séchage et brossage des animaux",
+     "f": "Très souvent",
+     "c": "Flexions, humidité"
+    },
+    {
+     "t": "Tonte et coupe",
+     "f": "Très souvent",
+     "c": "Gestes répétitifs"
+    },
+    {
+     "t": "Contention des animaux",
+     "f": "Souvent",
+     "c": "Morsures"
+    },
+    {
+     "t": "Accueil des propriétaires",
+     "f": "Souvent",
+     "c": ""
+    }
+   ],
+   "exigences": {
+    "Station debout prolongée": 3,
+    "Flexions / rotations du tronc": 2,
+    "Gestes répétitifs des membres supérieurs": 3,
+    "Port de charges": 2,
+    "Contact avec le public": 2
+   }
+  },
+  "X01": {
+   "metier": "Porcelainier façonnier (coulage, calibrage, finition)",
+   "secteur": "C. Industrie manufacturière",
+   "taches": [
+    {
+     "t": "Coulage et calibrage des pièces",
+     "f": "Très souvent",
+     "c": "Gestes répétitifs, moules lourds"
+    },
+    {
+     "t": "Garnissage et finition",
+     "f": "Très souvent",
+     "c": "Gestes fins, poussières"
+    },
+    {
+     "t": "Manutention des planches et moules",
+     "f": "Souvent",
+     "c": "Port de charges"
+    },
+    {
+     "t": "Nettoyage du poste",
+     "f": "Quelquefois",
+     "c": "Poussières de silice"
+    }
+   ],
+   "exigences": {
+    "Station debout prolongée": 3,
+    "Gestes répétitifs des membres supérieurs": 3,
+    "Port de charges": 2,
+    "Préhension fine / force de serrage": 2,
+    "Flexions / rotations du tronc": 2
+   }
+  },
+  "X02": {
+   "metier": "Émailleur(se) sur porcelaine",
+   "secteur": "C. Industrie manufacturière",
+   "taches": [
+    {
+     "t": "Émaillage au trempé ou au pistolet",
+     "f": "Très souvent",
+     "c": "Bras tendus, aérosols"
+    },
+    {
+     "t": "Préparation des émaux",
+     "f": "Souvent",
+     "c": "Port de sacs"
+    },
+    {
+     "t": "Nettoyage des cabines",
+     "f": "Quelquefois",
+     "c": ""
+    }
+   ],
+   "exigences": {
+    "Station debout prolongée": 3,
+    "Gestes répétitifs des membres supérieurs": 2,
+    "Bras au-dessus des épaules": 2,
+    "Port de charges": 2
+   }
+  },
+  "X03": {
+   "metier": "Enfourneur / cuiseur (four céramique)",
+   "secteur": "C. Industrie manufacturière",
+   "taches": [
+    {
+     "t": "Chargement et déchargement des fours",
+     "f": "Très souvent",
+     "c": "Chaleur, port de plaques et cazettes"
+    },
+    {
+     "t": "Surveillance de la cuisson",
+     "f": "Souvent",
+     "c": "Travail posté"
+    },
+    {
+     "t": "Tri et contrôle des pièces cuites",
+     "f": "Souvent",
+     "c": ""
+    }
+   ],
+   "exigences": {
+    "Station debout prolongée": 3,
+    "Port de charges": 3,
+    "Flexions / rotations du tronc": 2,
+    "Exigences visuelles (précision, contrôle)": 2
+   }
+  },
+  "X04": {
+   "metier": "Décorateur(rice) sur porcelaine",
+   "secteur": "C. Industrie manufacturière",
+   "taches": [
+    {
+     "t": "Décoration au pinceau ou au filetage",
+     "f": "Très souvent",
+     "c": "Posture assise, gestes fins"
+    },
+    {
+     "t": "Pose de décalcomanies",
+     "f": "Souvent",
+     "c": "Gestes répétitifs"
+    },
+    {
+     "t": "Préparation des couleurs",
+     "f": "Quelquefois",
+     "c": "Produits"
+    }
+   ],
+   "exigences": {
+    "Station assise prolongée": 3,
+    "Préhension fine / force de serrage": 3,
+    "Exigences visuelles (précision, contrôle)": 3,
+    "Gestes répétitifs des membres supérieurs": 2
+   }
+  },
+  "X05": {
+   "metier": "Auxiliaire spécialisé(e) vétérinaire (ASV)",
+   "secteur": "M. Activités scientifiques et techniques",
+   "taches": [
+    {
+     "t": "Contention et préparation des animaux",
+     "f": "Très souvent",
+     "c": "Morsures, port d'animaux"
+    },
+    {
+     "t": "Assistance en consultation et en chirurgie",
+     "f": "Très souvent",
+     "c": "Station debout"
+    },
+    {
+     "t": "Nettoyage des cages, locaux et instruments",
+     "f": "Souvent",
+     "c": "Produits, flexions"
+    },
+    {
+     "t": "Accueil et secrétariat",
+     "f": "Souvent",
+     "c": "Contact public, écran"
+    }
+   ],
+   "exigences": {
+    "Station debout prolongée": 3,
+    "Port de charges": 2,
+    "Flexions / rotations du tronc": 2,
+    "Contact avec le public": 3,
+    "Travail sur écran": 2
+   }
+  },
+  "X06": {
+   "metier": "Opérateur de production (industrie)",
+   "secteur": "C. Industrie manufacturière",
+   "taches": [
+    {
+     "t": "Conduite de ligne ou de machine",
+     "f": "Très souvent",
+     "c": "Cadence, station debout"
+    },
+    {
+     "t": "Alimentation et évacuation des pièces",
+     "f": "Très souvent",
+     "c": "Port de charges, gestes répétitifs"
+    },
+    {
+     "t": "Contrôle qualité",
+     "f": "Souvent",
+     "c": ""
+    },
+    {
+     "t": "Changement de série et nettoyage",
+     "f": "Quelquefois",
+     "c": ""
+    }
+   ],
+   "exigences": {
+    "Station debout prolongée": 3,
+    "Gestes répétitifs des membres supérieurs": 3,
+    "Port de charges": 2,
+    "Flexions / rotations du tronc": 2,
+    "Exigences visuelles (précision, contrôle)": 2
+   }
+  }
+ }
+}

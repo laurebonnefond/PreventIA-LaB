@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Étude de poste — inaptitude · PréventIA-LaB</title>
+<meta name="description" content="Étude descriptive du poste dans le cadre d'une procédure d'inaptitude (art. R.4624-42) : saisie guidée pour IDEST et IPRP, export Word au modèle SPSTI.">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --teal:oklch(0.65 0.13 192);--teal-dark:oklch(0.42 0.10 200);--teal-pale:oklch(0.95 0.03 192);
+  --navy:oklch(0.22 0.07 240);--navy-deep:oklch(0.12 0.05 240);
+  --bg:oklch(0.97 0.006 210);--card:#fff;--text:oklch(0.18 0.04 240);--muted:oklch(0.50 0.03 220);
+  --line:oklch(0.90 0.01 220);--amber:oklch(0.70 0.15 60);--word:#2F5496;
+}
+body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.55;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+/* Barre du haut */
+.top{position:sticky;top:0;z-index:20;background:oklch(0.12 0.05 240/.94);backdrop-filter:blur(12px);color:#fff;
+  display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:10px 20px}
+.brand{font-weight:700;font-size:18px;text-decoration:none;color:#fff}.brand span{color:var(--teal)}
+.links{display:flex;gap:6px;flex-wrap:wrap}
+.links a{font-size:13px;text-decoration:none;color:oklch(0.85 0.03 220);padding:6px 12px;border-radius:999px;border:1px solid oklch(0.65 0.13 192/.3)}
+.links a:hover{background:oklch(0.65 0.13 192/.15);color:#fff}
+/* En-tête */
+.head{background:linear-gradient(135deg,var(--navy-deep),var(--navy) 85%);color:#fff;padding:36px 20px 30px}
+.head .in{max-width:1100px;margin:0 auto}
+.eyebrow{display:inline-block;font-size:11.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:oklch(0.80 0.10 192);
+  border:1px solid oklch(0.65 0.13 192/.4);border-radius:999px;padding:4px 12px;margin-bottom:12px}
+.head h1{font-family:'DM Serif Display',serif;font-weight:400;font-size:clamp(1.8rem,4vw,2.6rem);line-height:1.1}
+.head h1 em{color:var(--teal)}
+.head p{color:oklch(0.85 0.02 220);max-width:720px;margin-top:10px;font-size:15px}
+/* Mise en page */
+.wrap{max-width:1100px;margin:0 auto;padding:22px 20px 120px;display:grid;grid-template-columns:220px 1fr;gap:24px;align-items:start}
+@media(max-width:860px){.wrap{grid-template-columns:1fr}.toc{display:none}}
+.toc{position:sticky;top:70px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px}
+.toc a{display:flex;gap:8px;align-items:center;font-size:13.5px;text-decoration:none;color:var(--muted);padding:7px 9px;border-radius:8px}
+.toc a:hover{background:var(--teal-pale);color:var(--text)}
+.toc .n{width:22px;height:22px;border-radius:50%;background:var(--teal-pale);color:var(--teal-dark);font-weight:700;font-size:11.5px;display:grid;place-items:center;flex:none}
+.toc a.ok .n{background:var(--teal);color:#fff}
+/* Bandeau confidentialité */
+.warn{grid-column:1/-1;display:flex;gap:14px;background:oklch(0.98 0.025 60);border:1px solid oklch(0.82 0.10 65);border-left:6px solid var(--amber);
+  border-radius:14px;padding:14px 18px;font-size:14px}
+.warn b{color:oklch(0.40 0.14 40)}
+/* Cartes */
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px 22px;margin-bottom:18px;scroll-margin-top:80px}
+.card h2{display:flex;align-items:center;gap:10px;font-size:18px;color:var(--word);margin-bottom:4px}
+.card h2 .n{width:28px;height:28px;border-radius:8px;background:var(--teal-pale);color:var(--teal-dark);font-size:14px;display:grid;place-items:center}
+.card .sub{color:var(--muted);font-size:13px;margin-bottom:14px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px 16px}@media(max-width:620px){.g2{grid-template-columns:1fr}}
+label.l{display:block;font-size:12.5px;font-weight:600;color:var(--muted);margin-bottom:4px}
+input[type=text],input[type=date],input[type=number],select,textarea{width:100%;font:inherit;font-size:14px;color:var(--text);background:#fff;
+  border:1px solid var(--line);border-radius:10px;padding:9px 11px}
+textarea{min-height:70px;resize:vertical}
+input:focus,select:focus,textarea:focus{outline:2px solid oklch(0.65 0.13 192/.5);border-color:var(--teal)}
+.field{margin-bottom:12px}
+.hint{font-size:12px;color:var(--muted);margin-top:4px}
+/* Puces à cocher */
+.chips{display:flex;flex-wrap:wrap;gap:7px}
+.chip{display:inline-flex;align-items:center;gap:6px;font-size:13px;border:1px solid var(--line);background:#fff;border-radius:999px;padding:6px 12px;cursor:pointer;user-select:none}
+.chip input{accent-color:var(--teal)}
+.chip:has(input:checked){background:var(--teal-pale);border-color:var(--teal);color:var(--teal-dark);font-weight:600}
+/* Grille des exigences */
+.dem{width:100%;border-collapse:collapse;font-size:13.5px}
+.dem th{text-align:left;font-size:12px;color:var(--muted);font-weight:600;padding:6px 6px;border-bottom:1px solid var(--line)}
+.dem td{padding:6px;border-bottom:1px solid oklch(0.95 0.005 220)}
+.dem td:first-child{width:44%}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:9px;overflow:hidden}
+.seg button{font:inherit;font-size:12px;border:0;background:#fff;padding:5px 9px;cursor:pointer;color:var(--muted)}
+.seg button+button{border-left:1px solid var(--line)}
+.seg button.on{background:var(--teal);color:#fff;font-weight:600}
+.seg button.on.lvl0{background:oklch(0.85 0.01 220);color:var(--text)}
+@media(max-width:620px){.dem td:first-child{width:auto}.dem tr{display:grid}.dem td{border:0}.dem tr{border-bottom:1px solid var(--line);padding:4px 0}}
+/* Tâches */
+.task{display:grid;grid-template-columns:1.4fr .8fr 1.6fr auto;gap:8px;align-items:start;margin-bottom:8px}
+@media(max-width:720px){.task{grid-template-columns:1fr}}
+.icon-btn{border:1px solid var(--line);background:#fff;border-radius:10px;width:38px;height:38px;cursor:pointer;font-size:15px}
+.icon-btn:hover{border-color:#c0392b;color:#c0392b}
+/* Boutons */
+.btn{font:inherit;font-size:14px;font-weight:600;border-radius:999px;padding:9px 18px;border:1px solid var(--line);background:#fff;color:var(--text);cursor:pointer}
+.btn:hover{border-color:var(--teal)}
+.btn.primary{background:var(--navy-deep);color:#fff;border-color:var(--navy-deep)}
+.btn.primary:hover{background:var(--teal-dark)}
+.btn.add{border-style:dashed;color:var(--teal-dark)}
+/* Autocomplétion métier */
+.ac{position:relative}
+.ac-list{position:absolute;left:0;right:0;top:100%;z-index:10;background:#fff;border:1px solid var(--line);border-radius:10px;margin-top:4px;
+  box-shadow:0 10px 30px oklch(0.22 0.07 240/.15);max-height:260px;overflow:auto;display:none}
+.ac-list.on{display:block}
+.ac-list div{padding:8px 12px;font-size:13.5px;cursor:pointer}
+.ac-list div:hover,.ac-list div.sel{background:var(--teal-pale)}
+.ac-list small{color:var(--muted);display:block;font-size:11.5px}
+.propos{margin:0 0 14px;padding:12px 14px;border:1px dashed oklch(0.75 0.06 192);border-radius:12px;background:oklch(0.985 0.01 192)}
+.propos .t{font-size:12.5px;font-weight:600;color:var(--teal-dark);margin-bottom:8px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.propos .t .ia{font-size:11px;font-weight:700;color:#fff;background:oklch(0.55 0.16 300);border-radius:999px;padding:2px 8px}
+.pchip{font:inherit;font-size:12.5px;border:1px solid var(--line);background:#fff;color:var(--text);border-radius:999px;padding:5px 11px;cursor:pointer;margin:0 6px 6px 0}
+.pchip:hover{border-color:var(--teal);color:var(--teal-dark)}
+.pchip[disabled]{opacity:.45;cursor:default;text-decoration:line-through}
+.pchip small{color:var(--muted)}
+.linkbtn{font:inherit;font-size:12.5px;font-weight:600;border:0;background:none;color:var(--teal-dark);cursor:pointer;text-decoration:underline}
+.prefill{display:none;margin-top:8px;font-size:12.5px;background:var(--teal-pale);border-radius:10px;padding:8px 12px;color:var(--teal-dark)}
+.prefill.on{display:block}
+/* Barre d'actions */
+.bar{position:fixed;left:0;right:0;bottom:0;z-index:20;background:#fff;border-top:1px solid var(--line);padding:10px 20px;
+  display:flex;gap:10px;justify-content:center;flex-wrap:wrap;box-shadow:0 -6px 20px oklch(0.22 0.07 240/.06)}
+.status{font-size:13px;color:var(--muted);align-self:center}
+</style>
+</head>
+<body>
+
+<nav class="top">
+  <a class="brand" href="../index.html">Prévent<span>IA</span>-LaB</a>
+  <div class="links">
+    <a href="../index.html">← Accueil</a>
+    <a href="../etude-poste/index.html">Étude de poste ergonomique</a>
+    <a href="../periodicites/index.html">Disque des périodicités</a>
+  </div>
+</nav>
+
+<header class="head">
+  <div class="in">
+    <span class="eyebrow">IDEST · IPRP · Maintien dans l'emploi</span>
+    <h1>Étude de poste <em>dans le cadre d'une inaptitude</em></h1>
+    <p>Saisie guidée de l'étude descriptive du poste et des conditions de travail, réalisée à la demande du médecin du travail (art. R.4624-42 du Code du travail). Le document Word est généré au modèle du SPSTI.</p>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="warn" role="note">
+    <div style="font-size:22px">🔒</div>
+    <div><b>Aucune donnée nominative ni médicale.</b> Ne saisissez ni le nom du salarié, ni son état de santé, ni ses restrictions médicales : l'étude décrit le <b>poste</b>, pas la personne. Les éléments de santé restent dans le DMST. Rien n'est enregistré par l'outil : utilisez « Enregistrer » pour garder un fichier de travail sur votre poste.</div>
+  </div>
+
+  <aside class="toc" id="toc"></aside>
+
+  <main id="form">
+    <!-- 1. Contexte -->
+    <section class="card" id="s-contexte">
+      <h2><span class="n">1</span>Contexte</h2>
+      <div class="sub">Cadre de la demande et déroulement de l'étude.</div>
+      <div class="g2">
+        <div class="field"><label class="l">Date de l'étude</label><input type="date" data-k="date"></div>
+        <div class="field"><label class="l">Motif</label>
+          <select data-k="motif">
+            <option>Procédure d'inaptitude</option>
+            <option>Aménagement ou adaptation du poste</option>
+            <option>Maintien dans l'emploi</option>
+            <option>Préparation de la visite de reprise</option>
+          </select></div>
+        <div class="field"><label class="l">Entreprise / établissement</label><input type="text" data-k="entreprise" placeholder="Nom ou libellé générique"></div>
+        <div class="field"><label class="l">Lieu de l'étude</label>
+          <select data-k="lieu"><option>Sur site, au poste de travail</option><option>Sur site et par entretien</option><option>Par entretien (sans observation du poste)</option></select></div>
+      </div>
+      <div class="field"><label class="l">Personnes rencontrées (fonctions, pas de noms)</label><input type="text" data-k="rencontres" placeholder="Ex : gérant, responsable de production, collègue du même poste"></div>
+      <div class="field"><label class="l">Éléments de contexte complémentaires</label><textarea data-k="contexteLibre" placeholder="Ex : poste observé pendant 2 h en matinée, documents consultés (fiche de poste, DUERP)…"></textarea></div>
+    </section>
+
+    <!-- 2. Fonction -->
+    <section class="card" id="s-fonction">
+      <h2><span class="n">2</span>Fonction et secteur</h2>
+      <div class="sub">Choisir un métier de la base pré-remplit le secteur, les risques et les EPI/EPC (tout reste modifiable).</div>
+      <div class="field ac"><label class="l">Nom de la fonction</label>
+        <input type="text" data-k="fonction" id="fonction" autocomplete="off" placeholder="Ex : aide-soignante de nuit, agent de production…">
+        <div class="ac-list" id="acList"></div>
+        <div class="prefill" id="prefillMsg"></div>
+      </div>
+      <div class="g2">
+        <div class="field"><label class="l">Secteur d'activité</label><input type="text" data-k="secteur"></div>
+        <div class="field"><label class="l">Service / unité de travail</label><input type="text" data-k="service" placeholder="Ex : atelier finition, EHPAD 2e étage"></div>
+      </div>
+      <div class="g2">
+        <div class="field"><label class="l">Type de contrat / temps de travail</label><input type="text" data-k="contrat" placeholder="Ex : CDI temps plein"></div>
+        <div class="field"><label class="l">Nombre de salariés sur ce poste</label><input type="text" data-k="effectifPoste" placeholder="Ex : 3"></div>
+      </div>
+    </section>
+
+    <!-- 3. Caractéristiques -->
+    <section class="card" id="s-carac">
+      <h2><span class="n">3</span>Caractéristiques liées au poste</h2>
+      <div class="sub">Exigences physiques et organisationnelles du poste, à confronter ensuite par le médecin du travail aux capacités du salarié.</div>
+      <div id="exiPropo"></div>
+      <table class="dem" id="demTable"></table>
+      <div class="g2" style="margin-top:12px">
+        <div class="field"><label class="l">Charge maximale manipulée (kg)</label><input type="number" min="0" data-k="chargeMax" placeholder="Ex : 15"></div>
+        <div class="field"><label class="l">Charge habituelle (kg)</label><input type="number" min="0" data-k="chargeHab" placeholder="Ex : 5"></div>
+      </div>
+      <div class="field"><label class="l">Autres caractéristiques</label><textarea data-k="caracLibre" placeholder="Ex : déplacements entre deux bâtiments, cadence imposée par la ligne…"></textarea></div>
+    </section>
+
+    <!-- 4. Horaires -->
+    <section class="card" id="s-horaires">
+      <h2><span class="n">4</span>Horaires</h2>
+      <div class="g2">
+        <div class="field"><label class="l">Organisation</label>
+          <select data-k="organisation"><option>Journée</option><option>Horaires en 2×8</option><option>Horaires en 3×8</option><option>Travail de nuit</option><option>Horaires coupés</option><option>Horaires variables</option></select></div>
+        <div class="field"><label class="l">Horaires habituels</label><input type="text" data-k="horaires" placeholder="Ex : 7h00 – 14h00, du lundi au vendredi"></div>
+      </div>
+      <div class="field"><label class="l">Particularités</label>
+        <div class="chips" data-multi="horairesPart">
+          <label class="chip"><input type="checkbox" value="Travail le week-end">Week-end</label>
+          <label class="chip"><input type="checkbox" value="Travail les jours fériés">Jours fériés</label>
+          <label class="chip"><input type="checkbox" value="Astreintes">Astreintes</label>
+          <label class="chip"><input type="checkbox" value="Heures supplémentaires fréquentes">Heures sup. fréquentes</label>
+          <label class="chip"><input type="checkbox" value="Rotation des postes">Rotation des postes</label>
+        </div></div>
+      <div class="field"><label class="l">Pauses</label><input type="text" data-k="pauses" placeholder="Ex : 20 min à 10h, repas 45 min"></div>
+    </section>
+
+    <!-- 5. Lien hiérarchique -->
+    <section class="card" id="s-lien">
+      <h2><span class="n">5</span>Lien hiérarchique</h2>
+      <div class="g2">
+        <div class="field"><label class="l">Supérieur hiérarchique direct (fonction)</label><input type="text" data-k="n1" placeholder="Ex : chef d'équipe"></div>
+        <div class="field"><label class="l">Autonomie dans l'organisation du travail</label>
+          <select data-k="autonomie"><option value="">—</option><option>Forte autonomie</option><option>Autonomie partielle</option><option>Faible autonomie (travail prescrit)</option></select></div>
+      </div>
+      <div class="field"><label class="l">Travail en équipe / encadrement</label><input type="text" data-k="equipe" placeholder="Ex : travaille en binôme, encadre 2 apprentis"></div>
+    </section>
+
+    <!-- 6. Activités -->
+    <section class="card" id="s-activites">
+      <h2><span class="n">6</span>Activités principales</h2>
+      <div class="sub">Une ligne par tâche. Fréquences : rarement (&lt; 2 h/semaine), quelquefois (2–10 h), souvent (10–20 h), très souvent (&gt; 20 h).</div>
+      <div id="propos"></div>
+      <div id="tasks"></div>
+      <button class="btn add" type="button" onclick="addTask()">＋ Ajouter une tâche</button>
+    </section>
+
+    <!-- 7. Risques -->
+    <section class="card" id="s-risques">
+      <h2><span class="n">7</span>Exposition aux risques</h2>
+      <div class="sub">Familles de risques présentes au poste (pré-cochées selon le métier choisi).</div>
+      <div class="chips" data-multi="risques" id="riskChips"></div>
+      <div class="field" style="margin-top:12px"><label class="l">Précisions sur les expositions</label><textarea data-k="risquesLibre" placeholder="Ex : produits utilisés, niveaux de bruit mesurés, durée d'exposition…"></textarea></div>
+    </section>
+
+    <!-- 8. Hygiène et sécurité -->
+    <section class="card" id="s-hygiene">
+      <h2><span class="n">8</span>Hygiène et sécurité</h2>
+      <div class="g2">
+        <div class="field"><label class="l">EPI fournis et portés</label><textarea data-k="epi"></textarea></div>
+        <div class="field"><label class="l">Protections collectives / aides techniques</label><textarea data-k="epc"></textarea></div>
+      </div>
+      <div class="field"><label class="l">Locaux et formations</label>
+        <div class="chips" data-multi="hygiene">
+          <label class="chip"><input type="checkbox" value="Vestiaires">Vestiaires</label>
+          <label class="chip"><input type="checkbox" value="Douches">Douches</label>
+          <label class="chip"><input type="checkbox" value="Salle de pause / réfectoire">Salle de pause</label>
+          <label class="chip"><input type="checkbox" value="Tenue de travail fournie et entretenue">Tenue fournie</label>
+          <label class="chip"><input type="checkbox" value="Formation PRAP / gestes et postures">PRAP</label>
+          <label class="chip"><input type="checkbox" value="Sauveteur secouriste du travail présent">SST présent</label>
+          <label class="chip"><input type="checkbox" value="Risques du poste inscrits au DUERP">Poste au DUERP</label>
+        </div></div>
+      <div class="field"><label class="l">Autres observations</label><textarea data-k="hygieneLibre"></textarea></div>
+    </section>
+
+    <!-- 9. Échanges -->
+    <section class="card" id="s-echanges">
+      <h2><span class="n">9</span>Échanges avec l'employeur <span style="font-weight:400;font-size:13px;color:var(--muted)">(facultatif)</span></h2>
+      <div class="sub">Pistes d'aménagement, postes disponibles évoqués… sans conclusion médicale, qui relève du seul médecin du travail.</div>
+      <div class="field"><textarea data-k="echanges" placeholder="Ex : possibilité d'un poste en conditionnement assis évoquée ; achat d'un chariot à hauteur variable envisagé"></textarea></div>
+    </section>
+
+    <!-- Rédacteur -->
+    <section class="card" id="s-redacteur">
+      <h2><span class="n">✎</span>Rédacteur</h2>
+      <div class="g2">
+        <div class="field"><label class="l">Nom du rédacteur</label><input type="text" data-k="redacteur" placeholder="Ex : Mme Laure Bonnefond"></div>
+        <div class="field"><label class="l">Qualité</label>
+          <select data-k="qualite"><option>Infirmière en Santé au Travail</option><option>Infirmier en Santé au Travail</option><option>Intervenant en Prévention des Risques Professionnels</option><option>Ergonome</option><option>Assistant(e) en santé au travail</option></select></div>
+      </div>
+      <div class="hint">Apparaît en pied de page du document, à la place du nom du modèle.</div>
+    </section>
+  </main>
+</div>
+
+<div class="bar">
+  <button class="btn" type="button" onclick="saveJSON()">💾 Enregistrer</button>
+  <button class="btn" type="button" onclick="document.getElementById('loadFile').click()">📂 Charger</button>
+  <button class="btn" type="button" onclick="resetAll()">↺ Nouveau</button>
+  <button class="btn primary" type="button" id="wordBtn" onclick="exportWord()">📄 Générer l'étude de poste (Word)</button>
+  <span class="status" id="status"></span>
+  <input type="file" id="loadFile" accept="application/json" hidden onchange="loadJSON(event)">
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/pizzip@3.1.6/dist/pizzip.js"></script>
+<script>
+/* =====================================================================
+   PréventIA-LaB · Étude de poste — inaptitude (IDEST / IPRP)
+   Saisie → document Word au modèle SPSTI (modele-etude-poste.docx)
+   Traitement 100 % local : aucune donnée n'est transmise ni conservée.
+   ===================================================================== */
+const TEMPLATE_URL = './modele-etude-poste.docx';
+const METIERS_URL  = '../base-metiers/metiers.json';
+const ACT_URL      = '../base-metiers/activites-metiers.json';   // activités types par métier
+/* Suggestion IA (si le métier n'est pas dans la base) — webhook texte Make, pattern « Solution C ».
+   ▸ Seul le libellé de la fonction (et le secteur) est envoyé : aucune donnée sur le salarié. */
+const IA_CFG = {
+  url:   'https://hook.eu1.make.com/qhvt4lylqgbykqljwd1sdybpdaoapedu',  // ← webhook texte
+  token: 'previa_text_2026_xxx',                                        // ← ton token texte
+  model: 'claude-sonnet-4-5'
+};
+
+/* Exigences du poste (grille à 4 niveaux) */
+const EXIGENCES = [
+  'Station debout prolongée','Station assise prolongée','Marche / déplacements','Port de charges',
+  'Poussée / traction (chariots, transpalettes…)','Flexions / rotations du tronc','Bras au-dessus des épaules',
+  'Position accroupie / à genoux','Gestes répétitifs des membres supérieurs','Préhension fine / force de serrage',
+  'Escaliers, échelles, escabeaux','Conduite de véhicule ou d\'engin','Travail sur écran','Exigences visuelles (précision, contrôle)',
+  'Contact avec le public','Travail isolé','Travail en extérieur'
+];
+const NIVEAUX = ['Non','Occasionnel','Fréquent','Permanent'];
+const FREQ = ['Rarement','Quelquefois','Souvent','Très souvent'];
+/* Familles de risques (base métiers ; grossesse exclue : donnée individuelle) */
+const RISQUES = [
+  ['CMR','Agents CMR'],['AMIANTE','Amiante'],['SILICE','Silice cristalline'],['PLOMB','Plomb'],['CHIMIQUE','Risque chimique (non CMR)'],
+  ['BIO_12','Biologique groupes 1-2'],['BIO_34','Biologique groupes 3-4'],['AES','Accident d\'exposition au sang'],
+  ['TMS','TMS / manutention'],['BRUIT','Bruit'],['VIBRATIONS','Vibrations'],['CHUTE','Chute de hauteur'],['THERM','Ambiance thermique'],
+  ['RI_A','Rayonnements ionisants cat. A'],['RI_B','Rayonnements ionisants cat. B'],['RNI','Rayonnements non ionisants'],['HYPERBARE','Hyperbare'],
+  ['RPS','RPS / charge mentale'],['NUIT','Travail de nuit'],['ARME','Agression'],['ECRAN','Écran / sédentarité'],['VOIX','Sollicitation vocale'],
+  ['MECA','Risque mécanique'],['ELEC','Risque électrique'],['CONDUITE','Conduite professionnelle'],['ATEX','ATEX'],['CONFINE','Espaces confinés']
+];
+
+/* ---------- État ---------- */
+const VIDE = () => ({ date: new Date().toISOString().slice(0,10), motif:"Procédure d'inaptitude", lieu:'Sur site, au poste de travail',
+  exigences:{}, taches:[{t:'',f:'Souvent',c:''}], horairesPart:[], risques:[], hygiene:[], qualite:'Infirmière en Santé au Travail', organisation:'Journée' });
+let E = VIDE();
+let METIERS = [];
+let ACT = {};          // activites-metiers.json → { id: {metier, secteur, taches, exigences} }
+let PROPO = null;      // propositions affichées { source:'base'|'ia', taches, exigences }
+
+/* ---------- Construction de l'interface ---------- */
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+function buildStatic(){
+  $('#demTable').innerHTML = '<tr><th>Exigence</th><th>Niveau</th></tr>' + EXIGENCES.map((x,i) =>
+    `<tr><td>${esc(x)}</td><td><div class="seg" data-ex="${i}">${NIVEAUX.map((n,j)=>`<button type="button" data-v="${j}">${n}</button>`).join('')}</div></td></tr>`).join('');
+  $('#demTable').addEventListener('click', e => {
+    const b = e.target.closest('button[data-v]'); if (!b) return;
+    E.exigences[EXIGENCES[+b.parentNode.dataset.ex]] = +b.dataset.v; paint();
+  });
+  $('#riskChips').innerHTML = RISQUES.map(([k,l]) => `<label class="chip"><input type="checkbox" value="${k}">${esc(l)}</label>`).join('');
+  const secs = [...document.querySelectorAll('#form section')];
+  $('#toc').innerHTML = secs.map(s => `<a href="#${s.id}" data-sec="${s.id}"><span class="n">${s.querySelector('.n').textContent}</span>${esc(s.querySelector('h2').childNodes[1].textContent.trim())}</a>`).join('');
+}
+
+/* Champs simples (data-k) et groupes de cases (data-multi) */
+function bind(){
+  document.querySelectorAll('[data-k]').forEach(el => el.addEventListener('input', () => { E[el.dataset.k] = el.value; tocState(); }));
+  document.querySelectorAll('[data-multi]').forEach(g => g.addEventListener('change', () => {
+    E[g.dataset.multi] = [...g.querySelectorAll('input:checked')].map(i => i.value); tocState();
+  }));
+}
+function paint(){
+  document.querySelectorAll('[data-k]').forEach(el => { el.value = E[el.dataset.k] ?? (el.tagName === 'SELECT' ? el.options[0].value : ''); });
+  document.querySelectorAll('[data-multi]').forEach(g => g.querySelectorAll('input').forEach(i => { i.checked = (E[g.dataset.multi] || []).includes(i.value); }));
+  document.querySelectorAll('.seg').forEach(s => {
+    const v = E.exigences[EXIGENCES[+s.dataset.ex]] ?? 0;
+    s.querySelectorAll('button').forEach(b => { b.classList.toggle('on', +b.dataset.v === v); b.classList.toggle('lvl0', +b.dataset.v === 0); });
+  });
+  drawTasks(); tocState();
+}
+
+/* Tâches */
+function drawTasks(){
+  $('#tasks').innerHTML = E.taches.map((t,i) => `<div class="task">
+    <input type="text" placeholder="Tâche" value="${esc(t.t)}" oninput="E.taches[${i}].t=this.value">
+    <select onchange="E.taches[${i}].f=this.value">${FREQ.map(f=>`<option ${f===t.f?'selected':''}>${f}</option>`).join('')}</select>
+    <input type="text" placeholder="Contraintes (postures, charges, outils…)" value="${esc(t.c)}" oninput="E.taches[${i}].c=this.value">
+    <button class="icon-btn" type="button" title="Supprimer" onclick="E.taches.splice(${i},1);drawTasks();majPropos()">✕</button></div>`).join('');
+}
+function addTask(){ E.taches.push({t:'',f:'Souvent',c:''}); drawTasks(); }
+
+/* Sommaire : section « remplie » */
+function tocState(){
+  const rempli = {
+    's-contexte': E.date && E.motif, 's-fonction': E.fonction, 's-carac': Object.values(E.exigences).some(v => v > 0) || E.caracLibre,
+    's-horaires': E.horaires, 's-lien': E.n1, 's-activites': E.taches.some(t => t.t), 's-risques': E.risques.length || E.risquesLibre,
+    's-hygiene': E.epi || E.epc || E.hygiene.length, 's-echanges': E.echanges, 's-redacteur': E.redacteur };
+  document.querySelectorAll('.toc a').forEach(a => a.classList.toggle('ok', !!rempli[a.dataset.sec]));
+}
+
+/* ---------- Base métiers : autocomplétion + pré-remplissage ---------- */
+const norm = s => String(s||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
+fetch(METIERS_URL).then(r => r.ok ? r.json() : null).then(d => { if (d && d.metiers) METIERS = d.metiers; }).catch(() => {});
+fetch(ACT_URL).then(r => r.ok ? r.json() : null).then(d => { if (d && d.metiers) { ACT = d.metiers; majPropos(); } }).catch(() => {});
+// Liste de recherche : base métiers + métiers présents seulement dans activites-metiers.json
+const listeMetiers = () => METIERS.map(m => ({ id: m.id, metier: m.metier, secteur: m.secteur }))
+  .concat(Object.entries(ACT).filter(([id]) => !METIERS.some(m => m.id === id)).map(([id, a]) => ({ id, metier: a.metier, secteur: a.secteur })));
+function wireAC(){
+  const inp = $('#fonction'), list = $('#acList');
+  inp.addEventListener('input', () => {
+    const q = norm(inp.value).trim();
+    E.metierId = ''; majPropos();
+    const L = listeMetiers();
+    if (q.length < 2 || !L.length) { list.classList.remove('on'); return; }
+    const res = L.filter(m => norm(m.metier).includes(q)).slice(0, 8);
+    list.innerHTML = res.map(m => `<div data-id="${esc(m.id)}">${esc(m.metier)}<small>${esc(m.secteur)}</small></div>`).join('');
+    list.classList.toggle('on', res.length > 0);
+  });
+  list.addEventListener('mousedown', e => {
+    const d = e.target.closest('[data-id]'); if (!d) return;
+    const m = METIERS.find(x => x.id === d.dataset.id) || Object.assign({ id: d.dataset.id }, ACT[d.dataset.id]);
+    if (!m.metier) return;
+    E.fonction = m.metier; E.metierId = m.id;
+    if (!E.secteur) E.secteur = m.secteur.replace(/^[A-Z]\.\s*/, '');
+    E.risques = [...new Set([...(E.risques||[]), ...(m.categories||[]).filter(k => RISQUES.some(r => r[0] === k))])];
+    if (!E.risquesLibre) E.risquesLibre = m.risques || '';
+    if (!E.epi) E.epi = m.epi || '';
+    if (!E.epc) E.epc = m.epc || '';
+    // Exigences types : appliquées d'office si la grille est encore vide
+    const a = ACT[m.id];
+    if (a && !Object.values(E.exigences).some(v => v > 0)) E.exigences = Object.assign({}, a.exigences);
+    list.classList.remove('on'); paint(); majPropos();
+    $('#prefillMsg').textContent = '✓ Pré-rempli depuis la base métiers : secteur, risques, EPI/EPC' + (a ? ', exigences et activités types (section 6)' : '') + '. À vérifier sur le terrain.';
+    $('#prefillMsg').classList.add('on');
+  });
+  inp.addEventListener('blur', () => setTimeout(() => list.classList.remove('on'), 150));
+}
+
+/* ---------- Propositions d'activités (base locale, sinon IA) ---------- */
+function majPropos(){
+  const z = $('#propos'), zx = $('#exiPropo'); if (!z) return;
+  const a = E.metierId && ACT[E.metierId];
+  if (a) PROPO = { source: 'base', taches: a.taches, exigences: a.exigences, metier: a.metier };
+  else if (PROPO && PROPO.source === 'ia' && PROPO.metier === E.fonction) { /* garder la suggestion IA */ }
+  else PROPO = null;
+  const deja = new Set(E.taches.map(t => norm(t.t)));
+  if (PROPO) {
+    z.innerHTML = `<div class="propos"><div class="t">Activités types pour « ${esc(PROPO.metier)} » — cliquer pour ajouter
+        ${PROPO.source === 'ia' ? '<span class="ia">✨ IA — à vérifier</span>' : ''}
+        <button class="linkbtn" type="button" onclick="ajouterToutes()">Tout ajouter</button></div>
+      ${PROPO.taches.map((t, i) => `<button class="pchip" type="button" ${deja.has(norm(t.t)) ? 'disabled' : ''} onclick="ajouterTache(${i})">＋ ${esc(t.t)} <small>· ${esc(t.f.toLowerCase())}</small></button>`).join('')}</div>`;
+  } else if (E.fonction && E.fonction.trim().length > 2) {
+    z.innerHTML = `<div class="propos"><div class="t">« ${esc(E.fonction)} » n'est pas dans la base d'activités.</div>
+      <button class="btn" type="button" id="iaBtn" onclick="suggererIA()">✨ Suggérer des activités par IA</button>
+      <div class="hint">Seul le nom de la fonction et le secteur sont envoyés, jamais de donnée sur le salarié.</div></div>`;
+  } else z.innerHTML = '';
+  // Bouton « exigences types » si la grille a déjà été modifiée
+  const grilleVide = !Object.values(E.exigences).some(v => v > 0);
+  zx.innerHTML = PROPO && !grilleVide
+    ? `<div class="propos"><div class="t">Exigences types disponibles pour « ${esc(PROPO.metier)} ».
+         <button class="linkbtn" type="button" onclick="appliquerExigences()">Les appliquer (remplace la grille)</button></div></div>`
+    : '';
+}
+function ajouterTache(i){
+  const t = PROPO.taches[i];
+  if (E.taches.length === 1 && !E.taches[0].t && !E.taches[0].c) E.taches = [];
+  E.taches.push({ t: t.t, f: t.f, c: t.c || '' });
+  drawTasks(); majPropos(); tocState();
+}
+function ajouterToutes(){ PROPO.taches.forEach((t, i) => { if (!E.taches.some(x => norm(x.t) === norm(t.t))) ajouterTache(i); }); }
+function appliquerExigences(){ E.exigences = Object.assign({}, PROPO.exigences); paint(); majPropos(); }
+
+async function suggererIA(){
+  const btn = $('#iaBtn'); if (btn) { btn.disabled = true; btn.textContent = '⏳ Suggestion en cours…'; }
+  const prompt = `Tu es infirmier(e) en santé au travail en France. Pour la fonction « ${E.fonction} »${E.secteur ? ' (secteur : ' + E.secteur + ')' : ''}, ` +
+    `propose 4 à 6 activités principales typiques, décrites de façon concrète et courte, avec leur fréquence ` +
+    `(une valeur parmi : Rarement, Quelquefois, Souvent, Très souvent) et les contraintes physiques ou organisationnelles en quelques mots. ` +
+    `Indique aussi les exigences physiques du poste, uniquement parmi cette liste : ${EXIGENCES.join(' ; ')}, avec un niveau 1 (occasionnel), 2 (fréquent) ou 3 (permanent). ` +
+    `Réponds UNIQUEMENT par un objet JSON valide, sans texte autour : {"taches":[{"t":"…","f":"Souvent","c":"…"}],"exigences":{"Station debout prolongée":3}}`;
+  const body = { model: IA_CFG.model, max_tokens: 900, messages: [{ role: 'user', content: prompt }] };
+  try {
+    const res = await fetch(IA_CFG.url, { method: 'POST', headers: { 'Content-Type': 'text/plain' },
+      body: JSON.stringify({ token: IA_CFG.token, payload: JSON.stringify(body) }) });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const raw = await res.text();
+    let data; try { data = JSON.parse(raw); } catch (_) { data = null; }
+    let txt = data && Array.isArray(data.content) ? data.content.filter(x => x.type === 'text').map(x => x.text).join('\n')
+            : data && typeof data.text === 'string' ? data.text : raw;
+    txt = String(txt).replace(/```json/gi, '').replace(/```/g, '').trim();
+    const obj = JSON.parse(txt.slice(txt.indexOf('{'), txt.lastIndexOf('}') + 1));
+    const taches = (obj.taches || []).filter(t => t && t.t).map(t => ({ t: String(t.t), f: FREQ.includes(t.f) ? t.f : 'Souvent', c: String(t.c || '') }));
+    const exigences = {};
+    Object.entries(obj.exigences || {}).forEach(([k, v]) => { if (EXIGENCES.includes(k) && [1, 2, 3].includes(+v)) exigences[k] = +v; });
+    if (!taches.length) throw new Error('aucune activité proposée');
+    PROPO = { source: 'ia', taches, exigences, metier: E.fonction };
+    if (!Object.values(E.exigences).some(v => v > 0)) { E.exigences = Object.assign({}, exigences); paint(); }
+    majPropos(); status('✨ Propositions IA reçues : à vérifier sur le terrain.');
+  } catch (e) {
+    console.error(e);
+    alert('Suggestion IA indisponible (' + e.message + '). Vérifiez l\'URL et le token du webhook texte, ou saisissez les activités manuellement.');
+    majPropos();
+  }
+}
+
+/* ---------- Enregistrer / charger / nouveau ---------- */
+function saveJSON(){
+  const b = new Blob([JSON.stringify(E, null, 2)], {type:'application/json'});
+  const a = Object.assign(document.createElement('a'), {href: URL.createObjectURL(b), download: `etude-poste-${(E.fonction||'poste').replace(/[^\w-]+/g,'_')}.json`});
+  a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+}
+function loadJSON(ev){
+  const f = ev.target.files[0]; if (!f) return;
+  f.text().then(t => { E = Object.assign(VIDE(), JSON.parse(t)); paint(); majPropos(); status('Fichier chargé.'); }).catch(() => alert('Fichier illisible.'));
+  ev.target.value = '';
+}
+function resetAll(){ if (confirm('Effacer toute la saisie ?')) { E = VIDE(); PROPO = null; paint(); majPropos(); $('#prefillMsg').classList.remove('on'); } }
+function status(t){ $('#status').textContent = t; setTimeout(() => { if ($('#status').textContent === t) $('#status').textContent = ''; }, 4000); }
+
+/* =====================================================================
+   Génération du Word à partir du modèle
+   ===================================================================== */
+const xe = s => String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+const RPR = '<w:rFonts w:ascii="Lato" w:hAnsi="Lato" w:eastAsia="Times New Roman" w:cs="Times New Roman"/><w:sz w:val="21"/><w:szCs w:val="21"/>';
+// Une ligne = un paragraphe ; « Libellé :: texte » met le libellé en gras ; puce optionnelle
+function para(ligne, puce){
+  let runs = '';
+  const m = String(ligne).split(' :: ');
+  if (m.length > 1) runs += `<w:r><w:rPr>${RPR}<w:b/></w:rPr><w:t xml:space="preserve">${xe(m[0])} : </w:t></w:r>`;
+  runs += `<w:r><w:rPr>${RPR}</w:rPr><w:t xml:space="preserve">${xe(m.length > 1 ? m.slice(1).join(' :: ') : m[0])}</w:t></w:r>`;
+  const ind = puce ? '<w:ind w:left="567" w:hanging="283"/>' : '<w:ind w:left="284"/>';
+  const bullet = puce ? `<w:r><w:rPr>${RPR}</w:rPr><w:t xml:space="preserve">•\t</w:t></w:r>` : '';
+  return `<w:p><w:pPr><w:spacing w:before="0" w:after="60" w:line="259" w:lineRule="auto"/>${ind}<w:tabs><w:tab w:val="left" w:pos="567"/></w:tabs><w:jc w:val="both"/></w:pPr>${bullet}${runs}</w:p>`;
+}
+const bloc = (lignes, puce) => (lignes.filter(Boolean).length ? lignes.filter(Boolean) : ['—']).map(l => para(l, puce)).join('');
+const titreBleu = t => `<w:p><w:pPr><w:spacing w:before="240" w:after="60"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Lato" w:hAnsi="Lato"/><w:color w:val="2F5496"/><w:u w:val="single"/></w:rPr><w:t xml:space="preserve">${xe(t)} :</w:t></w:r></w:p>`;
+const dateFR = d => /^\d{4}-\d{2}-\d{2}$/.test(d||'') ? d.split('-').reverse().join('/') : (d || '');
+const libRisque = k => (RISQUES.find(r => r[0] === k) || [k, k])[1];
+
+function contenus(){
+  const exig = EXIGENCES.filter(x => (E.exigences[x] || 0) > 0).map(x => {
+    let l = `${x} :: ${NIVEAUX[E.exigences[x]].toLowerCase()}`;
+    if (x === 'Port de charges' && (E.chargeMax || E.chargeHab))
+      l += ` (${[E.chargeHab && 'charge habituelle ' + E.chargeHab + ' kg', E.chargeMax && 'maximale ' + E.chargeMax + ' kg'].filter(Boolean).join(', ')})`;
+    return l;
+  });
+  return {
+    CONTEXTE: bloc([
+      `Étude réalisée le ${dateFR(E.date)}${E.entreprise ? ' au sein de ' + E.entreprise : ''}, à la demande du médecin du travail, dans le cadre d'une ${E.motif.charAt(0).toLowerCase() + E.motif.slice(1)} (article R.4624-42 du Code du travail).`,
+      E.lieu && 'Modalités :: ' + E.lieu.charAt(0).toLowerCase() + E.lieu.slice(1) + '.',
+      E.rencontres && 'Personnes rencontrées :: ' + E.rencontres,
+      E.contexteLibre
+    ]),
+    FONCTION: bloc([E.fonction, E.contrat && 'Contrat :: ' + E.contrat, E.effectifPoste && 'Nombre de salariés sur ce poste :: ' + E.effectifPoste]),
+    SECTEUR: bloc([[E.secteur, E.service].filter(Boolean).join(' — ')]),
+    CARACTERISTIQUES: bloc(exig.concat(E.caracLibre ? [E.caracLibre] : []), true),
+    HORAIRES: bloc([E.organisation, E.horaires, (E.horairesPart||[]).length && (E.horairesPart.join(', ')), E.pauses && 'Pauses :: ' + E.pauses]),
+    LIEN_HIERARCHIQUE: bloc([E.n1 && 'Supérieur direct :: ' + E.n1, E.autonomie && 'Autonomie :: ' + E.autonomie, E.equipe]),
+    ACTIVITES: bloc(E.taches.filter(t => t.t).map(t => `${t.t} :: ${t.f.toLowerCase()}${t.c ? ' — ' + t.c : ''}`), true),
+    RISQUES: bloc((E.risques||[]).map(libRisque).concat(E.risquesLibre ? ['Précisions :: ' + E.risquesLibre] : []), true),
+    HYGIENE: bloc([E.epi && 'EPI :: ' + E.epi, E.epc && 'Protections collectives et aides techniques :: ' + E.epc,
+                   (E.hygiene||[]).length && 'Locaux et formations :: ' + E.hygiene.join(', '), E.hygieneLibre]),
+    ECHANGES: E.echanges ? titreBleu("Échanges avec l'employeur") + bloc([E.echanges]) : ''
+  };
+}
+
+// Remplace le paragraphe entier qui contient {{CLE}} par le XML généré
+function remplacerPara(xml, cle, contenu){
+  const mk = '{{' + cle + '}}', i = xml.indexOf(mk); if (i < 0) return xml;
+  const d = Math.max(xml.lastIndexOf('<w:p>', i), xml.lastIndexOf('<w:p ', i));
+  const f = xml.indexOf('</w:p>', i) + 6;
+  return xml.slice(0, d) + contenu + xml.slice(f);
+}
+
+async function exportWord(){
+  if (typeof PizZip === 'undefined') { alert('Bibliothèque PizZip non chargée : vérifiez la connexion internet.'); return; }
+  const btn = $('#wordBtn'), lab = btn.textContent; btn.textContent = '⏳ Génération…'; btn.disabled = true;
+  try {
+    const r = await fetch(TEMPLATE_URL); if (!r.ok) throw new Error('Modèle introuvable : ' + TEMPLATE_URL);
+    const zip = new PizZip(await r.arrayBuffer());
+    let xml = zip.file('word/document.xml').asText();
+    const C = contenus();
+    for (const [k, v] of Object.entries(C)) xml = remplacerPara(xml, k, v);
+    zip.file('word/document.xml', xml);
+    // Pied de page : rédacteur
+    Object.keys(zip.files).filter(n => /^word\/footer\d*\.xml$/.test(n)).forEach(n => {
+      let f = zip.file(n).asText();
+      f = f.split('{{REDACTEUR}}').join(xe(E.redacteur || '')).split('{{QUALITE}}').join(xe(E.qualite || ''));
+      zip.file(n, f);
+    });
+    const blob = zip.generate({type:'blob', mimeType:'application/vnd.openxmlformats-officedocument.wordprocessingml.document', compression:'DEFLATE'});
+    const a = Object.assign(document.createElement('a'), {href: URL.createObjectURL(blob),
+      download: `Etude_de_poste_${(E.fonction||'poste').replace(/[^\w-]+/g,'_')}_${(E.date||'').replace(/-/g,'')}.docx`});
+    document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+    status('✅ Document généré.');
+  } catch (e) { console.error(e); alert('Erreur : ' + e.message); }
+  btn.textContent = lab; btn.disabled = false;
+}
+
+buildStatic(); bind(); wireAC(); paint(); majPropos();
+</script>
+</body>
+</html>
