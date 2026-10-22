@@ -519,6 +519,29 @@
         "Afin de mettre en place les mesures de prévention adaptées, l'évaluation des risques nécessite de repérer ces réservoirs, puis d'étudier la possibilité d'une transmission dans le milieu de travail.",
         "La prévention doit être intégrée le plus en amont possible dès la conception des lieux et des situations de travail et lors de la mise en place des procédures de travail, en intervenant sur les mesures d'organisation du travail, sur la mise en place de moyens de protections collectives et la mise à disposition d'équipements de protection individuelle. Elle comporte également des étapes d'information et de formation du personnel."
       ]
+    },
+    "contact_animal": {
+      "titre": "Risques liés au contact avec les animaux",
+      "paragraphes": [
+        "Les morsures, griffures, coups de pied ou de sabot et écrasements surviennent surtout lors de la contention et des soins. Ils exposent aussi à des infections (pasteurellose, tétanos, maladie des griffes du chat).",
+        "• Privilégier la sédation ou la tranquillisation avant les actes à risque,",
+        "• Utiliser les moyens de contention adaptés à l'espèce (muselière, cage, table, travail ou cornadis en élevage),",
+        "• Intervenir à deux auprès des animaux agressifs ou de grande taille,",
+        "• Afficher la conduite à tenir après une morsure ou une griffure : lavage, désinfection, avis médical, déclaration d'accident du travail,",
+        "• Vérifier que la vaccination antitétanique des salariés est à jour."
+      ]
+    },
+    "silice": {
+      "titre": "Risques liés à la silice cristalline",
+      "paragraphes": [
+        "Depuis le 1er janvier 2021, les travaux exposant à la poussière de silice cristalline alvéolaire issue de procédés de travail figurent dans la liste des procédés cancérogènes. Ils relèvent des règles de prévention renforcées applicables aux agents CMR et d'un suivi individuel renforcé.",
+        "Valeurs limites d'exposition professionnelle sur 8 heures (fraction alvéolaire) : 0,1 mg/m³ pour le quartz et 0,05 mg/m³ pour la cristobalite.",
+        "• Faire mesurer l'empoussièrement par un organisme accrédité,",
+        "• Travailler à l'humide ou sous captage à la source (ébarbage, finition, émaillage par pulvérisation),",
+        "• Nettoyer par aspiration : le balayage à sec et la soufflette sont à proscrire,",
+        "• Fournir des appareils de protection respiratoire FFP3 ou P3 en complément des protections collectives,",
+        "• Tenir la liste des salariés exposés et assurer la traçabilité des expositions."
+      ]
     }
   },
   "mapping": {
@@ -583,7 +606,24 @@
       "explosion"
     ],
     "nuit": [],
-    "coactivite": []
+    "coactivite": [],
+    "ray_ion": [
+      "rayonnements_ionisants"
+    ],
+    "ray_ni": [
+      "champs_electromagnetiques"
+    ],
+    "laser": [
+      "laser"
+    ],
+    "animal": [
+      "contact_animal",
+      "biologique_zoonoses"
+    ],
+    "silice": [
+      "silice",
+      "poussieres"
+    ]
   },
   "toujours_inclure": [
     "installations_generales",
