@@ -1,0 +1,281 @@
+{
+  "meta": {
+    "objet": "Précisions métier par risque, injectées dans la fiche d'entreprise quand le métier est sélectionné",
+    "structure": "metiers.<id métier DB>.<id risque DB> = { expo, conseils, mp }. '_herite' reprend les précisions d'un autre métier (les clés locales l'emportent). '_conclusions' ajoute des blocs du catalogue conclusions-fe.json propres au métier (hérités via _herite).",
+    "champs": {
+      "expo": "conditions d'exposition propres au métier",
+      "conseils": "moyens de prévention conseillés propres au métier",
+      "mp": "tableaux de maladies professionnelles pertinents pour ce métier (RG sauf mention RA)"
+    },
+    "sources": "Rédaction PréventIA-LaB à partir des repères INRS, tableaux MP (RG/RA) et fiches métiers SPSTI. À valider par le médecin du travail.",
+    "maj": "2026-10"
+  },
+  "metiers": {
+    "m_veterinaire": {
+      "_conclusions": [
+        "biologique_zoonoses"
+      ],
+      "biologique": {
+        "expo": "Zoonoses : pasteurellose et maladie des griffes du chat (morsures, griffures), teignes (chats, chiens, NAC), leptospirose, fièvre Q, brucellose et tuberculose (activité rurale), psittacose (oiseaux), toxoplasmose (femmes enceintes non immunisées), rage (animaux importés). Piqûres septiques, contact avec sang, liquides biologiques et déjections.",
+        "conseils": "Local d'isolement pour les animaux contagieux ; conduite à tenir affichée après morsure, griffure ou piqûre ; collecteurs OPCT et élimination des DASRI par un prestataire ; vaccinations selon l'avis du médecin du travail (DTP, rage selon exposition) ; sérologie toxoplasmose pour les femmes en âge de procréer ; vestiaires séparant tenues de travail et de ville.",
+        "mp": "RG 19 (leptospirose, Lyme), 24 (brucellose), 40 (tuberculose), 46 (mycoses cutanées), 53 (rickettsies, fièvre Q), 56 (rage), 86 (pasteurellose), 87 (psittacose) ; RA 5, 6, 50"
+      },
+      "chimique": {
+        "expo": "Gaz anesthésiques (isoflurane, sévoflurane) ; désinfectants et stérilisants : formaldéhyde (CMR 1B), glutaraldéhyde, oxyde d'éthylène (CMR), acide peracétique, ammoniums quaternaires ; médicaments cytotoxiques (chimiothérapie) ; produits d'euthanasie ; antiparasitaires et antibiotiques (dermatoses de contact) ; révélateurs et fixateurs en radiologie argentique.",
+        "conseils": "Circuit d'anesthésie fermé ou semi-fermé avec système d'évacuation des gaz, contrôle régulier de l'étanchéité ; substitution du formol et du glutaraldéhyde ; préparation des cytotoxiques sous dispositif dédié avec gants adaptés et filière d'élimination spécifique ; notice de poste et traçabilité des expositions aux CMR ; FDS à jour transmises au médecin du travail ; gants nitrile, lunettes lors du détartrage.",
+        "mp": "RG 31 (aminosides), 43 (formaldéhyde), 65 (eczéma allergique), 66 (rhinite, asthme), 89 (halothane), 95 (latex) ; RA 28, 28 bis"
+      },
+      "ray_ion": {
+        "expo": "Radiographies (générateur fixe ou mobile), radiologie équine ou rurale hors salle dédiée. Risque principal : mains dans ou près du faisceau lors de la contention manuelle des petits animaux, avec des gants plombés difficiles à utiliser.",
+        "conseils": "Privilégier la contention chimique ou mécanique (aucune main dans le faisceau) ; tablier, cache-thyroïde et gants plombés ; dosimétrie passive, et dosimétrie des extrémités si les mains approchent le faisceau ; zonage affiché, conseiller en radioprotection désigné ; formation radioprotection renouvelée au moins tous les 3 ans ; vérification des appareils ; femmes enceintes : exposition de l'enfant à naître inférieure à 1 mSv.",
+        "mp": "RG 6 ; RA 20"
+      },
+      "animal": {
+        "expo": "Morsures et griffures (carnivores, NAC), coups de pied ou de sabot, écrasement contre une paroi (bovins, équins), lors de la contention, des soins, des mises bas et des interventions en élevage.",
+        "conseils": "Sédation ou tranquillisation avant les actes à risque ; muselières, lassos, cages et tables de contention ; travail de contention ou cornadis exigé en élevage ; intervention à deux pour les animaux agressifs ; vaccination antitétanique à jour.",
+        "mp": "RG 7 (tétanos), 56 (rage), 86 (pasteurellose) ; RA 1"
+      },
+      "manutention": {
+        "expo": "Animaux anesthésiés, inertes ou décédés (sol vers table, transfert au congélateur), grands chiens, vêlages et poulinages, sacs d'aliments, cartons de médicaments, bouteilles d'oxygène.",
+        "conseils": "Tables de soins à hauteur variable, brancards et chariots, aide au levage pour les animaux lourds, port à deux, formation PRAP.",
+        "mp": "RG 57, 98 ; RA 39"
+      },
+      "postures": {
+        "expo": "Station debout prolongée en consultation, chirurgie et radiologie ; postures penchées lors des soins au sol et en élevage ; gestes répétitifs (cages, nettoyage des instruments).",
+        "conseils": "Tables réglables en hauteur, tapis anti-fatigue, alternance des tâches, sièges assis-debout en chirurgie.",
+        "mp": "RG 57 ; RA 39"
+      },
+      "rps": {
+        "expo": "Euthanasies, détresse ou agressivité des propriétaires, urgences, astreintes, simultanéité des tâches, pression économique.",
+        "conseils": "Procédure de gestion des clients agressifs, temps d'échange après les situations difficiles, organisation équitable des gardes, repérage de l'épuisement professionnel.",
+        "mp": "—"
+      },
+      "nuit": {
+        "expo": "Gardes de nuit, week-ends et jours fériés, astreintes, plannings parfois connus tardivement.",
+        "conseils": "Planning des gardes anticipé, repos compensateur après une garde, pas de conduite en état de fatigue.",
+        "mp": "—"
+      },
+      "routier": {
+        "expo": "Visites en élevage et urgences à domicile, routes rurales, conditions hivernales, conduite après une garde.",
+        "conseils": "Véhicule entretenu et équipé (rangement fixé du matériel), planification des tournées, téléphone mains-libres interdit en conduite (kit intégré uniquement).",
+        "mp": "—"
+      }
+    },
+    "m_asv": {
+      "_herite": "m_veterinaire",
+      "ray_ion": {
+        "expo": "Contention des animaux pendant les radiographies : exposition possible des mains et du tronc si l'ASV reste près du faisceau.",
+        "conseils": "L'ASV ne tient pas l'animal pendant le tir lorsqu'une contention chimique ou mécanique est possible ; sinon tablier, cache-thyroïde, gants plombés et dosimètre ; classement en catégorie B à évaluer avec le conseiller en radioprotection.",
+        "mp": "RG 6"
+      },
+      "chimique": {
+        "expo": "Nettoyage et désinfection des locaux, cages et instruments (aldéhydes, ammoniums quaternaires, chlore), stérilisation, surveillance d'anesthésie (gaz), préparation de médicaments.",
+        "conseils": "Produits sans aldéhyde à privilégier, dilutions préparées avec doseur, gants de ménage et gants nitrile, évacuation des gaz anesthésiques, FDS accessibles.",
+        "mp": "RG 31 (aminosides), 43 (formaldéhyde), 65 (eczéma allergique), 66 (rhinite, asthme), 89 (halothane), 95 (latex) ; RA 28, 28 bis"
+      }
+    },
+    "m_porc_faconnier": {
+      "silice": {
+        "expo": "Préparation et manipulation de la pâte, ébarbage et finition à sec, garnissage, nettoyage des moules et des postes ; poussières de kaolin, quartz et feldspath.",
+        "conseils": "Ébarbage et finition à l'humide ou sous aspiration, nettoyage par aspiration (balayage à sec et soufflette proscrits), mesures d'empoussièrement silice, APR FFP3 en complément.",
+        "mp": "RG 25"
+      },
+      "manutention": {
+        "expo": "Moules en plâtre lourds, planches de pièces crues, sacs de matières premières.",
+        "conseils": "Moules allégés ou manipulés avec aide mécanique, convoyeurs, hauteur de travail adaptée.",
+        "mp": "RG 98"
+      },
+      "tms": {
+        "expo": "Calibrage, coulage, garnissage et finition : gestes répétitifs et précis des membres supérieurs.",
+        "conseils": "Rotation des tâches, outils ergonomiques, pauses régulières, réglage des postes.",
+        "mp": "RG 57"
+      },
+      "postures": {
+        "expo": "Travail debout prolongé au tour ou au calibre, ou assis penché pour la finition.",
+        "conseils": "Postes réglables en hauteur, sièges assis-debout, alternance des tâches.",
+        "mp": "RG 57"
+      },
+      "machine": {
+        "expo": "Calibreuses, presses isostatiques, tours, malaxeurs et convoyeurs : risques de happement et d'écrasement.",
+        "conseils": "Protecteurs et arrêts d'urgence, consignation avant nettoyage ou réglage, vérifications périodiques, formation des opérateurs.",
+        "mp": "—"
+      }
+    },
+    "m_porc_emailleur": {
+      "_herite": "m_porc_faconnier",
+      "chimique": {
+        "expo": "Émaux et engobes (silice, feldspath, oxydes métalliques ; émaux plombifères dans les gammes anciennes), émaillage au trempé ou au pistolet (aérosols).",
+        "conseils": "Cabine d'émaillage ventilée (rideau d'eau ou aspiration), émaux sans plomb, gants et tablier imperméables, APR en complément ; plombémie si émaux plombifères.",
+        "mp": "RG 1 (plomb), 25"
+      }
+    },
+    "m_porc_four": {
+      "thermique": {
+        "expo": "Enfournement et défournement près des fours (cuisson autour de 1 400 °C), chaleur radiante, été aggravant.",
+        "conseils": "Écrans thermiques, ventilation, refroidissement suffisant avant défournement, eau fraîche à disposition, pauses en zone tempérée, plan canicule.",
+        "mp": "—"
+      },
+      "ray_ni": {
+        "expo": "Rayonnement infrarouge lors de l'observation des fours et du défournement à chaud : risque de cataracte.",
+        "conseils": "Lunettes filtrantes infrarouge, hublots d'observation filtrants.",
+        "mp": "RG 71 (rayonnement thermique, yeux)"
+      },
+      "silice": {
+        "expo": "Plaques et supports réfractaires, poussières au défournement ; isolants de fours pouvant contenir des fibres céramiques réfractaires (CMR 1B) lors des réparations.",
+        "conseils": "Aspiration lors du nettoyage des supports, repérage des fibres céramiques réfractaires avant toute intervention sur l'isolation des fours, APR P3 et combinaison jetable pour ces travaux.",
+        "mp": "RG 25"
+      },
+      "manutention": {
+        "expo": "Chargement et déchargement des wagonnets et des cazettes, plaques réfractaires lourdes.",
+        "conseils": "Aides à la manutention, wagonnets à hauteur adaptée, plaques allégées, port à deux.",
+        "mp": "RG 98"
+      },
+      "nuit": {
+        "expo": "Cuisson en continu : travail posté en 3x8 ou de nuit.",
+        "conseils": "Rotation courte, repos suffisant entre les postes, suivi adapté du travail de nuit.",
+        "mp": "—"
+      },
+      "incendie": {
+        "expo": "Brûleurs gaz, risque de fuite, matières combustibles à proximité des fours.",
+        "conseils": "Détection gaz, vérification des installations gaz et des brûleurs, extincteurs adaptés, permis de feu pour les travaux.",
+        "mp": "—"
+      }
+    },
+    "m_porc_decor": {
+      "chimique": {
+        "expo": "Couleurs céramiques (oxydes métalliques : cobalt, chrome, nickel, cadmium ou plomb selon les gammes), médiums et solvants, or liquide, pose de décalcomanies, pulvérisation au pistolet.",
+        "conseils": "Couleurs sans plomb ni cadmium à privilégier, aspiration à la source aux postes de peinture et de pulvérisation, stockage fermé des solvants, gants nitrile ; plombémie si couleurs plombifères.",
+        "mp": "RG 1 (plomb), 61 (cadmium), 70 (cobalt), 84 (solvants)"
+      },
+      "postures": {
+        "expo": "Travail assis prolongé, tête penchée, gestes fins et précis (filetage, peinture au pinceau).",
+        "conseils": "Plan de travail incliné, éclairage adapté, siège réglable, micro-pauses.",
+        "mp": "RG 57"
+      },
+      "tms": {
+        "expo": "Gestes fins et répétitifs (pinceau, filetage, pose de décalcomanies), cadence.",
+        "conseils": "Outils à manche ergonomique, pauses régulières, rotation des tâches.",
+        "mp": "RG 57"
+      }
+    },
+    "m_aide_soin": {
+      "_conclusions": [
+        "biologique_aes"
+      ],
+      "biologique": {
+        "expo": "Toilettes et soins d'hygiène : contact avec sang, urines, selles et liquides biologiques ; AES (glycémies capillaires, coupures) ; agents à transmission respiratoire (grippe, COVID-19, tuberculose) ; gale, BMR et Clostridioides difficile en EHPAD.",
+        "conseils": "Précautions standard (hygiène des mains par friction hydro-alcoolique, gants, tablier) et précautions complémentaires contact, gouttelettes ou air selon le patient ; dispositifs sécurisés et collecteurs OPCT au plus près du soin ; protocole AES affiché (lavage, antisepsie, appel du référent dans l'heure) ; vaccinations vérifiées par le service de santé au travail (hépatite B obligatoire, art. L.3111-4 CSP ; grippe et COVID-19 recommandées) ; masque FFP2 si risque de transmission aérienne.",
+        "mp": "RG 40 (tuberculose), 45 (hépatites virales), 76 (infections en milieu de soins)"
+      },
+      "manutention": {
+        "expo": "Transferts lit-fauteuil, rehaussements, retournements, aide à la marche, relevage après chute ; patients dépendants ou de forte corpulence ; chambres exiguës.",
+        "conseils": "Lève-personne et verticalisateur, draps de glisse, lits électriques à hauteur variable, évaluation de la dépendance avant chaque transfert, travail à deux pour les transferts difficiles, formation PRAP 2S (sanitaire et social).",
+        "mp": "RG 57, 98"
+      },
+      "tms": {
+        "expo": "Gestes répétitifs de toilette et d'habillage, postures penchées au lit, rythme soutenu le matin.",
+        "conseils": "Matériel réglable en hauteur, répartition équilibrée des toilettes lourdes, pauses, formation PRAP 2S.",
+        "mp": "RG 57"
+      },
+      "rps": {
+        "expo": "Charge émotionnelle (fin de vie, décès), agressivité de résidents ou de familles, sous-effectif, interruptions de tâches, horaires décalés et week-ends.",
+        "conseils": "Analyse des pratiques, procédure de gestion et de déclaration des agressions, stabilité des plannings, soutien de l'encadrement.",
+        "mp": "—"
+      }
+    },
+    "m_infirmier": {
+      "_herite": "m_aide_soin",
+      "biologique": {
+        "expo": "Injections, prélèvements sanguins, pose et retrait de cathéters : AES par piqûre ou coupure ; contact avec liquides biologiques ; agents à transmission respiratoire (grippe, COVID-19, tuberculose) ; BMR.",
+        "conseils": "Précautions standard (hygiène des mains par friction hydro-alcoolique, gants, tablier) et précautions complémentaires contact, gouttelettes ou air selon le patient ; dispositifs sécurisés et collecteurs OPCT au plus près du soin ; protocole AES affiché (lavage, antisepsie, appel du référent dans l'heure) ; vaccinations vérifiées par le service de santé au travail (hépatite B obligatoire, art. L.3111-4 CSP ; grippe et COVID-19 recommandées) ; masque FFP2 si risque de transmission aérienne.",
+        "mp": "RG 40 (tuberculose), 45 (hépatites virales), 76 (infections en milieu de soins)"
+      },
+      "chimique": {
+        "expo": "Antiseptiques et désinfectants (alcools, chlorhexidine, dérivés chlorés, ammoniums quaternaires), médicaments cytotoxiques (administration, excreta des patients traités), gants en latex, gaz anesthésiques au bloc.",
+        "conseils": "Gants nitrile, désinfectants sans aldéhyde, cytotoxiques préparés en unité centralisée et administrés en système clos, gestion protégée des excreta, FDS accessibles.",
+        "mp": "RG 65, 66, 95 (latex)"
+      }
+    },
+    "m_dentiste": {
+      "_conclusions": [
+        "biologique_aes"
+      ],
+      "biologique": {
+        "expo": "AES par instruments rotatifs, sondes, aiguilles et fraises ; aérosols et projections de salive et de sang lors du détartrage et du fraisage ; agents à transmission respiratoire.",
+        "conseils": "Aspiration chirurgicale à haut débit et digue, masque chirurgical ou FFP2 selon les actes, lunettes ou visière, gants ; protocole AES ; stérilisation en marche en avant ; vaccination hépatite B obligatoire.",
+        "mp": "RG 45, 76"
+      },
+      "chimique": {
+        "expo": "Désinfectants et produits de stérilisation, résines et monomères acryliques (méthacrylates allergisants), mercure lors de la dépose d'amalgames, gants en latex, révélateurs et fixateurs en radiologie argentique.",
+        "conseils": "Gants nitrile, aspiration renforcée lors de la dépose d'amalgames, ventilation de la salle de stérilisation, produits sans aldéhyde, FDS accessibles.",
+        "mp": "RG 2 (mercure), 65, 66, 95 (latex)"
+      },
+      "ray_ion": {
+        "expo": "Radiographies rétro-alvéolaires et panoramiques, cone beam (CBCT).",
+        "conseils": "Déclenchement à distance ou derrière un écran, aucun maintien du capteur par le praticien ou l'assistant(e), dosimétrie selon le classement, conseiller en radioprotection désigné, formation renouvelée au moins tous les 3 ans, vérification des générateurs.",
+        "mp": "RG 6"
+      },
+      "postures": {
+        "expo": "Postures statiques prolongées, cou et dos fléchis, bras en élévation, gestes fins répétitifs ; pour l'assistant(e) : aspiration et transmission des instruments.",
+        "conseils": "Travail à quatre mains, fauteuil et tabouret ergonomiques (selle), aides optiques, organisation du plateau, pauses entre les patients.",
+        "mp": "RG 57"
+      },
+      "bruit": {
+        "expo": "Turbines, aspiration, ultrasons, compresseur : niveaux modérés mais prolongés, fréquences aiguës.",
+        "conseils": "Matériel récent moins bruyant, compresseur isolé hors de la salle de soins, maintenance régulière.",
+        "mp": "—"
+      }
+    },
+    "m_atsem": {
+      "_conclusions": [
+        "biologique_petite_enfance",
+        "biologique_grossesse"
+      ],
+      "biologique": {
+        "expo": "Contact avec les enfants (salive, mucus, selles lors des changes) : gastro-entérites, varicelle, rougeole, oreillons, rubéole, cytomégalovirus (CMV), coqueluche, poux et gale.",
+        "conseils": "Hygiène des mains, gants pour les changes, nettoyage des surfaces et des jouets ; vérification des vaccinations (ROR, coqueluche, varicelle si non immunisé) ; information des femmes enceintes sur le CMV et la rubéole, avec aménagement du poste si besoin.",
+        "mp": "—"
+      },
+      "tms": {
+        "expo": "Port des enfants, mise sur la table à langer, aide à l'habillage, entretien des locaux.",
+        "conseils": "Table à langer réglable avec escalier, mobilier adapté aux adultes, rotation des tâches.",
+        "mp": "RG 57"
+      },
+      "bruit": {
+        "expo": "Ambiance sonore élevée en classe, salle de motricité, cantine et dortoir (réverbération).",
+        "conseils": "Traitement acoustique des locaux (plafonds absorbants, patins sous les chaises), organisation de temps calmes.",
+        "mp": "—"
+      },
+      "postures": {
+        "expo": "Travail à hauteur d'enfant : accroupi, à genoux, assis sur du mobilier bas.",
+        "conseils": "Sièges adaptés aux adultes, tabourets bas à roulettes, alternance des positions.",
+        "mp": "RG 57, 79 (ménisque)"
+      }
+    },
+    "m_ambulancier": {
+      "_conclusions": [
+        "biologique_aes"
+      ],
+      "routier": {
+        "expo": "Conduite en urgence de jour comme de nuit, véhicules sanitaires lourds, fatigue.",
+        "conseils": "Formation à la conduite en urgence, respect des temps de repos, vérification des véhicules, fixation du matériel dans la cellule.",
+        "mp": "—"
+      },
+      "manutention": {
+        "expo": "Brancardage dans les escaliers et les logements exigus, transferts lit-brancard, patients lourds.",
+        "conseils": "Brancards et chaises portoirs motorisés ou à chenilles, travail en binôme, formation gestes et postures.",
+        "mp": "RG 57, 98"
+      },
+      "biologique": {
+        "expo": "AES lors des soins d'urgence, contact avec liquides biologiques, patients contagieux, désinfection de la cellule.",
+        "conseils": "Précautions standard, gants et masques dans le véhicule, collecteurs OPCT, protocole AES, procédure de désinfection du véhicule, vaccination hépatite B.",
+        "mp": "RG 40, 45, 76"
+      },
+      "nuit": {
+        "expo": "Gardes de nuit et de week-end, astreintes.",
+        "conseils": "Repos après une garde, planning anticipé, local de repos.",
+        "mp": "—"
+      }
+    }
+  }
+}
