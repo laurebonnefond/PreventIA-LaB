@@ -377,7 +377,19 @@ footer b{color:var(--ink)}
   padding:1px 6px;border-radius:99px;margin-left:5px;letter-spacing:0.02em}
 .hidden{display:none!important}
 
+/* En-tête d'impression : charte fiche d'entreprise SPSTI (invisible à l'écran) */
+.print-bandeau{display:none}
+.print-bandeau img{display:block;width:100%;height:auto}
+.print-bandeau .pb-titre{font:700 30pt/1.1 Arial,sans-serif;color:#0B3C78;margin:16px 0 4px}
+.print-bandeau .pb-titre span{color:#1D9BD1}
+.print-bandeau .pb-sous{font:700 13pt Arial,sans-serif;color:#0B3C78}
+.print-bandeau .pb-lime{width:60px;height:5px;background:#AFCA0C;border-radius:3px;margin:10px 0 18px}
 @media print{
+  @page{margin:12mm}
+  .print-bandeau{display:block}
+  .print-bandeau img{border-radius:6px}
+  main section:first-of-type{break-inside:auto}   /* la 1re section démarre sous le bandeau au lieu de sauter en page 2 */
+  .hero{display:none!important}
   .topnav,.tabs,.btn,.steplinks,.note.warn,.ai-block,#aiSettingsBtn{display:none!important}
   body{background:#fff}
   section{padding:14px 0;break-inside:avoid}
@@ -386,6 +398,14 @@ footer b{color:var(--ink)}
 </style>
 </head>
 <body>
+<div class="print-bandeau" aria-hidden="true">
+  <img src="fe_bandeau.png" alt="">
+  <div class="pb-texte">
+    <div class="pb-titre">ÉVALUATION DU <span>RISQUE TMS</span></div>
+    <div class="pb-sous">Analyse posturale RULA  •  Prévention des troubles musculosquelettiques</div>
+    <div class="pb-lime"></div>
+  </div>
+</div>
 
 <!-- ============ TOP NAV ============ -->
 <nav class="topnav">
@@ -1849,7 +1869,17 @@ Outil : Évaluation TMS (PréventIA-LaB) · méthode RULA. Aide à la décision 
 }
 
 /* ===================== EXPORT ===================== */
-$('#dlHtmlBtn').addEventListener('click',()=>{
+// Bandeau SPSTI en data-URL : l'extrait .html téléchargé reste autonome (image intégrée)
+function bandeauDataURL(){
+  return fetch('fe_bandeau.png').then(r=>r.ok?r.blob():null).then(b=>b?new Promise(ok=>{
+    const fr=new FileReader();fr.onload=()=>ok(fr.result);fr.onerror=()=>ok('');fr.readAsDataURL(b);}):'').catch(()=>'');
+}
+$('#dlHtmlBtn').addEventListener('click',async()=>{
+  const ban=await bandeauDataURL();
+  const entete=(ban?`<img src="${ban}" alt="" style="display:block;width:calc(100% + 40px);margin:-24px -20px 0;height:auto">`:'')
+    +`<div style="font:700 30px/1.1 Arial,sans-serif;color:#0B3C78;margin:18px 0 4px">ÉVALUATION DU <span style="color:#1D9BD1">RISQUE TMS</span></div>`
+    +`<div style="font:700 15px Arial,sans-serif;color:#0B3C78">Extrait DUERP  •  Analyse posturale RULA</div>`
+    +`<div style="width:60px;height:5px;background:#AFCA0C;border-radius:3px;margin:10px 0 18px"></div>`;
   const html=`<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8">
 <title>Extrait DUERP — Risque TMS</title>
 <style>body{font-family:Segoe UI,Arial,sans-serif;max-width:840px;margin:24px auto;padding:0 20px;color:#1d2433;line-height:1.5}
@@ -1858,7 +1888,7 @@ th,td{border:1px solid #c9d2dc;padding:8px 11px;text-align:left;vertical-align:t
 th{background:#eef2f6;width:32%}.dh{background:#1d2433;color:#fff;padding:12px 15px;font-weight:600}
 .prio{font-weight:700;font-size:12px;padding:2px 8px;border-radius:30px}
 h1{font-size:18px}small{color:#667}</style></head><body>
-<h1>Extrait DUERP — Évaluation du risque TMS</h1>
+${entete}
 ${$('#duerpDoc').innerHTML}
 <p><small>Document généré par l’outil Évaluation TMS (PréventIA-LaB) — analyse posturale RULA. Outil d'aide à la décision à usage professionnel ; à valider par observation directe.</small></p>
 </body></html>`;

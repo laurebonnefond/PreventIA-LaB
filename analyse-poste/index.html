@@ -1170,29 +1170,38 @@ async function exportWord() {
   // --- Build sections ---
   const children = [];
 
-  // Title block
+  // Title block — charte fiche d'entreprise : bandeau SPSTI, titre bicolore, sous-titre, trait lime
+  let bandeau = null;
+  try {
+    const r = await fetch('fe_bandeau.png');
+    if (r.ok) bandeau = await r.arrayBuffer();
+  } catch (e) { /* export maintenu sans bandeau */ }
+  if (bandeau) {
+    // pleine largeur (A4 = 794 px), collé en haut de page, le texte passe dessous
+    children.push(new D.Paragraph({ children: [new D.ImageRun({
+      data: bandeau, transformation: { width: 794, height: 211 },
+      floating: {
+        horizontalPosition: { relative: D.HorizontalPositionRelativeFrom.PAGE, offset: 0 },
+        verticalPosition: { relative: D.VerticalPositionRelativeFrom.PAGE, offset: 0 },
+        wrap: { type: D.TextWrappingType.TOP_AND_BOTTOM }, allowOverlap: true
+      }
+    })] }));
+    children.push(new D.Paragraph({ spacing: { before: 300 }, children: [] }));
+  }
   children.push(new D.Paragraph({
     children: [
-      new D.TextRun({ text: 'ANALYSE DE POSTE DE TRAVAIL', bold: true, size: 36, color: NAVY, font: 'Calibri' })
+      new D.TextRun({ text: 'ANALYSE DE POSTE ', bold: true, size: 56, color: '0B3C78', font: 'Arial' }),
+      new D.TextRun({ text: 'DE TRAVAIL', bold: true, size: 56, color: '1D9BD1', font: 'Arial' })
     ],
-    alignment: D.AlignmentType.CENTER,
     spacing: { after: 40 }
   }));
   children.push(new D.Paragraph({
-    children: [new D.TextRun({ text: 'Rapport généré par PréventIA-LaB — Vision IA', size: 22, color: TEAL, font: 'Calibri', italics: true })],
-    alignment: D.AlignmentType.CENTER,
-    spacing: { after: 20 }
+    children: [new D.TextRun({ text: 'Ergonomie du poste  •  Analyse Vision IA  •  ' + dateStr, size: 26, bold: true, color: '0B3C78', font: 'Arial' })],
+    spacing: { after: 60 }
   }));
   children.push(new D.Paragraph({
-    children: [new D.TextRun({ text: dateStr, size: 20, color: '888888', font: 'Calibri' })],
-    alignment: D.AlignmentType.CENTER,
-    spacing: { after: 200 }
-  }));
-  // Horizontal line
-  children.push(new D.Paragraph({
-    border: { bottom: { style: D.BorderStyle.SINGLE, size: 6, color: TEAL } },
-    spacing: { after: 200 },
-    children: []
+    children: [new D.TextRun({ text: '▬▬▬', size: 24, color: 'AFCA0C' })],
+    spacing: { after: 240 }
   }));
 
   // Photo
@@ -1362,7 +1371,8 @@ async function exportWord() {
     });
 
     const blob = await D.Packer.toBlob(doc);
-    const filename = 'Analyse_Poste_PréventIA_' + new Date().toISOString().slice(0, 10) + '.docx';
+    // nom sans accent : sinon certains navigateurs (Android, Chromium) renomment le fichier en « download »
+    const filename = 'Analyse_Poste_PreventIA_' + new Date().toISOString().slice(0, 10) + '.docx';
     saveAs(blob, filename);
     showToast('Rapport Word exporté ✓');
   } catch (e) {
