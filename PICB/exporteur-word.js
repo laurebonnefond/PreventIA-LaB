@@ -63,7 +63,39 @@
   }
   function heading(lv, text) {
     // Styles du modèle SPSTI (Word français) : Titre2 / Titre3 — « Heading2 » n'existe pas dans le modèle
-    return '<w:p><w:pPr><w:pStyle w:val="Titre' + lv + '"/></w:pPr><w:r><w:rPr><w:b/></w:rPr><w:t>' + esc(text) + '</w:t></w:r></w:p>';
+    // ind à 0 : les styles Titre du modèle portent un retrait prévu pour la numérotation automatique
+    return '<w:p><w:pPr><w:pStyle w:val="Titre' + lv + '"/><w:ind w:left="0" w:firstLine="0"/></w:pPr><w:r><w:rPr><w:b/></w:rPr><w:t>' + esc(text) + '</w:t></w:r></w:p>';
+  }
+
+  /* ══════════ CARTES DE SYNTHÈSE (valeurs issues du calcul, aucune donnée inventée) ══════════ */
+  function couleurSeuil(v, s1, s2, s3) {        // vert < VAI ≤ orange < VAS ≤ rouge < VLE ≤ bordeaux
+    if (v == null || !isFinite(v)) return "8A97A8";
+    return v < s1 ? "2F7D4F" : v < s2 ? "E58A2A" : v < s3 ? "C2392B" : "7A1F1F";
+  }
+  function buildCartesXML(data) {
+    var res = data.res || {}, lex = parseFloat(String(data.lex || "").replace(",", "."));
+    var cartes = [
+      ["Lex,8h mesuré", isFinite(lex) ? f1(lex) : "—", "dB(A)",
+        "Exposition quotidienne ramenée à 8 h (dosimétrie). VAI 80 · VAS 85 · VLE 87", couleurSeuil(lex, 80, 85, 87)],
+      ["Leq(A) au poste", f1(res.leqA), "dB(A)",
+        "Niveau calculé à partir du spectre par bande d’octave (sonométrie)", "1C4C7C"],
+      ["Niveau à l’oreille sous PICB", data.noPicb ? "—" : f1(res.ref), data.noPicb ? "" : "dB(A)",
+        data.noPicb ? "Aucun PICB porté lors de la mesure" : "L’A retenu : protection atteinte par 98 % des porteurs (méthode OB)",
+        data.noPicb || !data.diag ? "8A97A8" : String(data.diag.hex || "").replace("#", "") || "1C4C7C"],
+      ["Lp,C crête maximale", data.lpc != null && isFinite(data.lpc) ? f1(data.lpc) : "—", data.lpc != null ? "dB(C)" : "",
+        data.lpc != null ? "Valeurs d’action 135 / 137 · VLE 140 dB(C)" : "Non renseignée", couleurSeuil(data.lpc, 135, 137, 140)]
+    ];
+    var W = 2268, x = '<w:tbl><w:tblPr><w:tblW w:w="9072" w:type="dxa"/><w:tblBorders><w:insideV w:val="single" w:sz="18" w:space="0" w:color="FFFFFF"/></w:tblBorders>'
+      + '<w:tblLayout w:type="fixed"/><w:tblCellMar><w:left w:w="110" w:type="dxa"/><w:right w:w="110" w:type="dxa"/></w:tblCellMar></w:tblPr><w:tr>';
+    cartes.forEach(function (c) {
+      x += '<w:tc><w:tcPr><w:tcW w:w="' + W + '" w:type="dxa"/><w:tcBorders><w:top w:val="single" w:sz="36" w:space="0" w:color="' + c[4] + '"/></w:tcBorders>'
+        + '<w:shd w:val="clear" w:color="auto" w:fill="F3F8FC"/></w:tcPr>'
+        + '<w:p><w:pPr><w:spacing w:before="80" w:after="20"/></w:pPr><w:r><w:rPr><w:b/><w:color w:val="0B3C78"/><w:sz w:val="17"/><w:szCs w:val="17"/></w:rPr><w:t xml:space="preserve">' + esc(c[0]) + '</w:t></w:r></w:p>'
+        + '<w:p><w:pPr><w:spacing w:before="0" w:after="0"/></w:pPr><w:r><w:rPr><w:b/><w:color w:val="' + c[4] + '"/><w:sz w:val="40"/><w:szCs w:val="40"/></w:rPr><w:t xml:space="preserve">' + esc(c[1]) + ' </w:t></w:r>'
+        + '<w:r><w:rPr><w:color w:val="5D6B7A"/><w:sz w:val="18"/><w:szCs w:val="18"/></w:rPr><w:t>' + esc(c[2]) + '</w:t></w:r></w:p>'
+        + '<w:p><w:pPr><w:spacing w:before="20" w:after="80"/></w:pPr><w:r><w:rPr><w:i/><w:color w:val="5D6B7A"/><w:sz w:val="14"/><w:szCs w:val="14"/></w:rPr><w:t xml:space="preserve">' + esc(c[3]) + '</w:t></w:r></w:p></w:tc>';
+    });
+    return x + '</w:tr></w:tbl><w:p/>';
   }
   function para(text, o) {
     o = o || {};
@@ -81,7 +113,7 @@
       + '<w:top w:val="single" w:sz="4" w:color="C0C0C0"/><w:left w:val="single" w:sz="4" w:color="C0C0C0"/>'
       + '<w:bottom w:val="single" w:sz="4" w:color="C0C0C0"/><w:right w:val="single" w:sz="4" w:color="C0C0C0"/>'
       + '<w:insideH w:val="single" w:sz="4" w:color="C0C0C0"/><w:insideV w:val="single" w:sz="4" w:color="C0C0C0"/>'
-      + '</w:tblBorders></w:tblPr>';
+      + '</w:tblBorders><w:tblCellMar><w:left w:w="55" w:type="dxa"/><w:right w:w="55" w:type="dxa"/></w:tblCellMar></w:tblPr>';
   }
 
   /* ══════════ PLACEHOLDERS ══════════ */
@@ -130,35 +162,35 @@
     var xml = heading(2, 'T\u00c2CHES / SITUATIONS D\'EXPOSITION');
     xml += para('Spectre par bande d\'octave pour chaque t\u00e2che. La ligne \u00ab Enveloppe MAX \u00bb retient le niveau le plus contraignant par bande (spectre dimensionnant).', { size: '18' });
     xml += '<w:p/>';
-    var cW = '660';
-    xml += tblStart(9072);
-    var hdr = [tc("T\u00e2che", { bold: true, bg: "102A43", color: "FFFFFF", width: "1200", align: "center" }),
-      tc("Zone", { bold: true, bg: "102A43", color: "FFFFFF", width: "800", align: "center" }),
-      tc("Source", { bold: true, bg: "102A43", color: "FFFFFF", width: "800", align: "center" })];
-    FREQS.forEach(function (f) { hdr.push(tc(hz(f), { bold: true, bg: "102A43", color: "FFFFFF", width: cW, align: "center", mono: true })); });
-    hdr.push(tc("h", { bold: true, bg: "102A43", color: "FFFFFF", width: "400", align: "center" }));
-    hdr.push(tc("Leq(A)", { bold: true, bg: "102A43", color: "FFFFFF", width: "550", align: "center" }));
-    hdr.push(tc("Lp,C", { bold: true, bg: "102A43", color: "FFFFFF", width: "500", align: "center" }));
-    hdr.push(tc("Car.", { bold: true, bg: "102A43", color: "FFFFFF", width: "420", align: "center" }));
+    var cW = '590';   // colonnes resserrées : somme des colonnes = 9 190 twips
+    xml += tblStart(9190);
+    var hdr = [tc("T\u00e2che", { bold: true, bg: "102A43", color: "FFFFFF", width: "970", align: "center" }),
+      tc("Zone", { bold: true, bg: "102A43", color: "FFFFFF", width: "760", align: "center" }),
+      tc("Source", { bold: true, bg: "102A43", color: "FFFFFF", width: "760", align: "center" })];
+    FREQS.forEach(function (f) { hdr.push(tc(hz(f), { bold: true, bg: "102A43", color: "FFFFFF", width: cW, align: "center", mono: true, size: "15" })); });
+    hdr.push(tc("h", { bold: true, bg: "102A43", color: "FFFFFF", width: "360", align: "center" }));
+    hdr.push(tc("Leq(A)", { bold: true, bg: "102A43", color: "FFFFFF", width: "620", align: "center" }));
+    hdr.push(tc("Lp,C", { bold: true, bg: "102A43", color: "FFFFFF", width: "620", align: "center" }));
+    hdr.push(tc("Car.", { bold: true, bg: "102A43", color: "FFFFFF", width: "380", align: "center" }));
     xml += tr(hdr);
     data.taches.forEach(function (t) {
-      var cells = [tc(t.nom || "\u2014", { bold: true, bg: "1C4C7C", color: "FFFFFF", width: "1200" }),
-        tc(t.zone || "", { width: "800" }), tc(t.source || "", { width: "800" })];
-      for (var i = 0; i < 8; i++) cells.push(tc(t.spectre[i] != null ? f1(t.spectre[i]) : "\u2014", { width: cW, align: "center", mono: true }));
-      cells.push(tc(t.duree + "h", { width: "400", align: "center" }));
-      cells.push(tc(f1(t.leqA), { width: "550", align: "center", bold: true, mono: true }));
-      cells.push(tc(t.lpc != null ? f1(t.lpc) : "\u2014", { width: "500", align: "center", mono: true }));
-      cells.push(tc({ continu: "C", intermittent: "I", impulsionnel: "IMP" }[t.caract] || "", { width: "420", align: "center" }));
+      var cells = [tc(t.nom || "\u2014", { bold: true, bg: "1C4C7C", color: "FFFFFF", width: "970" }),
+        tc(t.zone || "", { width: "760" }), tc(t.source || "", { width: "760" })];
+      for (var i = 0; i < 8; i++) cells.push(tc(t.spectre[i] != null ? f1(t.spectre[i]) : "\u2014", { width: cW, align: "center", mono: true, size: "15" }));
+      cells.push(tc(t.duree + "h", { width: "360", align: "center", size: "15" }));
+      cells.push(tc(f1(t.leqA), { width: "620", align: "center", bold: true, mono: true, size: "15" }));
+      cells.push(tc(t.lpc != null ? f1(t.lpc) : "\u2014", { width: "620", align: "center", mono: true, size: "15" }));
+      cells.push(tc({ continu: "C", intermittent: "I", impulsionnel: "IMP" }[t.caract] || "", { width: "380", align: "center", size: "15" }));
       xml += tr(cells);
     });
-    var envC = [tc("ENVELOPPE MAX", { bold: true, bg: "1A7A6D", color: "FFFFFF", width: "1200" }),
-      tc("", { bg: "E6F5F2", width: "800" }), tc("", { bg: "E6F5F2", width: "800" })];
-    for (var i = 0; i < 8; i++) envC.push(tc(data.spec[i] != null ? f1(data.spec[i]) : "\u2014", { width: cW, align: "center", mono: true, bold: true, bg: "E6F5F2", color: "1A7A6D" }));
-    envC.push(tc("", { bg: "E6F5F2", width: "400" }));
-    envC.push(tc("", { bg: "E6F5F2", width: "550" }));
+    var envC = [tc("ENVELOPPE MAX", { bold: true, bg: "1A7A6D", color: "FFFFFF", width: "970" }),
+      tc("", { bg: "E6F5F2", width: "760" }), tc("", { bg: "E6F5F2", width: "760" })];
+    for (var i = 0; i < 8; i++) envC.push(tc(data.spec[i] != null ? f1(data.spec[i]) : "\u2014", { width: cW, align: "center", mono: true, bold: true, bg: "E6F5F2", color: "1A7A6D", size: "15" }));
+    envC.push(tc("", { bg: "E6F5F2", width: "360" }));
+    envC.push(tc("", { bg: "E6F5F2", width: "620" }));
     var mxLpc = null; data.taches.forEach(function (t) { if (t.lpc != null && (mxLpc === null || t.lpc > mxLpc)) mxLpc = t.lpc; });
-    envC.push(tc(mxLpc != null ? f1(mxLpc) : "\u2014", { bg: "E6F5F2", width: "500", align: "center", bold: true, mono: true, color: mxLpc != null && mxLpc >= 135 ? "C2392B" : "1A7A6D" }));
-    envC.push(tc("", { bg: "E6F5F2", width: "420" }));
+    envC.push(tc(mxLpc != null ? f1(mxLpc) : "\u2014", { bg: "E6F5F2", width: "620", align: "center", bold: true, mono: true, size: "15", color: mxLpc != null && mxLpc >= 135 ? "C2392B" : "1A7A6D" }));
+    envC.push(tc("", { bg: "E6F5F2", width: "380" }));
     xml += tr(envC);
     xml += '</w:tbl><w:p/>';
     return xml;
@@ -169,6 +201,7 @@
     var res = data.res, diag = data.diag, adq = data.adq, spec = data.spec, noPicb = data.noPicb, isMulti = data.mode === "multi";
     var xml = '';
     xml += heading(2, 'R\u00c9SULTATS PICB \u2014 Calcul OB INRS' + (isMulti ? " (spectre dimensionnant \u2014 " + (data.taches ? data.taches.length : 1) + " t\u00e2ches)" : ""));
+    xml += buildCartesXML(data);
     var ctxPairs = [
       ["Protecteur \u00e9valu\u00e9", noPicb ? "Aucun PICB port\u00e9" : ((data.picb ? data.picb.nom : "\u2014") + (data.picb && data.picb.snr ? " \u00b7 SNR " + data.picb.snr + " dB" : ""))],
       ["Type", noPicb ? "\u2014" : (data.picb ? data.picb.typeLabel || "" : "\u2014")],
