@@ -3,9 +3,61 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Violentomètre — PréventIA-LaB</title>
+<title>Violentomètre au travail — PréventIA-LaB</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="sm.css">
+<style>
+/* ---- Couleurs des 5 niveaux (bas = vert, haut = rouge) ---- */
+:root{
+  --n1:oklch(0.64 0.15 150); --n2:oklch(0.80 0.15 110); --n3:oklch(0.76 0.15 75);
+  --n4:oklch(0.66 0.18 45);  --n5:oklch(0.55 0.21 27);
+}
+.vm{display:grid;grid-template-columns:1fr 360px;gap:1.6rem;align-items:start}
+
+/* Questionnaire */
+.niveau{margin-bottom:1.3rem}
+.niveau-h{display:flex;align-items:center;gap:.6rem;margin-bottom:.45rem}
+.niveau-h .pastille{flex:none;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-weight:700;color:#fff;background:var(--c)}
+.niveau-h b{font-size:15.5px}
+.niveau-h small{display:block;color:var(--muted);font-size:12.5px;font-weight:400}
+.item{--zc:var(--c)}
+
+/* Contexte */
+.ctx{display:flex;gap:.8rem;flex-wrap:wrap;background:#fff;border:1px solid var(--line);border-radius:14px;padding:.9rem 1rem;margin-bottom:1.2rem}
+.ctx label{display:flex;flex-direction:column;gap:.25rem;font-size:12px;font-weight:600;color:var(--muted);flex:1;min-width:170px}
+.ctx select{padding:.5rem .6rem;border:1px solid var(--line);border-radius:9px;font:inherit;font-size:13.5px;color:var(--text)}
+
+/* Thermomètre */
+.thermo-card{position:sticky;top:76px;max-height:calc(100vh - 90px);overflow:auto;background:#fff;border:1px solid var(--line);border-radius:20px;padding:1.2rem 1.2rem 1.3rem;box-shadow:var(--shadow-lg)}
+.thermo{display:grid;grid-template-columns:64px 1fr;gap:.6rem;height:360px;margin:.4rem 0 1rem}
+.tube-wrap{position:relative;display:flex;flex-direction:column;align-items:center}
+.tube{position:relative;width:26px;flex:1;border-radius:14px 14px 0 0;background:oklch(0.95 0.005 220);border:3px solid oklch(0.88 0.01 220);border-bottom:0;overflow:hidden}
+.tube::before{content:'';position:absolute;inset:0;opacity:.18;background:linear-gradient(to top,var(--n1),var(--n2),var(--n3),var(--n4),var(--n5))}
+.mercure{position:absolute;left:0;right:0;bottom:0;height:0;background:var(--niv-c,var(--n1));transition:height .7s cubic-bezier(.3,1.3,.5,1),background .5s}
+.bulbe{width:56px;height:56px;margin-top:-6px;border-radius:50%;background:var(--niv-c,oklch(0.88 0.01 220));border:3px solid oklch(0.88 0.01 220);box-shadow:inset -6px -6px 12px rgb(0 0 0/.12);transition:background .5s;display:grid;place-items:center;color:#fff;font-weight:700;font-size:20px}
+.graduations{display:flex;flex-direction:column-reverse;justify-content:space-between;padding-bottom:58px}
+.grad{display:flex;align-items:center;gap:.5rem;font-size:12.5px;line-height:1.2;cursor:pointer;border-radius:8px;padding:.25rem .4rem;opacity:.55;transition:opacity .2s,background .2s}
+.grad::before{content:'';flex:none;width:14px;height:3px;border-radius:2px;background:var(--c)}
+.grad b{display:block;font-size:13px;color:var(--text)}
+.grad.atteint{opacity:1}
+.grad.actif{background:color-mix(in oklch,var(--c) 14%,#fff);opacity:1}
+.verdict{border-radius:14px;padding:.9rem 1rem;background:color-mix(in oklch,var(--niv-c,var(--line)) 12%,#fff);border-left:5px solid var(--niv-c,var(--line))}
+.verdict h3{font-family:'DM Serif Display',serif;font-weight:400;font-size:21px;color:var(--text)}
+.verdict p,.verdict li{font-size:13.5px}
+.verdict ul{padding-left:1.1rem;margin-top:.4rem}
+.appel{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.7rem}
+.appel a{display:inline-flex;flex-direction:column;padding:.45rem .7rem;border-radius:10px;background:#fff;border:1px solid var(--line);text-decoration:none;color:var(--text);font-size:11.5px;line-height:1.2}
+.appel a b{font-size:17px;color:var(--bad)}
+
+/* Contacts entreprise */
+.contacts{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:.7rem}
+.contact{background:#fff;border:1px solid var(--line);border-radius:12px;padding:.7rem .9rem}
+.contact label{font-size:12px;font-weight:700;color:var(--psy-dark);display:block;margin-bottom:.3rem}
+.contact input{width:100%;border:1px solid var(--line);border-radius:8px;padding:.45rem .55rem;font:inherit;font-size:13.5px}
+.contact small{display:block;color:var(--muted);font-size:11.5px;margin-top:.3rem}
+@media(max-width:900px){.vm{grid-template-columns:1fr}.thermo-card{position:static}}
+@media print{.ctx,.item:not(.on){display:none}.thermo-card{position:static;box-shadow:none}.contact input{border:0;padding:0;font-weight:600}}
+</style>
 </head>
 <body>
 <nav class="sm-nav"><div class="in">
@@ -16,83 +68,178 @@
 </div></nav>
 
 <header class="sm-head"><div class="in">
-  <div class="crumb"><a href="../index.html">Accueil</a> › <a href="index.html">Santé mentale</a> › Violentomètre</div>
-  <div class="sm-eyebrow">Repérer · Violences dans le couple</div>
-  <h1>Violentomètre</h1>
-  <p>Votre relation est-elle saine ? Cochez ce que vous vivez. Les violences conjugales ont aussi des effets au travail : absences, fatigue, appels incessants, peur. Le service de santé au travail peut aider.</p>
+  <div class="crumb"><a href="../index.html">Accueil</a> › <a href="index.html">Santé mentale</a> › Violentomètre au travail</div>
+  <div class="sm-eyebrow">Repérer · Souffrance au travail</div>
+  <h1>Violentomètre au travail</h1>
+  <p>Des incivilités du quotidien jusqu’aux violences graves : cochez ce qui est vécu ou observé dans le cadre du travail. Le thermomètre situe la gravité des faits et indique qui contacter.</p>
 </div></header>
 
 <main>
-  <div class="note red">🚨 <b>Danger immédiat :</b> <b>17</b> (police) ou <b>112</b> · par SMS : <b>114</b> (aussi pour les personnes sourdes ou si vous ne pouvez pas parler).</div>
-  <div id="regle"></div>
+  <div class="vm">
+    <div>
+      <div class="ctx">
+        <label>Ces faits viennent de…
+          <select id="auteur"><option value="">— préciser (facultatif)</option><option>un ou des collègues</option><option>la hiérarchie</option><option>des clients, usagers ou patients</option><option>plusieurs sources</option></select></label>
+        <label>Ils se produisent…
+          <select id="frequence"><option value="">— préciser (facultatif)</option><option value="1">une fois</option><option value="2">plusieurs fois</option><option value="3">régulièrement, depuis des semaines</option></select></label>
+      </div>
+      <div id="questionnaire"></div>
+    </div>
 
-  <h2 style="margin-top:2.4rem">Pour le professionnel de santé au travail</h2>
+    <aside class="thermo-card" aria-live="polite">
+      <div class="sm-eyebrow" style="color:var(--muted)">Thermomètre</div>
+      <div class="thermo">
+        <div class="tube-wrap"><div class="tube"><div class="mercure" id="mercure"></div></div><div class="bulbe" id="bulbe"></div></div>
+        <div class="graduations" id="graduations"></div>
+      </div>
+      <div class="verdict" id="verdict"></div>
+      <div style="display:flex;gap:.5rem;margin-top:.9rem;flex-wrap:wrap">
+        <button class="btn" id="raz">↺ Tout décocher</button>
+        <button class="btn" onclick="window.print()">🖨 Imprimer</button>
+      </div>
+    </aside>
+  </div>
+
+  <!-- Contacts personnalisables -->
+  <h2 style="margin-top:2.4rem">📇 Qui contacter dans l’entreprise ?</h2>
+  <p class="lead">Complétez les noms et numéros de l’entreprise : ils s’affichent dans les conseils du thermomètre et peuvent être imprimés pour affichage. Ils restent enregistrés sur cet ordinateur uniquement.</p>
+  <div class="contacts" id="contacts"></div>
+
+  <h2 style="margin-top:2.4rem">⚖️ Mettre les bons mots sur les faits</h2>
   <div class="grid">
-    <div class="box"><h3>🔎 Signes visibles au travail</h3><ul>
-      <li>Absences ou retards répétés, arrêts courts fréquents</li>
-      <li>Appels ou messages du conjoint très fréquents, contrôle des horaires</li>
-      <li>Conjoint qui attend sur le parking ou vient sur le lieu de travail</li>
-      <li>Ecchymoses expliquées de façon floue, tenue couvrante inhabituelle</li>
-      <li>Repli, anxiété, troubles du sommeil, consommation d’alcool ou de médicaments</li></ul></div>
-    <div class="box"><h3>💬 Poser la question</h3><ul>
-      <li>La HAS recommande un <b>repérage systématique</b> en consultation, même sans signe d’appel.</li>
-      <li>En tête-à-tête, sans le conjoint : « Comment ça se passe à la maison ? Vous sentez-vous en sécurité ? »</li>
-      <li>Croire, ne pas juger, ne pas presser la personne de partir : respecter son rythme.</li></ul></div>
-    <div class="box"><h3>🩺 Agir</h3><ul>
-      <li>Noter les constatations dans le dossier médical ; rédiger un certificat descriptif si besoin.</li>
-      <li>Orienter : <b>3919</b>, associations locales, <b>arretonslesviolences.gouv.fr</b>, avocat (ordonnance de protection).</li>
-      <li>Danger grave et emprise : le médecin peut signaler au procureur, même sans accord (Code pénal <b>226-14</b>).</li>
-      <li>Proposer des aménagements protecteurs au travail : horaires, poste, accueil, parking.</li></ul></div>
+    <div class="box"><h3>Ce que mesure l’outil</h3><ul>
+      <li>La <b>nature et la gravité</b> des faits, pour en prendre conscience et agir tôt.</li>
+      <li>Il ne <b>qualifie pas juridiquement</b> une situation : il aide à décrire et à orienter.</li></ul></div>
+    <div class="box"><h3>Une qualification juridique</h3><ul>
+      <li><b>Harcèlement moral</b> (L1152-1) ou <b>sexuel</b> (L1153-1), <b>agissement sexiste</b> (L1142-2-1) : ces notions supposent des conditions précises (répétition, effets sur la santé ou la dignité…).</li>
+      <li>Elles sont appréciées par l’employeur lors de l’enquête interne, par l’inspection du travail ou par le juge.</li></ul></div>
+    <div class="box"><h3>Obligations de l’employeur</h3><ul>
+      <li>Protéger la santé physique et mentale : <b>L4121-1</b>.</li>
+      <li>Prévenir, faire cesser et sanctionner les agissements : <b>L1152-4</b>, <b>L1153-5</b>.</li>
+      <li>Personne ne peut être sanctionné pour avoir relaté de bonne foi des faits : <b>L1152-2</b>, <b>L1153-2</b>.</li></ul></div>
+    <div class="box"><h3>Violences externes</h3><ul>
+      <li>Agressions par des clients, usagers ou patients : à évaluer dans le <b>DUERP</b>, avec des mesures de prévention et un soutien après l’incident.</li>
+      <li>Toute agression doit être déclarée comme <b>accident du travail</b> si elle a des conséquences.</li></ul></div>
   </div>
 </main>
-<p class="foot">PréventIA-LaB · Violentomètre — formulation originale inspirée des outils de repérage des violences dans le couple. Aucune donnée enregistrée.</p>
+<p class="foot">PréventIA-LaB · Violentomètre au travail — outil de repérage original, sans valeur juridique. Seuls les contacts de l’entreprise sont enregistrés, sur cet ordinateur.</p>
 
-<script src="regle.js"></script>
 <script>
-SM.regle(document.getElementById('regle'), {
-  zones: [
-    { cls: 'z-ok', titre: 'Profitez — relation saine', sous: '', items: [
-      'Il ou elle respecte mes choix, mes goûts et mes amis',
-      'Nous pouvons ne pas être d’accord sans que j’aie peur',
-      'Je peux voir ma famille, sortir, travailler librement',
-      'Il ou elle accepte quand je dis non, y compris à des relations sexuelles',
-      'Je me sens en sécurité et écouté·e'
-    ]},
-    { cls: 'z-warn', titre: 'Vigilance — dites stop', sous: '', items: [
-      'Il ou elle fouille mon téléphone, mes messages ou mes comptes',
-      'Il ou elle me reproche mes tenues, mes amis, mon travail',
-      'Il ou elle me rabaisse, se moque de moi, même « pour rire »',
-      'Je dois rendre compte de mes horaires et de mes dépenses',
-      'Il ou elle me fait du chantage, menace de partir ou de se faire du mal',
-      'Il ou elle m’appelle ou m’écrit sans cesse quand je suis au travail',
-      'Je m’isole de mes proches pour éviter les disputes'
-    ]},
-    { cls: 'z-bad', titre: 'Danger — protégez-vous, demandez de l’aide', sous: '', items: [
-      'Il ou elle me pousse, me secoue, me gifle, me frappe',
-      'Il ou elle casse des objets ou me menace pour me faire peur',
-      'Il ou elle m’empêche de sortir, de travailler ou de voir un médecin',
-      'Il ou elle me force à des actes sexuels',
-      'Il ou elle menace de me tuer, de s’en prendre aux enfants ou aux animaux',
-      'Il ou elle contrôle tout mon argent ou confisque mes papiers',
-      'J’ai peur de rentrer chez moi'
-    ]}
-  ],
-  resultats: {
-    aucun: { titre: 'Cochez les situations', html: '<p style="color:var(--muted);font-size:13.5px">Le résultat s’affiche ici. Rien n’est enregistré.</p>' },
-    ok:    { titre: 'Relation saine', html: '<ul><li>Les situations cochées correspondent à une relation respectueuse.</li><li>En cas de doute, le <b>3919</b> écoute aussi les questions.</li></ul>' },
-    warn:  { titre: 'Vigilance', html: `<ul>
-      <li>Ce sont des comportements de <b>contrôle</b> : ils ne sont pas normaux et s’aggravent souvent.</li>
-      <li>Parlez-en à une personne de confiance, au médecin ou à l’infirmier·e du travail.</li>
-      <li><b>3919</b> — Violences Femmes Info : anonyme, gratuit, 24 h/24.</li></ul>` },
-    bad:   { titre: 'Danger', html: `<ul>
-      <li style="color:var(--bad)"><b>Danger immédiat : 17 ou 112 · SMS 114.</b></li>
-      <li><b>3919</b> pour être écouté·e et orienté·e, anonyme et gratuit.</li>
-      <li>Faites constater les blessures par un médecin ; gardez des preuves en lieu sûr.</li>
-      <li>Vous pouvez porter plainte et demander une <b>ordonnance de protection</b> au juge aux affaires familiales.</li>
-      <li>Au travail : le médecin du travail peut proposer des aménagements protecteurs.</li>
-      <li>Ressources : <b>arretonslesviolences.gouv.fr</b></li></ul>` }
-  }
+/* =====================================================================
+   NIVEAUX — du bas (vert) vers le haut (rouge)
+   ===================================================================== */
+const NIVEAUX = [
+  { n: 1, c: 'var(--n1)', titre: 'Relations respectueuses', court: 'Respect', sous: 'Le travail peut être exigeant, sans atteinte à la personne',
+    items: ['On me dit bonjour, on m’écoute, on me répond', 'Les critiques portent sur le travail, avec des arguments', 'Les désaccords se règlent par la discussion', 'Je peux dire que je suis en difficulté sans être jugé·e'] },
+  { n: 2, c: 'var(--n2)', titre: 'Incivilités', court: 'Incivilités', sous: 'Manque de politesse, à ne pas banaliser',
+    items: ['On ne me dit pas bonjour, on m’ignore', 'On me coupe la parole, on soupire quand je parle', 'Ton sec, porte claquée, réponses agacées', 'Retards ou absences non prévenues qui me pénalisent', 'Remarque désobligeante ponctuelle'] },
+  { n: 3, c: 'var(--n3)', titre: 'Comportements hostiles', court: 'Hostilité', sous: 'Ils dégradent le climat et commencent à atteindre la personne',
+    items: ['Moqueries, surnoms, « blagues » sur moi', 'Remarques blessantes sur mon travail ou ma personne', 'Mise à l’écart : réunions, informations, pauses', 'Rumeurs ou ragots à mon sujet', 'Critiques devant les collègues ou la clientèle', 'Propos sexistes, racistes ou sur l’apparence'] },
+  { n: 4, c: 'var(--n4)', titre: 'Violences psychologiques', court: 'Violences psy.', sous: 'Atteinte à la dignité et à la santé : alerter',
+    items: ['Insultes, cris, propos humiliants', 'Menaces, intimidation, chantage à la sanction', 'Isolement organisé : plus de travail, plus de contact', 'Dénigrement systématique auprès des autres', 'Pressions ou messages hostiles, y compris hors horaires', 'Propos ou gestes à connotation sexuelle malgré un refus', 'Ma santé se dégrade : sommeil, angoisse, peur de venir'] },
+  { n: 5, c: 'var(--n5)', titre: 'Violences graves — danger', court: 'Danger', sous: 'Atteinte physique ou sexuelle, menace grave : agir immédiatement',
+    items: ['On m’a bousculé·e, frappé·e ou agressé·e', 'Contact physique à caractère sexuel non consenti', 'Pression pour obtenir un acte sexuel, même une seule fois', 'Menaces de mort ou contre mes proches', 'Dégradation ou vol de mes affaires pour m’atteindre', 'Idées noires en lien avec ce que je vis au travail'] }
+];
+
+/* Contacts : clé, libellé, aide, valeur par défaut */
+const CONTACTS = [
+  ['manager', 'Manager / N+1', 'Si ce n’est pas la personne en cause'],
+  ['rh', 'Ressources humaines', 'Service RH ou direction'],
+  ['cse', 'CSE / représentants du personnel', 'Élus du personnel'],
+  ['referent', 'Référent harcèlement et agissements sexistes', 'Référent du CSE (L2314-1), référent RH dès 250 salariés'],
+  ['spsti', 'Service de santé au travail', 'Médecin, infirmier·e, psychologue du travail'],
+  ['ecoute', 'Cellule d’écoute / assistance psychologique', 'Si l’entreprise en dispose'],
+  ['inspection', 'Inspection du travail', 'Coordonnées de l’unité de contrôle locale']
+];
+const C = (() => { try { return JSON.parse(localStorage.getItem('vm_contacts')) || {}; } catch (e) { return {}; } })();
+const nomContact = k => C[k] ? ` <b>(${C[k].replace(/[<>&]/g, '')})</b>` : '';
+
+/* Conseils par niveau atteint */
+const NUM = {
+  danger: '<a href="tel:17"><b>17</b>Police</a><a href="tel:112"><b>112</b>Urgences</a><a href="tel:15"><b>15</b>SAMU</a><a href="sms:114"><b>114</b>SMS</a>',
+  vss: '<a href="tel:3919"><b>3919</b>Violences sexistes · 24 h/24</a>',
+  detresse: '<a href="tel:3114"><b>3114</b>Détresse · 24 h/24</a>'
+};
+function conseils(n, freq) {
+  const repet = freq >= 2;
+  return [
+    { t: 'Cochez ce qui est vécu ou observé', html: '<p>Le thermomètre monte au niveau le plus grave coché. Commencez par le bas.</p>' },
+    { t: 'Relations respectueuses', html: '<p>Rien d’inquiétant dans ce qui est coché. Si un malaise persiste, en parler reste toujours possible :</p><ul><li>Manager' + nomContact('manager') + '</li><li>Service de santé au travail' + nomContact('spsti') + '</li></ul>' },
+    { t: 'Incivilités', html: `<p>Ce ne sont pas des « petites choses » : répétées, elles usent et font monter les tensions.</p><ul>
+      <li>En parler calmement, sur des faits précis, avec la personne ou le manager${nomContact('manager')}.</li>
+      <li>Si cela persiste : RH${nomContact('rh')} ou représentants du personnel${nomContact('cse')}.</li>
+      <li>Le collectif peut travailler sur des règles de vie commune.</li></ul>` },
+    { t: 'Comportements hostiles', html: `<p>Le climat se dégrade et la personne est atteinte${repet ? ' — et les faits <b>se répètent</b>' : ''}.</p><ul>
+      <li><b>Noter les faits</b> : date, lieu, propos exacts, témoins.</li>
+      <li>Alerter le manager${nomContact('manager')} ou les RH${nomContact('rh')}.</li>
+      <li>En parler au service de santé au travail${nomContact('spsti')}.</li>
+      <li>Propos sexistes ou sexuels : référent${nomContact('referent')}.</li></ul>` },
+    { t: 'Violences psychologiques', html: `<p><b>Alerter sans attendre.</b> ${repet ? 'Répétés, ces faits peuvent relever d’une qualification juridique (harcèlement moral ou sexuel), appréciée lors d’une enquête.' : 'Même ponctuels, ces faits portent atteinte à la dignité.'}</p><ul>
+      <li>Signaler par écrit aux RH ou à la direction${nomContact('rh')} : l’employeur doit faire cesser les faits.</li>
+      <li>Référent harcèlement et agissements sexistes${nomContact('referent')}, CSE${nomContact('cse')}.</li>
+      <li><b>Médecin du travail</b>${nomContact('spsti')} : aménagements, éloignement, orientation.</li>
+      <li>Inspection du travail${nomContact('inspection')}.</li>
+      <li>Garder les preuves : messages, mails, témoignages, certificats médicaux.</li></ul>
+      <div class="appel">${NUM.detresse}${NUM.vss}</div>` },
+    { t: 'Violences graves — danger', html: `<p><b>Se mettre en sécurité et agir immédiatement.</b></p><ul>
+      <li>Danger immédiat : appeler les secours.</li>
+      <li>Faire constater les blessures par un médecin ; déclarer l’<b>accident du travail</b>.</li>
+      <li>Prévenir la direction${nomContact('rh')} et le service de santé au travail${nomContact('spsti')}.</li>
+      <li>Les violences physiques ou sexuelles sont des <b>infractions pénales</b> : une plainte peut être déposée.</li>
+      <li>Soutien psychologique${nomContact('ecoute')}.</li></ul>
+      <div class="appel">${NUM.danger}${NUM.vss}${NUM.detresse}</div>` }
+  ][n];
+}
+
+/* ---------------- Rendu ---------------- */
+const q = document.getElementById('questionnaire');
+q.innerHTML = NIVEAUX.map(N => `<div class="niveau" style="--c:${N.c}">
+  <div class="niveau-h"><span class="pastille">${N.n}</span><div><b>${N.titre}</b><small>${N.sous}</small></div></div>
+  ${N.items.map(t => `<label class="item"><input type="checkbox" data-n="${N.n}"><span>${t}</span></label>`).join('')}</div>`).join('');
+
+document.getElementById('graduations').innerHTML = NIVEAUX.map(N =>
+  `<div class="grad" data-n="${N.n}" style="--c:${N.c}" title="Voir les conseils de ce niveau"><span><b>${N.n} · ${N.court}</b></span></div>`).join('');
+
+let apercu = null;      // niveau survolé / cliqué sur le thermomètre
+function maj() {
+  const coches = [...q.querySelectorAll('input:checked')];
+  q.querySelectorAll('.item').forEach(l => l.classList.toggle('on', l.querySelector('input').checked));
+  const n = coches.reduce((m, c) => Math.max(m, +c.dataset.n), 0);
+  const vue = apercu || n;
+  const N = NIVEAUX[vue - 1];
+  const col = N ? N.c : 'oklch(0.88 0.01 220)';
+  const carte = document.querySelector('.thermo-card');
+  carte.style.setProperty('--niv-c', col);
+  document.getElementById('mercure').style.height = (n ? (n - 0.5) / 5 * 100 : 0) + '%';
+  document.getElementById('mercure').style.background = n ? NIVEAUX[n - 1].c : 'transparent';
+  document.getElementById('bulbe').style.background = n ? NIVEAUX[n - 1].c : 'oklch(0.88 0.01 220)';
+  document.getElementById('bulbe').textContent = n || '';
+  document.querySelectorAll('.grad').forEach(g => { g.classList.toggle('atteint', +g.dataset.n <= n); g.classList.toggle('actif', +g.dataset.n === vue); });
+  const freq = +document.getElementById('frequence').value || 0, aut = document.getElementById('auteur').value;
+  const k = conseils(vue, freq);
+  document.getElementById('verdict').innerHTML = `<h3>${apercu && apercu !== n ? 'Niveau ' + apercu + ' · ' : ''}${k.t}</h3>`
+    + (aut && vue ? `<p style="color:var(--muted);font-size:12.5px">Faits venant de ${aut}${aut.startsWith('des clients') ? ' : penser aussi à l’évaluation du risque d’agression dans le DUERP.' : '.'}</p>` : '')
+    + k.html + (coches.length ? `<p style="font-size:12px;color:var(--muted);margin-top:.6rem">${coches.length} fait(s) coché(s)</p>` : '');
+}
+q.addEventListener('change', maj);
+document.getElementById('auteur').onchange = maj;
+document.getElementById('frequence').onchange = maj;
+document.querySelectorAll('.grad').forEach(g => {
+  g.onmouseenter = () => { apercu = +g.dataset.n; maj(); };
+  g.onmouseleave = () => { apercu = null; maj(); };
+  g.onclick = () => { apercu = apercu === +g.dataset.n ? null : +g.dataset.n; maj(); };
 });
+document.getElementById('raz').onclick = () => { q.querySelectorAll('input').forEach(i => i.checked = false); apercu = null; maj(); };
+
+/* Contacts éditables (enregistrés localement) */
+document.getElementById('contacts').innerHTML = CONTACTS.map(([k, l, h]) =>
+  `<div class="contact"><label for="c-${k}">${l}</label><input id="c-${k}" data-k="${k}" placeholder="Nom · téléphone" value="${(C[k] || '').replace(/"/g, '&quot;')}"><small>${h}</small></div>`).join('');
+document.getElementById('contacts').addEventListener('input', e => {
+  C[e.target.dataset.k] = e.target.value.trim();
+  try { localStorage.setItem('vm_contacts', JSON.stringify(C)); } catch (er) {}
+  maj();
+});
+maj();
 </script>
 </body>
 </html>
