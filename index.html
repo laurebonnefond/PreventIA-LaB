@@ -464,6 +464,17 @@ body {
 .footer-col h4 { font-size: 12px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--teal); margin-bottom: 0.8rem; }
 .footer-col a { display: block; font-size: 13px; color: oklch(0.80 0.02 220); text-decoration: none; padding: 0.2rem 0; transition: color 0.2s; }
 .footer-col a:hover { color: var(--white); }
+/* Écosystème PréventIA : sites frères (bas de page) */
+.footer-eco { max-width: 1180px; margin: 0 auto 2.2rem; display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+@media (max-width: 700px) { .footer-eco { grid-template-columns: 1fr; } }
+.footer-eco-title { grid-column: 1 / -1; font-size: 12px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--teal); }
+.eco-card { display: flex; gap: 1rem; align-items: center; padding: 1rem 1.2rem; border-radius: 14px; text-decoration: none;
+  background: oklch(1 0 0 / 0.04); border: 1px solid oklch(0.65 0.13 192 / 0.25); color: oklch(0.85 0.02 220); transition: transform .2s, border-color .2s, background .2s; }
+.eco-card:hover { transform: translateY(-3px); border-color: var(--teal); background: oklch(1 0 0 / 0.07); }
+.eco-ico { flex: none; width: 46px; height: 46px; border-radius: 12px; display: grid; place-items: center; font-size: 22px; background: oklch(0.65 0.13 192 / 0.15); }
+.eco-card b { display: block; color: var(--white); font-size: 15px; }
+.eco-card span { font-size: 12.5px; line-height: 1.45; }
+.eco-card .eco-go { margin-left: auto; color: var(--teal); font-size: 18px; }
 .footer-bottom {
   max-width: 1180px; margin: 2rem auto 0; padding-top: 1.5rem;
   border-top: 1px solid oklch(0.65 0.13 192 / 0.15);
@@ -986,6 +997,19 @@ body {
 </section>
 
 <footer class="footer">
+  <nav class="footer-eco" aria-label="Écosystème PréventIA">
+    <div class="footer-eco-title">L'écosystème PréventIA</div>
+    <a class="eco-card" href="https://laurebonnefond.github.io/preventia-protect/" target="_blank" rel="noopener">
+      <span class="eco-ico" aria-hidden="true">🛡️</span>
+      <span><b>PréventIA Protect</b>Plateforme HSE entreprise : DUERP, habilitations, infirmerie, coactivité, ICPE &amp; RSE</span>
+      <span class="eco-go" aria-hidden="true">→</span>
+    </a>
+    <a class="eco-card" href="https://laurebonnefond.github.io/PreventIA-InvisibleMap/" target="_blank" rel="noopener">
+      <span class="eco-ico" aria-hidden="true">👁️</span>
+      <span><b>PréventIA Invisible Map</b>Rendre visibles les risques invisibles : rayonnements, bruit, UV, radon</span>
+      <span class="eco-go" aria-hidden="true">→</span>
+    </a>
+  </nav>
   <div class="footer-inner">
     <div class="footer-brand">
       <span class="nav-brand-name">Prévent<span>IA</span>-LaB</span>
