@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Se détendre — PréventIA-LaB</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="sm.css">
+<style>
+/* ---- Espace détente ---- */
+.zen{background:radial-gradient(ellipse at 50% 30%,oklch(0.32 0.08 230),var(--navy-deep) 70%);color:#fff;border-radius:24px;padding:2rem 1.2rem;text-align:center;position:relative;overflow:hidden}
+.zen h2{color:#fff}
+.zen .lead{color:oklch(0.85 0.02 220);margin:0 auto 1.2rem}
+.bulle-zone{height:320px;display:grid;place-items:center;position:relative}
+.bulle{width:120px;height:120px;border-radius:50%;
+  background:radial-gradient(circle at 35% 30%,oklch(0.85 0.10 192),oklch(0.60 0.13 200) 55%,oklch(0.45 0.12 230));
+  box-shadow:0 0 60px oklch(0.70 0.13 192 / .55),0 0 140px oklch(0.70 0.13 192 / .25);
+  transform:scale(1);transition-property:transform;transition-timing-function:cubic-bezier(.45,0,.55,1)}
+.anneau{position:absolute;width:290px;height:290px;border-radius:50%;border:2px dashed oklch(1 0 0 / .18)}
+.consigne{font-family:'DM Serif Display',serif;font-size:30px;min-height:44px;margin-top:.4rem}
+.compte{font-size:14px;color:oklch(0.80 0.03 220);min-height:22px}
+.reglages{display:flex;gap:.6rem;justify-content:center;flex-wrap:wrap;margin:1.2rem 0 .4rem}
+.reglages label{display:flex;flex-direction:column;gap:.25rem;font-size:12px;color:oklch(0.80 0.03 220);text-align:left}
+.reglages select,.reglages input[type=range]{padding:.45rem .6rem;border-radius:9px;border:1px solid oklch(1 0 0 / .2);background:oklch(1 0 0 / .08);color:#fff;font:inherit;font-size:13px}
+.reglages select option{color:#000}
+.zen .btn{background:oklch(1 0 0 / .1);color:#fff;border-color:oklch(1 0 0 / .25)}
+.zen .btn.p{background:var(--teal);border-color:var(--teal)}
+.prog{height:6px;border-radius:4px;background:oklch(1 0 0 / .12);overflow:hidden;max-width:420px;margin:1rem auto 0}
+.prog i{display:block;height:100%;width:0;background:var(--teal);transition:width .5s linear}
+.soustitre{max-width:640px;margin:1rem auto 0;min-height:84px;font-size:19px;line-height:1.55;color:oklch(0.93 0.02 220);font-style:italic;transition:opacity .6s}
+.etoiles{position:absolute;inset:0;pointer-events:none;opacity:.5;
+  background-image:radial-gradient(1px 1px at 20% 30%,#fff,transparent),radial-gradient(1px 1px at 70% 20%,#fff,transparent),radial-gradient(1.5px 1.5px at 85% 65%,#fff,transparent),radial-gradient(1px 1px at 35% 80%,#fff,transparent),radial-gradient(1px 1px at 55% 50%,#fff,transparent),radial-gradient(1px 1px at 10% 70%,#fff,transparent)}
+.halo{width:220px;height:220px;margin:1rem auto 0;border-radius:50%;background:radial-gradient(circle,oklch(0.70 0.13 260 / .55),transparent 70%);animation:respire 9s ease-in-out infinite}
+@keyframes respire{50%{transform:scale(1.25);opacity:.6}}
+@media(prefers-reduced-motion:reduce){.halo{animation:none}}
+</style>
+</head>
+<body>
+<nav class="sm-nav"><div class="in">
+  <a class="brand" href="../index.html">Prévent<span>IA</span>-LaB</a>
+  <a href="index.html">← Santé mentale</a>
+  <span class="sp"></span>
+  <a href="reperer-agir.html#urgence" class="sm-sos">🆘 Urgence</a>
+</div></nav>
+
+<header class="sm-head"><div class="in">
+  <div class="crumb"><a href="../index.html">Accueil</a> › <a href="index.html">Santé mentale</a> › Se détendre</div>
+  <div class="sm-eyebrow">Récupérer · Apaiser</div>
+  <h1>Se détendre</h1>
+  <p>Quelques minutes pour faire baisser la pression : une séance de cohérence cardiaque guidée, et une relaxation guidée par la voix, inspirée de l’hypnose. Mettez un casque ou des écouteurs pour plus de confort.</p>
+</div></header>
+
+<main>
+  <div class="tabs">
+    <button class="tab on" data-t="coherence">🫁 Cohérence cardiaque</button>
+    <button class="tab" data-t="relaxation">🎧 Relaxation guidée</button>
+    <button class="tab" data-t="infos">ℹ️ Bon à savoir</button>
+  </div>
+
+  <!-- ================= COHÉRENCE CARDIAQUE ================= -->
+  <section class="panel on" id="coherence">
+    <div class="zen">
+      <div class="etoiles"></div>
+      <h2>Cohérence cardiaque</h2>
+      <p class="lead">Respirez au rythme de la bulle : elle grossit, vous inspirez ; elle diminue, vous expirez. Environ 6 respirations par minute.</p>
+      <div class="bulle-zone"><div class="anneau"></div><div class="bulle" id="bulle"></div></div>
+      <div class="consigne" id="consigne">Prêt·e ?</div>
+      <div class="compte" id="compte">Installez-vous, le dos droit, les pieds au sol.</div>
+      <div class="reglages">
+        <label>Durée<select id="cDuree"><option value="180">3 min</option><option value="300" selected>5 min</option><option value="600">10 min</option></select></label>
+        <label>Rythme<select id="cRythme"><option value="5,5" selected>Inspirer 5 s · Expirer 5 s</option><option value="4,6">Inspirer 4 s · Expirer 6 s (plus apaisant)</option><option value="4,4">Inspirer 4 s · Expirer 4 s (débutant)</option></select></label>
+        <label>Guidage<select id="cSon"><option value="son" selected>Son doux</option><option value="voix">Voix</option><option value="aucun">Silencieux</option></select></label>
+      </div>
+      <div style="display:flex;gap:.6rem;justify-content:center;margin-top:.6rem">
+        <button class="btn p" id="cGo">▶ Commencer</button>
+        <button class="btn" id="cStop" disabled>■ Arrêter</button>
+      </div>
+      <div class="prog"><i id="cProg"></i></div>
+    </div>
+    <div class="note">Méthode dite « 365 » : <b>3</b> fois par jour, <b>6</b> respirations par minute, pendant <b>5</b> minutes. Effet apaisant ressenti dès la première séance, plus durable avec une pratique régulière.</div>
+  </section>
+
+  <!-- ================= RELAXATION GUIDÉE ================= -->
+  <section class="panel" id="relaxation">
+    <div class="zen">
+      <div class="etoiles"></div>
+      <h2>Relaxation guidée</h2>
+      <p class="lead">Une voix vous accompagne environ 10 minutes : respiration, détente du corps, lieu ressource, puis retour en douceur. Fermez les yeux quand vous le souhaitez.</p>
+      <div class="halo" id="halo"></div>
+      <div class="soustitre" id="sousTitre">Installez-vous confortablement, puis appuyez sur « Écouter ».</div>
+      <div class="reglages">
+        <label>Voix<select id="rVoix"></select></label>
+        <label>Vitesse<select id="rVitesse"><option value="0.75">Très lente</option><option value="0.85" selected>Lente</option><option value="0.95">Normale</option></select></label>
+        <label>Fond sonore<select id="rFond"><option value="vagues" selected>Vagues douces</option><option value="nappe">Nappe apaisante</option><option value="aucun">Aucun</option></select></label>
+        <label>Volume du fond<input type="range" id="rVol" min="0" max="1" step="0.05" value="0.35"></label>
+        <label>Sous-titres<select id="rST"><option value="1" selected>Affichés</option><option value="0">Masqués</option></select></label>
+      </div>
+      <div style="display:flex;gap:.6rem;justify-content:center;margin-top:.6rem">
+        <button class="btn p" id="rGo">▶ Écouter</button>
+        <button class="btn" id="rPause" disabled>⏸ Pause</button>
+        <button class="btn" id="rStop" disabled>■ Arrêter</button>
+      </div>
+      <div class="prog"><i id="rProg"></i></div>
+      <p id="rInfo" style="font-size:12px;color:oklch(0.75 0.03 220);margin-top:.8rem"></p>
+    </div>
+    <div class="note">⚠️ Ne pas écouter en conduisant ou en utilisant une machine. En cas de trouble psychique sévère ou de malaise pendant la séance, ouvrez les yeux et arrêtez : la séance est interrompue à tout moment avec « Arrêter ».</div>
+  </section>
+
+  <!-- ================= INFOS ================= -->
+  <section class="panel" id="infos">
+    <div class="grid">
+      <div class="box"><h3>🫁 La cohérence cardiaque</h3><ul>
+        <li>Respirer lentement, environ 6 fois par minute, synchronise la respiration et le rythme cardiaque.</li>
+        <li>Elle agit sur le système nerveux autonome et aide à faire redescendre le stress.</li>
+        <li>Utile avant une réunion difficile, après un conflit, au moment de la pause.</li></ul></div>
+      <div class="box"><h3>🎧 La relaxation guidée</h3><ul>
+        <li>S’inspire des techniques d’hypnose ericksonienne et de la relaxation : focalisation de l’attention, détente corporelle, imagerie.</li>
+        <li>Vous restez conscient·e et maître de vous à tout moment.</li>
+        <li>La voix est générée par votre appareil : elle varie selon l’ordinateur ou le téléphone.</li></ul></div>
+      <div class="box"><h3>🏢 Au travail</h3><ul>
+        <li>Ces exercices soulagent, mais ne remplacent pas l’action sur les causes : charge, organisation, relations.</li>
+        <li>Si le stress dure, parlez-en au médecin ou à l’infirmier·e du travail.</li>
+        <li><a href="reperer-agir.html">Préventeur santé mentale →</a></li></ul></div>
+    </div>
+  </section>
+</main>
+<p class="foot">PréventIA-LaB · Se détendre — exercices de bien-être, sans visée thérapeutique. Rien n’est enregistré.</p>
+
+<script src="regle.js"></script>
+<script>
+SM.onglets();
+
+/* =====================================================================
+   AUDIO COMMUN (Web Audio) : bips doux et fonds sonores, générés sans fichier
+   ===================================================================== */
+let AC = null;
+const audio = () => (AC = AC || new (window.AudioContext || window.webkitAudioContext)());
+
+/* Son doux qui monte (inspiration) ou descend (expiration) */
+function tonalite(montee, duree) {
+  const ac = audio(), o = ac.createOscillator(), g = ac.createGain(), t = ac.currentTime;
+  o.type = 'sine';
+  o.frequency.setValueAtTime(montee ? 220 : 330, t);
+  o.frequency.linearRampToValueAtTime(montee ? 330 : 220, t + duree);
+  g.gain.setValueAtTime(0, t);
+  g.gain.linearRampToValueAtTime(0.06, t + 0.8);
+  g.gain.setValueAtTime(0.06, t + duree - 0.8);
+  g.gain.linearRampToValueAtTime(0, t + duree);
+  o.connect(g).connect(ac.destination); o.start(t); o.stop(t + duree + 0.05);
+}
+
+/* Fond sonore : « vagues » = bruit filtré modulé ; « nappe » = accord grave tenu */
+let fond = null;
+function demarrerFond(type, vol) {
+  arreterFond(); if (type === 'aucun') return;
+  const ac = audio(), master = ac.createGain(); master.gain.value = 0;
+  master.gain.linearRampToValueAtTime(vol, ac.currentTime + 4);
+  master.connect(ac.destination);
+  const nodes = [];
+  if (type === 'vagues') {
+    const len = ac.sampleRate * 4, buf = ac.createBuffer(1, len, ac.sampleRate), d = buf.getChannelData(0);
+    let last = 0; for (let i = 0; i < len; i++) { last = (last + 0.02 * (Math.random() * 2 - 1)) / 1.02; d[i] = last * 3.5; }   // bruit brun
+    const src = ac.createBufferSource(); src.buffer = buf; src.loop = true;
+    const f = ac.createBiquadFilter(); f.type = 'lowpass'; f.frequency.value = 700;
+    const lfo = ac.createOscillator(), lg = ac.createGain(), vg = ac.createGain();
+    lfo.frequency.value = 0.09; lg.gain.value = 0.45; vg.gain.value = 0.55;     // houle ~11 s
+    lfo.connect(lg).connect(vg.gain);
+    src.connect(f).connect(vg).connect(master); src.start(); lfo.start(); nodes.push(src, lfo);
+  } else {
+    [110, 164.8, 220, 277.2].forEach((fq, i) => {
+      const o = ac.createOscillator(), g = ac.createGain(), l = ac.createOscillator(), lg = ac.createGain();
+      o.type = 'sine'; o.frequency.value = fq; g.gain.value = 0.10 / (i + 1);
+      l.frequency.value = 0.05 + i * 0.03; lg.gain.value = 0.04 / (i + 1); l.connect(lg).connect(g.gain);
+      o.connect(g).connect(master); o.start(); l.start(); nodes.push(o, l);
+    });
+  }
+  fond = { master, nodes };
+}
+function volumeFond(v) { if (fond) fond.master.gain.setTargetAtTime(v, audio().currentTime, 0.3); }
+function arreterFond() {
+  if (!fond) return; const f = fond, t = audio().currentTime; fond = null;
+  f.master.gain.cancelScheduledValues(t); f.master.gain.setTargetAtTime(0, t, 0.8);
+  setTimeout(() => f.nodes.forEach(n => { try { n.stop(); } catch (e) {} }), 3500);
+}
+
+/* =====================================================================
+   VOIX (synthèse vocale du navigateur, en français)
+   ===================================================================== */
+const synth = window.speechSynthesis;
+let voixFR = [];
+function chargerVoix() {
+  if (!synth) return;
+  voixFR = synth.getVoices().filter(v => /^fr/i.test(v.lang));
+  /* Les voix « naturelles » sonnent bien mieux : on les met en tête */
+  const score = v => (/natural|neural|premium|enhanced|amélie|amelie|denise|google/i.test(v.name) ? 0 : 1) + (/fr-FR/i.test(v.lang) ? 0 : 0.5);
+  voixFR.sort((a, b) => score(a) - score(b));
+  const sel = document.getElementById('rVoix');
+  sel.innerHTML = voixFR.length ? voixFR.map((v, i) => `<option value="${i}">${v.name.replace(/Microsoft |Google /, '').slice(0, 34)}</option>`).join('')
+                                : '<option>Voix par défaut</option>';
+}
+if (synth) { chargerVoix(); synth.onvoiceschanged = chargerVoix; }
+
+function dire(texte, opts = {}) {
+  return new Promise(res => {
+    if (!synth) return setTimeout(res, texte.length * 70);
+    const u = new SpeechSynthesisUtterance(texte);
+    u.lang = 'fr-FR'; u.rate = opts.rate || 0.85; u.pitch = 0.92; u.volume = 1;
+    const v = voixFR[+document.getElementById('rVoix').value]; if (v) u.voice = v;
+    u.onend = u.onerror = res; synth.speak(u);
+  });
+}
+const attendre = (ms, ctrl) => new Promise(res => { const t = setTimeout(res, ms); if (ctrl) ctrl.timer = t; });
+
+/* =====================================================================
+   1. COHÉRENCE CARDIAQUE
+   ===================================================================== */
+(function () {
+  const bulle = document.getElementById('bulle'), cons = document.getElementById('consigne'), cpt = document.getElementById('compte');
+  const go = document.getElementById('cGo'), stop = document.getElementById('cStop'), prog = document.getElementById('cProg');
+  let actif = false, timers = [];
+  const plus = (fn, ms) => timers.push(setTimeout(fn, ms));
+
+  function fin(msg) {
+    actif = false; timers.forEach(clearTimeout); timers = [];
+    bulle.style.transitionDuration = '1.5s'; bulle.style.transform = 'scale(1)';
+    cons.textContent = msg; cpt.textContent = msg === 'Séance terminée 🌿' ? 'Prenez un instant avant de reprendre. Comment vous sentez-vous ?' : '';
+    go.disabled = false; stop.disabled = true; prog.style.width = msg === 'Séance terminée 🌿' ? '100%' : '0';
+    if (synth) synth.cancel();
+  }
+
+  go.onclick = () => {
+    const total = +document.getElementById('cDuree').value;
+    const [inS, exS] = document.getElementById('cRythme').value.split(',').map(Number);
+    const guide = document.getElementById('cSon').value, cycle = inS + exS, n = Math.round(total / cycle);
+    actif = true; go.disabled = true; stop.disabled = false; audio().resume();
+    let i = 0;
+    cons.textContent = 'On commence…'; cpt.textContent = '';
+    if (guide === 'voix') dire('Installez-vous. On commence.', { rate: 0.9 });
+    const tour = () => {
+      if (!actif) return;
+      if (i >= n) { if (guide === 'voix') dire('Séance terminée. Reprenez doucement votre respiration naturelle.'); return fin('Séance terminée 🌿'); }
+      i++;
+      prog.style.width = (i / n * 100) + '%';
+      /* Inspiration */
+      cons.textContent = 'Inspirez…';
+      bulle.style.transitionDuration = inS + 's'; bulle.style.transform = 'scale(2.3)';
+      if (guide === 'son') tonalite(true, inS); else if (guide === 'voix') dire('Inspirez', { rate: 0.8 });
+      const reste = Math.ceil((n - i + 1) * cycle / 60);
+      cpt.textContent = `Respiration ${i} / ${n} · encore ~${reste} min`;
+      /* Expiration */
+      plus(() => {
+        if (!actif) return;
+        cons.textContent = 'Expirez…';
+        bulle.style.transitionDuration = exS + 's'; bulle.style.transform = 'scale(1)';
+        if (guide === 'son') tonalite(false, exS); else if (guide === 'voix') dire('Expirez', { rate: 0.8 });
+        plus(tour, exS * 1000);
+      }, inS * 1000);
+    };
+    plus(tour, guide === 'voix' ? 2600 : 1200);
+  };
+  stop.onclick = () => fin('Séance arrêtée');
+})();
+
+/* =====================================================================
+   2. RELAXATION GUIDÉE (script original)
+   Chaque ligne : [texte, pause en secondes après la phrase]
+   ===================================================================== */
+const SCRIPT = [
+  /* Installation */
+  ['Bienvenue dans ce moment de détente.', 3],
+  ['Installez-vous confortablement, assis ou allongé, de la façon qui vous convient le mieux.', 4],
+  ['Rien d’autre à faire, pendant ces quelques minutes, que de vous laisser guider.', 4],
+  ['Vous pouvez fermer les yeux maintenant… ou un peu plus tard… comme vous le souhaitez.', 6],
+  /* Respiration */
+  ['Portez simplement votre attention sur votre respiration.', 4],
+  ['Sans rien changer… observez l’air qui entre… et l’air qui sort.', 7],
+  ['Prenez une inspiration un peu plus profonde… par le nez…', 5],
+  ['et soufflez longuement par la bouche… comme pour laisser partir la fatigue de la journée.', 7],
+  ['Encore une fois… inspirez…', 5],
+  ['et relâchez… tout doucement.', 8],
+  ['Puis laissez la respiration retrouver son propre rythme… naturel… tranquille.', 8],
+  /* Détente du corps */
+  ['Maintenant, portez votre attention sur votre visage.', 4],
+  ['Le front se détend… les sourcils s’écartent légèrement… les paupières deviennent lourdes et confortables.', 7],
+  ['Les mâchoires se desserrent… la langue se pose au fond de la bouche.', 7],
+  ['Cette détente descend dans la nuque… dans les épaules… qui s’abaissent un peu… à chaque expiration.', 8],
+  ['Elle coule le long des bras… jusqu’au bout des doigts… qui deviennent peut-être plus lourds… ou plus chauds.', 9],
+  ['La poitrine se soulève et s’abaisse… calmement… le ventre est souple.', 8],
+  ['Le dos s’appuie… et se laisse porter.', 6],
+  ['La détente gagne le bassin… les cuisses… les genoux… les mollets…', 7],
+  ['jusqu’aux pieds… bien posés… bien ancrés.', 9],
+  ['Tout le corps est maintenant au repos… et chaque respiration approfondit encore un peu ce calme.', 10],
+  /* Descente */
+  ['Je vais compter de cinq à un.', 3],
+  ['À chaque chiffre, vous pouvez vous laisser aller un peu plus profondément dans cette détente.', 5],
+  ['Cinq… le corps se fait lourd et confortable.', 6],
+  ['Quatre… les pensées ralentissent… comme des nuages qui passent… sans s’arrêter.', 7],
+  ['Trois… de plus en plus calme.', 6],
+  ['Deux… tranquille… en sécurité.', 6],
+  ['Un… dans une détente profonde.', 9],
+  /* Lieu ressource */
+  ['Et maintenant, imaginez un endroit où vous vous sentez parfaitement bien.', 5],
+  ['Un lieu réel… ou imaginaire… une plage, une forêt, un jardin, une montagne… peu importe.', 7],
+  ['Regardez autour de vous… les couleurs… la lumière… les formes.', 9],
+  ['Écoutez les sons de cet endroit… peut-être le vent… l’eau… ou simplement le silence.', 9],
+  ['Sentez la température de l’air sur votre peau… le sol sous vos pieds…', 9],
+  ['Peut-être même une odeur agréable… familière.', 9],
+  ['Ici, vous êtes en sécurité. Ici, rien ne presse.', 8],
+  ['Prenez le temps de savourer ce calme… de le laisser se diffuser dans tout votre corps.', 15],
+  /* Ancrage */
+  ['Ce lieu vous appartient. Vous pourrez y revenir quand vous le voudrez.', 5],
+  ['Pour vous en souvenir, vous pouvez, si vous le souhaitez, poser doucement le pouce contre l’index…', 6],
+  ['et associer ce geste à cette sensation de calme.', 8],
+  ['Plus tard, dans une journée difficile, ce simple geste et quelques respirations lentes pourront vous aider à retrouver un peu de cette tranquillité.', 10],
+  /* Retour */
+  ['Il est temps maintenant de revenir, à votre rythme.', 4],
+  ['En gardant avec vous tout ce calme… et cette énergie.', 5],
+  ['Je vais compter de un à cinq. À cinq, vous ouvrirez les yeux, avec une sensation de repos.', 5],
+  ['Un… vous sentez à nouveau le poids de votre corps… le support sous vous.', 5],
+  ['Deux… les sons de la pièce reviennent.', 5],
+  ['Trois… vous bougez doucement les doigts… les pieds.', 5],
+  ['Quatre… vous prenez une bonne inspiration… et vous vous étirez si vous en avez envie.', 5],
+  ['Cinq… vous pouvez ouvrir les yeux. Vous voilà de retour, ici et maintenant, avec calme et énergie.', 4],
+  ['Merci pour ce moment. Prenez encore quelques secondes avant de vous relever.', 2]
+];
+
+(function () {
+  const go = document.getElementById('rGo'), pause = document.getElementById('rPause'), stop = document.getElementById('rStop');
+  const st = document.getElementById('sousTitre'), prog = document.getElementById('rProg'), info = document.getElementById('rInfo');
+  const ctrl = { idx: 0, etat: 'arret', timer: null, jeton: 0 };
+  if (!synth) info.textContent = 'La synthèse vocale n’est pas disponible sur ce navigateur : les sous-titres seuls seront affichés.';
+
+  const total = SCRIPT.reduce((s, [t, p]) => s + t.length * 0.075 + p, 0);
+  info.textContent ||= `Durée ≈ ${Math.round(total / 60)} min · la voix dépend de votre appareil (meilleur rendu : Chrome, Edge ou Safari).`;
+
+  function afficher(t) {
+    st.style.opacity = 0; setTimeout(() => { st.textContent = t; st.style.opacity = 1; }, 300);
+  }
+  async function lire(jeton) {
+    const vit = +document.getElementById('rVitesse').value;
+    while (ctrl.idx < SCRIPT.length && ctrl.etat === 'lecture' && jeton === ctrl.jeton) {
+      const [txt, p] = SCRIPT[ctrl.idx];
+      afficher(txt);
+      prog.style.width = (ctrl.idx / SCRIPT.length * 100) + '%';
+      await dire(txt, { rate: vit });
+      if (ctrl.etat !== 'lecture' || jeton !== ctrl.jeton) return;
+      await attendre(p * 1000 / (vit / 0.85), ctrl);
+      if (ctrl.etat !== 'lecture' || jeton !== ctrl.jeton) return;
+      ctrl.idx++;
+    }
+    if (ctrl.idx >= SCRIPT.length) terminer();
+  }
+  function boutons() {
+    go.disabled = ctrl.etat === 'lecture';
+    go.textContent = ctrl.etat === 'pause' ? '▶ Reprendre' : '▶ Écouter';
+    pause.disabled = ctrl.etat !== 'lecture'; stop.disabled = ctrl.etat === 'arret';
+  }
+  function terminer() {
+    ctrl.etat = 'arret'; ctrl.idx = 0; prog.style.width = '100%';
+    arreterFond(); boutons();
+    setTimeout(() => { st.textContent = 'Séance terminée 🌿 Prenez votre temps avant de reprendre.'; }, 400);
+  }
+  go.onclick = () => {
+    audio().resume();
+    if (ctrl.etat === 'arret') { ctrl.idx = 0; demarrerFond(document.getElementById('rFond').value, +document.getElementById('rVol').value); }
+    else volumeFond(+document.getElementById('rVol').value);
+    ctrl.etat = 'lecture'; ctrl.jeton++; boutons(); lire(ctrl.jeton);
+  };
+  pause.onclick = () => {   /* on reprendra au début de la phrase en cours */
+    ctrl.etat = 'pause'; ctrl.jeton++; clearTimeout(ctrl.timer); if (synth) synth.cancel();
+    volumeFond(0.05); boutons();
+  };
+  stop.onclick = () => {
+    ctrl.etat = 'arret'; ctrl.jeton++; ctrl.idx = 0; clearTimeout(ctrl.timer); if (synth) synth.cancel();
+    arreterFond(); prog.style.width = '0'; st.textContent = 'Séance arrêtée.'; boutons();
+  };
+  document.getElementById('rVol').oninput = e => volumeFond(+e.target.value);
+  document.getElementById('rFond').onchange = e => { if (ctrl.etat === 'lecture') demarrerFond(e.target.value, +document.getElementById('rVol').value); };
+  document.getElementById('rST').onchange = e => { st.style.visibility = e.target.value === '0' ? 'hidden' : 'visible'; };
+  /* Changer d'onglet arrête proprement la séance en cours */
+  document.querySelectorAll('.tab').forEach(t => t.addEventListener('click', () => { if (ctrl.etat !== 'arret') stop.onclick(); }));
+})();
+</script>
+</body>
+</html>
