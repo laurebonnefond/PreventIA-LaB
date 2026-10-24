@@ -76,7 +76,8 @@ body {
   background-repeat: no-repeat;
   background-color: var(--navy-deep);
   color: var(--white);
-  padding: 3.5rem 1rem 2rem;
+  /* hauteur réduite en douceur : les valeurs fluides (clamp) diminuent progressivement avec l'écran */
+  padding: clamp(2.2rem, 4vw, 3rem) 1rem clamp(1.4rem, 2.5vw, 1.75rem);
   text-align: left;
   overflow: hidden;
 }
@@ -144,7 +145,7 @@ body {
   display: inline-block;
   font-size: 12px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase;
   color: var(--teal-light);
-  padding: 0.4rem 1rem; margin-bottom: 1.8rem;
+  padding: 0.4rem 1rem; margin-bottom: clamp(1rem, 2vw, 1.4rem);
   border: 1px solid oklch(0.65 0.13 192 / 0.4); border-radius: 100px;
   background: oklch(0.65 0.13 192 / 0.08);
   backdrop-filter: blur(8px);
@@ -152,9 +153,9 @@ body {
 .hero h1 {
   position: relative; z-index: 2;
   font-family: 'DM Serif Display', serif;
-  font-size: clamp(2.2rem, 5.5vw, 3.8rem);
+  font-size: clamp(2rem, 4.8vw, 3.35rem);
   line-height: 1.08; letter-spacing: -0.02em;
-  margin-bottom: 1.8rem; font-weight: 400;
+  margin-bottom: clamp(1rem, 2vw, 1.4rem); font-weight: 400;
   text-shadow: 0 2px 20px oklch(0.12 0.05 240 / 0.7);
 }
 .hero h1 .accent { color: var(--teal); font-style: italic; }
@@ -162,7 +163,7 @@ body {
   position: relative; z-index: 2;
   font-size: clamp(1rem, 2vw, 1.2rem);
   color: oklch(0.88 0.02 220);
-  max-width: 470px; margin: 0 0 2.2rem;
+  max-width: 470px; margin: 0 0 clamp(1.4rem, 2.5vw, 1.8rem);
   text-shadow: 0 1px 12px oklch(0.12 0.05 240 / 0.6);
   line-height: 1.55;
 }
@@ -171,7 +172,7 @@ body {
   display: inline-flex; align-items: center; gap: 0.6rem;
   background: var(--teal); color: var(--navy-deep);
   font-weight: 600; font-size: 16px;
-  padding: 1rem 2.1rem; border-radius: 100px;
+  padding: clamp(0.8rem, 1.4vw, 0.95rem) clamp(1.6rem, 2.6vw, 2rem); border-radius: 100px;
   text-decoration: none;
   transition: transform 0.25s ease, box-shadow 0.25s ease, gap 0.25s ease;
   box-shadow:
@@ -198,7 +199,7 @@ body {
 .floating-cats {
   position: relative;
   max-width: 1180px;
-  margin: 3rem auto 0;
+  margin: clamp(1.8rem, 3.5vw, 2.4rem) auto 0;
   z-index: 3;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
