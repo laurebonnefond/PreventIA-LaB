@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Préventeur santé mentale — PréventIA-LaB</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="sm.css">
+</head>
+<body>
+<nav class="sm-nav"><div class="in">
+  <a class="brand" href="../index.html">Prévent<span>IA</span>-LaB</a>
+  <a href="index.html">← Santé mentale</a>
+  <span class="sp"></span>
+  <a href="#urgence" class="sm-sos" onclick="document.querySelector('.tab[data-t=urgence]').click()">🆘 Urgence</a>
+</div></nav>
+
+<header class="sm-head"><div class="in">
+  <div class="crumb"><a href="../index.html">Accueil</a> › <a href="index.html">Santé mentale</a> › Préventeur santé mentale</div>
+  <div class="sm-eyebrow">Repérer · Dialoguer · Agir</div>
+  <h1>Préventeur santé mentale</h1>
+  <p>Repérer une personne en souffrance, oser en parler, réagir en cas d’urgence et l’orienter vers les bons interlocuteurs.</p>
+</div></header>
+
+<main>
+  <div class="tabs">
+    <button class="tab on" data-t="reperer">🔎 Repérer</button>
+    <button class="tab" data-t="dialoguer">💬 Dialoguer</button>
+    <button class="tab" data-t="urgence">🆘 Urgence</button>
+    <button class="tab" data-t="ressources">📚 Ressources & cadre</button>
+  </div>
+
+  <!-- ============ REPÉRER ============ -->
+  <section class="panel on" id="reperer">
+    <h2>Aide au repérage</h2>
+    <p class="lead">Cochez les changements observés depuis quelques semaines chez un·e collègue. C’est le <b>changement</b> par rapport à l’habitude qui alerte, plus qu’un signe isolé.</p>
+    <div class="ruler-wrap">
+      <div id="signaux"></div>
+      <aside class="result" aria-live="polite">
+        <div class="sm-eyebrow" style="color:var(--muted)">Niveau de vigilance</div>
+        <div class="lvl" id="rLvl"></div>
+        <div class="meter"><i id="rMet"></i></div>
+        <div id="rTxt"></div>
+        <button class="btn" style="margin-top:1rem" id="raz">↺ Tout décocher</button>
+      </aside>
+    </div>
+  </section>
+
+  <!-- ============ DIALOGUER ============ -->
+  <section class="panel" id="dialoguer">
+    <h2>Aborder la personne</h2>
+    <p class="lead">Vous n’avez pas à poser de diagnostic : votre rôle est d’ouvrir la porte, d’écouter et d’orienter.</p>
+    <div class="step" style="--sc:oklch(0.55 0.13 240)"><div class="n">1</div><div class="b"><h4>Choisir le moment</h4>
+      <p>Un lieu calme, à l’écart, du temps devant soi. Pas entre deux portes ni devant les collègues.</p></div></div>
+    <div class="step" style="--sc:oklch(0.55 0.13 240)"><div class="n">2</div><div class="b"><h4>Partir de faits observés</h4>
+      <p>« Je te trouve fatigué·e ces derniers temps, et tu ne viens plus aux pauses. Comment ça va, vraiment ? »</p></div></div>
+    <div class="step" style="--sc:oklch(0.55 0.13 240)"><div class="n">3</div><div class="b"><h4>Écouter sans juger</h4>
+      <ul><li>Laisser parler, accepter les silences, reformuler.</li>
+      <li>Éviter : « ça va passer », « secoue-toi », les conseils immédiats, comparer avec sa propre vie.</li></ul></div></div>
+    <div class="step" style="--sc:var(--bad)"><div class="n">4</div><div class="b"><h4>Oser poser la question du suicide</h4>
+      <p>Si la personne évoque le désespoir : « Est-ce que tu penses au suicide ? ». Poser la question <b>directement</b> ne donne pas l’idée et soulage souvent. En cas de réponse positive, passez à l’onglet <a href="#urgence" onclick="document.querySelector('.tab[data-t=urgence]').click()">Urgence</a>.</p></div></div>
+    <div class="step" style="--sc:oklch(0.55 0.13 240)"><div class="n">5</div><div class="b"><h4>Encourager à se faire aider</h4>
+      <ul><li>Médecin traitant, <b>médecin ou infirmier·e du travail</b>, psychologue, dispositif d’écoute de l’entreprise.</li>
+      <li>Proposer d’accompagner, de prendre le rendez-vous ensemble.</li>
+      <li>Ne pas promettre le secret si la personne est en danger.</li></ul></div></div>
+    <div class="step" style="--sc:oklch(0.55 0.13 240)"><div class="n">6</div><div class="b"><h4>Garder le lien</h4>
+      <p>Reprendre des nouvelles dans les jours suivants. Et prendre soin de soi : en parler à son tour, dans le respect de la confidentialité.</p></div></div>
+    <div class="note">Pour se former : la formation <b>Premiers secours en santé mentale</b> (PSSM France) apprend à repérer et accompagner une personne en difficulté psychique.</div>
+  </section>
+
+  <!-- ============ URGENCE ============ -->
+  <section class="panel" id="urgence">
+    <h2>Conduite à tenir en urgence</h2>
+    <div class="sos">
+      <a href="tel:15"><b>15</b><span>SAMU — urgence médicale</span></a>
+      <a href="tel:112"><b>112</b><span>Urgence européenne</span></a>
+      <a href="tel:3114"><b>3114</b><span>Prévention du suicide · 24 h/24 · gratuit</span></a>
+      <a href="sms:114"><b>114</b><span>Urgence par SMS · personnes sourdes</span></a>
+      <a href="tel:3919"><b>3919</b><span>Violences faites aux femmes · 24 h/24</span></a>
+    </div>
+
+    <div class="step" style="--sc:var(--bad)"><div class="n">!</div><div class="b"><h4>Danger immédiat</h4>
+      <p>La personne exprime une intention de se suicider avec un moyen ou un moment précis, a commencé un geste, est très agitée ou menaçante, ou fait un malaise.</p>
+      <ul><li><b>Ne pas la laisser seule</b>, rester calme, lui parler.</li>
+      <li>Appeler le <b>15</b> ou le <b>112</b> et suivre leurs consignes ; prévenir le sauveteur secouriste ou l’infirmerie.</li>
+      <li>Éloigner ce qui pourrait être dangereux à portée, sans se mettre en danger.</li>
+      <li>Informer la hiérarchie et le service de santé au travail.</li></ul></div></div>
+
+    <div class="step" style="--sc:var(--urg, oklch(0.66 0.17 50))"><div class="n">1</div><div class="b"><h4>Idées suicidaires, sans danger immédiat</h4>
+      <ul><li>Remercier la personne de sa confiance, écouter, prendre au sérieux.</li>
+      <li>Appeler le <b>3114</b> avec elle ou lui donner le numéro.</li>
+      <li>Orienter vers un médecin <b>le jour même</b> si possible : médecin traitant, médecin du travail.</li>
+      <li>Ne pas garder le secret seul·e : en parler au médecin du travail.</li></ul></div></div>
+
+    <div class="step" style="--sc:oklch(0.55 0.13 240)"><div class="n">2</div><div class="b"><h4>Crise d’angoisse</h4>
+      <ul><li>Isoler la personne dans un endroit calme, rester présent·e.</li>
+      <li>L’inviter à respirer lentement avec vous, expiration plus longue que l’inspiration.</li>
+      <li>Douleur dans la poitrine, malaise ou premier épisode : appeler le <b>15</b>.</li></ul></div></div>
+
+    <div class="step" style="--sc:oklch(0.55 0.16 300)"><div class="n">3</div><div class="b"><h4>Après un événement choquant</h4>
+      <p>Agression, accident grave, décès d’un collègue, violence d’un client…</p>
+      <ul><li>Mettre en sécurité, répondre aux besoins de base (calme, boisson, chaleur, proches).</li>
+      <li>Écouter si la personne le souhaite, <b>sans la forcer à raconter</b>.</li>
+      <li>Expliquer que les réactions de stress des jours suivants sont fréquentes ; consulter si elles durent.</li>
+      <li>Le SAMU peut faire intervenir une cellule d’urgence médico-psychologique (CUMP).</li>
+      <li>Déclarer l’accident du travail et prévenir le médecin du travail pour le suivi.</li></ul></div></div>
+
+    <div class="step" style="--sc:oklch(0.62 0.15 150)"><div class="n">4</div><div class="b"><h4>Après l’urgence</h4>
+      <ul><li>Noter les faits (date, heure, intervenants) sans jugement ni diagnostic.</li>
+      <li>Analyser les causes liées au travail et mettre à jour le <b>DUERP</b> (risques psychosociaux).</li>
+      <li>Préparer le retour de la personne avec le médecin du travail.</li>
+      <li>Proposer un temps d’échange aux témoins et prendre soin de vous.</li></ul></div></div>
+  </section>
+
+  <!-- ============ RESSOURCES ============ -->
+  <section class="panel" id="ressources">
+    <h2>Ressources et cadre</h2>
+    <div class="grid">
+      <div class="box"><h3>⚖️ Obligations de l’employeur</h3><ul>
+        <li>Protéger la santé <b>physique et mentale</b> : Code du travail <b>L4121-1</b>.</li>
+        <li>Évaluer les risques psychosociaux dans le <b>DUERP</b> : <b>R4121-1</b>.</li>
+        <li>Prévenir le harcèlement : <b>L1152-4</b>, <b>L1153-5</b>.</li></ul></div>
+      <div class="box"><h3>🩺 Interlocuteurs</h3><ul>
+        <li>Médecin et infirmier·e du travail, psychologue du travail du SPSTI</li>
+        <li>Médecin traitant, CMP (centre médico-psychologique)</li>
+        <li>CSE, référent harcèlement, représentants du personnel</li>
+        <li>Inspection du travail</li></ul></div>
+      <div class="box"><h3>🌐 Pour aller plus loin</h3><ul>
+        <li><b>3114.fr</b> — prévention du suicide</li>
+        <li><b>psycom.org</b> — information en santé mentale</li>
+        <li><b>pssmfrance.fr</b> — premiers secours en santé mentale</li>
+        <li><b>inrs.fr</b> — dossier risques psychosociaux</li>
+        <li><b>anact.fr</b> — qualité de vie et des conditions de travail</li></ul></div>
+      <div class="box"><h3>🧰 Outils de l’espace</h3><ul>
+        <li><a href="../burnout/index.html">Risque burn-out</a></li>
+        <li><a href="harcelometre.html">Harcèlomètre au travail</a></li>
+        <li><a href="violentometre.html">Violentomètre</a></li></ul></div>
+    </div>
+  </section>
+</main>
+<p class="foot">PréventIA-LaB · Préventeur santé mentale — aide au repérage et à l’orientation ; ne remplace ni un avis médical ni une formation. Aucune donnée enregistrée.</p>
+
+<script src="regle.js"></script>
+<script>
+/* Signaux d'alerte : poids 1 = signal, 3 = signal d'urgence */
+const SIGNAUX = [
+  ['Au travail', [
+    ['Baisse inhabituelle de la qualité ou du rythme de travail', 1],
+    ['Retards, absences courtes répétées', 1],
+    ['Erreurs, oublis, difficulté à se concentrer', 1],
+    ['Présentéisme : reste tard, ne prend plus de pause ni de congé', 1]]],
+  ['Comportement', [
+    ['Repli : ne vient plus aux pauses, évite les collègues', 1],
+    ['Irritabilité, conflits, réactions disproportionnées', 1],
+    ['Pleurs, tristesse visible', 1],
+    ['Consommation d’alcool ou d’autres produits en hausse', 1]]],
+  ['Santé', [
+    ['Fatigue persistante, troubles du sommeil évoqués', 1],
+    ['Maux de tête, douleurs, plaintes physiques répétées', 1],
+    ['Amaigrissement ou négligence de l’apparence', 1]]],
+  ['Signaux d’urgence', [
+    ['Parle de mort, de « disparaître », d’être un fardeau', 3],
+    ['Range ses affaires, fait ses adieux, donne des objets personnels', 3],
+    ['Exprime un désespoir total : « plus rien n’a de sens »', 3]]]
+];
+const el = document.getElementById('signaux');
+el.innerHTML = SIGNAUX.map(([g, items]) => `<div class="zone ${g === 'Signaux d’urgence' ? 'z-bad' : 'z-warn'}">
+  <div class="zone-h"><i></i>${g}</div>
+  ${items.map(([t, w]) => `<label class="item"><input type="checkbox" data-w="${w}"><span>${t}</span></label>`).join('')}</div>`).join('');
+
+function maj() {
+  const c = [...el.querySelectorAll('input:checked')];
+  el.querySelectorAll('.item').forEach(l => l.classList.toggle('on', l.querySelector('input').checked));
+  const urg = c.some(i => i.dataset.w === '3'), n = c.length;
+  let lvl, col, pct, txt;
+  if (urg) { lvl = 'Urgence'; col = 'var(--bad)'; pct = 100;
+    txt = `<ul><li style="color:var(--bad)"><b>Ne restez pas seul·e avec cette situation.</b></li><li>Parlez à la personne aujourd’hui et posez la question du suicide.</li><li><b>3114</b> · danger immédiat : <b>15</b> / <b>112</b>.</li><li><a href="#urgence" onclick="document.querySelector('.tab[data-t=urgence]').click()">Conduite à tenir →</a></li></ul>`; }
+  else if (n >= 4) { lvl = 'Vigilance forte'; col = 'oklch(0.66 0.17 50)'; pct = 70;
+    txt = `<ul><li>Plusieurs signaux convergent : prenez le temps d’en parler avec la personne (<a href="#dialoguer" onclick="document.querySelector('.tab[data-t=dialoguer]').click()">comment ?</a>).</li><li>Encouragez une consultation : médecin du travail ou médecin traitant.</li><li>Si l’organisation du travail est en cause, alertez le préventeur ou le CSE.</li></ul>`; }
+  else if (n >= 1) { lvl = 'À surveiller'; col = 'var(--warn)'; pct = 35;
+    txt = `<ul><li>Un ou plusieurs signaux isolés : restez attentif·ve à leur évolution.</li><li>Un simple « comment ça va, vraiment ? » peut ouvrir la discussion.</li></ul>`; }
+  else { lvl = 'Cochez les signaux'; col = 'var(--line)'; pct = 0;
+    txt = '<p style="color:var(--muted);font-size:13.5px">Le niveau de vigilance s’affiche ici.</p>'; }
+  document.getElementById('rLvl').textContent = lvl;
+  document.getElementById('rLvl').style.color = pct ? col : 'var(--text)';
+  const m = document.getElementById('rMet'); m.style.width = pct + '%'; m.style.background = col;
+  document.getElementById('rTxt').innerHTML = txt + (n ? `<p style="font-size:12px;color:var(--muted);margin-top:.8rem">${n} signal(aux) coché(s)</p>` : '');
+}
+el.addEventListener('change', maj);
+document.getElementById('raz').onclick = () => { el.querySelectorAll('input').forEach(i => i.checked = false); maj(); };
+maj();
+SM.onglets();
+</script>
+</body>
+</html>
