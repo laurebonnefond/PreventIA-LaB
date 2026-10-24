@@ -541,7 +541,8 @@ textarea { resize: vertical; min-height: 72px; }
   </div>
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/docx/8.5.0/docx.min.js"></script>
+<!-- docx 8.5.0 : le build n'existe pas sur cdnjs (404) → jsDelivr, secours unpkg -->
+<script src="https://cdn.jsdelivr.net/npm/docx@8.5.0/build/index.umd.js" onerror="var s=document.createElement('script');s.src='https://unpkg.com/docx@8.5.0/build/index.umd.js';document.head.appendChild(s)"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
 <script>
 /* ═══════════════════════════════════════════════════════════════
@@ -1096,6 +1097,10 @@ function showToast(msg) {
    ═══════════════════════════════════════════════ */
 async function exportWord() {
   if (!lastAnalysis) { showToast('Aucune analyse à exporter'); return; }
+  if (typeof window.docx === 'undefined' || typeof window.saveAs === 'undefined') {
+    showToast('Bibliothèque Word non chargée — vérifiez la connexion puis rechargez (Ctrl+F5)');
+    return;
+  }
   const a = lastAnalysis;
   const cot = a.cotation || {};
   const env = a.environnement || {};
