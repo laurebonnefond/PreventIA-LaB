@@ -937,6 +937,47 @@ document.getElementById('filter-secteur').addEventListener('change', applyFilter
 document.getElementById('filter-suivi').addEventListener('change', applyFilters);
 
 // ════════════════════════════════════════════════════════════
+// EN-TÊTE COMMUN SPSTI — même haut de 1re page que la fiche d'entreprise
+// (bandeau vague + logo, titre bicolore, sous-titre, trait lime)
+// ════════════════════════════════════════════════════════════
+let _bandeauSPSTI = null;                       // ArrayBuffer mis en cache après le 1er chargement
+function chargerBandeau() {
+  if (_bandeauSPSTI) return Promise.resolve(_bandeauSPSTI);
+  return fetch('fe_bandeau.png')
+    .then(r => r.ok ? r.arrayBuffer() : null)
+    .then(buf => (_bandeauSPSTI = buf))
+    .catch(() => null);                         // sans bandeau, l'export continue
+}
+function enteteSPSTI(titreNavy, titreTeal, sousTitre) {
+  const { Paragraph, TextRun, ImageRun, HorizontalPositionRelativeFrom,
+          VerticalPositionRelativeFrom, TextWrappingType } = docx;
+  const NAVY_FE = "0B3C78", TEAL_FE = "1D9BD1", LIME_FE = "AFCA0C";
+  const out = [];
+  if (_bandeauSPSTI) {
+    // Bandeau pleine largeur collé en haut de page (A4 : 21 cm = 794 px), le texte passe dessous
+    out.push(new Paragraph({ children: [ new ImageRun({
+      data: _bandeauSPSTI,
+      transformation: { width: 794, height: 211 },
+      floating: {
+        horizontalPosition: { relative: HorizontalPositionRelativeFrom.PAGE, offset: 0 },
+        verticalPosition:   { relative: VerticalPositionRelativeFrom.PAGE,   offset: 0 },
+        wrap: { type: TextWrappingType.TOP_AND_BOTTOM },
+        allowOverlap: true
+      }
+    }) ] }));
+    out.push(new Paragraph({ spacing: { before: 300 }, children: [] }));
+  }
+  out.push(new Paragraph({ spacing: { after: 40 }, children: [
+    new TextRun({ text: titreNavy + " ", bold: true, size: 60, color: NAVY_FE, font: "Arial" }),
+    new TextRun({ text: titreTeal, bold: true, size: 60, color: TEAL_FE, font: "Arial" }) ] }));
+  out.push(new Paragraph({ spacing: { after: 60 }, children: [
+    new TextRun({ text: sousTitre, bold: true, size: 26, color: NAVY_FE, font: "Arial" }) ] }));
+  out.push(new Paragraph({ spacing: { after: 240 }, children: [
+    new TextRun({ text: "▬▬▬", size: 24, color: LIME_FE }) ] }));
+  return out;
+}
+
+// ════════════════════════════════════════════════════════════
 // ORDONNANCE DE PRÉVENTION — génération Word (.docx)
 // ════════════════════════════════════════════════════════════
 function genererOrdonnance(idx, attempt) {
@@ -954,6 +995,12 @@ function genererOrdonnance(idx, attempt) {
     }
     if (btn) { btn.textContent = '⏳ Chargement de la bibliothèque…'; btn.disabled = true; }
     setTimeout(() => genererOrdonnance(idx, attempt + 1), 2500);
+    return;
+  }
+
+  // Bandeau SPSTI chargé une seule fois avant le premier export
+  if (!chargerBandeau.fait) {
+    chargerBandeau().then(() => { chargerBandeau.fait = true; genererOrdonnance(idx, attempt); });
     return;
   }
 
@@ -986,21 +1033,9 @@ function genererOrdonnance(idx, attempt) {
 
   const children = [];
 
-  // ── EN-TÊTE ──
-  children.push(new Paragraph({
-    alignment: AlignmentType.CENTER,
-    spacing: { after: 40 },
-    children: [ new TextRun({ text: "ORDONNANCE DE PRÉVENTION", bold: true, size: 40, color: NAVY }) ]
-  }));
-  children.push(new Paragraph({
-    alignment: AlignmentType.CENTER, spacing: { after: 60 },
-    children: [ new TextRun({ text: "Santé & sécurité au travail — Synthèse des mesures de prévention par métier", italics: true, size: 20, color: GREY }) ]
-  }));
-  children.push(new Paragraph({
-    alignment: AlignmentType.CENTER, spacing: { after: 240 },
-    border: { bottom: { color: TEAL, space: 6, style: BorderStyle.SINGLE, size: 12 } },
-    children: [ new TextRun({ text: "PréventIA-LaB · SPSTI 23/87", size: 18, color: TEAL, bold: true }) ]
-  }));
+  // ── EN-TÊTE (charte fiche d'entreprise) ──
+  enteteSPSTI("ORDONNANCE", "DE PRÉVENTION",
+              "Santé au travail  •  Mesures de prévention par métier").forEach(p => children.push(p));
 
   // ── IDENTIFICATION ──
   const infoRow = (label, value) => new TableRow({ children: [
@@ -1106,6 +1141,10 @@ function genererFicheSuivi(idx, attempt) {
     setTimeout(() => genererFicheSuivi(idx, attempt + 1), 2500);
     return;
   }
+  if (!chargerBandeau.fait) {
+    chargerBandeau().then(() => { chargerBandeau.fait = true; genererFicheSuivi(idx, attempt); });
+    return;
+  }
 
   const { Document, Packer, Paragraph, TextRun, HeadingLevel, AlignmentType,
           Table, TableRow, TableCell, WidthType, BorderStyle, ShadingType,
@@ -1183,17 +1222,9 @@ function genererFicheSuivi(idx, attempt) {
 
   const children = [];
 
-  // ═══ TITRE ═══
-  children.push(new Paragraph({
-    alignment:AlignmentType.CENTER,spacing:{after:40},
-    shading:{type:ShadingType.CLEAR,fill:NAVY},
-    children:[new TextRun({text:'FICHE DE SUIVI SANTÉ-TRAVAIL',bold:true,color:WHITE,font:'Calibri',size:36})]
-  }));
-  children.push(new Paragraph({
-    alignment:AlignmentType.CENTER,spacing:{after:200},
-    shading:{type:ShadingType.CLEAR,fill:NAVY},
-    children:[new TextRun({text:'Évaluation des risques professionnels et modalités de suivi individuel',color:'94A3B8',font:'Calibri',size:22,italics:true})]
-  }));
+  // ═══ TITRE (charte fiche d'entreprise) ═══
+  enteteSPSTI('FICHE DE SUIVI', 'SANTÉ-TRAVAIL',
+              'Évaluation des risques professionnels  •  Modalités de suivi individuel').forEach(p => children.push(p));
 
   // ═══ IDENTIFICATION ═══
   const CW = [2400,7500];
@@ -1411,20 +1442,23 @@ function genererFicheSuivi(idx, attempt) {
   ],{alignment:AlignmentType.CENTER}));
 
   // ═══ BUILD ═══
+  const piedSuivi = () => new Footer({children:[new Paragraph({alignment:AlignmentType.CENTER,children:[
+    new TextRun({text:'Document SPSTI — Page ',font:'Calibri',size:16,color:GREY}),
+    new TextRun({children:[PageNumber.CURRENT],font:'Calibri',size:16,color:GREY}),
+    new TextRun({text:'/',font:'Calibri',size:16,color:GREY}),
+    new TextRun({children:[PageNumber.TOTAL_PAGES],font:'Calibri',size:16,color:GREY})
+  ]})]});
   const doc = new Document({
     creator:'PréventIA-LaB',
     title:'Fiche suivi santé-travail — '+m.metier,
     styles:{default:{document:{run:{font:'Calibri',size:20}}}},
     numbering:{config:[{reference:'bullets',levels:[{level:0,format:LevelFormat.BULLET,text:'\u2022',alignment:AlignmentType.LEFT,style:{paragraph:{indent:{left:400,hanging:200}}}}]}]},
     sections:[{
-      properties:{page:{margin:{top:1000,bottom:1000,left:1100,right:1100}}},
-      headers:{default:new Header({children:[par([new TextRun({text:`SUIVI SANTÉ-TRAVAIL — ${m.metier}`,font:'Calibri',size:16,color:GREY,italics:true})],{alignment:AlignmentType.RIGHT})]})},
-      footers:{default:new Footer({children:[new Paragraph({alignment:AlignmentType.CENTER,children:[
-        new TextRun({text:'Document SPSTI — Page ',font:'Calibri',size:16,color:GREY}),
-        new TextRun({children:[PageNumber.CURRENT],font:'Calibri',size:16,color:GREY}),
-        new TextRun({text:'/',font:'Calibri',size:16,color:GREY}),
-        new TextRun({children:[PageNumber.TOTAL_PAGES],font:'Calibri',size:16,color:GREY})
-      ]})]})},
+      // titlePage : 1re page sans en-tête (le bandeau SPSTI occupe le haut)
+      properties:{titlePage:true,page:{margin:{top:1000,bottom:1000,left:1100,right:1100}}},
+      headers:{default:new Header({children:[par([new TextRun({text:`SUIVI SANTÉ-TRAVAIL — ${m.metier}`,font:'Calibri',size:16,color:GREY,italics:true})],{alignment:AlignmentType.RIGHT})]}),
+               first:new Header({children:[new Paragraph({children:[]})]})},
+      footers:{default:piedSuivi(), first:piedSuivi()},
       children
     }]
   });
