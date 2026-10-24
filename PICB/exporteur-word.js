@@ -53,8 +53,17 @@
     return '<w:tc><w:tcPr>' + w + bg + '</w:tcPr><w:p><w:pPr>' + al + '</w:pPr><w:r><w:rPr>' + fn + b + col + sz + '</w:rPr><w:t xml:space="preserve">' + esc(String(text)) + '</w:t></w:r></w:p></w:tc>';
   }
   function tr(cells) { return '<w:tr>' + cells.join('') + '</w:tr>'; }
+  // Grille de colonnes obligatoire (schéma Word) : déduite des largeurs de la 1re ligne de chaque tableau
+  function ajouterGrilles(xml) {
+    return xml.replace(/(<w:tbl><w:tblPr>[\s\S]*?<\/w:tblPr>)(<w:tr>[\s\S]*?<\/w:tr>)/g, function (m, pr, row1) {
+      var ws = [], re = /<w:tcW w:w="(\d+)"/g, k;
+      while ((k = re.exec(row1))) ws.push(k[1]);
+      return pr + '<w:tblGrid>' + ws.map(function (w) { return '<w:gridCol w:w="' + w + '"/>'; }).join('') + '</w:tblGrid>' + row1;
+    });
+  }
   function heading(lv, text) {
-    return '<w:p><w:pPr><w:pStyle w:val="Heading' + lv + '"/></w:pPr><w:r><w:rPr><w:b/></w:rPr><w:t>' + esc(text) + '</w:t></w:r></w:p>';
+    // Styles du modèle SPSTI (Word français) : Titre2 / Titre3 — « Heading2 » n'existe pas dans le modèle
+    return '<w:p><w:pPr><w:pStyle w:val="Titre' + lv + '"/></w:pPr><w:r><w:rPr><w:b/></w:rPr><w:t>' + esc(text) + '</w:t></w:r></w:p>';
   }
   function para(text, o) {
     o = o || {};
@@ -97,8 +106,18 @@
       "{{UNITE_2}}":                uniteNames[1],
       "{{UNITE_3}}":                uniteNames[2],
       "{{UNITE_4}}":                uniteNames[3],
-      "{{HORAIRES_TITRE}}":         data.horaires || "\u2014"
+      "{{HORAIRES_TITRE}}":         data.horaires || "\u2014",
+      "{{QUALITE}}":                data.qualite || "",
+      "{{DATE_RAPPORT}}":           new Date().toLocaleDateString("fr-FR")
     };
+    // Date ISO (2026-10-24) → format français (24/10/2026)
+    if (/^\d{4}-\d{2}-\d{2}$/.test(data.date || "")) map["{{DATES_MESURES}}"] = data.date.split("-").reverse().join("/");
+    // Unités non utilisées : on retire les paragraphes (puces de couverture, lignes GEH du § 6.1)
+    ["{{UNITE_2}}", "{{UNITE_3}}", "{{UNITE_4}}"].forEach(function (key) {
+      if (map[key]) return;
+      var re = new RegExp('<w:p[ >](?:(?!<w:p[ >])[\\s\\S])*?' + key.replace(/[{}]/g, "\\$&") + '[\\s\\S]*?<\\/w:p>', "g");
+      xml = xml.replace(re, function (p) { return p.indexOf("<w:sectPr") >= 0 ? p : ""; });
+    });
     Object.keys(map).forEach(function (key) {
       xml = xml.split(key).join(esc(map[key]));
     });
@@ -254,20 +273,18 @@
           resultsXML += buildResultsXML(data);
           if (data.crDiag) resultsXML += buildCreteXML(data);
           if (data.recos && data.recos.length > 0) resultsXML += buildRecoXML(data);
+          resultsXML = ajouterGrilles(resultsXML);
 
-          var marker = "INDICATEURS DE QUALITE";
-          var markerIdx = xml.indexOf(marker);
-          if (markerIdx > 0) {
-            var zone = xml.substring(Math.max(0, markerIdx - 2000), markerIdx);
-            var pStart = zone.lastIndexOf("<w:hyperlink");
-            if (pStart < 0) pStart = zone.lastIndexOf("<w:p>");
-            if (pStart < 0) pStart = zone.lastIndexOf("<w:p ");
-            if (pStart >= 0) {
-              var abs = Math.max(0, markerIdx - 2000) + pStart;
-              xml = xml.substring(0, abs) + resultsXML + '<w:p><w:r><w:br w:type="page"/></w:r></w:p>' + xml.substring(abs);
-            }
+          // Point d'injection : le paragraphe {{RESULTATS_PICB}} du § 7.2 est remplacé en entier.
+          // (L'ancienne recherche « INDICATEURS DE QUALITE » tombait sur le SOMMAIRE et insérait
+          //  les tableaux à l'intérieur d'un lien → document Word invalide.)
+          var reMarq = /<w:p[ >](?:(?!<w:p[ >])[\s\S])*?\{\{RESULTATS_PICB\}\}[\s\S]*?<\/w:p>/;
+          if (reMarq.test(xml)) {
+            xml = xml.replace(reMarq, function () { return resultsXML; });
           } else {
-            xml = xml.replace("</w:body>", resultsXML + '</w:body>');
+            // Modèle sans marqueur : ajout en fin de document, avant la dernière section
+            var iSect = xml.lastIndexOf("<w:sectPr");
+            xml = xml.substring(0, iSect) + resultsXML + xml.substring(iSect);
           }
 
           zip.file("word/document.xml", xml);
@@ -275,13 +292,16 @@
         });
       })
       .then(function (blob) {
-        var safe = function (s) { return (s || "poste").replace(/[^a-z0-9\u00e0\u00e2\u00e9\u00e8\u00ea\u00eb\u00ef\u00ee\u00f4\u00f9\u00fb\u00fc\u00e7]+/gi, "-").slice(0, 30); };
+        // Nom de fichier sans accents : certains navigateurs (Android, Chromium) le remplacent sinon par \u00ab download \u00bb
+        var safe = function (s) { return (s || "poste").normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/gi, "-").replace(/^-|-$/g, "").slice(0, 30); };
         var fn = "Estimation-Niveaux-Sonores_" + safe(data.entreprise) + "_" + safe(data.poste) + ".docx";
         var url = URL.createObjectURL(blob);
         var a = document.createElement("a");
         a.href = url; a.download = fn;
-        document.body.appendChild(a); a.click(); a.remove();
-        URL.revokeObjectURL(url);
+        document.body.appendChild(a); a.click();
+        // Nettoyage différé : sur Android/Chrome, retirer le lien ou révoquer l'URL tout de suite
+        // annule le téléchargement ou fait perdre le nom du fichier
+        setTimeout(function () { a.remove(); URL.revokeObjectURL(url); }, 4000);
       })
       .catch(function (err) {
         console.error("[PreventIA] Erreur export SPSTI:", err);
