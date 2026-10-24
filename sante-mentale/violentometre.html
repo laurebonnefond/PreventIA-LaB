@@ -4,50 +4,87 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Violentomètre au travail — PréventIA-LaB</title>
+<meta name="description" content="Diagnostic des violences et tensions relationnelles au travail : thermomètre de gravité, profil par source, retentissement sur la santé et contacts dans l'entreprise.">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="sm.css">
 <style>
 /* ---- Couleurs des 5 niveaux (bas = vert, haut = rouge) ---- */
 :root{
+  --n0:oklch(0.88 0.01 220);
   --n1:oklch(0.64 0.15 150); --n2:oklch(0.80 0.15 110); --n3:oklch(0.76 0.15 75);
   --n4:oklch(0.66 0.18 45);  --n5:oklch(0.55 0.21 27);
 }
 .vm{display:grid;grid-template-columns:1fr 360px;gap:1.6rem;align-items:start}
 
-/* Questionnaire */
-.niveau{margin-bottom:1.3rem}
-.niveau-h{display:flex;align-items:center;gap:.6rem;margin-bottom:.45rem}
-.niveau-h .pastille{flex:none;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-weight:700;color:#fff;background:var(--c)}
-.niveau-h b{font-size:15.5px}
-.niveau-h small{display:block;color:var(--muted);font-size:12.5px;font-weight:400}
-.item{--zc:var(--c)}
+/* Étapes */
+.etape{display:flex;align-items:center;gap:.7rem;margin:1.6rem 0 .8rem}
+.etape .num{flex:none;width:32px;height:32px;border-radius:50%;display:grid;place-items:center;font-weight:700;color:#fff;background:var(--psy)}
+.etape h2{margin:0;font-size:22px}
 
 /* Contexte */
-.ctx{display:flex;gap:.8rem;flex-wrap:wrap;background:#fff;border:1px solid var(--line);border-radius:14px;padding:.9rem 1rem;margin-bottom:1.2rem}
-.ctx label{display:flex;flex-direction:column;gap:.25rem;font-size:12px;font-weight:600;color:var(--muted);flex:1;min-width:170px}
-.ctx select{padding:.5rem .6rem;border:1px solid var(--line);border-radius:9px;font:inherit;font-size:13.5px;color:var(--text)}
+.ctx{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:.8rem;background:#fff;border:1px solid var(--line);border-radius:14px;padding:1rem}
+.ctx label{display:flex;flex-direction:column;gap:.3rem;font-size:12.5px;font-weight:600;color:var(--muted)}
+.ctx select{padding:.55rem .6rem;border:1px solid var(--line);border-radius:9px;font:inherit;font-size:14px;color:var(--text);background:#fff}
+
+/* Familles de faits */
+.famille{background:#fff;border:1px solid var(--line);border-radius:16px;margin-bottom:.8rem;overflow:hidden}
+.famille summary{list-style:none;display:flex;align-items:center;gap:.8rem;padding:.9rem 1.1rem;cursor:pointer}
+.famille summary::-webkit-details-marker{display:none}
+.famille summary .fi{font-size:24px}
+.famille summary b{font-size:15.5px;display:block}
+.famille summary small{color:var(--muted);font-size:12.5px}
+.famille summary .cpt{margin-left:auto;font-size:12px;font-weight:700;padding:.2rem .6rem;border-radius:20px;background:var(--line);color:var(--muted);white-space:nowrap}
+.famille summary .cpt.on{background:var(--cpt-c);color:#fff}
+.famille summary::after{content:'▾';color:var(--muted);transition:transform .2s}
+.famille[open] summary::after{transform:rotate(180deg)}
+.famille .liste{padding:0 1rem 1rem}
+.fait{display:flex;gap:.7rem;align-items:flex-start;border:1px solid var(--line);border-radius:12px;padding:.6rem .8rem;margin-top:.45rem;cursor:pointer;font-size:14px;transition:all .15s}
+.fait:hover{border-color:var(--c)}
+.fait input{margin-top:.25rem;width:17px;height:17px;flex:none;accent-color:var(--c)}
+.fait .niv{margin-left:auto;flex:none;width:22px;height:22px;border-radius:50%;display:grid;place-items:center;font-size:11px;font-weight:700;color:#fff;background:var(--c)}
+.fait.on{background:color-mix(in oklch,var(--c) 13%,#fff);border-color:var(--c)}
+.legende{display:flex;gap:.9rem;flex-wrap:wrap;font-size:12px;color:var(--muted);margin:.2rem 0 .6rem}
+.legende span{display:flex;align-items:center;gap:.35rem}
+.legende i{width:12px;height:12px;border-radius:50%;background:var(--c)}
 
 /* Thermomètre */
-.thermo-card{position:sticky;top:76px;max-height:calc(100vh - 90px);overflow:auto;background:#fff;border:1px solid var(--line);border-radius:20px;padding:1.2rem 1.2rem 1.3rem;box-shadow:var(--shadow-lg)}
-.thermo{display:grid;grid-template-columns:64px 1fr;gap:.6rem;height:360px;margin:.4rem 0 1rem}
-.tube-wrap{position:relative;display:flex;flex-direction:column;align-items:center}
-.tube{position:relative;width:26px;flex:1;border-radius:14px 14px 0 0;background:oklch(0.95 0.005 220);border:3px solid oklch(0.88 0.01 220);border-bottom:0;overflow:hidden}
-.tube::before{content:'';position:absolute;inset:0;opacity:.18;background:linear-gradient(to top,var(--n1),var(--n2),var(--n3),var(--n4),var(--n5))}
-.mercure{position:absolute;left:0;right:0;bottom:0;height:0;background:var(--niv-c,var(--n1));transition:height .7s cubic-bezier(.3,1.3,.5,1),background .5s}
-.bulbe{width:56px;height:56px;margin-top:-6px;border-radius:50%;background:var(--niv-c,oklch(0.88 0.01 220));border:3px solid oklch(0.88 0.01 220);box-shadow:inset -6px -6px 12px rgb(0 0 0/.12);transition:background .5s;display:grid;place-items:center;color:#fff;font-weight:700;font-size:20px}
+.thermo-card{position:sticky;top:76px;max-height:calc(100vh - 90px);overflow:auto;background:#fff;border:1px solid var(--line);border-radius:20px;padding:1.2rem;box-shadow:var(--shadow-lg)}
+.thermo{display:grid;grid-template-columns:64px 1fr;gap:.6rem;height:330px;margin:.4rem 0 1rem}
+.tube-wrap{display:flex;flex-direction:column;align-items:center}
+.tube{position:relative;width:26px;flex:1;border-radius:14px 14px 0 0;background:oklch(0.96 0.005 220);border:3px solid var(--n0);border-bottom:0;overflow:hidden}
+.tube::before{content:'';position:absolute;inset:0;opacity:.2;background:linear-gradient(to top,var(--n1),var(--n2),var(--n3),var(--n4),var(--n5))}
+.mercure{position:absolute;left:0;right:0;bottom:0;height:0;transition:height .7s cubic-bezier(.3,1.3,.5,1),background .5s}
+.bulbe{width:56px;height:56px;margin-top:-6px;border-radius:50%;background:var(--n0);border:3px solid var(--n0);box-shadow:inset -6px -6px 12px rgb(0 0 0/.12);transition:background .5s;display:grid;place-items:center;color:#fff;font-weight:700;font-size:20px}
 .graduations{display:flex;flex-direction:column-reverse;justify-content:space-between;padding-bottom:58px}
-.grad{display:flex;align-items:center;gap:.5rem;font-size:12.5px;line-height:1.2;cursor:pointer;border-radius:8px;padding:.25rem .4rem;opacity:.55;transition:opacity .2s,background .2s}
+.grad{display:flex;align-items:center;gap:.5rem;font-size:12.5px;cursor:pointer;border-radius:8px;padding:.25rem .4rem;opacity:.5;transition:all .2s}
 .grad::before{content:'';flex:none;width:14px;height:3px;border-radius:2px;background:var(--c)}
-.grad b{display:block;font-size:13px;color:var(--text)}
+.grad b{font-size:13px}
 .grad.atteint{opacity:1}
 .grad.actif{background:color-mix(in oklch,var(--c) 14%,#fff);opacity:1}
-.verdict{border-radius:14px;padding:.9rem 1rem;background:color-mix(in oklch,var(--niv-c,var(--line)) 12%,#fff);border-left:5px solid var(--niv-c,var(--line))}
-.verdict h3{font-family:'DM Serif Display',serif;font-weight:400;font-size:21px;color:var(--text)}
+.verdict{border-radius:14px;padding:.9rem 1rem;background:color-mix(in oklch,var(--vc,var(--n0)) 12%,#fff);border-left:5px solid var(--vc,var(--n0))}
+.verdict h3{font-family:'DM Serif Display',serif;font-weight:400;font-size:21px}
 .verdict p,.verdict li{font-size:13.5px}
 .verdict ul{padding-left:1.1rem;margin-top:.4rem}
 .appel{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.7rem}
 .appel a{display:inline-flex;flex-direction:column;padding:.45rem .7rem;border-radius:10px;background:#fff;border:1px solid var(--line);text-decoration:none;color:var(--text);font-size:11.5px;line-height:1.2}
 .appel a b{font-size:17px;color:var(--bad)}
+
+/* Diagnostic */
+.diag{background:#fff;border:1px solid var(--line);border-radius:20px;padding:1.4rem;box-shadow:var(--shadow)}
+.diag-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.4rem}
+.profil-l{display:grid;grid-template-columns:170px 1fr 92px;align-items:center;gap:.6rem;font-size:13.5px;margin:.45rem 0}
+.barre{height:12px;border-radius:7px;background:var(--line);overflow:hidden}
+.barre i{display:block;height:100%;border-radius:7px;transition:width .5s,background .5s}
+.profil-l em{font-style:normal;font-size:12px;color:var(--muted);text-align:right}
+.indic{display:grid;grid-template-columns:repeat(3,1fr);gap:.6rem;margin-top:1rem}
+.indic div{border:1px solid var(--line);border-radius:12px;padding:.6rem .7rem}
+.indic small{display:block;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+.indic b{font-size:15px}
+.synthese p{font-size:14px;margin:.4rem 0}
+.plan h4{font-size:14px;margin:.9rem 0 .3rem}
+.plan ul{padding-left:1.1rem;font-size:13.5px;color:var(--text)}
+.plan li{margin:.2rem 0}
+.vide{color:var(--muted);font-size:14px}
 
 /* Contacts entreprise */
 .contacts{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:.7rem}
@@ -55,8 +92,12 @@
 .contact label{font-size:12px;font-weight:700;color:var(--psy-dark);display:block;margin-bottom:.3rem}
 .contact input{width:100%;border:1px solid var(--line);border-radius:8px;padding:.45rem .55rem;font:inherit;font-size:13.5px}
 .contact small{display:block;color:var(--muted);font-size:11.5px;margin-top:.3rem}
-@media(max-width:900px){.vm{grid-template-columns:1fr}.thermo-card{position:static}}
-@media print{.ctx,.item:not(.on){display:none}.thermo-card{position:static;box-shadow:none}.contact input{border:0;padding:0;font-weight:600}}
+
+/* Rappel du niveau en bas d'écran (mobile) */
+.mini{display:none;position:fixed;left:50%;bottom:14px;transform:translateX(-50%);z-index:60;padding:.6rem 1.1rem;border-radius:30px;color:#fff;font-weight:700;font-size:14px;text-decoration:none;box-shadow:0 10px 30px -8px rgb(0 0 0/.45);background:var(--mc,var(--muted))}
+@media(max-width:900px){.mini.on{display:block}}
+@media(max-width:900px){.vm,.diag-grid{grid-template-columns:1fr}.thermo-card{position:static;max-height:none}.profil-l{grid-template-columns:130px 1fr 80px}}
+@media print{.ctx,.famille:not(:has(input:checked)),.fait:not(.on),.btn,.legende{display:none}.famille summary::after{display:none}.thermo-card{position:static;box-shadow:none;max-height:none}.contact input{border:0;padding:0;font-weight:600}.vm{grid-template-columns:1fr 300px}}
 </style>
 </head>
 <body>
@@ -69,169 +110,314 @@
 
 <header class="sm-head"><div class="in">
   <div class="crumb"><a href="../index.html">Accueil</a> › <a href="index.html">Santé mentale</a> › Violentomètre au travail</div>
-  <div class="sm-eyebrow">Repérer · Souffrance au travail</div>
+  <div class="sm-eyebrow">Diagnostic · Risques psychosociaux · Relations au travail</div>
   <h1>Violentomètre au travail</h1>
-  <p>Des incivilités du quotidien jusqu’aux violences graves : cochez ce qui est vécu ou observé dans le cadre du travail. Le thermomètre situe la gravité des faits et indique qui contacter.</p>
+  <p>Des incivilités du quotidien jusqu’aux violences graves : cochez les faits vécus ou observés <b>dans le cadre du travail</b>. Le thermomètre situe leur gravité, le diagnostic décrit la situation et indique qui contacter dans l’entreprise.</p>
 </div></header>
 
 <main>
   <div class="vm">
     <div>
+      <div class="etape" style="margin-top:0"><span class="num">1</span><h2>Le contexte</h2></div>
       <div class="ctx">
-        <label>Ces faits viennent de…
-          <select id="auteur"><option value="">— préciser (facultatif)</option><option>un ou des collègues</option><option>la hiérarchie</option><option>des clients, usagers ou patients</option><option>plusieurs sources</option></select></label>
-        <label>Ils se produisent…
-          <select id="frequence"><option value="">— préciser (facultatif)</option><option value="1">une fois</option><option value="2">plusieurs fois</option><option value="3">régulièrement, depuis des semaines</option></select></label>
+        <label>Je remplis ce questionnaire…
+          <select id="qui"><option value="moi">pour moi-même</option><option value="temoin">en tant que témoin</option><option value="pro">en entretien (préventeur, IDEST, médecin)</option></select></label>
+        <label>Les faits se produisent…
+          <select id="frequence"><option value="0">— préciser</option><option value="1">une seule fois</option><option value="2">plusieurs fois</option><option value="3">régulièrement</option></select></label>
+        <label>Depuis…
+          <select id="duree"><option value="0">— préciser</option><option value="1">moins d’un mois</option><option value="2">1 à 6 mois</option><option value="3">plus de 6 mois</option></select></label>
       </div>
-      <div id="questionnaire"></div>
+
+      <div class="etape"><span class="num">2</span><h2>Les faits</h2></div>
+      <div class="legende" id="legende"></div>
+      <div id="familles"></div>
     </div>
 
     <aside class="thermo-card" aria-live="polite">
-      <div class="sm-eyebrow" style="color:var(--muted)">Thermomètre</div>
+      <div class="sm-eyebrow" style="color:var(--muted)">Thermomètre de gravité</div>
       <div class="thermo">
         <div class="tube-wrap"><div class="tube"><div class="mercure" id="mercure"></div></div><div class="bulbe" id="bulbe"></div></div>
         <div class="graduations" id="graduations"></div>
       </div>
       <div class="verdict" id="verdict"></div>
       <div style="display:flex;gap:.5rem;margin-top:.9rem;flex-wrap:wrap">
-        <button class="btn" id="raz">↺ Tout décocher</button>
-        <button class="btn" onclick="window.print()">🖨 Imprimer</button>
+        <a class="btn p" href="#diagnostic">📋 Voir le diagnostic</a>
+        <button class="btn" id="raz">↺ Effacer</button>
       </div>
     </aside>
   </div>
 
-  <!-- Contacts personnalisables -->
-  <h2 style="margin-top:2.4rem">📇 Qui contacter dans l’entreprise ?</h2>
-  <p class="lead">Complétez les noms et numéros de l’entreprise : ils s’affichent dans les conseils du thermomètre et peuvent être imprimés pour affichage. Ils restent enregistrés sur cet ordinateur uniquement.</p>
+  <div class="etape" id="diagnostic"><span class="num">3</span><h2>Le diagnostic</h2></div>
+  <div class="diag" id="diag"></div>
+
+  <div class="etape"><span class="num">4</span><h2>Qui contacter dans l’entreprise ?</h2></div>
+  <p class="lead">Renseignez les noms et numéros : ils apparaissent dans les conseils et sur le diagnostic imprimé. Ils restent enregistrés sur cet ordinateur uniquement.</p>
   <div class="contacts" id="contacts"></div>
 
   <h2 style="margin-top:2.4rem">⚖️ Mettre les bons mots sur les faits</h2>
   <div class="grid">
     <div class="box"><h3>Ce que mesure l’outil</h3><ul>
-      <li>La <b>nature et la gravité</b> des faits, pour en prendre conscience et agir tôt.</li>
-      <li>Il ne <b>qualifie pas juridiquement</b> une situation : il aide à décrire et à orienter.</li></ul></div>
-    <div class="box"><h3>Une qualification juridique</h3><ul>
-      <li><b>Harcèlement moral</b> (L1152-1) ou <b>sexuel</b> (L1153-1), <b>agissement sexiste</b> (L1142-2-1) : ces notions supposent des conditions précises (répétition, effets sur la santé ou la dignité…).</li>
-      <li>Elles sont appréciées par l’employeur lors de l’enquête interne, par l’inspection du travail ou par le juge.</li></ul></div>
+      <li>La <b>nature</b>, la <b>gravité</b>, la <b>répétition</b> et les <b>effets sur la santé</b> des faits vécus au travail.</li>
+      <li>Il aide à décrire et à orienter. Il ne <b>qualifie pas</b> juridiquement une situation.</li></ul></div>
+    <div class="box"><h3>Un terme juridique</h3><ul>
+      <li>Le <b>harcèlement moral</b> (L1152-1) ou <b>sexuel</b> (L1153-1) et l’<b>agissement sexiste</b> (L1142-2-1) répondent à des conditions précises.</li>
+      <li>Leur reconnaissance relève de l’enquête de l’employeur, de l’inspection du travail ou du juge — pas d’un questionnaire.</li></ul></div>
     <div class="box"><h3>Obligations de l’employeur</h3><ul>
-      <li>Protéger la santé physique et mentale : <b>L4121-1</b>.</li>
-      <li>Prévenir, faire cesser et sanctionner les agissements : <b>L1152-4</b>, <b>L1153-5</b>.</li>
-      <li>Personne ne peut être sanctionné pour avoir relaté de bonne foi des faits : <b>L1152-2</b>, <b>L1153-2</b>.</li></ul></div>
+      <li>Protéger la santé physique et mentale (<b>L4121-1</b>) et évaluer les RPS dans le <b>DUERP</b>.</li>
+      <li>Prévenir, faire cesser et sanctionner les agissements (<b>L1152-4</b>, <b>L1153-5</b>).</li>
+      <li>Aucune sanction pour avoir relaté des faits de bonne foi (<b>L1152-2</b>, <b>L1153-2</b>).</li></ul></div>
     <div class="box"><h3>Violences externes</h3><ul>
-      <li>Agressions par des clients, usagers ou patients : à évaluer dans le <b>DUERP</b>, avec des mesures de prévention et un soutien après l’incident.</li>
-      <li>Toute agression doit être déclarée comme <b>accident du travail</b> si elle a des conséquences.</li></ul></div>
+      <li>Agressions de clients, usagers ou patients : risque à évaluer dans le DUERP, avec des mesures de prévention et un soutien après l’incident.</li>
+      <li>Une agression ayant des conséquences se déclare en <b>accident du travail</b>.</li></ul></div>
   </div>
 </main>
-<p class="foot">PréventIA-LaB · Violentomètre au travail — outil de repérage original, sans valeur juridique. Seuls les contacts de l’entreprise sont enregistrés, sur cet ordinateur.</p>
+<a class="mini" id="mini" href="#diagnostic"></a>
+<p class="foot">PréventIA-LaB · Violentomètre au travail — outil original de repérage des risques psychosociaux d’origine relationnelle, sans valeur juridique. Seuls les contacts de l’entreprise sont enregistrés, sur cet ordinateur.</p>
 
 <script>
 /* =====================================================================
-   NIVEAUX — du bas (vert) vers le haut (rouge)
+   1. NIVEAUX DE GRAVITÉ (bas = vert → haut = rouge)
    ===================================================================== */
-const NIVEAUX = [
-  { n: 1, c: 'var(--n1)', titre: 'Relations respectueuses', court: 'Respect', sous: 'Le travail peut être exigeant, sans atteinte à la personne',
-    items: ['On me dit bonjour, on m’écoute, on me répond', 'Les critiques portent sur le travail, avec des arguments', 'Les désaccords se règlent par la discussion', 'Je peux dire que je suis en difficulté sans être jugé·e'] },
-  { n: 2, c: 'var(--n2)', titre: 'Incivilités', court: 'Incivilités', sous: 'Manque de politesse, à ne pas banaliser',
-    items: ['On ne me dit pas bonjour, on m’ignore', 'On me coupe la parole, on soupire quand je parle', 'Ton sec, porte claquée, réponses agacées', 'Retards ou absences non prévenues qui me pénalisent', 'Remarque désobligeante ponctuelle'] },
-  { n: 3, c: 'var(--n3)', titre: 'Comportements hostiles', court: 'Hostilité', sous: 'Ils dégradent le climat et commencent à atteindre la personne',
-    items: ['Moqueries, surnoms, « blagues » sur moi', 'Remarques blessantes sur mon travail ou ma personne', 'Mise à l’écart : réunions, informations, pauses', 'Rumeurs ou ragots à mon sujet', 'Critiques devant les collègues ou la clientèle', 'Propos sexistes, racistes ou sur l’apparence'] },
-  { n: 4, c: 'var(--n4)', titre: 'Violences psychologiques', court: 'Violences psy.', sous: 'Atteinte à la dignité et à la santé : alerter',
-    items: ['Insultes, cris, propos humiliants', 'Menaces, intimidation, chantage à la sanction', 'Isolement organisé : plus de travail, plus de contact', 'Dénigrement systématique auprès des autres', 'Pressions ou messages hostiles, y compris hors horaires', 'Propos ou gestes à connotation sexuelle malgré un refus', 'Ma santé se dégrade : sommeil, angoisse, peur de venir'] },
-  { n: 5, c: 'var(--n5)', titre: 'Violences graves — danger', court: 'Danger', sous: 'Atteinte physique ou sexuelle, menace grave : agir immédiatement',
-    items: ['On m’a bousculé·e, frappé·e ou agressé·e', 'Contact physique à caractère sexuel non consenti', 'Pression pour obtenir un acte sexuel, même une seule fois', 'Menaces de mort ou contre mes proches', 'Dégradation ou vol de mes affaires pour m’atteindre', 'Idées noires en lien avec ce que je vis au travail'] }
+const NIV = [
+  null,
+  { c: 'var(--n1)', nom: 'Relations respectueuses', court: 'Respect' },
+  { c: 'var(--n2)', nom: 'Incivilités', court: 'Incivilités' },
+  { c: 'var(--n3)', nom: 'Comportements hostiles', court: 'Hostilité' },
+  { c: 'var(--n4)', nom: 'Violences psychologiques', court: 'Violences psy.' },
+  { c: 'var(--n5)', nom: 'Violences graves — danger', court: 'Danger' }
 ];
 
-/* Contacts : clé, libellé, aide, valeur par défaut */
+/* =====================================================================
+   2. FAITS, PAR SOURCE — [niveau, texte]
+   ===================================================================== */
+const FAMILLES = [
+  { id: 'col', ic: '🤝', nom: 'Entre collègues', aide: 'Relations avec les pairs, l’équipe', faits: [
+    [1, 'On se dit bonjour, on s’entraide, les échanges sont cordiaux'],
+    [2, 'On ne me dit plus bonjour, on m’ignore'],
+    [2, 'On me coupe la parole, ton sec, soupirs quand je parle'],
+    [3, 'Moqueries, surnoms, « blagues » à mes dépens'],
+    [3, 'Rumeurs ou ragots à mon sujet'],
+    [3, 'Mise à l’écart des pauses, des repas, des échanges'],
+    [3, 'Propos sexistes, racistes, homophobes ou sur l’apparence'],
+    [4, 'Insultes, cris, propos humiliants'],
+    [4, 'Rétention d’informations ou sabotage de mon travail'],
+    [4, 'Propos ou gestes à connotation sexuelle malgré un refus'],
+    [5, 'Bousculade, coups, agression physique'],
+    [5, 'Contact physique à caractère sexuel non consenti'] ] },
+  { id: 'man', ic: '👔', nom: 'Avec la hiérarchie', aide: 'Manager, encadrement, direction', faits: [
+    [1, 'Objectifs clairs, retours argumentés, reconnaissance du travail'],
+    [2, 'Aucun retour sur mon travail, manque de reconnaissance'],
+    [2, 'Consignes floues ou qui changent sans explication'],
+    [3, 'Critiques devant les collègues ou la clientèle'],
+    [3, 'Contrôle ou surveillance bien plus forts que pour les autres'],
+    [3, 'Consignes contradictoires ou objectifs impossibles à tenir'],
+    [4, 'Menaces de sanction, intimidation, chantage'],
+    [4, 'Retrait de tâches ou de responsabilités sans raison, mise au placard'],
+    [4, 'Isolement organisé : plus de travail, plus d’information'],
+    [4, 'Dénigrement répété de mon travail auprès des autres'],
+    [5, 'Pression pour obtenir un acte sexuel, même une seule fois'],
+    [5, 'Menaces graves : de mort, contre mes proches'] ] },
+  { id: 'org', ic: '⚙️', nom: 'Organisation du travail', aide: 'Ce qui fait monter les tensions entre personnes', faits: [
+    [1, 'Charge de travail tenable, rôles clairs dans l’équipe'],
+    [2, 'Interruptions fréquentes, urgences permanentes'],
+    [2, 'Changements décidés sans information ni explication'],
+    [3, 'Surcharge durable : pas le temps de bien faire'],
+    [3, 'Conflits non réglés laissés s’enliser dans l’équipe'],
+    [3, 'Sollicitations hors horaires (messages, appels)'],
+    [3, 'Devoir faire ce qui heurte ma conscience professionnelle'],
+    [4, 'Messages hostiles ou pressions répétés, y compris hors horaires'] ] },
+  { id: 'ext', ic: '🧍', nom: 'Public, clients, usagers', aide: 'Violences externes', faits: [
+    [1, 'Relations avec le public sereines'],
+    [2, 'Impolitesse, impatience, ton agressif'],
+    [3, 'Insultes ou menaces verbales ponctuelles'],
+    [4, 'Insultes ou menaces répétées, intimidation, messages hostiles'],
+    [5, 'Agression physique, crachat, menace avec une arme'] ] },
+  { id: 'san', ic: '🫀', nom: 'Effets sur ma santé', aide: 'Retentissement de la situation', faits: [
+    [1, 'Je me sens bien au travail'],
+    [2, 'Fatigue, tensions, irritabilité'],
+    [3, 'Troubles du sommeil, ruminations, « boule au ventre » avant de venir'],
+    [4, 'Angoisse, pleurs, arrêt de travail en lien avec la situation'],
+    [5, 'Idées noires en lien avec ce que je vis au travail'] ] }
+];
+
+/* =====================================================================
+   3. CONTACTS DE L'ENTREPRISE (personnalisables, stockés localement)
+   ===================================================================== */
 const CONTACTS = [
   ['manager', 'Manager / N+1', 'Si ce n’est pas la personne en cause'],
-  ['rh', 'Ressources humaines', 'Service RH ou direction'],
+  ['rh', 'Ressources humaines / direction', 'Pour signaler et demander une enquête'],
   ['cse', 'CSE / représentants du personnel', 'Élus du personnel'],
-  ['referent', 'Référent harcèlement et agissements sexistes', 'Référent du CSE (L2314-1), référent RH dès 250 salariés'],
+  ['referent', 'Référent harcèlement et agissements sexistes', 'Référent CSE (L2314-1) · référent RH dès 250 salariés'],
   ['spsti', 'Service de santé au travail', 'Médecin, infirmier·e, psychologue du travail'],
   ['ecoute', 'Cellule d’écoute / assistance psychologique', 'Si l’entreprise en dispose'],
-  ['inspection', 'Inspection du travail', 'Coordonnées de l’unité de contrôle locale']
+  ['inspection', 'Inspection du travail', 'Unité de contrôle locale']
 ];
 const C = (() => { try { return JSON.parse(localStorage.getItem('vm_contacts')) || {}; } catch (e) { return {}; } })();
-const nomContact = k => C[k] ? ` <b>(${C[k].replace(/[<>&]/g, '')})</b>` : '';
-
-/* Conseils par niveau atteint */
+const qui = k => C[k] ? ` <b>(${C[k].replace(/[<>&]/g, '')})</b>` : '';
 const NUM = {
   danger: '<a href="tel:17"><b>17</b>Police</a><a href="tel:112"><b>112</b>Urgences</a><a href="tel:15"><b>15</b>SAMU</a><a href="sms:114"><b>114</b>SMS</a>',
   vss: '<a href="tel:3919"><b>3919</b>Violences sexistes · 24 h/24</a>',
   detresse: '<a href="tel:3114"><b>3114</b>Détresse · 24 h/24</a>'
 };
-function conseils(n, freq) {
-  const repet = freq >= 2;
+
+/* =====================================================================
+   4. CONSEILS DU THERMOMÈTRE (selon le niveau)
+   ===================================================================== */
+function conseils(n) {
   return [
-    { t: 'Cochez ce qui est vécu ou observé', html: '<p>Le thermomètre monte au niveau le plus grave coché. Commencez par le bas.</p>' },
-    { t: 'Relations respectueuses', html: '<p>Rien d’inquiétant dans ce qui est coché. Si un malaise persiste, en parler reste toujours possible :</p><ul><li>Manager' + nomContact('manager') + '</li><li>Service de santé au travail' + nomContact('spsti') + '</li></ul>' },
-    { t: 'Incivilités', html: `<p>Ce ne sont pas des « petites choses » : répétées, elles usent et font monter les tensions.</p><ul>
-      <li>En parler calmement, sur des faits précis, avec la personne ou le manager${nomContact('manager')}.</li>
-      <li>Si cela persiste : RH${nomContact('rh')} ou représentants du personnel${nomContact('cse')}.</li>
-      <li>Le collectif peut travailler sur des règles de vie commune.</li></ul>` },
-    { t: 'Comportements hostiles', html: `<p>Le climat se dégrade et la personne est atteinte${repet ? ' — et les faits <b>se répètent</b>' : ''}.</p><ul>
+    { t: 'Cochez les faits', h: '<p>Ouvrez les rubriques à gauche et cochez ce qui est vécu ou observé. Le thermomètre monte au fait le plus grave.</p>' },
+    { t: 'Relations respectueuses', h: '<p>Rien d’inquiétant dans ce qui est coché. En cas de malaise, en parler reste possible :</p><ul><li>Manager' + qui('manager') + '</li><li>Service de santé au travail' + qui('spsti') + '</li></ul>' },
+    { t: 'Incivilités', h: `<p>À ne pas banaliser : répétées, elles usent et font monter les tensions.</p><ul>
+      <li>En parler, sur des faits précis, avec la personne ou le manager${qui('manager')}.</li>
+      <li>Si cela persiste : RH${qui('rh')} ou représentants du personnel${qui('cse')}.</li></ul>` },
+    { t: 'Comportements hostiles', h: `<p>La personne commence à être atteinte.</p><ul>
       <li><b>Noter les faits</b> : date, lieu, propos exacts, témoins.</li>
-      <li>Alerter le manager${nomContact('manager')} ou les RH${nomContact('rh')}.</li>
-      <li>En parler au service de santé au travail${nomContact('spsti')}.</li>
-      <li>Propos sexistes ou sexuels : référent${nomContact('referent')}.</li></ul>` },
-    { t: 'Violences psychologiques', html: `<p><b>Alerter sans attendre.</b> ${repet ? 'Répétés, ces faits peuvent relever d’une qualification juridique (harcèlement moral ou sexuel), appréciée lors d’une enquête.' : 'Même ponctuels, ces faits portent atteinte à la dignité.'}</p><ul>
-      <li>Signaler par écrit aux RH ou à la direction${nomContact('rh')} : l’employeur doit faire cesser les faits.</li>
-      <li>Référent harcèlement et agissements sexistes${nomContact('referent')}, CSE${nomContact('cse')}.</li>
-      <li><b>Médecin du travail</b>${nomContact('spsti')} : aménagements, éloignement, orientation.</li>
-      <li>Inspection du travail${nomContact('inspection')}.</li>
-      <li>Garder les preuves : messages, mails, témoignages, certificats médicaux.</li></ul>
-      <div class="appel">${NUM.detresse}${NUM.vss}</div>` },
-    { t: 'Violences graves — danger', html: `<p><b>Se mettre en sécurité et agir immédiatement.</b></p><ul>
+      <li>Alerter le manager${qui('manager')} ou les RH${qui('rh')}.</li>
+      <li>En parler au service de santé au travail${qui('spsti')}.</li></ul>` },
+    { t: 'Violences psychologiques', h: `<p><b>Alerter sans attendre.</b></p><ul>
+      <li>Signaler par écrit aux RH ou à la direction${qui('rh')}.</li>
+      <li>Référent${qui('referent')} · CSE${qui('cse')}.</li>
+      <li><b>Médecin du travail</b>${qui('spsti')}.</li>
+      <li>Inspection du travail${qui('inspection')}.</li></ul><div class="appel">${NUM.detresse}${NUM.vss}</div>` },
+    { t: 'Violences graves — danger', h: `<p><b>Se mettre en sécurité et agir immédiatement.</b></p><ul>
       <li>Danger immédiat : appeler les secours.</li>
-      <li>Faire constater les blessures par un médecin ; déclarer l’<b>accident du travail</b>.</li>
-      <li>Prévenir la direction${nomContact('rh')} et le service de santé au travail${nomContact('spsti')}.</li>
-      <li>Les violences physiques ou sexuelles sont des <b>infractions pénales</b> : une plainte peut être déposée.</li>
-      <li>Soutien psychologique${nomContact('ecoute')}.</li></ul>
-      <div class="appel">${NUM.danger}${NUM.vss}${NUM.detresse}</div>` }
+      <li>Faire constater par un médecin · déclarer l’<b>accident du travail</b>.</li>
+      <li>Prévenir la direction${qui('rh')} et le service de santé au travail${qui('spsti')}.</li>
+      <li>Ces faits sont des <b>infractions pénales</b> : une plainte est possible.</li></ul><div class="appel">${NUM.danger}${NUM.vss}${NUM.detresse}</div>` }
   ][n];
 }
 
-/* ---------------- Rendu ---------------- */
-const q = document.getElementById('questionnaire');
-q.innerHTML = NIVEAUX.map(N => `<div class="niveau" style="--c:${N.c}">
-  <div class="niveau-h"><span class="pastille">${N.n}</span><div><b>${N.titre}</b><small>${N.sous}</small></div></div>
-  ${N.items.map(t => `<label class="item"><input type="checkbox" data-n="${N.n}"><span>${t}</span></label>`).join('')}</div>`).join('');
+/* =====================================================================
+   5. RENDU DU QUESTIONNAIRE
+   ===================================================================== */
+document.getElementById('legende').innerHTML = NIV.slice(1).map((N, i) => `<span style="--c:${N.c}"><i></i>${i + 1} · ${N.court}</span>`).join('');
+const zone = document.getElementById('familles');
+zone.innerHTML = FAMILLES.map((F, i) => `<details class="famille" data-f="${F.id}" open>
+  <summary><span class="fi">${F.ic}</span><span><b>${F.nom}</b><small>${F.aide}</small></span><span class="cpt">0</span></summary>
+  <div class="liste">${F.faits.map(([n, t]) => `<label class="fait" style="--c:${NIV[n].c}"><input type="checkbox" data-n="${n}" data-f="${F.id}"><span>${t}</span><span class="niv" title="${NIV[n].nom}">${n}</span></label>`).join('')}</div>
+</details>`).join('');
+document.getElementById('graduations').innerHTML = NIV.slice(1).map((N, i) =>
+  `<div class="grad" data-n="${i + 1}" style="--c:${N.c}" title="Afficher les conseils de ce niveau"><b>${i + 1} · ${N.court}</b></div>`).join('');
 
-document.getElementById('graduations').innerHTML = NIVEAUX.map(N =>
-  `<div class="grad" data-n="${N.n}" style="--c:${N.c}" title="Voir les conseils de ce niveau"><span><b>${N.n} · ${N.court}</b></span></div>`).join('');
+/* =====================================================================
+   6. CALCUL ET AFFICHAGE
+   ===================================================================== */
+let apercu = null;
+const val = id => +document.getElementById(id).value || 0;
 
-let apercu = null;      // niveau survolé / cliqué sur le thermomètre
-function maj() {
-  const coches = [...q.querySelectorAll('input:checked')];
-  q.querySelectorAll('.item').forEach(l => l.classList.toggle('on', l.querySelector('input').checked));
-  const n = coches.reduce((m, c) => Math.max(m, +c.dataset.n), 0);
-  const vue = apercu || n;
-  const N = NIVEAUX[vue - 1];
-  const col = N ? N.c : 'oklch(0.88 0.01 220)';
-  const carte = document.querySelector('.thermo-card');
-  carte.style.setProperty('--niv-c', col);
+function analyser() {
+  const coches = [...zone.querySelectorAll('input:checked')];
+  const parF = {};
+  FAMILLES.forEach(F => { parF[F.id] = { max: 0, n: 0, faits: [] }; });
+  coches.forEach(i => { const p = parF[i.dataset.f]; p.n++; p.max = Math.max(p.max, +i.dataset.n); p.faits.push(i.nextElementSibling.textContent); });
+  const relationnel = ['col', 'man', 'org', 'ext'].reduce((m, k) => Math.max(m, parF[k].max), 0);
+  const global = Math.max(relationnel, parF.san.max);
+  return { coches, parF, relationnel, sante: parF.san.max, global, freq: val('frequence'), duree: val('duree') };
+}
+
+function thermometre(A) {
+  const n = A.global, vue = apercu || n, col = n ? NIV[n].c : 'var(--n0)';
   document.getElementById('mercure').style.height = (n ? (n - 0.5) / 5 * 100 : 0) + '%';
-  document.getElementById('mercure').style.background = n ? NIVEAUX[n - 1].c : 'transparent';
-  document.getElementById('bulbe').style.background = n ? NIVEAUX[n - 1].c : 'oklch(0.88 0.01 220)';
+  document.getElementById('mercure').style.background = col;
+  document.getElementById('bulbe').style.background = col;
   document.getElementById('bulbe').textContent = n || '';
   document.querySelectorAll('.grad').forEach(g => { g.classList.toggle('atteint', +g.dataset.n <= n); g.classList.toggle('actif', +g.dataset.n === vue); });
-  const freq = +document.getElementById('frequence').value || 0, aut = document.getElementById('auteur').value;
-  const k = conseils(vue, freq);
-  document.getElementById('verdict').innerHTML = `<h3>${apercu && apercu !== n ? 'Niveau ' + apercu + ' · ' : ''}${k.t}</h3>`
-    + (aut && vue ? `<p style="color:var(--muted);font-size:12.5px">Faits venant de ${aut}${aut.startsWith('des clients') ? ' : penser aussi à l’évaluation du risque d’agression dans le DUERP.' : '.'}</p>` : '')
-    + k.html + (coches.length ? `<p style="font-size:12px;color:var(--muted);margin-top:.6rem">${coches.length} fait(s) coché(s)</p>` : '');
+  const k = conseils(vue), v = document.getElementById('verdict');
+  v.style.setProperty('--vc', vue ? NIV[vue].c : 'var(--n0)');
+  v.innerHTML = `<h3>${apercu && apercu !== n ? 'Niveau ' + apercu + ' · ' : ''}${k.t}</h3>${k.h}`;
 }
-q.addEventListener('change', maj);
-document.getElementById('auteur').onchange = maj;
-document.getElementById('frequence').onchange = maj;
-document.querySelectorAll('.grad').forEach(g => {
-  g.onmouseenter = () => { apercu = +g.dataset.n; maj(); };
-  g.onmouseleave = () => { apercu = null; maj(); };
-  g.onclick = () => { apercu = apercu === +g.dataset.n ? null : +g.dataset.n; maj(); };
-});
-document.getElementById('raz').onclick = () => { q.querySelectorAll('input').forEach(i => i.checked = false); apercu = null; maj(); };
 
-/* Contacts éditables (enregistrés localement) */
+function diagnostic(A) {
+  const d = document.getElementById('diag');
+  if (!A.coches.length) { d.innerHTML = '<p class="vide">Le diagnostic s’affichera ici dès que des faits seront cochés.</p>'; return; }
+  const FREQ = ['non précisée', 'une seule fois', 'plusieurs fois', 'régulièrement'];
+  const DUR = ['non précisée', 'moins d’un mois', '1 à 6 mois', 'plus de 6 mois'];
+  const repete = A.freq >= 2, installe = A.duree >= 2;
+  const sources = FAMILLES.filter(F => F.id !== 'san' && A.parF[F.id].max >= 2).sort((a, b) => A.parF[b.id].max - A.parF[a.id].max);
+  const principale = sources[0];
+
+  /* --- Synthèse rédigée --- */
+  const phr = [];
+  phr.push(`Le fait le plus grave relevé se situe au niveau <b style="color:${NIV[A.global].c}">${A.global} · ${NIV[A.global].nom}</b>.`);
+  if (principale) phr.push(`Les difficultés relèvent surtout de la rubrique <b>${principale.nom.toLowerCase()}</b>${sources.length > 1 ? `, et touchent aussi : ${sources.slice(1).map(s => s.nom.toLowerCase()).join(', ')}` : ''}.`);
+  if (A.freq || A.duree) phr.push(`Les faits se produisent <b>${FREQ[A.freq]}</b>, depuis <b>${DUR[A.duree]}</b>${repete && installe ? ' : la situation est <b>installée</b>' : ''}.`);
+  if (A.sante >= 3) phr.push(`Ils ont un <b>retentissement sur la santé</b> (niveau ${A.sante}) : un avis du médecin du travail est recommandé.`);
+  else if (A.sante === 2) phr.push('Des premiers signes de fatigue ou de tension apparaissent.');
+  if (A.relationnel >= 3 && repete && A.sante >= 3)
+    phr.push('<span style="color:var(--muted)">La répétition des agissements et leurs effets sur la santé font partie des éléments examinés pour une éventuelle qualification juridique (harcèlement moral ou sexuel). Seule une enquête, l’inspection du travail ou le juge peut se prononcer.</span>');
+  if (A.parF.col.max === 1 && A.parF.man.max === 1 && A.relationnel <= 1) phr.push('Les relations de travail décrites sont respectueuses.');
+
+  /* --- Plan d'action --- */
+  const indiv = [], coll = [];
+  if (A.global >= 5) indiv.push('<b>Sécurité d’abord</b> : danger immédiat → 17, 112 ou 15 ; constat médical ; déclaration d’accident du travail.');
+  if (A.relationnel >= 3) indiv.push('Consigner les faits par écrit : dates, lieux, propos exacts, témoins, messages.');
+  if (A.relationnel >= 4) indiv.push('Signaler par écrit à l’employeur (RH, direction)' + qui('rh') + ', qui doit faire cesser les faits et peut mener une enquête interne.');
+  if (A.relationnel >= 3) indiv.push('Solliciter le référent harcèlement et agissements sexistes' + qui('referent') + ' ou le CSE' + qui('cse') + '.');
+  if (A.sante >= 3 || A.relationnel >= 4) indiv.push('Rencontrer le <b>médecin du travail</b>' + qui('spsti') + ' : visite à la demande, aménagements, orientation.');
+  if (A.relationnel === 2) indiv.push('En parler sur des faits précis avec la personne ou le manager' + qui('manager') + '.');
+  if (A.sante >= 4) indiv.push('Soutien psychologique' + qui('ecoute') + ' ; en cas de détresse : <b>3114</b>.');
+  if (A.relationnel >= 4) indiv.push('Si la situation n’est pas traitée : inspection du travail' + qui('inspection') + ', Défenseur des droits en cas de discrimination.');
+  if (!indiv.length) indiv.push('Rester attentif·ve ; en parler au manager ou au service de santé au travail en cas de malaise.');
+
+  if (A.parF.man.max >= 3) coll.push('Interroger les pratiques managériales : formation des encadrants, appui de la direction, régulation.');
+  if (A.parF.col.max >= 2) coll.push('Travailler les règles de vie collective et le traitement des conflits au sein de l’équipe.');
+  if (A.parF.org.max >= 2) coll.push('Analyser l’organisation : charge, interruptions, clarté des rôles, droit à la déconnexion.');
+  if (A.parF.ext.max >= 2) coll.push('Prévenir les violences externes : aménagement de l’accueil, procédure d’alerte, formation, soutien après incident.');
+  if (A.relationnel >= 3) coll.push('Inscrire ces risques psychosociaux au <b>DUERP</b> et dans le plan d’actions de prévention.');
+  if (A.relationnel >= 4) coll.push('L’employeur doit agir sur la situation individuelle <b>et</b> sur ses causes (L1152-4, L1153-5).');
+
+  d.innerHTML = `<div class="diag-grid">
+    <div>
+      <h3 style="font-size:16px">Profil de la situation</h3>
+      ${FAMILLES.map(F => { const p = A.parF[F.id], c = p.max ? NIV[p.max].c : 'var(--line)';
+        return `<div class="profil-l"><span>${F.ic} ${F.nom}</span><div class="barre"><i style="width:${p.max / 5 * 100}%;background:${c}"></i></div><em>${p.max ? 'niveau ' + p.max : '—'} · ${p.n} fait${p.n > 1 ? 's' : ''}</em></div>`; }).join('')}
+      <div class="indic">
+        <div><small>Gravité</small><b style="color:${NIV[A.global].c}">${A.global} / 5</b></div>
+        <div><small>Répétition</small><b>${A.freq ? FREQ[A.freq] : '—'}</b></div>
+        <div><small>Durée</small><b>${A.duree ? DUR[A.duree] : '—'}</b></div>
+      </div>
+    </div>
+    <div class="synthese"><h3 style="font-size:16px">Synthèse</h3>${phr.map(p => `<p>${p}</p>`).join('')}</div>
+  </div>
+  <div class="plan diag-grid" style="margin-top:.6rem">
+    <div><h4>👤 Pour la personne concernée</h4><ul>${indiv.map(x => `<li>${x}</li>`).join('')}</ul></div>
+    <div><h4>🏢 Pour l’entreprise (prévention collective)</h4><ul>${(coll.length ? coll : ['Maintenir la vigilance et le dialogue dans l’équipe.']).map(x => `<li>${x}</li>`).join('')}</ul></div>
+  </div>
+  ${A.global >= 4 ? `<div class="appel">${A.global >= 5 ? NUM.danger : ''}${NUM.vss}${NUM.detresse}</div>` : ''}
+  <div style="display:flex;gap:.5rem;margin-top:1.2rem;flex-wrap:wrap">
+    <button class="btn p" onclick="window.print()">🖨 Imprimer le diagnostic</button>
+    <span style="font-size:12px;color:var(--muted);align-self:center">Diagnostic du ${new Date().toLocaleDateString('fr-FR')} · aucune donnée enregistrée</span>
+  </div>`;
+}
+
+function maj() {
+  zone.querySelectorAll('.fait').forEach(l => l.classList.toggle('on', l.querySelector('input').checked));
+  const A = analyser();
+  FAMILLES.forEach(F => {
+    const p = A.parF[F.id], b = zone.querySelector(`.famille[data-f="${F.id}"] .cpt`);
+    b.textContent = p.n ? `${p.n} · niv. ${p.max}` : '0'; b.classList.toggle('on', !!p.n);
+    b.style.setProperty('--cpt-c', p.max ? NIV[p.max].c : 'var(--line)');
+  });
+  thermometre(A); diagnostic(A);
+  const mini = document.getElementById('mini');
+  mini.classList.toggle('on', A.global > 0);
+  if (A.global) { mini.textContent = `🌡️ Niveau ${A.global} · ${NIV[A.global].court} — voir le diagnostic`; mini.style.setProperty('--mc', NIV[A.global].c); }
+}
+
+zone.addEventListener('change', maj);
+['frequence', 'duree', 'qui'].forEach(id => document.getElementById(id).onchange = maj);
+document.querySelectorAll('.grad').forEach(g => {
+  g.onmouseenter = () => { apercu = +g.dataset.n; thermometre(analyser()); };
+  g.onmouseleave = () => { apercu = null; thermometre(analyser()); };
+  g.onclick = () => { apercu = apercu === +g.dataset.n ? null : +g.dataset.n; thermometre(analyser()); };
+});
+document.getElementById('raz').onclick = () => {
+  zone.querySelectorAll('input').forEach(i => i.checked = false);
+  ['frequence', 'duree'].forEach(id => document.getElementById(id).value = '0');
+  apercu = null; maj();
+};
+
+/* Contacts */
 document.getElementById('contacts').innerHTML = CONTACTS.map(([k, l, h]) =>
   `<div class="contact"><label for="c-${k}">${l}</label><input id="c-${k}" data-k="${k}" placeholder="Nom · téléphone" value="${(C[k] || '').replace(/"/g, '&quot;')}"><small>${h}</small></div>`).join('');
 document.getElementById('contacts').addEventListener('input', e => {
