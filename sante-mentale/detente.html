@@ -188,26 +188,60 @@ function arreterFond() {
    ===================================================================== */
 const synth = window.speechSynthesis;
 let voixFR = [];
+/* Classement des voix : plus le score est bas, plus la voix est naturelle et douce */
+const PREF_VOIX = [
+  /(Denise|Vivienne|Eloise|Brigitte|Coralie|Yvette|Jacqueline|Celeste).*(Natural|Neural)/i, // Edge : voix neuronales féminines
+  /Natural|Neural|Online/i,                                                                  // Edge : autres voix neuronales
+  /(Audrey|Amélie|Amelie|Aurélie|Marie).*(Premium|Enhanced|Amélior)/i,                       // Apple : voix améliorées
+  /Premium|Enhanced|Amélior/i,
+  /Google fran/i,                                                                            // Chrome
+  /Audrey|Amélie|Amelie|Aurélie|Marie|Julie|Hortense|Denise/i                                // voix système féminines
+];
+const scoreVoix = v => {
+  const i = PREF_VOIX.findIndex(re => re.test(v.name));
+  return (i < 0 ? PREF_VOIX.length : i) + (/fr-FR/i.test(v.lang) ? 0 : 0.5);
+};
 function chargerVoix() {
   if (!synth) return;
-  voixFR = synth.getVoices().filter(v => /^fr/i.test(v.lang));
-  /* Les voix « naturelles » sonnent bien mieux : on les met en tête */
-  const score = v => (/natural|neural|premium|enhanced|amélie|amelie|denise|google/i.test(v.name) ? 0 : 1) + (/fr-FR/i.test(v.lang) ? 0 : 0.5);
-  voixFR.sort((a, b) => score(a) - score(b));
+  voixFR = synth.getVoices().filter(v => /^fr/i.test(v.lang)).sort((a, b) => scoreVoix(a) - scoreVoix(b));
   const sel = document.getElementById('rVoix');
-  sel.innerHTML = voixFR.length ? voixFR.map((v, i) => `<option value="${i}">${v.name.replace(/Microsoft |Google /, '').slice(0, 34)}</option>`).join('')
-                                : '<option>Voix par défaut</option>';
+  let memo = null; try { memo = localStorage.getItem('detente-voix'); } catch (e) {}
+  sel.innerHTML = voixFR.length
+    ? voixFR.map((v, i) => `<option value="${i}"${v.name === memo ? ' selected' : ''}>${i === 0 ? '★ ' : ''}${v.name.replace(/Microsoft |Google |\s*Online|\s*\(.*?\)/g, '').slice(0, 30)}</option>`).join('')
+    : '<option>Voix par défaut</option>';
 }
 if (synth) { chargerVoix(); synth.onvoiceschanged = chargerVoix; }
+document.getElementById('rVoix').addEventListener('change', e => {
+  const v = voixFR[+e.target.value]; if (!v) return;
+  try { localStorage.setItem('detente-voix', v.name); } catch (er) {}
+  if (synth) { synth.cancel(); dire('Bonjour. Voici ma voix, douce et posée.', { rate: +document.getElementById('rVitesse').value }); } // aperçu
+});
 
-function dire(texte, opts = {}) {
+/* Prononce UN segment */
+function direSegment(texte, rate, pitch) {
   return new Promise(res => {
-    if (!synth) return setTimeout(res, texte.length * 70);
     const u = new SpeechSynthesisUtterance(texte);
-    u.lang = 'fr-FR'; u.rate = opts.rate || 0.85; u.pitch = 0.92; u.volume = 1;
+    u.lang = 'fr-FR'; u.rate = rate; u.pitch = pitch; u.volume = 1;
     const v = voixFR[+document.getElementById('rVoix').value]; if (v) u.voice = v;
     u.onend = u.onerror = res; synth.speak(u);
   });
+}
+
+/* Les « … » ne sont presque pas marqués par la synthèse vocale : on coupe la phrase
+   à chaque « … » et on insère une vraie respiration (c'est ce qui casse l'effet robot).
+   opts.profondeur (0 → 1) : la voix ralentit et descend un peu au fil de la séance. */
+async function dire(texte, opts = {}) {
+  if (!synth) return new Promise(res => setTimeout(res, texte.length * 70));
+  const p = opts.profondeur || 0;
+  const rate = (opts.rate || 0.85) * (1 - 0.08 * p);
+  const pitch = 0.92 - 0.06 * p;
+  const morceaux = texte.split(/…|\.\.\./).map(s => s.trim()).filter(Boolean);
+  const jeton = opts.ctrl ? opts.ctrl.jeton : null;
+  for (let i = 0; i < morceaux.length; i++) {
+    if (opts.ctrl && opts.ctrl.jeton !== jeton) return;   // pause / arrêt pendant la phrase
+    await direSegment(morceaux[i], rate, pitch);
+    if (i < morceaux.length - 1) await new Promise(r => setTimeout(r, 650 + 350 * p));
+  }
 }
 const attendre = (ms, ctrl) => new Promise(res => { const t = setTimeout(res, ms); if (ctrl) ctrl.timer = t; });
 
@@ -331,7 +365,7 @@ const SCRIPT = [
   if (!synth) info.textContent = 'La synthèse vocale n’est pas disponible sur ce navigateur : les sous-titres seuls seront affichés.';
 
   const total = SCRIPT.reduce((s, [t, p]) => s + t.length * 0.075 + p, 0);
-  info.textContent ||= `Durée ≈ ${Math.round(total / 60)} min · la voix dépend de votre appareil (meilleur rendu : Chrome, Edge ou Safari).`;
+  info.textContent ||= `Durée ≈ ${Math.round(total / 60)} min · la voix dépend de votre appareil. Meilleur rendu : Microsoft Edge (voix « Natural »), puis Safari ou Chrome. La voix marquée ★ est la plus naturelle trouvée.`;
 
   function afficher(t) {
     st.style.opacity = 0; setTimeout(() => { st.textContent = t; st.style.opacity = 1; }, 300);
@@ -342,7 +376,9 @@ const SCRIPT = [
       const [txt, p] = SCRIPT[ctrl.idx];
       afficher(txt);
       prog.style.width = (ctrl.idx / SCRIPT.length * 100) + '%';
-      await dire(txt, { rate: vit });
+      /* Profondeur en arche : la voix ralentit vers le lieu ressource, puis remonte au retour */
+      const profondeur = Math.sin(Math.PI * ctrl.idx / (SCRIPT.length - 1));
+      await dire(txt, { rate: vit, profondeur, ctrl });
       if (ctrl.etat !== 'lecture' || jeton !== ctrl.jeton) return;
       await attendre(p * 1000 / (vit / 0.85), ctrl);
       if (ctrl.etat !== 'lecture' || jeton !== ctrl.jeton) return;
