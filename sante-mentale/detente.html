@@ -233,14 +233,17 @@ function direSegment(texte, rate, pitch) {
 async function dire(texte, opts = {}) {
   if (!synth) return new Promise(res => setTimeout(res, texte.length * 70));
   const p = opts.profondeur || 0;
-  const rate = (opts.rate || 0.85) * (1 - 0.08 * p);
-  const pitch = 0.92 - 0.06 * p;
+  const rate = opts.pitch ? opts.rate : (opts.rate || 0.85) * (1 - 0.08 * p);
+  const pitch = opts.pitch || 0.92 - 0.06 * p;
+  const gap = opts.gap || 650 + 350 * p;               // respiration entre deux « … »
   const morceaux = texte.split(/…|\.\.\./).map(s => s.trim()).filter(Boolean);
   const jeton = opts.ctrl ? opts.ctrl.jeton : null;
   for (let i = 0; i < morceaux.length; i++) {
     if (opts.ctrl && opts.ctrl.jeton !== jeton) return;   // pause / arrêt pendant la phrase
-    await direSegment(morceaux[i], rate, pitch);
-    if (i < morceaux.length - 1) await new Promise(r => setTimeout(r, 650 + 350 * p));
+    const dernier = i === morceaux.length - 1;
+    /* « Fin de phrase descendante » : le dernier morceau est dit un peu plus bas */
+    await direSegment(morceaux[i], rate, dernier && opts.descend ? pitch - 0.08 : pitch);
+    if (!dernier) await new Promise(r => setTimeout(r, gap));
   }
 }
 const attendre = (ms, ctrl) => new Promise(res => { const t = setTimeout(res, ms); if (ctrl) ctrl.timer = t; });
@@ -296,66 +299,98 @@ const attendre = (ms, ctrl) => new Promise(res => { const t = setTimeout(res, ms
 })();
 
 /* =====================================================================
-   2. RELAXATION GUIDÉE (script original)
-   Chaque ligne : [texte, pause en secondes après la phrase]
+   2. RELAXATION GUIDÉE — script de Laure (v2)
+   Les consignes [en italique] du texte source ne sont PAS lues : elles
+   pilotent la voix (style) et les silences.
+   Chaque ligne : [texte, style, silence APRÈS la phrase (s), options]
+     options.gap     = respiration (ms) entre deux « … » (« laisse respirer »)
+     options.descend = fin de phrase descendante
+   Les silences sont respectés à la seconde, quelle que soit la vitesse choisie.
    ===================================================================== */
+/* Styles de voix : r = débit (×, à la vitesse « Lente »), p = hauteur, g = respiration entre « … » (ms) */
+const STYLES = {
+  accueil:     { r: 1.00, p: 0.98, g: 600  },  // chaleureuse, naturelle, débit modéré, sourire léger
+  douce:       { r: 0.93, p: 0.95, g: 750  },  // douce, un peu plus lente
+  lent:        { r: 0.88, p: 0.93, g: 900  },  // débit lent, ton calme
+  souple:      { r: 0.88, p: 0.94, g: 900  },  // souple, comme une invitation / lent et régulier
+  grave:       { r: 0.85, p: 0.88, g: 1000 },  // légèrement plus grave, sans forcer / ton posé
+  evocatrice:  { r: 0.85, p: 0.91, g: 1000 },  // évocatrice, douce, enveloppante
+  descriptive: { r: 0.87, p: 0.92, g: 950  },  // calme, légèrement plus descriptive
+  tresDouce:   { r: 0.80, p: 0.90, g: 1200 },  // très douce, débit lent
+  rassurant:   { r: 0.84, p: 0.91, g: 1000 },  // chaleureuse, posée, rassurante
+  presence:    { r: 0.90, p: 0.94, g: 800  },  // redonne progressivement de la présence
+  dynamique:   { r: 0.95, p: 0.96, g: 650  },  // rythme progressivement plus dynamique, doux
+  tonique:     { r: 1.00, p: 0.99, g: 550  },  // plus claire et plus tonique
+  normal:      { r: 1.02, p: 0.98, g: 500  }   // chaleureux, débit presque normal
+};
+const LENT = { gap: 1500 };   // « Laisse chaque partie / proposition respirer »
+
 const SCRIPT = [
-  /* Installation */
-  ['Bienvenue dans ce moment de détente.', 3],
-  ['Installez-vous confortablement, assis ou allongé, de la façon qui vous convient le mieux.', 4],
-  ['Rien d’autre à faire, pendant ces quelques minutes, que de vous laisser guider.', 4],
-  ['Vous pouvez fermer les yeux maintenant… ou un peu plus tard… comme vous le souhaitez.', 6],
+  /* Accueil */
+  ['Bienvenue dans ce moment de détente.', 'accueil', 2],
+  ['Installez-vous confortablement, assis ou allongé, de la façon qui vous convient le mieux.', 'accueil', 3],
+  ['Rien d’autre à faire, pendant ces quelques minutes, que de vous laisser guider.', 'douce', 3],
+  ['Vous pouvez fermer les yeux maintenant… ou un peu plus tard… comme vous le souhaitez.', 'douce', 4, { descend: true }],
   /* Respiration */
-  ['Portez simplement votre attention sur votre respiration.', 4],
-  ['Sans rien changer… observez l’air qui entre… et l’air qui sort.', 7],
-  ['Prenez une inspiration un peu plus profonde… par le nez…', 5],
-  ['et soufflez longuement par la bouche… comme pour laisser partir la fatigue de la journée.', 7],
-  ['Encore une fois… inspirez…', 5],
-  ['et relâchez… tout doucement.', 8],
-  ['Puis laissez la respiration retrouver son propre rythme… naturel… tranquille.', 8],
+  ['Portez simplement votre attention sur votre respiration.', 'douce', 2],
+  ['Sans rien changer… observez l’air qui entre…', 'lent', 3],
+  ['Et l’air qui sort…', 'lent', 4],
+  ['Prenez une inspiration un peu plus profonde… par le nez…', 'lent', 4],   // temps de l'inspiration
+  ['Et soufflez longuement par la bouche… comme pour laisser partir la fatigue de la journée.', 'lent', 4],
+  ['Encore une fois… inspirez…', 'lent', 3],
+  ['Et relâchez… tout doucement.', 'lent', 5],
+  ['Puis laissez la respiration retrouver son propre rythme… naturel… tranquille.', 'lent', 5],
   /* Détente du corps */
-  ['Maintenant, portez votre attention sur votre visage.', 4],
-  ['Le front se détend… les sourcils s’écartent légèrement… les paupières deviennent lourdes et confortables.', 7],
-  ['Les mâchoires se desserrent… la langue se pose au fond de la bouche.', 7],
-  ['Cette détente descend dans la nuque… dans les épaules… qui s’abaissent un peu… à chaque expiration.', 8],
-  ['Elle coule le long des bras… jusqu’au bout des doigts… qui deviennent peut-être plus lourds… ou plus chauds.', 9],
-  ['La poitrine se soulève et s’abaisse… calmement… le ventre est souple.', 8],
-  ['Le dos s’appuie… et se laisse porter.', 6],
-  ['La détente gagne le bassin… les cuisses… les genoux… les mollets…', 7],
-  ['jusqu’aux pieds… bien posés… bien ancrés.', 9],
-  ['Tout le corps est maintenant au repos… et chaque respiration approfondit encore un peu ce calme.', 10],
-  /* Descente */
-  ['Je vais compter de cinq à un.', 3],
-  ['À chaque chiffre, vous pouvez vous laisser aller un peu plus profondément dans cette détente.', 5],
-  ['Cinq… le corps se fait lourd et confortable.', 6],
-  ['Quatre… les pensées ralentissent… comme des nuages qui passent… sans s’arrêter.', 7],
-  ['Trois… de plus en plus calme.', 6],
-  ['Deux… tranquille… en sécurité.', 6],
-  ['Un… dans une détente profonde.', 9],
+  ['Maintenant, portez votre attention sur votre visage.', 'souple', 2],
+  ['Le front se détend… les sourcils s’écartent légèrement… les paupières deviennent lourdes et confortables.', 'souple', 3],
+  ['Les mâchoires se desserrent… la langue se pose au fond de la bouche.', 'souple', 3],
+  ['Cette détente descend dans la nuque… dans les épaules… qui s’abaissent un peu… à chaque expiration.', 'souple', 4],
+  ['Elle coule le long des bras… jusqu’au bout des doigts… qui deviennent peut-être plus lourds… ou plus chauds.', 'douce', 5],
+  ['La poitrine se soulève et s’abaisse… calmement… le ventre est souple.', 'souple', 3],
+  ['Le dos s’appuie… et se laisse porter.', 'souple', 4],
+  ['La détente gagne le bassin… les cuisses… les genoux… les mollets…', 'souple', 4, LENT],
+  ['Jusqu’aux pieds… bien posés… bien ancrés.', 'souple', 5],
+  ['Tout le corps est maintenant au repos… et chaque respiration approfondit encore un peu ce calme.', 'souple', 6],
+  /* Descente : compte de 5 à 1 */
+  ['Je vais compter de cinq à un.', 'grave', 2],
+  ['À chaque chiffre, vous pouvez vous laisser aller un peu plus profondément dans cette détente.', 'grave', 3],
+  ['Cinq… le corps se fait lourd et confortable.', 'grave', 3],
+  ['Quatre… les pensées ralentissent… comme des nuages qui passent… sans s’arrêter.', 'grave', 4],
+  ['Trois… de plus en plus calme.', 'grave', 4],
+  ['Deux… tranquille… en sécurité.', 'grave', 5],
+  ['Un… dans une détente profonde.', 'grave', 6],
   /* Lieu ressource */
-  ['Et maintenant, imaginez un endroit où vous vous sentez parfaitement bien.', 5],
-  ['Un lieu réel… ou imaginaire… une plage, une forêt, un jardin, une montagne… peu importe.', 7],
-  ['Regardez autour de vous… les couleurs… la lumière… les formes.', 9],
-  ['Écoutez les sons de cet endroit… peut-être le vent… l’eau… ou simplement le silence.', 9],
-  ['Sentez la température de l’air sur votre peau… le sol sous vos pieds…', 9],
-  ['Peut-être même une odeur agréable… familière.', 9],
-  ['Ici, vous êtes en sécurité. Ici, rien ne presse.', 8],
-  ['Prenez le temps de savourer ce calme… de le laisser se diffuser dans tout votre corps.', 15],
+  ['Et maintenant, imaginez un endroit où vous vous sentez parfaitement bien.', 'evocatrice', 2],
+  ['Un lieu réel… ou imaginaire… une plage, une forêt, un jardin, une montagne… peu importe.', 'evocatrice', 4],
+  ['Prenez quelques instants pour découvrir cet endroit à votre manière…', 'evocatrice', 5],
+  ['Peut-être remarquez-vous d’abord une couleur… une lumière… ou simplement une impression agréable…', 'evocatrice', 5],
+  ['Si vous le souhaitez, laissez votre regard intérieur se promener autour de vous…', 'evocatrice', 4],
+  ['Peut-être y a-t-il des arbres… le mouvement de l’eau… ou la douceur d’un rayon de soleil…', 'evocatrice', 5],
+  ['Regardez autour de vous… les couleurs… la lumière… les formes.', 'evocatrice', 2],
+  ['Écoutez les sons de cet endroit… peut-être le vent… l’eau… ou simplement le silence.', 'descriptive', 6],
+  ['Sentez la température de l’air sur votre peau… le sol sous vos pieds…', 'descriptive', 4],
+  ['Peut-être même une odeur agréable… familière.', 'descriptive', 5],
+  ['Vous pouvez imaginer la température de l’air sur votre visage… sentir le sol sous vos pieds… ou simplement apprécier la sensation d’être ici…', 'descriptive', 6],
+  ['Et vous n’avez rien à réussir… rien à voir absolument… rien à ressentir de particulier…', 'tresDouce', 4, LENT],
+  ['Vous pouvez simplement prendre le temps d’être là… à votre rythme…', 'tresDouce', 8],
+  ['Ici, vous êtes en sécurité. Ici, rien ne presse.', 'tresDouce', 5],
+  ['Prenez le temps de savourer ce calme… de le laisser se diffuser dans tout votre corps.', 'tresDouce', 13],  // silence prolongé 10–15 s
   /* Ancrage */
-  ['Ce lieu vous appartient. Vous pourrez y revenir quand vous le voudrez.', 5],
-  ['Pour vous en souvenir, vous pouvez, si vous le souhaitez, poser doucement le pouce contre l’index…', 6],
-  ['et associer ce geste à cette sensation de calme.', 8],
-  ['Plus tard, dans une journée difficile, ce simple geste et quelques respirations lentes pourront vous aider à retrouver un peu de cette tranquillité.', 10],
-  /* Retour */
-  ['Il est temps maintenant de revenir, à votre rythme.', 4],
-  ['En gardant avec vous tout ce calme… et cette énergie.', 5],
-  ['Je vais compter de un à cinq. À cinq, vous ouvrirez les yeux, avec une sensation de repos.', 5],
-  ['Un… vous sentez à nouveau le poids de votre corps… le support sous vous.', 5],
-  ['Deux… les sons de la pièce reviennent.', 5],
-  ['Trois… vous bougez doucement les doigts… les pieds.', 5],
-  ['Quatre… vous prenez une bonne inspiration… et vous vous étirez si vous en avez envie.', 5],
-  ['Cinq… vous pouvez ouvrir les yeux. Vous voilà de retour, ici et maintenant, avec calme et énergie.', 4],
-  ['Merci pour ce moment. Prenez encore quelques secondes avant de vous relever.', 2]
+  ['Ce lieu vous appartient. Vous pourrez y revenir quand vous le voudrez.', 'rassurant', 4],
+  ['Pour vous en souvenir, vous pouvez, si vous le souhaitez, poser doucement le pouce contre l’index…', 'rassurant', 4],
+  ['Et associer ce geste à cette sensation de calme.', 'rassurant', 5],
+  ['Plus tard, dans une journée difficile, ce simple geste et quelques respirations lentes pourront vous aider à retrouver un peu de cette tranquillité.', 'rassurant', 5],
+  /* Retour : compte de 1 à 5 */
+  ['Il est temps maintenant de revenir, à votre rythme.', 'rassurant', 2],
+  ['En gardant avec vous tout ce calme… et cette énergie.', 'presence', 3],
+  ['Je vais compter de un à cinq. À cinq, vous pourrez ouvrir les yeux, avec une sensation de repos.', 'presence', 2],
+  ['Un… vous sentez à nouveau le poids de votre corps… le support sous vous.', 'dynamique', 2],
+  ['Deux… les sons de la pièce reviennent.', 'dynamique', 2],
+  ['Trois… vous bougez doucement les doigts… les pieds.', 'dynamique', 2],
+  ['Quatre… vous prenez une bonne inspiration… et vous vous étirez si vous en avez envie.', 'dynamique', 2],
+  ['Cinq… vous pouvez ouvrir les yeux.', 'tonique', 2],
+  ['Vous voilà de retour, ici et maintenant, avec calme et énergie.', 'normal', 3],
+  ['Merci pour ce moment. Prenez encore quelques secondes avant de vous relever.', 'normal', 2]
 ];
 
 (function () {
@@ -364,7 +399,8 @@ const SCRIPT = [
   const ctrl = { idx: 0, etat: 'arret', timer: null, jeton: 0 };
   if (!synth) info.textContent = 'La synthèse vocale n’est pas disponible sur ce navigateur : les sous-titres seuls seront affichés.';
 
-  const total = SCRIPT.reduce((s, [t, p]) => s + t.length * 0.075 + p, 0);
+  const total = SCRIPT.reduce((s, [t, k, p, o]) => s + t.length * 0.07 / STYLES[k].r
+    + (t.split('…').length - 1) * ((o && o.gap) || STYLES[k].g) / 1000 + p, 0);
   info.textContent ||= `Durée ≈ ${Math.round(total / 60)} min · la voix dépend de votre appareil. Meilleur rendu : Microsoft Edge (voix « Natural »), puis Safari ou Chrome. La voix marquée ★ est la plus naturelle trouvée.`;
 
   function afficher(t) {
@@ -373,14 +409,13 @@ const SCRIPT = [
   async function lire(jeton) {
     const vit = +document.getElementById('rVitesse').value;
     while (ctrl.idx < SCRIPT.length && ctrl.etat === 'lecture' && jeton === ctrl.jeton) {
-      const [txt, p] = SCRIPT[ctrl.idx];
+      const [txt, cle, p, o = {}] = SCRIPT[ctrl.idx], s = STYLES[cle];
       afficher(txt);
       prog.style.width = (ctrl.idx / SCRIPT.length * 100) + '%';
-      /* Profondeur en arche : la voix ralentit vers le lieu ressource, puis remonte au retour */
-      const profondeur = Math.sin(Math.PI * ctrl.idx / (SCRIPT.length - 1));
-      await dire(txt, { rate: vit, profondeur, ctrl });
+      /* Le style de la ligne règle débit, hauteur et respirations ; « Vitesse » ajuste l'ensemble */
+      await dire(txt, { rate: s.r * vit / 0.85, pitch: s.p, gap: o.gap || s.g, descend: o.descend, ctrl });
       if (ctrl.etat !== 'lecture' || jeton !== ctrl.jeton) return;
-      await attendre(p * 1000 / (vit / 0.85), ctrl);
+      await attendre(p * 1000, ctrl);   // silence exact demandé par le script
       if (ctrl.etat !== 'lecture' || jeton !== ctrl.jeton) return;
       ctrl.idx++;
     }
