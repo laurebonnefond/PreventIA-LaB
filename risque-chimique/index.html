@@ -820,6 +820,7 @@ body {
   z-index: 1000;
 }
 </style>
+<script src="avertissement-prototype.js" defer></script>
 </head>
 <body>
 
@@ -834,9 +835,9 @@ body {
 
 <!-- ── HEADER ──────────────────────────────────────────── -->
 <header class="page-header">
-  <span class="page-header-label">⚗️ Outil d'évaluation</span>
+  <span class="page-header-label">⚗️ Prototype pédagogique · Aide à la réflexion</span>
   <h1>Évaluateur risque chimique</h1>
-  <p>Cotation des risques, recherche automatisée de FDS, matrice d'incompatibilités et plan de stockage. Méthode INRS ED 6179 simplifiée — référentiel CLP (CE 1272/2008) & bonnes pratiques INRS ED 6015.</p>
+  <p>Cotation des risques, recherche automatisée de FDS, matrice d'incompatibilités et plan de stockage. Inspiré de la méthode INRS ED 6179 simplifiée — référentiel CLP (CE 1272/2008) & bonnes pratiques INRS ED 6015.</p>
 </header>
 
 <main class="main">
@@ -962,7 +963,7 @@ body {
     </div>
 
     <div class="disclaimer">
-      <strong>Méthodologie :</strong> Outil d'aide à la décision conforme à la méthode INRS ED 6179 (Évaluation simplifiée du risque chimique). La cotation peut être affinée à partir des FDS (rubriques 2, 3, 9, 11) et des mesures d'exposition réelles (VLEP, prélèvements atmosphériques). Les incompatibilités identifiées sont indicatives et basées sur les classes de danger SGH/CLP ; consultez la FDS rubrique 10 et le tableau des incompatibilités INRS pour validation finale.<br />
+      <strong>⚠️ Prototype à visée pédagogique :</strong> résultats indicatifs, non validés. La FDS du fournisseur fait foi ; l'interprétation relève de l'expertise toxicologique du SPSTI et toute conclusion concernant les salariés doit être validée par le médecin du travail.<br /><br /><strong>Méthodologie :</strong> Outil d'aide à la réflexion inspiré de la méthode INRS ED 6179 (Évaluation simplifiée du risque chimique). La cotation peut être affinée à partir des FDS (rubriques 2, 3, 9, 11) et des mesures d'exposition réelles (VLEP, prélèvements atmosphériques). Les incompatibilités identifiées sont indicatives et basées sur les classes de danger SGH/CLP ; consultez la FDS rubrique 10 et le tableau des incompatibilités INRS pour validation finale.<br />
       <strong>Cadre réglementaire :</strong> Code du travail art. R.4412-1 et suivants, INRS ED 6179, Règlement (CE) 1272/2008 (CLP).
     </div>
 
@@ -1515,7 +1516,7 @@ function renderFdsInfoBlock(p) {
   if (meta.cmr) html += `<div class="fds-info-row"><span class="fds-info-key">CMR</span><span class="fds-info-val" style="color:var(--orange); font-weight:600;">⚠ Catégorie ${meta.cmr_cat || '?'} (R.4412-66)</span></div>`;
   if (meta.remarques) html += `<div class="fds-info-row"><span class="fds-info-key">Prévention</span><span class="fds-info-val">${escapeHtml(meta.remarques)}</span></div>`;
   if (meta.source) html += `<div class="fds-info-row"><span class="fds-info-key">Source indicative</span><span class="fds-info-val" style="font-style:italic; color:var(--text-muted);">${escapeHtml(meta.source)}</span></div>`;
-  html += `<div style="margin-top:8px; padding-top:8px; border-top:1px solid var(--border); font-size:11px; color:var(--text-muted);">⚠ Aide à la saisie générée par IA. À valider impérativement avec la FDS officielle du fournisseur (rubriques 2, 3, 9, 10).</div>`;
+  html += `<div style="margin-top:8px; padding-top:8px; border-top:1px solid var(--border); font-size:11px; color:var(--text-muted);">⚠ <strong>Suggestion IA non vérifiée</strong> — peut contenir des erreurs. Seule la FDS du fournisseur fait foi (rubriques 2, 3, 9, 10, 11). En cas de doute, solliciter l'expertise toxicologique du SPSTI.</div>`;
   html += `</div>`;
   return html;
 }
