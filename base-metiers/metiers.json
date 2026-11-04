@@ -1,8 +1,8 @@
 {
   "meta": {
     "titre": "Base Métiers — Santé au travail & prévention",
-    "version": "5.1",
-    "date_maj": "2026-10-22",
+    "version": "5.2",
+    "date_maj": "2026-11-04",
     "source": "PréventIA-LaB · SPSTI 23/87",
     "nombre_metiers": 133,
     "nombre_secteurs": 19,
@@ -525,15 +525,19 @@
       "secteur": "C. Industrie manufacturière",
       "code_naf_lettre": "C",
       "suivi": "SIR",
-      "risques": "Bruit > 85 dB, vibrations, mécanique, chute, postures",
-      "epi": "Casque antibruit, lunettes, gants anti-coupure, chaussures S3, casque",
-      "epc": "Capotage machines, écrans, manutention assistée",
-      "ref": "R.4434-7 bruit",
+      "risques": "RISQUE PRINCIPAL — CMR : fumées de soudage (cancérogène groupe 1 CIRC 2017), chrome VI et nickel si soudage inox, particules métalliques ultrafines (oxydes de fer, manganèse), gaz (ozone, NOx, CO) ; chimique : dégraissants, solvants, décapants ; rayonnements UV/IR (arc) ; thermique (projections, brûlures) ; bruit > 85 dB (meulage, martelage) ; vibrations ; mécanique (coupures) ; chute ; postures",
+      "epi": "Protection respiratoire : masque de soudage à ventilation assistée (TH3P) ou cagoule à adduction d'air ; à défaut FFP3 sous le masque. Masque de soudage ADF (EN 379), gants soudeur (EN 12477), vêtements ignifugés (EN ISO 11611), tablier et guêtres cuir, casque antibruit, lunettes, gants anti-coupure, chaussures S3",
+      "epc": "Captage à la source obligatoire (torche aspirante ou bras aspirant positionné au plus près), ventilation générale, procédés moins émissifs (électrodes tungstène sans thorium, fil fourré bas Cr VI), écrans de soudage, capotage machines, manutention assistée",
+      "ref": "Suivi spécifique : SIR (CMR) ; liste des salariés exposés CMR et traçabilité (R.4412-86 à R.4412-93) ; mesures atmosphériques Cr VI (VLEP contraignante 0,001 mg/m³, R.4412-149) ; biométrologie chrome/nickel urinaires fin de poste fin de semaine si inox ; EFR. Réglementation : R.4412-59 et s. (CMR), R.4434-7 bruit ; INRS ED 668 ; MP RG 44, 10 ter, 37 ter",
       "categories": [
+        "CMR",
         "TMS",
         "BRUIT",
         "VIBRATIONS",
-        "MECA"
+        "MECA",
+        "THERM",
+        "RNI",
+        "GROSSESSE"
       ],
       "pcs_ese": "623a",
       "periodicite_ans": 2
