@@ -504,15 +504,14 @@
       "secteur": "C. Industrie manufacturière",
       "code_naf_lettre": "C",
       "suivi": "SIR",
-      "risques": "CMR (fumées de soudage cancérogène groupe 1 CIRC), UV, thermique, bruit, RX si TIG",
+      "risques": "CMR (fumées de soudage cancérogène groupe 1 CIRC ; chrome VI et nickel si inox), UV/IR, thermique, bruit ; TIG : thorium des électrodes tungstène thoriées (émetteur alpha, inhalation des poussières lors de l'affûtage)",
       "epi": "Masque soudure ADF (auto-obscurcissant), cagoule à adduction d'air, gants cuir long, tablier cuir, chaussures",
-      "epc": "Bras aspirant à la source (obligatoire), torche aspirante, ventilation, écrans soudure",
-      "ref": "R.4412-60 (CIRC 2017) ; ED 668 INRS",
+      "epc": "Bras aspirant à la source (obligatoire), torche aspirante, ventilation, écrans soudure ; électrodes sans thorium (cérium, lanthane) ou affûteuse avec captage",
+      "ref": "R.4412-60 (CIRC 2017) ; ED 668 INRS ; substitution des électrodes thoriées (R.4451-18, radioprotection)",
       "categories": [
         "CMR",
         "BRUIT",
         "THERM",
-        "RI_B",
         "RNI",
         "GROSSESSE"
       ],
