@@ -962,7 +962,7 @@ Moyens conseillés : désigner un référent santé sécurité, former deux sauv
     A.risks.forEach(r => {
       const a = fakeAnswers[r.id]; if (!a || a === 'nc') return;
       const m = a === 'maitrise' ? 4 : a === 'partiel' ? 2 : 1;
-      const c = SURV_SCORE[r.surveillance] || 1;
+      const c = r.grav ? r.grav - 1 : (SURV_SCORE[r.surveillance] || 1);
       num += m * c; den += 4 * c; ev++; sum += m;
     });
     const Sc = {

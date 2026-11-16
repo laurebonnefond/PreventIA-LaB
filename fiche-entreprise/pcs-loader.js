@@ -54,30 +54,6 @@
     S: 'S · Services', T: 'T · Ménages',
   };
 
-  // ── Suivi médical par défaut selon les risques ──
-  // Approximation : en droit, le SIR ne vise que les CMR (pas tout le risque
-  // chimique) et les agents biologiques des groupes 3-4 (pas tout le biologique).
-  // Le bruit ne relève pas du SIR (R.4624-23) : retiré de la liste.
-  // Pour imposer le bon suivi, renseigner "suivi" dans pcs2020.json.
-  function deduireSuivi(risques) {
-    const SIR_TRIGGERS = [
-      'Risque biologique', 'Risque chimique (incl. radon, CMR)',
-      'Chute de hauteur', 'Rayonnements ionisants', 'Risque hyperbare',
-      'Poussières minérales / silice cristalline',
-    ];
-    if (risques.some(r => SIR_TRIGGERS.includes(r))) return 'SIR';
-    const SIA_TRIGGERS = [
-      'Vibrations mécaniques', 'Manutention manuelle', 'Horaires atypiques / nuit',
-      'Travail isolé', 'RPS / contact public',
-    ];
-    if (risques.some(r => SIA_TRIGGERS.includes(r))) return 'SIA';
-    return 'SI';
-  }
-
-  function deduirePeriodicite(suivi) {
-    return suivi === 'SIR' ? 4 : suivi === 'SIA' ? 3 : 5;
-  }
-
   // ── Chargement et fusion ──
   async function fusionnerPCS() {
     if (typeof DB === 'undefined' || !DB.metiers) {
@@ -127,16 +103,11 @@
       // Construire le secteur à partir du premier NAF
       const secteur = SECT_LABELS[prof.naf?.[0]] || '';
 
-      // Suivi : imposé par pcs2020.json si renseigné, sinon déduit des risques
-      const suivi = prof.suivi || deduireSuivi(risques);
-
       const metier = {
         id:              id,
         label:           prof.l,
         secteur:         secteur,
         risques:         risques,
-        suivi:           suivi,
-        periodicite_ans: deduirePeriodicite(suivi),
         _pcs:            prof.c,       // référence PCS pour traçabilité
         _naf:            prof.naf,     // sections NAF associées (traçabilité)
         naf_codes:       prof.naf_codes || [],  // codes/préfixes NAF précis (auto-sélection)

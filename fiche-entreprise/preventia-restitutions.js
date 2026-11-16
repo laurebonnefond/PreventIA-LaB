@@ -152,7 +152,7 @@
 
   function riskRow(r, answers) {
     const a = answers[r.id];
-    const grav = SURV_GRAV[r.surveillance] || 2;
+    const grav = r.grav || SURV_GRAV[r.surveillance] || 2;   // gravité propre au risque ; à défaut (risque saisi à la main), déduite du suivi
     const prob = (a && a !== 'nc') ? (MAIT_PROB[a] ?? PROB_DEFAUT) : PROB_DEFAUT;
     const evalue = !!(a && a !== 'nc');
     const residuel = Math.round(grav * prob / 25 * 100);
@@ -317,7 +317,8 @@
     const g = globalScore(rows), b = band(g);
     let concl = `Indice PréventIA® de maîtrise : ${S && S.indice != null ? S.indice : '—'}/100. `
       + `Score de risque résiduel pondéré : ${g}/100 (${b.lab.toLowerCase()}). `
-      + `${rows.length} risque(s) identifié(s), dont ${sir.length} relevant d'un suivi individuel renforcé. `;
+      + `${rows.length} risque(s) identifié(s), dont ${sir.length} relevant d'un suivi individuel renforcé`
+      + (rows.some(x => x.r.survCond) ? ` et ${rows.filter(x => x.r.survCond).length} dont le suivi dépend de l'exposition (à préciser). ` : `. `);
     if (top.length) concl += `Familles prioritaires : ${top.slice(0, 3).map(f => f.nom).join(', ')}. `;
     if (nonEval.length) concl += `${nonEval.length} risque(s) restent à évaluer in situ. `;
     if (doublons && doublons.n) concl += `${doublons.n} redondance(s) « observé / conseillé » détectée(s) : à arbitrer avant diffusion. `;
@@ -375,7 +376,7 @@
         const bb = band(x.residuel);
         return `<tr><td><b>${esc(x.r.label)}</b><div class="pvx-sub">${esc(x.r.fe || '')}</div></td>
           <td class="pvx-sub">${esc(FAMILLES.find(f => f.key === x.fam).nom)}</td>
-          <td>${esc(x.r.surveillance)}</td><td>${pill}</td><td>${x.grav}</td><td>${x.prob}</td>
+          <td>${esc(x.r.surveillance)}${x.r.survCond ? `<div class="pvx-sub">${esc(x.r.survCond)}</div>` : ''}</td><td>${pill}</td><td>${x.grav}</td><td>${x.prob}</td>
           <td><b style="color:${bb.hex}">${x.residuel}</b></td><td class="pvx-sub">${esc(x.r.ref || '—')}</td></tr>`;
       }).join('') || '<tr><td colspan="8" class="pvx-sub">Aucun risque</td></tr>'}</tbody></table>`;
 
