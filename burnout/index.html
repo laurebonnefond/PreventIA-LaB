@@ -331,8 +331,8 @@ footer a:hover { color: var(--teal-light); }
 <!-- NAVBAR -->
 <nav class="navbar">
   <a href="../index.html" class="nav-brand">
-    <img src="../../uploads/logo.png" alt="PréventIA-LaB" class="nav-logo" />
-    <span class="nav-brand-name">Préventi<span>IA</span>-LaB</span>
+    <img src="../logo.png" alt="PréventIA-LaB" class="nav-logo" />
+    <span class="nav-brand-name">Prévent<span>IA</span>-LaB</span>
   </a>
   <a href="../sante-mentale/index.html" class="nav-back">← Santé mentale</a>
 </nav>
@@ -343,8 +343,9 @@ footer a:hover { color: var(--teal-light); }
     <div class="page-tag">🫀 Outil RPS</div>
     <h1>Évaluation du risque burn-out</h1>
     <p>
-      <strong>Modèle MBI (Maslach)</strong> · Facteurs organisationnels INRS ·
-      Recommandations HAS 2017 · Usage professionnel IPRP/IST
+      <strong>Questionnaire de repérage inspiré du MBI (Maslach)</strong> : 12 items adaptés et
+      10 items sur l'organisation, le soutien et les signaux d'alerte · Recommandations HAS 2017 ·
+      Outil non validé scientifiquement, à utiliser en entretien par un professionnel de santé au travail
     </p>
     <div class="progress-wrap" style="padding-top:20px;">
       <div class="progress-info">
@@ -365,7 +366,7 @@ footer a:hover { color: var(--teal-light); }
   <div class="actions">
     <button class="btn-calc" onclick="calculateBurnout()">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 7h6m0 10v-3m-3 3V7m-4 10h8a2 2 0 002-2V9a2 2 0 00-2-2H7a2 2 0 00-2 2v6a2 2 0 002 2z"/></svg>
-      Calculer mon profil de risque
+      Calculer le profil de risque
     </button>
     <button class="btn-reset" onclick="resetForm()">↺ Réinitialiser le formulaire</button>
   </div>
@@ -421,10 +422,12 @@ footer a:hover { color: var(--teal-light); }
       </div>
 
       <div class="source-note">
-        <strong>Références :</strong> Maslach Burnout Inventory (MBI, 1996) · INRS — RPS et burn-out (ED 6140, 2015) ·
+        <strong>Références :</strong> Maslach Burnout Inventory (MBI, 1996) · DGT / INRS / Anact — Le syndrome d'épuisement professionnel ou burnout (2015) ·
+        INRS — Évaluer les facteurs de risques psychosociaux : l'outil RPS-DU (ED 6140) ·
         HAS — Recommandations sur le syndrome d'épuisement professionnel (2017) · Modèles de Karasek &amp; Siegrist.<br />
-        <strong>Note :</strong> Outil à usage professionnel IPRP/IST. Ne remplace pas une évaluation clinique.
-        En cas de score élevé, orienter vers le médecin du travail.
+        <strong>Note :</strong> Outil de repérage à usage professionnel (infirmier·e, médecin du travail, préventeur). Les seuils sont indicatifs
+        et ne remplacent pas une évaluation clinique. En cas de score élevé, orienter vers le médecin du travail.
+        Idées suicidaires : <strong>3114</strong>, 24 h/24 · danger immédiat : <strong>15</strong> ou <strong>112</strong>.
       </div>
     </div>
   </div>
@@ -433,7 +436,7 @@ footer a:hover { color: var(--teal-light); }
 <footer>
   <a href="../index.html">PréventIA-LaB</a> ·
   <a href="https://github.com/laurebonnefond" target="_blank">GitHub ↗</a> ·
-  Données traitées localement — aucun envoi serveur
+  Réponses traitées dans votre navigateur · seuls les scores, sans aucune identité, sont envoyés si vous demandez l'analyse IA
 </footer>
 
 <script>
@@ -471,6 +474,8 @@ const QUESTIONS = [
   {id:'q22',dim:'sig',w:2,inv:0,text:"J'ai eu envie de quitter mon poste ou j'envisage une reconversion à cause de la souffrance au travail."}
 ];
 
+/* Échelle de fréquence à 7 niveaux (0 à 6), comme le MBI */
+const FREQ = ['Jamais','Quelques fois par an','Une fois par mois','Quelques fois par mois','Une fois par semaine','Quelques fois par semaine','Chaque jour'];
 const answers = {};
 let lastScores = null;
 let lastGlobal = null;
@@ -490,9 +495,9 @@ function buildForm() {
     html += `<div class="q-block" id="block-${q.id}">
       <div class="q-text">${q.text}</div>
       <div class="likert-wrap">
-        <div class="likert-legend"><span>Jamais</span><span>Rarement</span><span>Parfois</span><span>Souvent</span><span>Toujours</span></div>
+        <div class="likert-legend"><span>0 · Jamais</span><span>3 · Quelques fois par mois</span><span>6 · Chaque jour</span></div>
         <div class="likert-btns" id="btns-${q.id}">
-          ${[0,1,2,3,4,5,6].map(v => `<button type="button" onclick="selectAnswer('${q.id}',${v})" id="btn-${q.id}-${v}">${v}</button>`).join('')}
+          ${[0,1,2,3,4,5,6].map(v => `<button type="button" title="${FREQ[v]}" aria-label="${v} — ${FREQ[v]}" onclick="selectAnswer('${q.id}',${v})" id="btn-${q.id}-${v}">${v}</button>`).join('')}
         </div>
       </div>
     </div>`;
@@ -612,16 +617,18 @@ function calculateBurnout() {
 
 function buildRecos(scores, global) {
   const items = [];
-  if (scores.ee >= 55) items.push({t:'Épuisement émotionnel — action prioritaire',bc:'#FCEBEB',tc:'#791F1F',pts:["Réduire la charge de travail immédiatement (concertation manager).","Envisager un aménagement temporaire du poste ou des horaires.","Orienter vers le médecin du travail pour évaluation clinique.","Proposer des séances de soutien psychologique (psychologue du travail, PSSM)."]});
+  if (scores.ee >= 55) items.push({t:'Épuisement émotionnel — action prioritaire',bc:'#FCEBEB',tc:'#791F1F',pts:["Réduire la charge de travail immédiatement (concertation manager).","Envisager un aménagement temporaire du poste ou des horaires.","Orienter vers le médecin du travail pour évaluation clinique.","Proposer un soutien psychologique (psychologue du travail, dispositif d'écoute)."]});
   else if (scores.ee >= 35) items.push({t:'Épuisement émotionnel — surveillance renforcée',bc:'#FAEEDA',tc:'#854F0B',pts:["Sensibiliser le salarié à l'importance des temps de récupération.","Vérifier l'adéquation charge/ressources lors du prochain entretien.","Proposer des actions de gestion du stress (sophrologie, cohérence cardiaque)."]});
   if (scores.dp >= 55) items.push({t:'Dépersonnalisation — risque de décrochage relationnel',bc:'#FCEBEB',tc:'#791F1F',pts:["Évaluer l'impact sur la qualité des soins ou des relations professionnelles.","Proposer une supervision clinique ou un groupe de pairs.","Envisager un accompagnement par un médecin psychiatre si besoin."]});
   else if (scores.dp >= 35) items.push({t:'Dépersonnalisation — vigilance',bc:'#FAEEDA',tc:'#854F0B',pts:["Favoriser les échanges en équipe autour des difficultés relationnelles.","Former à la gestion des émotions et à l'empathie professionnelle."]});
   if (scores.ap >= 55) items.push({t:"Perte d'accomplissement — désinvestissement professionnel",bc:'#FAECE7',tc:'#712B13',pts:["Identifier avec le salarié ce qui donnait du sens à son travail.","Proposer de nouveaux projets ou responsabilités valorisantes.","Envisager un bilan de compétences ou de carrière.","Consulter le médecin du travail pour un maintien dans l'emploi adapté."]});
-  if (scores.org >= 55) items.push({t:'Facteurs organisationnels — restructuration nécessaire',bc:'#FCEBEB',tc:'#791F1F',pts:["Évaluation formelle du DUERP sur les RPS.","Révision des procédures, des responsabilités et des délais.","Réunion de service avec l'encadrement pour redistribuer les tâches.","Référencer les résultats au référent RPS de l'établissement."]});
+  else if (scores.ap >= 35) items.push({t:"Accomplissement personnel — vigilance",bc:'#FAEEDA',tc:'#854F0B',pts:["Faire le point sur ce qui donne du sens au travail et sur la reconnaissance reçue.","Valoriser les réussites et les compétences lors des échanges avec l'encadrement."]});
+  if (scores.org >= 55) items.push({t:'Facteurs organisationnels — restructuration nécessaire',bc:'#FCEBEB',tc:'#791F1F',pts:["Évaluation formelle du DUERP sur les RPS.","Révision des procédures, des responsabilités et des délais.","Réunion de service avec l'encadrement pour redistribuer les tâches.","Partager les constats, sans donnée individuelle, avec le CSE et le référent santé-sécurité."]});
   else if (scores.org >= 35) items.push({t:'Facteurs organisationnels — à améliorer',bc:'#FAEEDA',tc:'#854F0B',pts:["Clarifier les rôles et les priorités avec le manager.","Renforcer l'autonomie dans les marges de manœuvre quotidiennes.","Sensibiliser l'encadrement au management bienveillant."]});
   if (scores.soc >= 55) items.push({t:'Soutien social insuffisant — isolement professionnel',bc:'#FCEBEB',tc:'#791F1F',pts:["Réunions d'équipe régulières avec espace d'expression sécurisé.","Mise en place d'un binôme ou d'un référent de proximité.","Médiation professionnelle si tensions interpersonnelles avérées."]});
   else if (scores.soc >= 35) items.push({t:'Soutien social à renforcer',bc:'#FAEEDA',tc:'#854F0B',pts:["Favoriser les rituels d'équipe (cohésion, espaces informels).","Renforcer la culture de la reconnaissance managériale."]});
-  if (scores.sig >= 55) items.push({t:'Signaux cliniques — orientation médicale urgente',bc:'#FCEBEB',tc:'#791F1F',pts:["Consultation en urgence avec le médecin du travail.","Évaluer la nécessité d'un arrêt de travail de courte durée.","Coordonner avec le médecin traitant pour prise en charge globale.","Ne pas minimiser les symptômes somatiques — risques cardiovasculaires associés."]});
+  if (scores.sig >= 55) items.push({t:'Signaux cliniques — orientation médicale urgente',bc:'#FCEBEB',tc:'#791F1F',pts:["Consultation en urgence avec le médecin du travail.","Orienter vers le médecin traitant, seul à pouvoir prescrire un arrêt de travail si nécessaire.","Coordonner avec le médecin traitant pour prise en charge globale.","Ne pas minimiser les symptômes somatiques — risques cardiovasculaires associés."]});
+  else if (scores.sig >= 35) items.push({t:"Signaux d'alerte — à surveiller",bc:'#FAEEDA',tc:'#854F0B',pts:["Proposer une visite à la demande auprès du médecin ou de l'infirmier·e du travail.","Refaire le point dans quelques semaines pour suivre l'évolution des symptômes."]});
   if (global < 35) items.push({t:'Score global faible — maintien de la prévention primaire',bc:'#E1F5EE',tc:'#085041',pts:["Maintenir une évaluation annuelle des RPS dans le cadre du DUERP.","Promouvoir les facteurs protecteurs : autonomie, reconnaissance, soutien.","Continuer à sensibiliser aux signaux précoces de surmenage."]});
   if (items.length === 0) items.push({t:'Surveillance de routine recommandée',bc:'#E1F5EE',tc:'#085041',pts:["Proposer un suivi semestriel avec cet outil.","Renforcer les ressources protectrices identifiées.","Intégrer les résultats dans la fiche de prévention de l'établissement."]});
   return items.map(r =>
@@ -632,6 +639,13 @@ function buildRecos(scores, global) {
   ).join('');
 }
 
+/* Analyse IA — webhook texte Make, pattern « Solution C » (le même que l'étude de poste inaptitude).
+   Seuls les scores sont envoyés : aucune identité, aucune réponse détaillée. */
+const IA_CFG = {
+  url:   'https://hook.eu1.make.com/qhvt4lylqgbykqljwd1sdybpdaoapedu',  // ← webhook texte
+  token: 'previa_text_2026_xxx',                                        // ← ton token texte
+  model: 'claude-sonnet-4-5'
+};
 async function generateAIAnalysis() {
   if (!lastScores || lastGlobal === null) return;
   const box = document.getElementById('ai-box');
@@ -644,22 +658,27 @@ async function generateAIAnalysis() {
   const riskLevel = lastGlobal < 35 ? 'Risque faible' : lastGlobal < 55 ? 'Risque modéré' : lastGlobal < 70 ? 'Risque élevé' : 'Risque très élevé';
 
   try {
-    const response = await window.claude.complete({
-      messages: [{
-        role: 'user',
-        content: `Voici les résultats d'une évaluation burn-out MBI (Maslach) complète :
+    const prompt = `Voici les résultats d'un questionnaire de repérage du burn-out inspiré du MBI de Maslach (outil non validé, 6 dimensions) :
 Score global: ${lastGlobal}/100 — ${riskLevel}
 Détail par dimension: ${scoresText}
 
-En tant qu'expert IPRP en prévention des RPS, rédigez une analyse personnalisée de ce profil en 3-4 paragraphes. Identifiez les dimensions critiques, expliquez les interactions entre facteurs de risque, et proposez des priorités d'action concrètes adaptées à ce profil spécifique. Citez les références réglementaires pertinentes (HAS, INRS, Code du travail). Répondez en français, de façon professionnelle mais accessible.`
-      }],
-      system: `Tu es un expert IPRP (Intervenant en Prévention des Risques Professionnels) spécialisé en risques psychosociaux. Tu fournis des analyses professionnelles, précises et bienveillantes basées sur les recommandations HAS 2017, les méthodes INRS et le Code du travail français.`
-    });
+En tant que professionnel de la prévention des RPS, rédigez une analyse personnalisée de ce profil en 3-4 paragraphes. Identifiez les dimensions critiques, expliquez les interactions entre facteurs de risque, et proposez des priorités d'action concrètes adaptées à ce profil spécifique. Citez les références réglementaires pertinentes (HAS, INRS, Code du travail). Rappelez que ces scores sont indicatifs et ne constituent pas un diagnostic. Répondez en français, de façon professionnelle mais accessible.`;
+    const body = { model: IA_CFG.model, max_tokens: 1200,
+      system: `Tu es un professionnel de la prévention des risques psychosociaux en service de santé au travail. Tu fournis des analyses précises et bienveillantes, basées sur les recommandations HAS 2017, les méthodes INRS et le Code du travail français.`,
+      messages: [{ role: 'user', content: prompt }] };
+    const res = await fetch(IA_CFG.url, { method: 'POST', headers: { 'Content-Type': 'text/plain' },
+      body: JSON.stringify({ token: IA_CFG.token, payload: JSON.stringify(body) }) });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const raw = await res.text();
+    let data; try { data = JSON.parse(raw); } catch (_) { data = null; }
+    const txt = data && Array.isArray(data.content) ? data.content.filter(x => x.type === 'text').map(x => x.text).join('\n')
+              : data && typeof data.text === 'string' ? data.text : raw;
+    if (!String(txt).trim()) throw new Error('réponse vide');
     box.className = 'ai-analysis-box';
-    box.textContent = response;
+    box.textContent = txt;
   } catch (e) {
     box.className = 'ai-analysis-box';
-    box.textContent = 'Une erreur est survenue lors de la génération de l\'analyse. Vérifiez votre connexion et réessayez.';
+    box.textContent = 'Analyse IA indisponible (' + e.message + '). Vérifiez l\'URL et le token du webhook texte. Les scores et recommandations ci-dessus restent valables.';
     btn.disabled = false;
   }
 }

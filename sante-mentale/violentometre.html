@@ -254,6 +254,12 @@ const CONTACTS = [
 ];
 const C = (() => { try { return JSON.parse(localStorage.getItem('vm_contacts')) || {}; } catch (e) { return {}; } })();
 const qui = k => C[k] ? ` <b>(${C[k].replace(/[<>&]/g, '')})</b>` : '';
+/* Alerte santé : affichée sous le verdict et dans le diagnostic, quel que soit le niveau des faits */
+function alerteSante(n) {
+  if (n >= 5) return `<div class="note red" style="margin-top:.7rem"><b>Idées noires : ne pas rester seul·e avec cela.</b> En parler aujourd’hui à un médecin (traitant ou du travail)${qui('spsti')}. <b>3114</b>, 24 h/24. Danger immédiat : <b>15</b> ou <b>112</b>.</div>`;
+  if (n === 4) return `<div class="note" style="margin-top:.7rem"><b>Retentissement important sur la santé.</b> Consulter le médecin traitant et demander une visite au médecin du travail${qui('spsti')}.</div>`;
+  return '';
+}
 const NUM = {
   danger: '<a href="tel:17"><b>17</b>Police</a><a href="tel:112"><b>112</b>Urgences</a><a href="tel:15"><b>15</b>SAMU</a><a href="sms:114"><b>114</b>SMS</a>',
   vss: '<a href="tel:3919"><b>3919</b>Violences sexistes · 24 h/24</a>',
@@ -263,7 +269,7 @@ const NUM = {
 /* =====================================================================
    4. CONSEILS DU THERMOMÈTRE (selon le niveau)
    ===================================================================== */
-function conseils(n) {
+function conseils(n, vss) {
   return [
     { t: 'Cochez les faits', h: '<p>Ouvrez les rubriques à gauche et cochez ce qui est vécu ou observé. Le thermomètre monte au fait le plus grave.</p>' },
     { t: 'Relations respectueuses', h: '<p>Rien d’inquiétant dans ce qui est coché. En cas de malaise, en parler reste possible :</p><ul><li>Manager' + qui('manager') + '</li><li>Service de santé au travail' + qui('spsti') + '</li></ul>' },
@@ -278,12 +284,12 @@ function conseils(n) {
       <li>Signaler par écrit aux RH ou à la direction${qui('rh')}.</li>
       <li>Référent${qui('referent')} · CSE${qui('cse')}.</li>
       <li><b>Médecin du travail</b>${qui('spsti')}.</li>
-      <li>Inspection du travail${qui('inspection')}.</li></ul><div class="appel">${NUM.detresse}${NUM.vss}</div>` },
+      <li>Inspection du travail${qui('inspection')}.</li></ul>${vss ? `<div class="appel">${NUM.vss}</div>` : ''}` },
     { t: 'Violences graves — danger', h: `<p><b>Se mettre en sécurité et agir immédiatement.</b></p><ul>
       <li>Danger immédiat : appeler les secours.</li>
       <li>Faire constater par un médecin · déclarer l’<b>accident du travail</b>.</li>
       <li>Prévenir la direction${qui('rh')} et le service de santé au travail${qui('spsti')}.</li>
-      <li>Ces faits sont des <b>infractions pénales</b> : une plainte est possible.</li></ul><div class="appel">${NUM.danger}${NUM.vss}${NUM.detresse}</div>` }
+      <li>Ces faits sont des <b>infractions pénales</b> : une plainte est possible.</li></ul><div class="appel">${NUM.danger}${vss ? NUM.vss : ''}</div>` }
   ][n];
 }
 
@@ -311,8 +317,11 @@ function analyser() {
   FAMILLES.forEach(F => { parF[F.id] = { max: 0, n: 0, faits: [] }; });
   coches.forEach(i => { const p = parF[i.dataset.f]; p.n++; p.max = Math.max(p.max, +i.dataset.n); p.faits.push(i.nextElementSibling.textContent); });
   const relationnel = ['col', 'man', 'org', 'ext'].reduce((m, k) => Math.max(m, parF[k].max), 0);
-  const global = Math.max(relationnel, parF.san.max);
-  return { coches, parF, relationnel, sante: parF.san.max, global, freq: val('frequence'), duree: val('duree') };
+  /* Le thermomètre mesure la gravité des FAITS. Les effets sur la santé ne font pas
+     monter le niveau de violence : ils déclenchent une alerte santé distincte. */
+  const global = relationnel;
+  const vss = coches.some(i => /sexis|sexuel/i.test(i.nextElementSibling.textContent));   // faits sexistes ou sexuels → 3919
+  return { coches, parF, relationnel, sante: parF.san.max, global, vss, qui: document.getElementById('qui').value, freq: val('frequence'), duree: val('duree') };
 }
 
 function thermometre(A) {
@@ -322,9 +331,9 @@ function thermometre(A) {
   document.getElementById('bulbe').style.background = col;
   document.getElementById('bulbe').textContent = n || '';
   document.querySelectorAll('.grad').forEach(g => { g.classList.toggle('atteint', +g.dataset.n <= n); g.classList.toggle('actif', +g.dataset.n === vue); });
-  const k = conseils(vue), v = document.getElementById('verdict');
+  const k = conseils(vue, A.vss), v = document.getElementById('verdict');
   v.style.setProperty('--vc', vue ? NIV[vue].c : 'var(--n0)');
-  v.innerHTML = `<h3>${apercu && apercu !== n ? 'Niveau ' + apercu + ' · ' : ''}${k.t}</h3>${k.h}`;
+  v.innerHTML = `<h3>${apercu && apercu !== n ? 'Niveau ' + apercu + ' · ' : ''}${k.t}</h3>${k.h}${alerteSante(A.sante)}`;
 }
 
 function diagnostic(A) {
@@ -338,10 +347,13 @@ function diagnostic(A) {
 
   /* --- Synthèse rédigée --- */
   const phr = [];
-  phr.push(`Le fait le plus grave relevé se situe au niveau <b style="color:${NIV[A.global].c}">${A.global} · ${NIV[A.global].nom}</b>.`);
+  const QUI = { moi: 'par la personne concernée', temoin: 'par un témoin', pro: 'en entretien avec un professionnel' };
+  phr.push(`<span style="color:var(--muted)">Questionnaire rempli ${QUI[A.qui] || QUI.moi}.</span>`);
+  if (A.global) phr.push(`Le fait le plus grave relevé se situe au niveau <b style="color:${NIV[A.global].c}">${A.global} · ${NIV[A.global].nom}</b>.`);
+  else phr.push('Aucun fait relationnel n’est coché ; seuls des effets sur la santé sont signalés.');
   if (principale) phr.push(`Les difficultés relèvent surtout de la rubrique <b>${principale.nom.toLowerCase()}</b>${sources.length > 1 ? `, et touchent aussi : ${sources.slice(1).map(s => s.nom.toLowerCase()).join(', ')}` : ''}.`);
   if (A.freq || A.duree) phr.push(`Les faits se produisent <b>${FREQ[A.freq]}</b>, depuis <b>${DUR[A.duree]}</b>${repete && installe ? ' : la situation est <b>installée</b>' : ''}.`);
-  if (A.sante >= 3) phr.push(`Ils ont un <b>retentissement sur la santé</b> (niveau ${A.sante}) : un avis du médecin du travail est recommandé.`);
+  if (A.sante >= 3) phr.push(`${A.global ? 'Les faits ont' : 'La situation a'} un <b>retentissement sur la santé</b> (niveau ${A.sante}) : un avis du médecin du travail est recommandé.`);
   else if (A.sante === 2) phr.push('Des premiers signes de fatigue ou de tension apparaissent.');
   if (A.relationnel >= 3 && repete && A.sante >= 3)
     phr.push('<span style="color:var(--muted)">La répétition des agissements et leurs effets sur la santé font partie des éléments examinés pour une éventuelle qualification juridique (harcèlement moral ou sexuel). Seule une enquête, l’inspection du travail ou le juge peut se prononcer.</span>');
@@ -356,6 +368,7 @@ function diagnostic(A) {
   if (A.sante >= 3 || A.relationnel >= 4) indiv.push('Rencontrer le <b>médecin du travail</b>' + qui('spsti') + ' : visite à la demande, aménagements, orientation.');
   if (A.relationnel === 2) indiv.push('En parler sur des faits précis avec la personne ou le manager' + qui('manager') + '.');
   if (A.sante >= 4) indiv.push('Soutien psychologique' + qui('ecoute') + ' ; en cas de détresse : <b>3114</b>.');
+  if (A.qui === 'temoin') indiv.push('En tant que témoin : dire à la personne ce que vous avez vu, proposer votre soutien et, si elle le souhaite, consigner votre témoignage par écrit.');
   if (A.relationnel >= 4) indiv.push('Si la situation n’est pas traitée : inspection du travail' + qui('inspection') + ', Défenseur des droits en cas de discrimination.');
   if (!indiv.length) indiv.push('Rester attentif·ve ; en parler au manager ou au service de santé au travail en cas de malaise.');
 
@@ -372,7 +385,7 @@ function diagnostic(A) {
       ${FAMILLES.map(F => { const p = A.parF[F.id], c = p.max ? NIV[p.max].c : 'var(--line)';
         return `<div class="profil-l"><span>${F.ic} ${F.nom}</span><div class="barre"><i style="width:${p.max / 5 * 100}%;background:${c}"></i></div><em>${p.max ? 'niveau ' + p.max : '—'} · ${p.n} fait${p.n > 1 ? 's' : ''}</em></div>`; }).join('')}
       <div class="indic">
-        <div><small>Gravité</small><b style="color:${NIV[A.global].c}">${A.global} / 5</b></div>
+        <div><small>Gravité des faits</small><b style="color:${A.global ? NIV[A.global].c : 'var(--muted)'}">${A.global ? A.global + ' / 5' : '—'}</b></div>
         <div><small>Répétition</small><b>${A.freq ? FREQ[A.freq] : '—'}</b></div>
         <div><small>Durée</small><b>${A.duree ? DUR[A.duree] : '—'}</b></div>
       </div>
@@ -383,10 +396,11 @@ function diagnostic(A) {
     <div><h4>👤 Pour la personne concernée</h4><ul>${indiv.map(x => `<li>${x}</li>`).join('')}</ul></div>
     <div><h4>🏢 Pour l’entreprise (prévention collective)</h4><ul>${(coll.length ? coll : ['Maintenir la vigilance et le dialogue dans l’équipe.']).map(x => `<li>${x}</li>`).join('')}</ul></div>
   </div>
-  ${A.global >= 4 ? `<div class="appel">${A.global >= 5 ? NUM.danger : ''}${NUM.vss}${NUM.detresse}</div>` : ''}
+  ${alerteSante(A.sante)}
+  ${(A.global >= 5 || A.vss || A.sante >= 4) ? `<div class="appel">${A.global >= 5 ? NUM.danger : ''}${A.vss ? NUM.vss : ''}${A.sante >= 4 ? NUM.detresse : ''}</div>` : ''}
   <div style="display:flex;gap:.5rem;margin-top:1.2rem;flex-wrap:wrap">
     <button class="btn p" onclick="window.print()">🖨 Imprimer le diagnostic</button>
-    <span style="font-size:12px;color:var(--muted);align-self:center">Diagnostic du ${new Date().toLocaleDateString('fr-FR')} · aucune donnée enregistrée</span>
+    <span style="font-size:12px;color:var(--muted);align-self:center">Diagnostic du ${new Date().toLocaleDateString('fr-FR')} · réponses non enregistrées</span>
   </div>`;
 }
 
@@ -400,7 +414,8 @@ function maj() {
   });
   thermometre(A); diagnostic(A);
   const mini = document.getElementById('mini');
-  mini.classList.toggle('on', A.global > 0);
+  mini.classList.toggle('on', A.global > 0 || A.sante >= 4);
+  if (!A.global && A.sante >= 4) { mini.textContent = '🫀 Alerte santé — voir le diagnostic'; mini.style.setProperty('--mc', NIV[A.sante].c); }
   if (A.global) { mini.textContent = `🌡️ Niveau ${A.global} · ${NIV[A.global].court} — voir le diagnostic`; mini.style.setProperty('--mc', NIV[A.global].c); }
 }
 

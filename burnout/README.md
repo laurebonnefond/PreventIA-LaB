@@ -1,80 +1,30 @@
-# SanensIA — Outils de prévention santé au travail
+# Repérage du risque burn-out — PréventIA-LaB
 
-Outils interactifs pour IPRP, IST et professionnels de santé au travail.  
-Développés dans le cadre du projet **SanensIA** — IA appliquée à la prévention des risques professionnels.
+Outil de l'espace **Santé mentale** de [PréventIA-LaB](https://laurebonnefond.github.io/PreventIA-LaB/).
 
----
+Accès en ligne : <https://laurebonnefond.github.io/PreventIA-LaB/burnout/>
 
-## Outils disponibles
+## Ce que fait l'outil
 
-| Outil | Description | Lien |
-|-------|-------------|------|
-| Évaluation burn-out | Questionnaire MBI 22 items, 6 dimensions, scoring automatique, recommandations INRS/HAS | [burnout/](./burnout/) |
-| Calculette PICB (à venir) | Méthode OB INRS — Évaluation protections auditives | — |
+- Questionnaire de repérage de 22 items, cotés de 0 (jamais) à 6 (chaque jour).
+- 6 dimensions : épuisement émotionnel, dépersonnalisation, accomplissement personnel (12 items inspirés du MBI de Maslach), facteurs organisationnels, soutien social, signaux d'alerte (10 items complémentaires).
+- Score par dimension, score global sur 100, radar et recommandations de prévention.
+- Analyse IA facultative : seuls les scores sont envoyés, sans aucune identité.
 
----
+## Limites
 
-## Accès en ligne (GitHub Pages)
+- Ce n'est pas le MBI officiel : l'outil s'en inspire, les seuils sont indicatifs et n'ont pas été validés scientifiquement.
+- Il aide au repérage en entretien et ne remplace pas une évaluation clinique.
+- En cas de score élevé, orienter vers le médecin du travail.
 
-Une fois GitHub Pages activé sur ce dépôt (branche `main`, dossier `/`) :
+## Références
 
-```
-https://<votre-username>.github.io/sanensia-outils/burnout/
-```
-
----
-
-## Déploiement rapide
-
-### 1. Créer le dépôt GitHub
-
-```bash
-git init sanensia-outils
-cd sanensia-outils
-git remote add origin https://github.com/<votre-username>/sanensia-outils.git
-```
-
-### 2. Copier les fichiers
-
-```
-sanensia-outils/
-├── README.md
-└── burnout/
-    └── index.html
-```
-
-### 3. Pousser et activer GitHub Pages
-
-```bash
-git add .
-git commit -m "feat: ajout outil évaluation burn-out"
-git push -u origin main
-```
-
-Puis dans les **Settings** du dépôt GitHub :
-→ Pages → Source : `main` / `/ (root)` → Save
-
-L'URL est disponible dans les 2–3 minutes.
-
----
-
-## Références scientifiques
-
-- **MBI** — Maslach, C. & Jackson, S.E. (1996). *Maslach Burnout Inventory Manual*
-- **INRS** — Dossier RPS et burn-out, ED 6140 (2015)
-- **HAS** — Recommandations sur le syndrome d'épuisement professionnel (2017)
-- **Karasek** — Modèle demande/contrôle (1979)
-- **Siegrist** — Modèle effort/récompense (1996)
-
----
+- Maslach C., Jackson S.E. — *Maslach Burnout Inventory Manual* (1996)
+- DGT / INRS / Anact — *Le syndrome d'épuisement professionnel ou burnout. Mieux comprendre pour mieux agir* (2015)
+- INRS — *Évaluer les facteurs de risques psychosociaux : l'outil RPS-DU* (ED 6140)
+- HAS — *Repérage et prise en charge cliniques du syndrome d'épuisement professionnel ou burnout* (2017)
+- Modèles de Karasek (demande / autonomie) et de Siegrist (effort / récompense)
 
 ## Auteure
 
-**Laure** — Infirmière en santé au travail, IPRP — Projet SanensIA  
-Master IA DATA · IPSSI Bordeaux (nov. 2026)
-
----
-
-> Ces outils sont des aides à la décision à usage professionnel.  
-> Ils ne remplacent pas une évaluation clinique.  
-> Données traitées localement — aucun envoi serveur.
+Laure Bonnefond — IDE-ST et préventrice · projet PréventIA-LaB
