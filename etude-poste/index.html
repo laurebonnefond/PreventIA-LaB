@@ -488,14 +488,25 @@ const PROFILS={
 let NAF=NAF_BASE.map(x=>({code:x[0].trim(),lib:x[1],sec:x[2]}));
 let PCS=PCS_BASE.map(x=>({code:x[0].trim(),lib:x[1],sec:x[2]}));
 
+function ergoVide(){return{
+  rula:{ua:1,uaRaise:0,uaAbd:0,uaSup:0,la:1,laOut:0,wr:1,wrDev:0,tw:1,neck:1,neckTw:0,neckSb:0,trunk:1,trunkTw:0,trunkSb:0,legs:1,muscleA:0,forceA:0,muscleB:0,forceB:0},
+  reba:{neck:1,neckAdj:0,trunk:1,trunkAdj:0,legs:1,knee:0,load:0,shock:0,ua:1,uaRaise:0,uaAbd:0,uaSup:0,la:1,wr:1,wrAdj:0,coupling:0,actStat:0,actRep:0,actRapid:0},
+  niosh:{poids:0,H:40,V:75,D:50,A:0,F:'0.2',C:'bonne',T:'8'}};}
+/* Étude enregistrée avec l'ancien codage : complète les champs manquants et borne les positions de base */
+function normErgo(){
+  const d=ergoVide(),e=E.ergo||{};
+  E.ergo={rula:Object.assign(d.rula,e.rula),reba:Object.assign(d.reba,e.reba),niosh:Object.assign(d.niosh,e.niosh)};
+  const r=E.ergo.rula,b=E.ergo.reba,cap=(o,k,m)=>{o[k]=Math.min(+o[k]||1,m);};
+  cap(r,'ua',4);cap(r,'la',2);cap(r,'wr',3);cap(r,'neck',4);cap(r,'trunk',4);
+  cap(b,'neck',2);cap(b,'trunk',4);cap(b,'legs',2);cap(b,'ua',4);cap(b,'wr',2);b.load=Math.min(+b.load||0,2);
+  if(b.activity){b.actStat=1;delete b.activity;}
+}
 function blankFamilles(){const o={};FAMILLES.forEach(f=>o[f.key]=f.items.map(()=>0));return o;}
 const E={
   poste:{entreprise:'',service:'',activite:'',naf:'',nafLib:'',metier:'',pcs:'',pcsLib:'',secteur:'',date:new Date().toISOString().slice(0,10),preventeur:'',effectif:'',horaires:'',contexte:''},
   taches:[],
   risques:blankFamilles(),
-  ergo:{rula:{ua:1,la:1,wr:1,tw:1,neck:1,trunk:1,legs:1,muscleA:0,forceA:0,muscleB:0,forceB:0},
-        reba:{neck:1,trunk:1,legs:1,load:0,ua:1,la:1,wr:1,coupling:0,activity:0},
-        niosh:{poids:0,H:40,V:75,D:50,A:0,F:'0.2',C:'bonne'}},
+  ergo:ergoVide(),
   capacites:{},
   synthIA:'',
   ergoPhoto:'', ergoPhotoNote:''
@@ -528,22 +539,24 @@ function guessSecteur(txt){
 }
 /* Charger la base réelle si présente (naf-codes.json / pcs2020.json) */
 (async function loadRealBase(){
-  const map=x=>{const code=(x.c||x.code||x.ape||'').trim();const lib=x.l||x.libelle||x.lib||x.label||'';const kw=x.kw||'';const sec=x.secteur||x.sec||guessSecteur(lib+' '+kw);return{code,lib,sec,kw};};
-  try{const r=await fetch('naf-codes.json');if(r.ok){const d=await r.json();
-    const arr=Array.isArray(d)?d:(d.codes||[]);
-    const m=arr.map(map).filter(x=>x.code); if(m.length)NAF=m;
-  }}catch(e){}
-  try{const r=await fetch('pcs2020.json');if(r.ok){const d=await r.json();
-    const arr=Array.isArray(d)?d:(d.professions||d.codes||[]);
-    const m=arr.map(map).filter(x=>x.code); if(m.length)PCS=m;
-  }}catch(e){}
+  const map=x=>{const code=(x.c||x.code||x.ape||'').trim();const lib=x.l||x.libelle||x.lib||x.label||'';const kw=x.kw||'';const sec=x.secteur||x.sec||guessSecteur(lib+' '+kw)||SEC_SECTION[(x.naf||[])[0]]||'';return{code,lib,sec,kw};};
+  /* Métier PCS sans mot-clé reconnu : profil déduit de sa section NAF principale */
+  const SEC_SECTION={A:'agriculture',C:'industrie',E:'dechets',F:'btp',G:'commerce',H:'transport',I:'hcr',J:'tertiaire',K:'tertiaire',L:'tertiaire',M:'tertiaire',O:'tertiaire',P:'enseignement',Q:'sante'};
+  /* Source unique : la base de la fiche d'entreprise (elle porte le profil de risque de chaque code NAF).
+     Les copies locales ne servent que de secours si ce dossier est absent. */
+  const charge=async(noms,cle)=>{for(const u of noms){try{const r=await fetch(u);if(!r.ok)continue;const d=await r.json();
+    const m=(Array.isArray(d)?d:(d[cle]||d.codes||[])).map(map).filter(x=>x.code);if(m.length)return m;}catch(e){}}return null;};
+  const naf=await charge(['../fiche-entreprise/naf-codes.json','naf-codes.json'],'codes'); if(naf)NAF=naf;
+  const pcs=await charge(['../fiche-entreprise/pcs2020.json','pcs2020.json'],'professions'); if(pcs)PCS=pcs;
   if(step===0)rPoste();
 })();
 
 /* =========================================================
    SCORING PréventIA
    ========================================================= */
-function famScore(key){const v=E.risques[key]||[];if(!v.length)return 0;const s=v.reduce((a,b)=>a+b,0);return Math.round(s/(v.length*3)*100);}
+/* Score de famille = 60 % de l'item le plus élevé + 40 % de la moyenne.
+   Une moyenne seule diluait une exposition forte isolée (un CMR coté 3 donnait 17/100). */
+function famScore(key){const v=E.risques[key]||[];if(!v.length)return 0;const s=v.reduce((a,b)=>a+b,0),mx=Math.max(...v);return Math.round((0.6*mx+0.4*s/v.length)/3*100);}
 function famScores(){const o={};FAMILLES.forEach(f=>o[f.key]=famScore(f.key));return o;}
 
 function ergoScore(){
@@ -599,11 +612,15 @@ const REBA_C=[
 ];
 function rebaScore(){
   const r=E.ergo.reba;
-  let a=REBA_A[clamp(r.neck,1,3)-1][clamp(r.trunk,1,5)-1][clamp(r.legs,1,4)-1]+r.load;
-  let b=REBA_B[clamp(r.la,1,2)-1][clamp(r.ua,1,6)-1][clamp(r.wr,1,3)-1]+r.coupling;
+  /* Position de base + ajustements cumulables (l'appui du bras retire 1 point) */
+  const neck=clamp(r.neck+(r.neckAdj||0),1,3), trunk=clamp(r.trunk+(r.trunkAdj||0),1,5), legs=clamp(r.legs+(r.knee||0),1,4);
+  const ua=clamp(r.ua+(r.uaRaise||0)+(r.uaAbd||0)-(r.uaSup||0),1,6), wr=clamp(r.wr+(r.wrAdj||0),1,3);
+  const load=clamp(r.load+(r.shock||0),0,3), activity=(r.actStat||0)+(r.actRep||0)+(r.actRapid||0);
+  let a=REBA_A[neck-1][trunk-1][legs-1]+load;
+  let b=REBA_B[clamp(r.la,1,2)-1][ua-1][wr-1]+r.coupling;
   a=clamp(a,1,12);b=clamp(b,1,12);
   let c=REBA_C[a-1][b-1];
-  const final=clamp(c+r.activity,1,15);
+  const final=clamp(c+activity,1,15);
   let niv,col;
   if(final===1){niv='Négligeable';col='var(--green)';}
   else if(final<=3){niv='Faible';col='var(--green)';}
@@ -635,9 +652,11 @@ const RULA_C=[
 ];
 function rulaScore(){
   const r=E.ergo.rula;
-  let a=RULA_A[clamp(r.ua,1,6)-1][clamp(r.la,1,3)-1][clamp(r.wr,1,4)-1][clamp(r.tw,1,2)-1];
+  const ua=clamp(r.ua+(r.uaRaise||0)+(r.uaAbd||0)-(r.uaSup||0),1,6), la=clamp(r.la+(r.laOut||0),1,3), wr=clamp(r.wr+(r.wrDev||0),1,4);
+  const neck=clamp(r.neck+(r.neckTw||0)+(r.neckSb||0),1,6), trunk=clamp(r.trunk+(r.trunkTw||0)+(r.trunkSb||0),1,6);
+  let a=RULA_A[ua-1][la-1][wr-1][clamp(r.tw,1,2)-1];
   let c=clamp(a+r.muscleA+r.forceA,1,8);
-  let b=RULA_B[clamp(r.neck,1,6)-1][clamp(r.trunk,1,6)-1][clamp(r.legs,1,2)-1];
+  let b=RULA_B[neck-1][trunk-1][clamp(r.legs,1,2)-1];
   let d=clamp(b+r.muscleB+r.forceB,1,7);
   const final=RULA_C[c-1][d-1];
   let niv,col;
@@ -655,7 +674,9 @@ function nioshScore(){
   const VM=clamp(1-0.003*Math.abs(V-75),0,1);
   const DM=clamp(0.82+4.5/D,0,1);
   const AM=clamp(1-0.0032*A,0,1);
-  const FMtab={'0.2':0.85,'1':0.75,'5':0.60,'10':0.45}; const FM=FMtab[n.F]??0.75;
+  /* Multiplicateur de fréquence : table NIOSH par durée (≤1 h, 1–2 h, 2–8 h) */
+  const FMtab={'0.2':[1.00,0.95,0.85],'1':[0.94,0.88,0.75],'5':[0.80,0.60,0.35],'10':[0.45,0.26,V<75?0:0.13]};
+  const FM=(FMtab[n.F]||FMtab['1'])[{'1':0,'2':1,'8':2}[n.T||'8']??2];
   const CMtab={'bonne':1.0,'moyenne':0.95,'mauvaise':0.90}; const CM=CMtab[n.C]??0.95;
   const rwl=LC*HM*VM*DM*AM*FM*CM;
   const li=n.poids>0?rwl>0?n.poids/rwl:9:0;
@@ -783,9 +804,9 @@ function svgHeatPostures(dark){
 
 function svgTimeline(actions,dark){
   if(!actions.length)return `<div class="sub">Plan d’action généré automatiquement à partir des risques.</div>`;
-  const W=680,rowH=30,ox=8,oy=22,months=6,plotW=W-160-ox;
+  const W=680,rowH=30,ox=8,oy=22,months=12,plotW=W-160-ox;
   let g=`<text x="${160}" y="12" font-size="9" fill="${dark?'#aeb8c8':'#7a8598'}">Échéance (mois) →</text>`;
-  for(let m=1;m<=months;m++){const x=160+plotW*m/months; g+=`<line x1="${x}" y1="16" x2="${x}" y2="${oy+actions.length*rowH}" stroke="${dark?'#3a4658':'#eef1f6'}"/><text x="${x}" y="12" font-size="8" fill="${dark?'#8a94a6':'#9aa3b2'}" text-anchor="middle">${m}</text>`;}
+  for(let m=3;m<=months;m+=3){const x=160+plotW*m/months; g+=`<line x1="${x}" y1="16" x2="${x}" y2="${oy+actions.length*rowH}" stroke="${dark?'#3a4658':'#eef1f6'}"/><text x="${x}" y="12" font-size="8" fill="${dark?'#8a94a6':'#9aa3b2'}" text-anchor="middle">${m}</text>`;}
   actions.forEach((a,i)=>{const y=oy+i*rowH; const x=160+plotW*a.mois/months;
     const col=a.prio==='🔴'?'#d23f2f':a.prio==='🟠'?'#e58a2a':'#1f9d55';
     g+=`<text x="${ox}" y="${y+14}" font-size="9.5" fill="${dark?'#c6cfdd':'#5a667a'}">${esc(a.txt.slice(0,26))}</text>`;
@@ -809,10 +830,10 @@ function contraintes(){
 }
 function penibilite(){
   const r=E.risques, f=[];
-  if((r.organisationnel[0]||0)>=2)f.push('Travail de nuit / horaires alternants');
-  if((r.tms[2]||0)>=2)f.push('Travail répétitif');
-  if((r.physique[0]||0)>=2)f.push('Bruit');
-  if((r.physique[2]||0)>=2)f.push('Températures extrêmes');
+  if((r.organisationnel[0]||0)>=2)f.push('Travail de nuit / horaires alternants (C2P)');
+  if((r.tms[2]||0)>=2)f.push('Travail répétitif (C2P)');
+  if((r.physique[0]||0)>=2)f.push('Bruit (C2P)');
+  if((r.physique[2]||0)>=2)f.push('Températures extrêmes (C2P)');
   if((r.tms[0]||0)>=2)f.push('Manutention manuelle de charges');
   if((r.tms[1]||0)>=2||(r.tms[3]||0)>=2)f.push('Postures pénibles');
   if((r.chimique[0]||0)>=2)f.push('Agents chimiques dangereux / CMR');
@@ -834,14 +855,14 @@ function planAction(){
   FAMILLES.forEach(f=>{const s=fs[f.key]; if(s<25)return;
     const lib=ACTIONS_LIB[f.key]||[]; const txt=lib[0]||('Traiter le risque '+f.nom);
     let prio,mois,impact,cout,resp;
-    if(s>=61){prio='🔴';mois=1;impact='⭐⭐⭐⭐⭐';cout='€€';resp='Employeur';}
-    else if(s>=41){prio='🟠';mois=3;impact='⭐⭐⭐⭐';cout='€';resp='Encadrement';}
-    else{prio='🟢';mois=6;impact='⭐⭐⭐';cout='€';resp='SPSTI / préventeur';}
+    if(s>=61){prio='🔴';mois=3;impact='⭐⭐⭐⭐⭐';cout='€€';resp='Employeur';}
+    else if(s>=41){prio='🟠';mois=6;impact='⭐⭐⭐⭐';cout='€';resp='Employeur / encadrement';}
+    else{prio='🟢';mois=12;impact='⭐⭐⭐';cout='€';resp='Employeur, avec l’appui du SPSTI';}
     arr.push({prio,txt,fam:f.nom,score:s,mois,impact,cout,resp});
   });
   const c=compatData();
-  if(c.non>0)arr.push({prio:'🔴',txt:'Étudier l’aménagement / le reclassement (tâches non compatibles)',fam:'Maintien dans l’emploi',score:80,mois:1,impact:'⭐⭐⭐⭐⭐',cout:'€€',resp:'Employeur + médecin du travail'});
-  else if(c.adapt>0)arr.push({prio:'🟠',txt:'Mettre en place les adaptations de poste identifiées',fam:'Maintien dans l’emploi',score:55,mois:2,impact:'⭐⭐⭐⭐',cout:'€',resp:'Employeur'});
+  if(c.non>0)arr.push({prio:'🔴',txt:'Étudier l’aménagement / le reclassement (tâches non compatibles)',fam:'Maintien dans l’emploi',score:80,mois:3,impact:'⭐⭐⭐⭐⭐',cout:'€€',resp:'Employeur + médecin du travail'});
+  else if(c.adapt>0)arr.push({prio:'🟠',txt:'Mettre en place les adaptations de poste identifiées',fam:'Maintien dans l’emploi',score:55,mois:6,impact:'⭐⭐⭐⭐',cout:'€',resp:'Employeur'});
   return arr.sort((a,b)=>b.score-a.score);
 }
 function syntheseIA(){
@@ -849,12 +870,14 @@ function syntheseIA(){
   const tri=Object.entries(fs).sort((a,b)=>b[1]-a[1]);
   const nom=k=>FAMILLES.find(f=>f.key===k).nom;
   const facteurs=tri.filter(x=>x[1]>=40).map(x=>`${nom(x[0])} (${x[1]}/100)`);
-  const protecteurs=tri.filter(x=>x[1]<=20).map(x=>nom(x[0]).split('–')[0].split('(')[0].trim());
+  const protecteurs=tri.filter(x=>x[1]>0&&x[1]<=20).map(x=>nom(x[0]).split('–')[0].split('(')[0].trim());
   const tachesDures=E.taches.filter(t=>/élev/i.test(t.effort||'')||t.compat==='no').map(t=>t.nom).filter(Boolean);
   const reba=rebaScore(),niosh=nioshScore();
   const c=compatData();
   const oublis=[];
   if((fs.psychosocial||0)===0)oublis.push('RPS non évalués — à confirmer par entretien');
+  const nonCotees=tri.filter(x=>x[1]===0&&x[0]!=='psychosocial').map(x=>nom(x[0]).split('–')[0].split('(')[0].trim());
+  if(nonCotees.length)oublis.push('Familles non cotées : '+nonCotees.join(', '));
   if((fs.chimique||0)===0&&/coif|indus|btp|agro|prop|agri/.test(E.poste.secteur))oublis.push('Risque chimique probable pour ce secteur');
   if((fs.biologique||0)===0&&/sante|dechet|petite/.test(E.poste.secteur))oublis.push('Risque biologique probable pour ce secteur');
   const expertise=[];
@@ -918,7 +941,7 @@ function rPoste(){
         <div class="field"><label>Activité (description libre)</label><input value="${esc(p.activite)}" placeholder="Décrire l’activité de l’entreprise" oninput="setP('activite',this.value)"></div>
         <div class="grid g2" style="gap:0 14px">
           <div class="field"><label>Date de l’étude</label><input type="date" value="${esc(p.date)}" oninput="setP('date',this.value)"></div>
-          <div class="field"><label>Réalisée par</label><input value="${esc(p.preventeur)}" placeholder="Nom du préventeur / IPRP" oninput="setP('preventeur',this.value)"></div>
+          <div class="field"><label>Réalisée par</label><input value="${esc(p.preventeur)}" placeholder="Nom et qualité (IDEST, IPRP, ergonome…)" oninput="setP('preventeur',this.value)"></div>
         </div>
         <div class="field"><label>Horaires / organisation</label><input value="${esc(p.horaires)}" placeholder="Ex : 2×8, journée, nuit" oninput="setP('horaires',this.value)"></div>
       </div>
@@ -1040,6 +1063,11 @@ function setR(key,idx,val){E.risques[key][idx]=val;
   renderRail();
 }
 /* ---------- Étape 4 : Ergonomie ---------- */
+/* Ajustements cumulables (+1 ou −1) : cases à cocher sous la position de base */
+function adjMini(items){
+  return `<div style="display:flex;gap:4px 12px;flex-wrap:wrap;font-size:11.5px;color:var(--muted);padding:0 0 7px">${items.map(([path,lab,val])=>`<label style="display:flex;align-items:center;gap:4px;cursor:pointer"><input type="checkbox" ${val?'checked':''} onchange="setErgo('${path}',this.checked?1:0)">${lab}</label>`).join('')}</div>`;
+}
+const FORCE=[[0,'<2 kg'],[1,'2–10 kg ponct.'],[2,'2–10 kg répété'],[3,'>10 kg / choc']];
 function selMini(path,opts,val){
   return `<select onchange="setErgo('${path}',this.value)">${opts.map(o=>`<option value="${o[0]}" ${String(val)===String(o[0])?'selected':''}>${o[1]}</option>`).join('')}</select>`;
 }
@@ -1055,28 +1083,42 @@ function rErgo(){
   <div class="ergo-grid">
     <div class="ergo-card">
       <h4>RULA <span class="sub">membres supérieurs</span></h4>
-      <div class="mini-field"><span>Bras (épaule)</span>${selMini('rula.ua',[[1,'0–20°'],[2,'20–45°'],[3,'45–90°'],[4,'>90°'],[5,'+ épaule levée'],[6,'+ abduction']],rl.ua)}</div>
-      <div class="mini-field"><span>Avant-bras</span>${selMini('rula.la',[[1,'60–100°'],[2,'<60° ou >100°'],[3,'écarté / croisé']],rl.la)}</div>
-      <div class="mini-field"><span>Poignet</span>${selMini('rula.wr',[[1,'neutre'],[2,'0–15°'],[3,'>15°'],[4,'extrême']],rl.wr)}</div>
+      <div class="mini-field"><span>Bras (épaule)</span>${selMini('rula.ua',[[1,'20° ext. à 20° flex.'],[2,'ext. >20° ou flex. 20–45°'],[3,'flexion 45–90°'],[4,'flexion >90°']],rl.ua)}</div>
+      ${adjMini([['rula.uaRaise','épaule levée',rl.uaRaise],['rula.uaAbd','bras en abduction',rl.uaAbd],['rula.uaSup','bras en appui (−1)',rl.uaSup]])}
+      <div class="mini-field"><span>Avant-bras</span>${selMini('rula.la',[[1,'60–100°'],[2,'<60° ou >100°']],rl.la)}</div>
+      ${adjMini([['rula.laOut','travail croisé ou écarté du corps',rl.laOut]])}
+      <div class="mini-field"><span>Poignet</span>${selMini('rula.wr',[[1,'neutre'],[2,'0–15°'],[3,'>15°']],rl.wr)}</div>
+      ${adjMini([['rula.wrDev','déviation latérale',rl.wrDev]])}
       <div class="mini-field"><span>Torsion poignet</span>${selMini('rula.tw',[[1,'mi-course'],[2,'fin de course']],rl.tw)}</div>
-      <div class="mini-field"><span>Cou</span>${selMini('rula.neck',[[1,'0–10°'],[2,'10–20°'],[3,'>20°'],[4,'extension'],[5,'incliné'],[6,'tordu']],rl.neck)}</div>
-      <div class="mini-field"><span>Tronc</span>${selMini('rula.trunk',[[1,'droit'],[2,'0–20°'],[3,'20–60°'],[4,'>60°'],[5,'incliné'],[6,'tordu']],rl.trunk)}</div>
+      <div class="mini-field"><span>Cou</span>${selMini('rula.neck',[[1,'0–10°'],[2,'10–20°'],[3,'>20°'],[4,'extension']],rl.neck)}</div>
+      ${adjMini([['rula.neckTw','rotation',rl.neckTw],['rula.neckSb','inclinaison latérale',rl.neckSb]])}
+      <div class="mini-field"><span>Tronc</span>${selMini('rula.trunk',[[1,'droit / assis soutenu'],[2,'0–20°'],[3,'20–60°'],[4,'>60°']],rl.trunk)}</div>
+      ${adjMini([['rula.trunkTw','rotation',rl.trunkTw],['rula.trunkSb','inclinaison latérale',rl.trunkSb]])}
       <div class="mini-field"><span>Jambes</span>${selMini('rula.legs',[[1,'appui stable'],[2,'appui instable']],rl.legs)}</div>
-      <div class="mini-field"><span>Muscle (statique/répété)</span>${selMini('rula.muscleA',s01,rl.muscleA)}</div>
-      <div class="mini-field"><span>Force / charge</span>${selMini('rula.forceA',[[0,'<2 kg'],[1,'2–10 kg ponct.'],[2,'2–10 kg répété'],[3,'>10 kg / choc']],rl.forceA)}</div>
+      <div class="mini-field"><span>Bras-poignet : muscle (statique/répété)</span>${selMini('rula.muscleA',s01,rl.muscleA)}</div>
+      <div class="mini-field"><span>Bras-poignet : force / charge</span>${selMini('rula.forceA',FORCE,rl.forceA)}</div>
+      <div class="mini-field"><span>Cou-tronc-jambes : muscle (statique/répété)</span>${selMini('rula.muscleB',s01,rl.muscleB)}</div>
+      <div class="mini-field"><span>Cou-tronc-jambes : force / charge</span>${selMini('rula.forceB',FORCE,rl.forceB)}</div>
       <div id="rulaRes"></div>
     </div>
     <div class="ergo-card">
       <h4>REBA <span class="sub">corps entier</span></h4>
-      <div class="mini-field"><span>Cou</span>${selMini('reba.neck',[[1,'0–20°'],[2,'>20° / extension'],[3,'+ torsion/inclinaison']],rb.neck)}</div>
-      <div class="mini-field"><span>Tronc</span>${selMini('reba.trunk',[[1,'droit'],[2,'0–20°'],[3,'20–60°'],[4,'>60°'],[5,'+ torsion']],rb.trunk)}</div>
-      <div class="mini-field"><span>Jambes</span>${selMini('reba.legs',[[1,'bilatéral'],[2,'unilatéral'],[3,'flexion 30–60°'],[4,'flexion >60°']],rb.legs)}</div>
-      <div class="mini-field"><span>Charge / force</span>${selMini('reba.load',[[0,'<5 kg'],[1,'5–10 kg'],[2,'>10 kg'],[3,'+ à-coups']],rb.load)}</div>
-      <div class="mini-field"><span>Bras</span>${selMini('reba.ua',[[1,'20° av/ar'],[2,'>20° / 45°'],[3,'45–90°'],[4,'>90°'],[5,'+ épaule levée'],[6,'+ appui']],rb.ua)}</div>
+      <div class="mini-field"><span>Cou</span>${selMini('reba.neck',[[1,'flexion 0–20°'],[2,'flexion >20° ou extension']],rb.neck)}</div>
+      ${adjMini([['reba.neckAdj','rotation ou inclinaison',rb.neckAdj]])}
+      <div class="mini-field"><span>Tronc</span>${selMini('reba.trunk',[[1,'droit'],[2,'0–20°'],[3,'20–60° ou ext. >20°'],[4,'>60°']],rb.trunk)}</div>
+      ${adjMini([['reba.trunkAdj','rotation ou inclinaison',rb.trunkAdj]])}
+      <div class="mini-field"><span>Jambes : appui</span>${selMini('reba.legs',[[1,'bilatéral, marche, assis'],[2,'unilatéral, instable']],rb.legs)}</div>
+      <div class="mini-field"><span>Jambes : flexion des genoux</span>${selMini('reba.knee',[[0,'<30°'],[1,'30–60°'],[2,'>60° (hors assis)']],rb.knee)}</div>
+      <div class="mini-field"><span>Charge / force</span>${selMini('reba.load',[[0,'<5 kg'],[1,'5–10 kg'],[2,'>10 kg']],rb.load)}</div>
+      ${adjMini([['reba.shock','à-coups ou effort brusque',rb.shock]])}
+      <div class="mini-field"><span>Bras</span>${selMini('reba.ua',[[1,'20° ext. à 20° flex.'],[2,'ext. >20° ou flex. 20–45°'],[3,'flexion 45–90°'],[4,'flexion >90°']],rb.ua)}</div>
+      ${adjMini([['reba.uaRaise','épaule levée',rb.uaRaise],['reba.uaAbd','abduction ou rotation',rb.uaAbd],['reba.uaSup','bras en appui (−1)',rb.uaSup]])}
       <div class="mini-field"><span>Avant-bras</span>${selMini('reba.la',[[1,'60–100°'],[2,'<60° / >100°']],rb.la)}</div>
-      <div class="mini-field"><span>Poignet</span>${selMini('reba.wr',[[1,'0–15°'],[2,'>15°'],[3,'+ torsion']],rb.wr)}</div>
+      <div class="mini-field"><span>Poignet</span>${selMini('reba.wr',[[1,'0–15°'],[2,'>15°']],rb.wr)}</div>
+      ${adjMini([['reba.wrAdj','déviation ou torsion',rb.wrAdj]])}
       <div class="mini-field"><span>Préhension</span>${selMini('reba.coupling',[[0,'bonne'],[1,'moyenne'],[2,'mauvaise'],[3,'inacceptable']],rb.coupling)}</div>
-      <div class="mini-field"><span>Activité</span>${selMini('reba.activity',[[0,'—'],[1,'statique >1 min'],[2,'répété'],[3,'instable/rapide']],rb.activity)}</div>
+      <div class="mini-field"><span>Activité</span><span class="sub">cumulable</span></div>
+      ${adjMini([['reba.actStat','statique >1 min',rb.actStat],['reba.actRep','répété >4/min',rb.actRep],['reba.actRapid','changements rapides / instable',rb.actRapid]])}
       <div id="rebaRes"></div>
     </div>
     <div class="ergo-card">
@@ -1087,6 +1129,7 @@ function rErgo(){
       <div class="mini-field"><span>Déplacement D (cm)</span><input type="number" style="width:90px" value="${ni.D}" onchange="setErgo('niosh.D',this.value)"></div>
       <div class="mini-field"><span>Asymétrie A (°)</span><input type="number" style="width:90px" value="${ni.A}" onchange="setErgo('niosh.A',this.value)"></div>
       <div class="mini-field"><span>Fréquence (lev./min)</span>${selMini('niosh.F',[['0.2','≤0,2'],['1','1'],['5','5'],['10','≥10']],ni.F)}</div>
+      <div class="mini-field"><span>Durée de l’activité de levage</span>${selMini('niosh.T',[['1','≤1 h'],['2','1 à 2 h'],['8','2 à 8 h']],ni.T||'8')}</div>
       <div class="mini-field"><span>Prise</span>${selMini('niosh.C',[['bonne','bonne'],['moyenne','moyenne'],['mauvaise','mauvaise']],ni.C)}</div>
       <div id="nioshRes"></div>
     </div>
@@ -1099,7 +1142,7 @@ function drawErgoRes(){
   const e=document.getElementById('rebaRes');if(e)e.innerHTML=`<div class="ergo-res"><div class="val" style="color:${rb.col}">${rb.final}<small style="font-size:14px">/15</small></div><div class="lab" style="color:${rb.col}">${rb.niv}</div></div>`;
   const n=document.getElementById('nioshRes');if(n)n.innerHTML=`<div class="ergo-res"><div class="val" style="color:${ni.col}">${ni.li}</div><div class="lab" style="color:${ni.col}">IL — ${ni.niv}</div><div class="sub" style="margin-top:4px">Poids limite : ${ni.rwl} kg</div></div>`;
 }
-function setErgo(path,val){const[a,b]=path.split('.');const num=['poids','H','V','D','A','ua','la','wr','tw','neck','trunk','legs','muscleA','forceA','muscleB','forceB','load','coupling','activity'].includes(b);E.ergo[a][b]=num?+val:val;drawErgoRes();renderRail();}
+function setErgo(path,val){const[a,b]=path.split('.');const txt=['F','C','T'].includes(b);E.ergo[a][b]=txt?val:+val;drawErgoRes();renderRail();}
 
 /* =========================================================
    MODULE PHOTO DU POSTE — aide au calcul des angulations
@@ -1119,6 +1162,7 @@ function photoBlock(){
   <div class="card pad" style="margin-bottom:16px">
     <div class="sec-title"><div class="ic">📷</div><div><h3>Analyse photo du poste — aide au calcul des angulations</h3>
       <div class="sub">Prends ou importe une photo du poste. L’image est compressée sur ton appareil (&lt; 4 Mo), puis analysée par l’IA pour pré-remplir les angulations RULA / REBA (membre supérieur, poignet, cou, tronc, jambes, force…). Tu gardes la main sur chaque valeur.</div></div></div>
+    <div class="notice" style="margin-top:10px">🔒 « Analyser (IA) » envoie la photo à un service externe (Make, puis l’API d’Anthropic). Cadre sans visage ni élément permettant de reconnaître la personne ou l’entreprise, et recueille l’accord du salarié. Sans analyse IA, la photo reste sur ton appareil.</div>
     <div style="display:flex;gap:18px;flex-wrap:wrap;align-items:flex-start;margin-top:12px">
       <div style="flex:0 0 auto">
         ${has
@@ -1196,8 +1240,9 @@ function downloadErgoPhoto(){
 function removeErgoPhoto(){E.ergoPhoto='';E.ergoPhotoNote='';rErgo();}
 
 function applyIaAngles(obj){
-  const R={ua:[1,6],la:[1,3],wr:[1,4],tw:[1,2],neck:[1,6],trunk:[1,6],legs:[1,2],muscleA:[0,1],forceA:[0,3]};
-  const B={neck:[1,3],trunk:[1,5],legs:[1,4],load:[0,3],ua:[1,6],la:[1,2],wr:[1,3],coupling:[0,3],activity:[0,3]};
+  const o1=[0,1];
+  const R={ua:[1,4],uaRaise:o1,uaAbd:o1,uaSup:o1,la:[1,2],laOut:o1,wr:[1,3],wrDev:o1,tw:[1,2],neck:[1,4],neckTw:o1,neckSb:o1,trunk:[1,4],trunkTw:o1,trunkSb:o1,legs:[1,2],muscleA:o1,forceA:[0,3],muscleB:o1,forceB:[0,3]};
+  const B={neck:[1,2],neckAdj:o1,trunk:[1,4],trunkAdj:o1,legs:[1,2],knee:[0,2],load:[0,2],shock:o1,ua:[1,4],uaRaise:o1,uaAbd:o1,uaSup:o1,la:[1,2],wr:[1,2],wrAdj:o1,coupling:[0,3],actStat:o1,actRep:o1,actRapid:o1};
   const put=(grp,map)=>{const src=obj[grp];if(!src||typeof src!=='object')return 0;let n=0;
     Object.entries(map).forEach(([k,[a,b]])=>{let v=src[k];if(v===undefined||v===null||v==='')return;v=Math.round(+v);if(isNaN(v))return;E.ergo[grp][k]=clamp(v,a,b);n++;});return n;};
   return put('rula',R)+put('reba',B);
@@ -1210,27 +1255,27 @@ function analyseErgoPhoto(){
   const b64=(E.ergoPhoto.split(',')[1])||'';
   const prompt=`Tu es ergonome. Analyse la posture de travail de l’opérateur sur cette photo et estime, pour la posture principale, les catégories RULA et REBA selon EXACTEMENT ce codage (réponds par l’entier de la catégorie la plus proche).
 
-RULA :
-- ua (bras/épaule) : 1=0–20° | 2=20–45° | 3=45–90° | 4=>90° | 5=épaule surélevée | 6=bras en abduction
-- la (avant-bras) : 1=60–100° | 2=<60° ou >100° | 3=écarté/croisé
-- wr (poignet) : 1=neutre | 2=0–15° | 3=>15° | 4=extrême
+RULA (position de base, puis ajustements 0 = non / 1 = oui) :
+- ua (bras) : 1=20° d’extension à 20° de flexion | 2=extension >20° ou flexion 20–45° | 3=flexion 45–90° | 4=flexion >90° ; uaRaise (épaule levée), uaAbd (bras en abduction), uaSup (bras en appui)
+- la (avant-bras) : 1=60–100° | 2=<60° ou >100° ; laOut (travail croisé ou écarté du corps)
+- wr (poignet) : 1=neutre | 2=0–15° | 3=>15° ; wrDev (déviation latérale)
 - tw (torsion poignet) : 1=mi-course | 2=fin de course
-- neck (cou) : 1=0–10° | 2=10–20° | 3=>20° | 4=extension | 5=incliné | 6=tordu
-- trunk (tronc) : 1=droit | 2=0–20° | 3=20–60° | 4=>60° | 5=incliné | 6=tordu
+- neck (cou) : 1=0–10° | 2=10–20° | 3=>20° | 4=extension ; neckTw (rotation), neckSb (inclinaison latérale)
+- trunk (tronc) : 1=droit | 2=0–20° | 3=20–60° | 4=>60° ; trunkTw (rotation), trunkSb (inclinaison latérale)
 - legs (jambes) : 1=appui stable | 2=appui instable
-- muscleA (contraction statique/répétée) : 0=non | 1=oui
-- forceA (force/charge) : 0=<2kg | 1=2–10kg ponctuel | 2=2–10kg répété | 3=>10kg ou choc
+- muscleA / muscleB (contraction statique ou répétée, bras-poignet / cou-tronc-jambes) : 0=non | 1=oui
+- forceA / forceB (force ou charge) : 0=<2kg | 1=2–10kg ponctuel | 2=2–10kg répété | 3=>10kg ou choc
 
-REBA :
-- neck : 1=0–20° | 2=>20° ou extension | 3=+torsion/inclinaison
-- trunk : 1=droit | 2=0–20° | 3=20–60° | 4=>60° | 5=+torsion
-- legs : 1=appui bilatéral | 2=unilatéral | 3=flexion 30–60° | 4=flexion >60°
-- load : 0=<5kg | 1=5–10kg | 2=>10kg | 3=+à-coups
-- ua (bras) : 1=±20° | 2=>20° ou 45° | 3=45–90° | 4=>90° | 5=épaule surélevée | 6=bras en appui
+REBA (position de base, puis ajustements 0 = non / 1 = oui) :
+- neck : 1=flexion 0–20° | 2=flexion >20° ou extension ; neckAdj (rotation ou inclinaison)
+- trunk : 1=droit | 2=0–20° | 3=20–60° ou extension >20° | 4=>60° ; trunkAdj (rotation ou inclinaison)
+- legs : 1=appui bilatéral | 2=appui unilatéral ou instable ; knee : 0=genoux <30° | 1=30–60° | 2=>60°
+- load : 0=<5kg | 1=5–10kg | 2=>10kg ; shock (à-coups)
+- ua (bras) : 1=20° d’extension à 20° de flexion | 2=extension >20° ou flexion 20–45° | 3=flexion 45–90° | 4=flexion >90° ; uaRaise (épaule levée), uaAbd (abduction ou rotation), uaSup (bras en appui)
 - la (avant-bras) : 1=60–100° | 2=<60° ou >100°
-- wr (poignet) : 1=0–15° | 2=>15° | 3=+torsion
+- wr (poignet) : 1=0–15° | 2=>15° ; wrAdj (déviation ou torsion)
 - coupling (préhension) : 0=bonne | 1=moyenne | 2=mauvaise | 3=inacceptable
-- activity : 0=aucune | 1=statique >1 min | 2=répétée | 3=instable/rapide
+- actStat (statique >1 min), actRep (répété >4/min), actRapid (changements rapides ou posture instable)
 
 Si un segment n’est pas visible ou non évaluable, ne l’inclus pas.
 Réponds UNIQUEMENT par un objet JSON valide, sans aucun texte autour :
@@ -1272,13 +1317,13 @@ function rEnv(){
       <div style="margin-top:16px">${svgBars(c.map(x=>({lab:x.lab,val:x.val,col:'oklch(0.58 0.10 196)'})))}</div>
     </div>
     <div class="card pad">
-      <div class="sec-title"><div class="ic">⏱️</div><div><h3>Facteurs de pénibilité</h3><div class="sub">Repérage (art. L.4163-1 C. trav.)</div></div></div>
+      <div class="sec-title"><div class="ic">⏱️</div><div><h3>Facteurs de pénibilité</h3><div class="sub">Facteurs de risques professionnels (art. L.4161-1 C. trav.) · « C2P » = ouvre des droits au compte professionnel de prévention</div></div></div>
       <div style="margin-top:14px">
         <div style="display:flex;align-items:baseline;gap:10px;margin-bottom:12px">
           <span class="serif" style="font-size:40px;color:${pen.n>=3?'var(--red)':pen.n>=1?'var(--amber)':'var(--green)'}">${pen.n}</span>
           <span class="sub">facteur(s) de pénibilité repéré(s)</span>
         </div>
-        ${pen.facteurs.length?pen.facteurs.map(f=>`<div class="rag" style="border-color:var(--line)"><span class="d" style="background:var(--amber)"></span>${esc(f)}</div>`).join(''):'<div class="sub">Aucun facteur de pénibilité repéré au-delà du seuil.</div>'}
+        ${pen.facteurs.length?pen.facteurs.map(f=>`<div class="rag" style="border-color:var(--line)"><span class="d" style="background:var(--amber)"></span>${esc(f)}</div>`).join(''):'<div class="sub">Aucun facteur coté 2 ou plus. Ce repérage ne vaut pas mesure des seuils réglementaires.</div>'}
       </div>
     </div>
     <div class="card pad" style="grid-column:1/-1">
@@ -1295,18 +1340,19 @@ function rEnv(){
 function rCap(){
   view().innerHTML=`
   <div class="card pad">
-    <div class="sec-title"><div class="ic">♿</div><div><h3>Compatibilité des capacités fonctionnelles</h3><div class="sub">Support au maintien dans l’emploi et à l’avis d’aptitude</div></div></div>
-    ${E.poste.secteur?`<div style="margin-top:10px"><button class="btn accent sm" onclick="preselectCap()">✨ Cibler les contraintes clés du métier</button></div>`:''}
+    <div class="sec-title"><div class="ic">♿</div><div><h3>Compatibilité des capacités fonctionnelles</h3><div class="sub">Support au maintien dans l’emploi. La compatibilité avec l’état de santé du salarié est appréciée par le médecin du travail.</div></div></div>
+    ${E.poste.secteur?`<div style="margin-top:10px"><button class="btn accent sm" onclick="preselectCap()">★ Repérer les contraintes clés du métier</button></div>`:''}
     <div style="overflow:auto;margin-top:14px"><table><thead><tr><th style="min-width:220px">Domaine</th><th>Compatible</th><th>Adaptation nécessaire</th><th>Non compatible</th><th>Non concerné</th></tr></thead><tbody>
     ${CAPACITES.map((d,i)=>{const v=E.capacites[d]||'';const rb=(val,lab)=>`<label style="display:flex;justify-content:center"><input type="radio" name="cap_${i}" ${v===val?'checked':''} onchange="setCap('${esc(d).replace(/'/g,"\\'")}','${val}')"></label>`;
-      return `<tr><td>${esc(d)}</td><td>${rb('ok')}</td><td>${rb('adapt')}</td><td>${rb('non')}</td><td>${rb('nc')}</td></tr>`;}).join('')}
+      const cle=(E.capCles||[]).includes(d);
+      return `<tr${cle?' style="background:var(--teal-050)"':''}><td>${cle?'★ ':''}${esc(d)}</td><td>${rb('ok')}</td><td>${rb('adapt')}</td><td>${rb('non')}</td><td>${rb('nc')}</td></tr>`;}).join('')}
     </tbody></table></div>
     <div id="capSum" class="sub" style="margin-top:12px"></div>
   </div>`;
   capSum();
 }
 function setCap(d,v){E.capacites[d]=v;capSum();renderRail();}
-function preselectCap(){const pr=PROFILS[E.poste.secteur];if(!pr)return;pr.capacites.forEach(d=>{if(CAPACITES.includes(d)&&!E.capacites[d])E.capacites[d]='adapt';});rCap();}
+function preselectCap(){const pr=PROFILS[E.poste.secteur];if(!pr)return;E.capCles=pr.capacites.filter(d=>CAPACITES.includes(d));rCap();}
 function capSum(){const c=compatData();const el=document.getElementById('capSum');if(el)el.innerHTML=`<b>${c.non}</b> non compatible(s) · <b>${c.adapt}</b> adaptation(s) · sur ${c.tot} domaine(s) évalué(s).`;}
 /* =========================================================
    ÉTAPE 7 : RESTITUTIONS
@@ -1442,6 +1488,7 @@ function drawCockpit(){
 }
 
 /* ---------- Niveau 1 : Étude expert ---------- */
+const MENTION_EDP='Étude de poste réalisée par l’équipe pluridisciplinaire du service de prévention et de santé au travail. Les scores, cotations et diagrammes sont des indicateurs d’aide à la décision (méthode PréventIA®), sans valeur réglementaire, à confirmer par l’observation du poste. Les conclusions sur l’aptitude, les aménagements et le maintien dans l’emploi relèvent du médecin du travail.';
 function drawExpert(){
   const p=E.poste,fs=famScores(),reba=rebaScore(),rula=rulaScore(),niosh=nioshScore(),ia=syntheseIA(),pen=penibilite();
   const secBlock=(title,body)=>`<div class="card pad" style="margin-bottom:14px"><div class="eyebrow">${title}</div>${body}</div>`;
@@ -1472,7 +1519,7 @@ function drawExpert(){
     ${secBlock('5 · Environnement & pénibilité',`<div class="sub" style="margin-bottom:8px">${pen.n} facteur(s) de pénibilité : ${pen.facteurs.join(', ')||'aucun'}</div>
       <div style="font-size:13px"><b>Machines / équipements :</b> ${esc(p.contexte)||'—'}<br><b>Ambiances & aménagement :</b> ${esc(E.envNote||'—')}</div>`)}
     ${secBlock('6 · Capacités fonctionnelles',capTable)}
-    ${secBlock('7 · Analyse IA',`<div style="font-size:13.5px;line-height:1.7">
+    ${secBlock('7 · Analyse automatique',`<div style="font-size:13.5px;line-height:1.7">
       <b>Principaux facteurs de risque :</b> ${ia.facteurs.join(' · ')}<br>
       <b>Tâches les plus pénalisantes :</b> ${ia.tachesDures.join(' · ')}<br>
       <b>Facteurs protecteurs :</b> ${ia.protecteurs.join(' · ')}<br>
@@ -1481,6 +1528,7 @@ function drawExpert(){
       <b>Expertise complémentaire :</b> ${ia.expertise.join(' · ')}</div>`)}
     ${secBlock('8 · Préconisations & plan d’action',planTable)}
     ${secBlock('9 · Conclusion',`<div style="background:var(--teal-050);padding:12px 14px;border-radius:10px;font-size:14px">${esc(ia.conclusion)}</div>`)}
+    <div class="sub" style="font-style:italic;line-height:1.5">${MENTION_EDP}</div>
   </div>`;
 }
 /* =========================================================
@@ -1529,13 +1577,15 @@ function pickCode(kind,code){
   rPoste();renderRail();updateFoot();
 }
 function clearCode(kind){if(kind==='naf'){E.poste.naf='';E.poste.nafLib='';}else{E.poste.pcs='';E.poste.metier='';E.poste.pcsLib='';}rPoste();}
+/* Expositions spécifiques : jamais pré-cotées par le profil du secteur, à constater au poste */
+const NON_PRECOTES=['Vibrations mains-bras','Agents CMR (cancéro/muta/repro)','Contact animaux / milieux souillés','Vibrations corps entier','Rayonnements','Travail en hauteur','Insécurité de l’emploi','Chute de hauteur','Risque électrique'];
 function appliquerProfil(silent){
   const pr=PROFILS[E.poste.secteur];if(!pr){alert('Sélectionne d’abord un code NAF ou PCS reconnu.');return;}
-  FAMILLES.forEach(f=>{const base=pr.familles[f.key]??0;E.risques[f.key]=f.items.map(()=>base);});
+  FAMILLES.forEach(f=>{const base=pr.familles[f.key]??0;E.risques[f.key]=f.items.map(it=>NON_PRECOTES.includes(it)?0:base);});
   if(!E.taches.length)pr.taches.forEach(t=>E.taches.push({nom:t[0],temps:t[1],effort:t[2],frequence:t[3],risque:t[4],compat:'ok',adaptation:''}));
-  pr.capacites.forEach(d=>{if(CAPACITES.includes(d)&&!E.capacites[d])E.capacites[d]='adapt';});
+  E.capCles=pr.capacites.filter(d=>CAPACITES.includes(d));   // repères du métier : aucun statut n'est coché d'office
   renderRail();
-  if(!silent){const z=document.getElementById('propoZone');if(z)z.innerHTML='<div class="notice" style="margin-top:6px;background:oklch(0.94 0.06 150);border-color:oklch(0.8 0.1 150);color:oklch(0.4 0.1 150)">✅ Profil appliqué : familles pré-cotées, tâches et contraintes proposées. Ajuste dans les étapes suivantes.</div>';}
+  if(!silent){const z=document.getElementById('propoZone');if(z)z.innerHTML='<div class="notice" style="margin-top:6px;background:oklch(0.94 0.06 150);border-color:oklch(0.8 0.1 150);color:oklch(0.4 0.1 150)">✅ Profil appliqué : familles pré-cotées, tâches et contraintes clés proposées. Les expositions spécifiques (CMR, vibrations, rayonnements, hauteur, électricité, animaux) restent à coter au poste.</div>';}
   else drawFamilles&&document.getElementById('famList')&&drawFamilles();
 }
 
@@ -1626,14 +1676,14 @@ function loadJSON(ev){
   const f=ev.target.files[0];if(!f)return;const r=new FileReader();
   r.onload=()=>{try{const d=JSON.parse(r.result);Object.assign(E,d);
     if(!E.risques)E.risques=blankFamilles();FAMILLES.forEach(fm=>{if(!Array.isArray(E.risques[fm.key]))E.risques[fm.key]=fm.items.map(()=>0);});
-    if(!E.taches)E.taches=[];if(!E.capacites)E.capacites={};
+    if(!E.taches)E.taches=[];if(!E.capacites)E.capacites={};normErgo();
     step=0;render();}catch(e){alert('Fichier illisible.');}};
   r.readAsText(f);ev.target.value='';
 }
 function resetAll(){if(!confirm('Démarrer une nouvelle étude ? Les données non enregistrées seront perdues.'))return;
   Object.assign(E,{taches:[],risques:blankFamilles(),capacites:{},envNote:'',ergoPhoto:'',ergoPhotoNote:''});
   E.poste={entreprise:'',service:'',activite:'',naf:'',nafLib:'',metier:'',pcs:'',pcsLib:'',secteur:'',date:new Date().toISOString().slice(0,10),preventeur:'',effectif:'',horaires:'',contexte:''};
-  E.ergo={rula:{ua:1,la:1,wr:1,tw:1,neck:1,trunk:1,legs:1,muscleA:0,forceA:0,muscleB:0,forceB:0},reba:{neck:1,trunk:1,legs:1,load:0,ua:1,la:1,wr:1,coupling:0,activity:0},niosh:{poids:0,H:40,V:75,D:50,A:0,F:'0.2',C:'bonne'}};
+  E.ergo=ergoVide();E.capCles=[];
   step=0;render();}
 
 /* =========================================================
