@@ -103,16 +103,16 @@
   }
 
   /* ---------------------------------------------------------------
-     2. Référentiel des 8 familles PréventIA (identique étude de poste)
+     2. Référentiel des 8 familles PréventIA (clés, noms et gravités identiques à l'étude de poste)
      --------------------------------------------------------------- */
   const FAMILLES = [
-    { key: 'tms',            nom: 'TMS',                 ic: '🦴', grav: 4 },
-    { key: 'chimique',       nom: 'Risque chimique',     ic: '🧪', grav: 5 },
+    { key: 'tms',            nom: 'TMS',                 ic: '🦴', grav: 3 },
+    { key: 'chimique',       nom: 'Risque chimique',     ic: '🧪', grav: 4 },
     { key: 'biologique',     nom: 'Risque biologique',   ic: '🦠', grav: 4 },
     { key: 'physique',       nom: 'Risque physique',     ic: '🔊', grav: 3 },
-    { key: 'psychosocial',   nom: 'Risques psychosociaux', ic: '🧠', grav: 4 },
+    { key: 'psychosocial',   nom: 'Risques psychosociaux', ic: '🧠', grav: 3 },
     { key: 'organisationnel',nom: 'Risque organisationnel', ic: '🕐', grav: 3 },
-    { key: 'accidentel',     nom: 'Risque accidentel',   ic: '⚠️', grav: 5 },
+    { key: 'accidentel',     nom: 'Risque accidentel',   ic: '⚠️', grav: 4 },
     { key: 'environnemental',nom: 'Environnement de travail', ic: '🌍', grav: 2 }
   ];
   const FAM_GRAVITE = {}; FAMILLES.forEach(f => FAM_GRAVITE[f.key] = f.grav);
@@ -408,8 +408,8 @@
       ${sec('6 · Contrôle qualité — doublons « observé / conseillé »', doubTable)}
       ${sec('7 · Analyse', `<div style="font-size:13.5px;line-height:1.75">
         <b>Familles prioritaires :</b> ${ia.familles.join(' · ') || 'aucune'}<br>
-        <b>Postes en suivi renforcé (SIR) :</b> ${ia.sir.map(esc).join(' · ') || 'aucun'}<br>
-        <b>Facteurs protecteurs (déclarés maîtrisés) :</b> ${ia.protecteurs.map(esc).join(' · ') || '—'}<br>
+        <b>Risques relevant d’un suivi renforcé (SIR) :</b> ${ia.sir.map(esc).join(' · ') || 'aucun'}<br>
+        <b>Risques déclarés maîtrisés :</b> ${ia.protecteurs.map(esc).join(' · ') || '—'}<br>
         <b>À expertiser in situ :</b> ${ia.expertise.map(esc).join(' · ') || '—'}</div>`)}
       ${sec('8 · Préconisations & plan d’action priorisé', planTable)}
       ${sec('9 · Conclusion', `<div style="background:var(--pvx-teal-050);padding:12px 14px;border-radius:10px;font-size:13.5px">${esc(ia.conclusion)}</div>`)}
@@ -439,12 +439,15 @@
       || '<tr><td colspan="5" class="pvx-sub">—</td></tr>';
 
     /* Répartition des contraintes = 5 macro-axes agrégés des 8 familles */
+    /* Moyenne sur les seules familles qui comptent au moins un risque
+       (une famille vide ne doit pas diviser le score par deux) */
+    const moyFam = (...ks) => { const p = ks.filter(k => rows.some(x => x.fam === k)); return p.length ? Math.round(p.reduce((s, k) => s + fs[k], 0) / p.length) : 0; };
     const contraintes = [
-      { lab: 'Physiques', val: Math.round((fs.tms + fs.physique) / 2) },
-      { lab: 'Chimiques / biologiques', val: Math.round((fs.chimique + fs.biologique) / 2) },
-      { lab: 'Organisationnelles', val: fs.organisationnel },
-      { lab: 'Psychosociales', val: fs.psychosocial },
-      { lab: 'Accidentelles', val: Math.round((fs.accidentel + fs.environnemental) / 2) }
+      { lab: 'Physiques', val: moyFam('tms', 'physique') },
+      { lab: 'Chimiques / biologiques', val: moyFam('chimique', 'biologique') },
+      { lab: 'Organisationnelles', val: moyFam('organisationnel') },
+      { lab: 'Psychosociales', val: moyFam('psychosocial') },
+      { lab: 'Accidentelles / environnement', val: moyFam('accidentel', 'environnemental') }
     ];
 
     return `<div class="pvx-a4" id="pvxA4">
@@ -484,7 +487,7 @@
           <div style="font-size:10.5px;line-height:1.55">
             <b>Familles prioritaires :</b> ${ia.familles.join(' · ') || 'aucune'}<br>
             <b>Suivi renforcé (SIR) :</b> ${ia.sir.map(esc).join(' · ') || 'aucun'}<br>
-            <b>Facteurs protecteurs :</b> ${ia.protecteurs.map(esc).join(' · ') || '—'}<br>
+            <b>Risques déclarés maîtrisés :</b> ${ia.protecteurs.map(esc).join(' · ') || '—'}<br>
             <b>À expertiser :</b> ${ia.expertise.map(esc).join(' · ') || '—'}<br>
             <b>Doublons observé/conseillé :</b> ${(doublons && doublons.n) || 0}
           </div></div>
@@ -516,7 +519,7 @@
 
     const riskRows = FAMILLES.filter(f => rows.some(x => x.fam === f.key)).map(f => {
       const bb = band(fs[f.key]);
-      return `<tr><td>${f.ic} ${esc(f.nom)}</td><td><b style="color:${bb.hex}">${fs[f.key]}</b></td><td>${f.grav}</td>
+      return `<tr><td>${f.ic} ${esc(f.nom)}</td><td><b style="color:${bb.hex}">${fs[f.key]}</b></td><td>${Math.max(...rows.filter(x => x.fam === f.key).map(x => x.grav))}</td>
         <td>${rows.filter(x => x.fam === f.key).length}</td><td><span style="color:${bb.hex}">●</span> ${bb.lab}</td></tr>`;
     }).join('') || '<tr><td colspan="5">—</td></tr>';
 
@@ -532,7 +535,7 @@
         ${kpi('Indice PréventIA®', S && S.indice != null ? S.indice : '—', '/100', 'maîtrise pondérée', '#8fd0e0')}
         ${kpi('Risques identifiés', rows.length, '', `dont ${cSIR} en SIR`, cSIR ? '#e58a2a' : '#4fbf7a')}
         ${kpi('Familles critiques', critiques, '', critiques ? 'à traiter' : 'aucune', critiques ? '#d23f2f' : '#4fbf7a')}
-        ${kpi('Salariés exposés', (S && S.effExpose) || m.effectif || '—', '', 'effectif renseigné', '#8fd0e0')}
+        ${kpi('Effectif', (S && S.effExpose) || m.effectif || '—', '', 'salariés de l’établissement', '#8fd0e0')}
       </div>
       <div class="pvx-kpi-row">
         ${kpi('Non ou partiellement maîtrisés', nonMaitrises, '', 'préconisations', nonMaitrises ? '#e58a2a' : '#4fbf7a')}
@@ -560,7 +563,7 @@
           <div class="pvx-legend" style="margin-top:8px"><span><i style="background:#d23f2f"></i>≤ 3 mois</span><span><i style="background:#e58a2a"></i>≤ 6 mois</span><span><i style="background:#1f9d55"></i>≤ 12 mois</span></div></div>
 
         <div class="pvx-panel wide"><h4>Tableau des familles de risques</h4>
-          <table class="pvx-cock-table"><thead><tr><th>Famille</th><th>Score résiduel</th><th>Gravité</th><th>Nb risques</th><th>Niveau</th></tr></thead>
+          <table class="pvx-cock-table"><thead><tr><th>Famille</th><th>Score résiduel</th><th>Gravité max</th><th>Nb risques</th><th>Niveau</th></tr></thead>
           <tbody>${riskRows}</tbody></table></div>
       </div>
 
