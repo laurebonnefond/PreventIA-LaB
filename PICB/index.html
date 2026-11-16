@@ -170,7 +170,7 @@ function computeHML(mf,sf,k){var apv=mf.map(function(m,i){return Math.max(0,m-k*
 function computeDoubleProtINRS(pb,pc){var a84b=pb.mf.map(function(m,i){return Math.max(0,m-pb.sf[i])}),a98b=pb.mf.map(function(m,i){return Math.max(0,m-2*pb.sf[i])}),a84c=pc.mf.map(function(m,i){return Math.max(0,m-pc.sf[i])}),a98c=pc.mf.map(function(m,i){return Math.max(0,m-2*pc.sf[i])});var h84b=computeHML(pb.mf,pb.sf,1),h84c=computeHML(pc.mf,pc.sf,1),h98b=computeHML(pb.mf,pb.sf,2),h98c=computeHML(pc.mf,pc.sf,2);var L84=(h84b.L+h84c.L)/2,M84=(h84b.M+h84c.M)/2,H84=(h84b.H+h84c.H)/2,L98=(h98b.L+h98c.L)/2,M98=(h98b.M+h98c.M)/2,H98=(h98b.H+h98c.H)/2;var warn=[];for(var i=0;i<8;i++){if(a84b[i]<INRS_DBL.apvMinBouchon[i])warn.push("APV bouchon < min à "+FREQS[i]+" Hz");if(a84c[i]<INRS_DBL.apvMinCasque[i])warn.push("APV casque < min à "+FREQS[i]+" Hz")}var a84C=[],a98C=[];for(var i=0;i<8;i++){var f=FREQS[i],v84,v98;if(f===500||f===1000){v84=a84b[i]/(1+.5/(1+Math.exp(-.9*(a84b[i]-14))))+a84c[i]/(.5+1.1/(1+Math.exp(-.3*(a84c[i]-20))));v98=a98b[i]/(1+.5/(1+Math.exp(-.9*(a98b[i]-14))))+a98c[i]/(.5+1.1/(1+Math.exp(-.3*(a98c[i]-20))))}else{var c=INRS_DBL.coefs[f];v84=c[0]*a84b[i]+c[1]*a84c[i]+c[2]*L84+c[3]*M84+c[4]*H84+c[5];v98=c[0]*a98b[i]+c[1]*a98c[i]+c[2]*L98+c[3]*M98+c[4]*H98+c[5]}var bc=INRS_DBL.boneCond[i];a84C.push(Math.round(-10*Math.log10(Math.pow(10,-v84/10)+Math.pow(10,-bc/10))*10)/10);a98C.push(Math.round(-10*Math.log10(Math.pow(10,-v98/10)+Math.pow(10,-bc/10))*10)/10)}var mfC=[],sfC=[];for(var i=0;i<8;i++){var s=Math.max(0,a84C[i]-a98C[i]);sfC.push(s);mfC.push(a84C[i]+s)}return{mf:mfC,sf:sfC,apv84:a84C,apv98:a98C,warn:warn}}
 function computeOB(spec,mf,sf,fo,type){var idx=[];for(var i=0;i<8;i++)if(spec[i]!=null&&isFinite(spec[i]))idx.push(i);var apv84=mf.map(function(m,i){return Math.max(0,m-sf[i])});var dT=DECOTE_INRS[type]||0,dA=fo?0:dT;var apv98=mf.map(function(m,i){return Math.max(0,m-2*sf[i]-dA)});var sA=0,sC=0,s84=0,s98=0;idx.forEach(function(i){sA+=Math.pow(10,(spec[i]+PA[i])/10);sC+=Math.pow(10,(spec[i]+PC[i])/10);s84+=Math.pow(10,(spec[i]-apv84[i]+PA[i])/10);s98+=Math.pow(10,(spec[i]-apv98[i]+PA[i])/10)});var lA=10*Math.log10(sA),lC=10*Math.log10(sC),l84=10*Math.log10(s84),l98=Math.min(lA,10*Math.log10(s98));return{idx:idx,apv84:apv84,apv98:apv98,leqA:lA,leqC:lC,lcla:lC-lA,la84:l84,la98:l98,ref:l98,decote:dA,decoteType:dT,formation:fo}}
 function computeNoPicb(spec){var idx=[];for(var i=0;i<8;i++)if(spec[i]!=null&&isFinite(spec[i]))idx.push(i);var sA=0,sC=0;idx.forEach(function(i){sA+=Math.pow(10,(spec[i]+PA[i])/10);sC+=Math.pow(10,(spec[i]+PC[i])/10)});return{idx:idx,leqA:10*Math.log10(sA),leqC:10*Math.log10(sC),lcla:10*Math.log10(sC)-10*Math.log10(sA)}}
-function diagnostic(ref){if(!isFinite(ref))return null;if(ref<70)return{key:"sur",label:"Surprotection",color:"var(--amber)",hex:"#cd8a1c",tag:"À CORRIGER",txt:"Atténuation excessive."};if(ref<80)return{key:"ok",label:"Conforme — zone cible INRS",color:"var(--green)",hex:"#2f7d4f",tag:"CONFORME",txt:"Zone cible 70-80 dB(A)."};if(ref<=85)return{key:"lim",label:"Conforme limite",color:"var(--amber)",hex:"#cd8a1c",tag:"VIGILANCE",txt:"Proche de la VAS."};if(ref<=87)return{key:"nc",label:"Non conforme",color:"var(--red)",hex:"#c2392b",tag:"NON CONFORME",txt:"Protection insuffisante."};return{key:"vle",label:"VLE dépassée",color:"var(--darkred)",hex:"#8a1c12",tag:"VLE DÉPASSÉE",txt:"Situation urgente."}}
+function diagnostic(ref){if(!isFinite(ref))return null;if(ref<70)return{key:"sur",label:"Surprotection",color:"var(--amber)",hex:"#cd8a1c",tag:"À CORRIGER",txt:"Atténuation excessive."};if(ref<80)return{key:"ok",label:"Conforme — zone cible INRS",color:"var(--green)",hex:"#2f7d4f",tag:"CONFORME",txt:"Zone cible 70-80 dB(A)."};if(ref<=85)return{key:"lim",label:"Conforme limite",color:"var(--amber)",hex:"#cd8a1c",tag:"VIGILANCE",txt:"Proche de la VAS."};if(ref<=87)return{key:"nc",label:"Protection insuffisante",color:"var(--red)",hex:"#c2392b",tag:"INSUFFISANT",txt:"Bruit résiduel > 85 dB(A) : marge nulle avant la VLE de 87 dB(A)."};return{key:"vle",label:"VLE dépassée",color:"var(--darkred)",hex:"#8a1c12",tag:"VLE DÉPASSÉE",txt:"Situation urgente."}}
 function diagnosticNoPicb(l){if(!isFinite(l))return null;if(l<80)return{key:"ok",label:"Sous seuil",color:"var(--green)",hex:"#2f7d4f",tag:"CONFORME",txt:"< 80 dB(A)."};if(l<=85)return{key:"vai",label:"VAI",color:"var(--amber)",hex:"#cd8a1c",tag:"VAI",txt:"Mise à dispo PICB."};if(l<=87)return{key:"vas",label:"VAS",color:"var(--red)",hex:"#c2392b",tag:"VAS",txt:"Port obligatoire."};return{key:"vle",label:"VLE",color:"var(--darkred)",hex:"#8a1c12",tag:"VLE",txt:"Action immédiate."}}
 function adequation(res,picb,diag,fo){if(!res||!diag)return null;var lf=res.lcla>5,hfa=picb.profil==="HFA",acts=[],db=!!picb.isDouble,st,t,m,h;if(diag.key==="vle"||diag.key==="nc"){st="inadapte";h="#c2392b";t="PICB inadapté";m="Bruit résiduel "+f1(res.ref)+" dB(A).";if(!db)acts.push("Retenir SNR supérieur ou double protection.");else{acts.push("Réduction à la source prioritaire.");acts.push("Limiter temps d'exposition.")}}else if(diag.key==="sur"){st="inadapte";h="#cd8a1c";t="PICB surdimensionné";m="Atténuation trop forte ("+f1(res.ref)+" dB(A)).";acts.push(db?"Double protection non nécessaire.":"Retenir filtre moins atténuant.")}else if(diag.key==="lim"){st="vigilance";h="#cd8a1c";t="Acceptable sans marge";m="Bruit résiduel "+f1(res.ref)+" dB(A)."}else{st="ok";h="#2f7d4f";t=(db?"Double protection":"PICB")+" adapté(e)";m="Zone cible INRS ("+f1(res.ref)+" dB(A))."}if(lf&&hfa&&!db){st="inadapte";h="#c2392b";t="Profil fréquentiel incorrect";m="Bruit BF + PICB HFA.";acts.unshift("Remplacer par atténuation uniforme.")}else if(lf&&!db)acts.push("Bruit BF : conserver filtre uniforme.");if(!fo){acts.push("Former au port du PICB (décote "+(DECOTE_INRS[picb.type]||5)+" dB).")}acts.push("Vérifier port réel et continu.");acts.push("Contrôle in situ recommandé (CAPA/EARFIT).");return{statut:st,titre:t,message:m,hex:h,actions:acts}}
 function adequationNoPicb(l){var acts=[],t,m,h,st;if(l<80){st="ok";h="#2f7d4f";t="Pas de PICB obligatoire";m=f1(l)+" dB(A) < 80.";acts.push("Surveillance périodique.")}else if(l<=85){st="vigilance";h="#cd8a1c";t="Mise à disposition PICB";m=f1(l)+" dB(A) ≥ 80.";acts.push("Mettre à dispo PICB.");acts.push("Formation salariés.")}else if(l<=87){st="inadapte";h="#c2392b";t="Port PICB obligatoire";m=f1(l)+" dB(A) ≥ 85.";acts.push("Port effectif obligatoire.");acts.push("Programme réduction bruit.")}else{st="inadapte";h="#8a1c12";t="VLE dépassée";m=f1(l)+" dB(A) > 87.";acts.push("Action immédiate.")}return{statut:st,titre:t,message:m,hex:h,actions:acts}}
@@ -180,16 +180,27 @@ function getMaxLpc(){
   if(currentMode==="simple"){var v=parseFloat(($("simpleLpc").value||"").replace(",","."));return isFinite(v)?v:null}
   var max=null;unites.forEach(function(u){if(u.lpc!=null&&isFinite(u.lpc)){if(max===null||u.lpc>max)max=u.lpc}});return max;
 }
-function diagnosticCrete(lpc){
+/* Atténuation prudente d'une crête (NF EN 458 annexe B) : type d'impulsion inconnu => on retient le cas le plus défavorable */
+function attenuationCrete(picb){
+  if(!picb||!picb.mf||!picb.sf)return null;
+  var h=computeHML(picb.mf,picb.sf,1);
+  return Math.max(0,Math.min(h.L-5,h.M-5,h.H));
+}
+function diagnosticCrete(lpc,picb){
   if(lpc==null||!isFinite(lpc))return null;
-  if(lpc>=140)return{level:3,tag:"VALEUR LIMITE CRÊTE",cls:"c140",icon:"🔴",
-    msg:"Lp,C ≥ 140 dB(C) — valeur limite dépassée. Action immédiate : suspendre l'exposition, réduire le bruit à la source, évaluer les mesures techniques et organisationnelles. La VLE de crête ne doit en aucun cas être dépassée, PICB pris en compte.",
-    actions:["Suspendre l'activité génératrice de la crête jusqu'à mise en œuvre de mesures de réduction.","Encoffrement, amortissement ou traitement de la source impulsionnelle.","Si PICB porté : vérifier que l'atténuation couvre le niveau de crête aux fréquences dominantes.","Envisager une double protection si le calcul d'atténuation l'exige après analyse.","Surveillance audiométrique immédiate des salariés exposés."]};
-  if(lpc>=137)return{level:2,tag:"PROTECTION RENFORCÉE",cls:"c137",icon:"🟠",
-    msg:"Lp,C ≥ 137 dB(C) — valeur d'action supérieure de crête dépassée. Le port effectif du PICB est obligatoire. Évaluer le besoin d'une protection renforcée et les mesures de réduction du bruit impulsionnel à la source.",
-    actions:["Imposer le port effectif d'un PICB à atténuation adaptée aux fréquences dominantes du bruit impulsionnel.","Vérifier que le PICB retenu protège aussi contre les crêtes (certains filtres à atténuation progressive sont moins efficaces sur les chocs).","Évaluer les mesures techniques de réduction : amortisseurs, silentblocs, encoffrement partiel.","Si nécessaire après analyse : envisager une double protection.","Organiser le suivi audiométrique renforcé."]};
-  if(lpc>=135)return{level:1,tag:"CRÊTE SONORE",cls:"c135",icon:"🟡",
-    msg:"Lp,C ≥ 135 dB(C) — valeur d'action inférieure de crête dépassée. Mise à disposition de PICB obligatoire, information et formation des salariés sur le risque impulsionnel.",
+  var dm=attenuationCrete(picb),prot=dm==null?null:lpc-dm;
+  var estim=prot==null?"":" Crête estimée sous protecteur : "+f1(prot)+" dB(C) (atténuation prudente "+f1(dm)+" dB, NF EN 458 annexe B — estimation à confirmer selon le type d'impulsion).";
+  if(lpc>=140&&prot!=null&&prot<140)return{level:2,lpcProt:prot,dm:dm,tag:"CRÊTE ≥ 140 dB(C) — VLE RESPECTÉE SOUS PROTECTEUR",cls:"c137",icon:"🟠",
+    msg:"Lp,C mesuré ≥ 140 dB(C) à l'oreille non protégée. La valeur limite s'apprécie protecteur porté (art. R.4431-2 et R.4432-3 CT) : elle est respectée uniquement si le PICB est porté pendant toute l'exposition aux crêtes."+estim,
+    actions:["Port effectif et continu du PICB impératif pendant toutes les phases impulsionnelles : sans protecteur, la valeur limite est dépassée.","Réduire le bruit impulsionnel à la source : encoffrement, amortissement, traitement de la source.","Identifier le type d'impulsion (basse, moyenne ou haute fréquence) pour affiner l'estimation selon la NF EN 458.","Informer le médecin du travail de l'exposition à des crêtes ≥ 140 dB(C)."]};
+  if(lpc>=140)return{level:3,lpcProt:prot,dm:dm,tag:prot==null?"VALEUR LIMITE CRÊTE — SANS PROTECTEUR":"VALEUR LIMITE CRÊTE DÉPASSÉE",cls:"c140",icon:"🔴",
+    msg:(prot==null?"Lp,C ≥ 140 dB(C) sans protecteur pris en compte : la valeur limite de crête est dépassée.":"Lp,C ≥ 140 dB(C) et crête estimée sous protecteur encore ≥ 140 dB(C) : la valeur limite est dépassée, PICB pris en compte.")+" Action immédiate (art. R.4434-6 CT) : réduire l'exposition, en déterminer les causes, adapter les mesures de protection."+estim,
+    actions:["Suspendre l'exposition à la source de crête jusqu'à mise en œuvre de mesures de réduction.","Encoffrement, amortissement ou traitement de la source impulsionnelle.","Retenir un PICB plus atténuant ou une double protection, puis refaire l'estimation.","Informer le médecin du travail."]};
+  if(lpc>=137)return{level:2,lpcProt:prot,dm:dm,tag:"PROTECTION RENFORCÉE",cls:"c137",icon:"🟠",
+    msg:"Lp,C ≥ 137 dB(C) — valeur d'exposition supérieure de crête atteinte. Le port effectif du PICB est obligatoire (art. R.4434-7 CT) et un programme de réduction du bruit doit être établi (art. R.4434-2 CT)."+estim,
+    actions:["Imposer le port effectif d'un PICB à atténuation adaptée aux fréquences dominantes du bruit impulsionnel.","Vérifier que le PICB retenu protège aussi contre les crêtes (certains filtres à atténuation progressive sont moins efficaces sur les chocs).","Évaluer les mesures techniques de réduction : amortisseurs, silentblocs, encoffrement partiel.","Si nécessaire après analyse : envisager une double protection.","Signaler l'exposition au médecin du travail, qui définit les modalités du suivi audiométrique."]};
+  if(lpc>135)return{level:1,lpcProt:prot,dm:dm,tag:"CRÊTE SONORE",cls:"c135",icon:"🟡",
+    msg:"Lp,C > 135 dB(C) — valeur d'exposition inférieure de crête dépassée. Mise à disposition de PICB, information et formation des salariés sur le risque impulsionnel (art. R.4434-7 et R.4436-1 CT)."+estim,
     actions:["Mettre à disposition des PICB adaptés au bruit impulsionnel.","Informer les salariés sur le risque spécifique des bruits impulsionnels (chocs, impacts, tirs).","Identifier les sources de crêtes et évaluer les possibilités de réduction à la source.","Envisager des protections avec filtrage adapté au caractère impulsionnel."]};
   return null;
 }
@@ -207,7 +218,7 @@ function buildRecommandations(spec,res,diag,adq,lpc,crDiag){
   if(leqA>=80){
     var srcTxt=allSources.length?"Sources identifiées : "+allSources.join(", ")+". ":"";
     recos.push({cat:"source",title:"Réduction du bruit à la source",color:"#1a7a6d",
-      body:srcTxt+"La hiérarchie de prévention impose d'évaluer en priorité les mesures de réduction à la source (art. R.4434-3 CT) : encoffrement, silentblocs, remplacement d'équipements, traitement acoustique des locaux, entretien préventif des machines."
+      body:srcTxt+"La hiérarchie de prévention impose d'évaluer en priorité les mesures de réduction à la source (art. R.4432-1 et R.4434-1 CT) : encoffrement, silentblocs, remplacement d'équipements, traitement acoustique des locaux, entretien préventif des machines."
       +(isLF?" Le spectre présente une dominante basse fréquence (Lc-La = "+f1(lcla)+" dB) : privilégier les solutions de masse (cloisons lourdes, capotages) plutôt que les traitements absorbants classiques.":"")});
   }
   // 2. Organisation du travail
@@ -221,20 +232,20 @@ function buildRecommandations(spec,res,diag,adq,lpc,crDiag){
   if(leqA>=85){
     var zoneTxt=allZones.length?"Zones concernées : "+allZones.join(", ")+".":"";
     recos.push({cat:"signal",title:"Signalisation et limitation d'accès",color:"var(--amber)",
-      body:"Signaler les zones de bruit ≥ 85 dB(A) par affichage réglementaire (pictogramme EPI bruit). Limiter l'accès aux personnes équipées de PICB. "+zoneTxt+" (art. R.4434-7 CT)"});
+      body:"Signaler les zones de bruit ≥ 85 dB(A) par affichage réglementaire (pictogramme EPI bruit). Limiter l'accès aux personnes équipées de PICB. "+zoneTxt+" (art. R.4434-3 CT)"});
   }
   // 4. Bruit impulsionnel spécifique
   if(hasImpuls||(crDiag&&crDiag.level>=1)){
     recos.push({cat:"impuls",title:"Analyse du bruit impulsionnel",color:"var(--red)",
       body:"Le caractère impulsionnel du bruit (chocs, impacts, détonations) induit un risque auditif majoré par rapport à un bruit continu de même niveau. "
       +"Les PICB à filtrage passif uniforme offrent généralement une protection suffisante ; les bouchons avec filtres acoustiques (type musicien) peuvent être moins efficaces sur les impulsions. "
-      +"Envisager des PICB à atténuation non linéaire (type ANR/actif) ou des protections à filtre mécanique conçues pour les bruits d'impact."
+      +"Envisager des PICB à atténuation dépendante du niveau (serre-tête NF EN 352-4, bouchons NF EN 352-7), conçus pour les bruits impulsionnels ; la réduction active du bruit (ANR) vise les bruits continus de basse fréquence, pas les chocs."
       +(lpc!=null?" Lp,C maximal mesuré : "+f1(lpc)+" dB(C).":"")});
   }
   // 5. Suivi médical
   if(leqA>=80){
     recos.push({cat:"medical",title:"Suivi médical et audiométrique",color:"#5d6b7a",
-      body:(leqA>=85?"Surveillance audiométrique renforcée obligatoire (audiogramme de référence puis contrôle périodique). ":"Proposer un audiogramme de référence. ")
+      body:"Au-delà de 80 dB(A), le travailleur bénéficie d'un examen audiométrique préventif à sa demande ou à celle du médecin du travail (art. R.4435-2 CT). "+(leqA>=85?"Au-delà de 85 dB(A) : modalités et périodicité du suivi audiométrique à définir par le médecin du travail. ":"")
       +"Vérifier l'absence de dégradation auditive par comparaison des seuils par fréquence. "
       +"En cas de perte ≥ 10 dB sur les fréquences 2000-4000 Hz : réévaluer le PICB et l'exposition."
       +(hasImpuls?" Le bruit impulsionnel induit un risque accru de traumatisme sonore aigu : signaler au médecin du travail.":"")});
@@ -354,10 +365,10 @@ function recompute(){
   var mandOk=true;for(var i=1;i<8;i++)if(spec[i]==null||!isFinite(spec[i]))mandOk=false;
   if(!mandOk){LAST=null;$("btnExport").disabled=true;$("btnExportJSON").disabled=true;$("resultsWrap").innerHTML='<div class="placeholder" style="padding:34px 20px;text-align:center;border:1px dashed var(--border);border-radius:14px"><div style="font-size:14px;font-weight:600;color:var(--mute)">En attente</div><div style="font-size:12px;margin-top:4px">'+(isM?"Ajoutez une tâche avec bandes 125–8000 Hz.":"Renseignez les bandes 125–8000 Hz.")+'</div></div>';$("creteWrap").innerHTML="";$("recoWrap").innerHTML="";return}
   // VOIE 2 — crête
-  var lpc=getMaxLpc(),crDiag=diagnosticCrete(lpc);
+  var lpc=getMaxLpc(),crDiag=diagnosticCrete(lpc,null);
   if(np){var rN=computeNoPicb(spec),dN=diagnosticNoPicb(rN.leqA),aN=adequationNoPicb(rN.leqA);LAST={spec:spec,noPicb:true,type:0,res:rN,diag:dN,adq:aN,env:env,mode:currentMode,lpc:lpc,crDiag:crDiag};$("btnExport").disabled=false;$("btnExportJSON").disabled=false;renderResults();return}
   var picb=getPicb();if(!picb.valid){LAST=null;$("btnExport").disabled=true;$("btnExportJSON").disabled=true;$("resultsWrap").innerHTML='<div class="placeholder" style="padding:34px;text-align:center;border:1px dashed var(--border);border-radius:14px"><div style="font-size:14px;font-weight:600">Complétez les données PICB</div></div>';$("creteWrap").innerHTML="";$("recoWrap").innerHTML="";return}
-  var tC=picb.isDouble?null:picb.type;var res=computeOB(spec,picb.mf,picb.sf,fo,tC),diag=diagnostic(res.ref),adq=adequation(res,picb,diag,fo);
+  crDiag=diagnosticCrete(lpc,picb);var tC=picb.isDouble?null:picb.type;var res=computeOB(spec,picb.mf,picb.sf,fo,tC),diag=diagnostic(res.ref),adq=adequation(res,picb,diag,fo);
   LAST={spec:spec,picb:picb,formation:fo,res:res,diag:diag,adq:adq,noPicb:false,type:picb.type,env:env,mode:currentMode,lpc:lpc,crDiag:crDiag};
   $("btnExport").disabled=false;$("btnExportJSON").disabled=false;renderResults();
 }
