@@ -223,7 +223,7 @@
       phrases: [
         "Un extincteur portatif à eau pulvérisée d'une capacité minimale de 6 litres pour 200 m² de plancher, au moins un appareil par niveau. Vérification annuelle par un organisme accrédité.",
         "Former régulièrement les travailleurs à l'utilisation des moyens d'extinction — le simple affichage d'une consigne de sécurité ne suffit pas.",
-        "Afficher le plan d'évacuation à chaque niveau, dans chaque salle pouvant contenir au moins 5 personnes, dans les vestiaires et salles de repos. Réaliser au moins un exercice d'évacuation par an."
+        "Afficher le plan d'évacuation à chaque niveau, dans chaque salle pouvant contenir au moins 5 personnes, dans les vestiaires et salles de repos. Réaliser des exercices d'évacuation au moins tous les six mois (art. R.4227-39)."
       ],
       lien: 'https://www.inrs.fr/risques/incendie-lieu-travail/ce-qu-il-faut-retenir.html'
     },
@@ -263,10 +263,10 @@
     affichage: "L'affichage réglementaire minimal doit inclure les coordonnées de l'inspection du travail et du service de santé au travail, les coordonnées des secours d'urgence et les consignes incendie."
   };
   const REF_THEMES = [
-    { lab: 'Organisation des secours (SST / référent)', kw: ['referent sst', 'sauveteur secouriste', 'secouriste', 'sst'], ref: 'Art. L.4644-1 et R.4644-1 du Code du travail', urgent: true },
-    { kw: ['formation sst', 'recyclage sst'], ref: 'Art. R.4224-15 du Code du travail', urgent: false },
+    { lab: 'Référent santé et sécurité au travail (salarié compétent)', kw: ['referent sante', 'referent securite', 'salarie competent', 'salarie designe'], ref: 'Art. L.4644-1 et R.4644-1 du Code du travail', urgent: true },
+    { lab: 'Organisation des secours (sauveteurs secouristes du travail)', kw: ['sauveteur secouriste', 'secouriste', 'sst'], ref: 'Art. R.4224-15 et R.4224-16 du Code du travail', urgent: true },
     { lab: 'DUERP — document unique', kw: ['duerp', 'document unique'], ref: 'Art. R.4121-1 et suivants du Code du travail', urgent: true },
-    { lab: 'PAPRIPACT — programme annuel de prévention', kw: ['papripact'], ref: 'Art. R.4121-3 du Code du travail', urgent: false },
+    { lab: 'PAPRIPACT — programme annuel de prévention', kw: ['papripact'], ref: 'Art. L.4121-3-1 du Code du travail', urgent: false },
     { lab: 'Coactivité — plan de prévention', kw: ['plan de prevention', 'entreprise exterieure'], ref: 'Art. R.4512-6 à R.4512-12 du Code du travail', urgent: false },
     { kw: ['electrique', 'habilitation'], ref: 'Art. R.4226-14 et suivants ; NF C 18-510', urgent: true },
     { kw: ['gaz', 'desenfumage'], ref: 'Art. R.4215-15, R.4216-28 ; Arrêté du 25/06/1980', urgent: true },
@@ -274,7 +274,7 @@
     { lab: 'Gestion des déchets', kw: ['dechet', 'dasri'], ref: 'Art. R.4227-28 CT ; R.541-43 Code de l’environnement', urgent: false },
     { kw: ['ecran', 'poste informatique', 'teletravail'], ref: 'Art. R.4542-1 et suivants du Code du travail', urgent: false },
     { kw: ['manutention', 'port de charge'], ref: 'Art. R.4541-1 et suivants ; NF X35-109', urgent: false },
-    { kw: ['routier', 'vehicule', 'conduite'], ref: 'Art. L.4121-1 CT ; Recommandation CNAM R.488', urgent: false },
+    { kw: ['routier', 'vehicule', 'conduite'], ref: 'Art. L.4121-1 et R.4121-1 du Code du travail ; Code de la route', urgent: false },
     { kw: ['evacuation', 'incendie', 'extincteur'], ref: 'Art. R.4227-28 à R.4227-41 du Code du travail', urgent: true },
     { lab: 'Affichage réglementaire', kw: ['affichage'], ref: 'Art. D.4711-1 et suivants du Code du travail', urgent: false },
     { lab: 'Accueil sécurité des nouveaux arrivants', kw: ['accueil securite', 'nouvel arrivant'], ref: 'Art. L.4141-1 et R.4141-1 du Code du travail', urgent: false },
@@ -962,7 +962,7 @@ Moyens conseillés : désigner un référent santé sécurité, former deux sauv
     A.risks.forEach(r => {
       const a = fakeAnswers[r.id]; if (!a || a === 'nc') return;
       const m = a === 'maitrise' ? 4 : a === 'partiel' ? 2 : 1;
-      const c = SURV_SCORE[r.surveillance] || 1;
+      const c = r.grav ? r.grav - 1 : (SURV_SCORE[r.surveillance] || 1);
       num += m * c; den += 4 * c; ev++; sum += m;
     });
     const Sc = {

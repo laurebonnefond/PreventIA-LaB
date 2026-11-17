@@ -77,7 +77,7 @@
   const ETAT_OBS = {
     maitrise: 'Moyens de prévention jugés maîtrisés (à détailler).',
     partiel:  'Moyens de prévention partiellement en place (à détailler).',
-    non:      'Aucun moyen de prévention identifié lors de la visite.',
+    non:      'Moyens de prévention jugés insuffisants ou absents (à détailler).',
   };
 
   // Précisions d'un métier pour un risque, avec héritage (_herite)
@@ -98,6 +98,8 @@
   function construireFacteurs(risquesActifs, metiers, db, answers, spec) {
     const parId = {};
     Object.entries(db.risques || {}).forEach(([cle, r]) => { parId[r.id] = Object.assign({ cle }, r); });
+    // Risques saisis à la main dans l'outil (absents de DB.risques)
+    (typeof customRisks !== 'undefined' ? customRisks : []).forEach(r => { if (!parId[r.id]) parId[r.id] = Object.assign({ cle: r.label }, r); });
     return risquesActifs.map(id => {
       const r = parId[id]; if (!r) return null;
       const concernes = metiers.filter(m => (m.risques || []).includes(r.cle));
@@ -531,7 +533,7 @@
       // Onglet « Création » : risques évalués, sinon tous les risques détectés
       risquesActifs = risquesDepuisOutil();
       if (!risquesActifs.length && typeof aggregate === 'function') {
-        risquesActifs = aggregate().risks.map(r => r.id);
+        risquesActifs = aggregate().risks.filter(r => (typeof answers === 'undefined') || answers[r.id] !== 'nc').map(r => r.id);
       }
     }
 
