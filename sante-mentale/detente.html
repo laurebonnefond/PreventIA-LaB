@@ -68,7 +68,7 @@
       <div class="compte" id="compte">Installez-vous, le dos droit, les pieds au sol.</div>
       <div class="reglages">
         <label>Durée<select id="cDuree"><option value="180">3 min</option><option value="300" selected>5 min</option><option value="600">10 min</option></select></label>
-        <label>Rythme<select id="cRythme"><option value="5,5" selected>Inspirer 5 s · Expirer 5 s</option><option value="4,6">Inspirer 4 s · Expirer 6 s (plus apaisant)</option><option value="4,4">Inspirer 4 s · Expirer 4 s (débutant)</option></select></label>
+        <label>Rythme<select id="cRythme"><option value="5,5" selected>Inspirer 5 s · Expirer 5 s</option><option value="4,6">Inspirer 4 s · Expirer 6 s (plus apaisant)</option><option value="4,4">Inspirer 4 s · Expirer 4 s (débutant, ~7 respirations/min)</option></select></label>
         <label>Guidage<select id="cSon"><option value="son" selected>Son doux</option><option value="voix">Voix</option><option value="aucun">Silencieux</option></select></label>
       </div>
       <div style="display:flex;gap:.6rem;justify-content:center;margin-top:.6rem">
@@ -124,7 +124,7 @@
     </div>
   </section>
 </main>
-<p class="foot">PréventIA-LaB · Se détendre — exercices de bien-être, sans visée thérapeutique. Rien n’est enregistré.</p>
+<p class="foot">PréventIA-LaB · Se détendre — exercices de bien-être, sans visée thérapeutique. Seul le choix de la voix est mémorisé sur cet appareil.</p>
 
 <script src="regle.js"></script>
 <script>
@@ -366,9 +366,7 @@ const SCRIPT = [
   ['Peut-être remarquez-vous d’abord une couleur… une lumière… ou simplement une impression agréable…', 'evocatrice', 5],
   ['Si vous le souhaitez, laissez votre regard intérieur se promener autour de vous…', 'evocatrice', 4],
   ['Peut-être y a-t-il des arbres… le mouvement de l’eau… ou la douceur d’un rayon de soleil…', 'evocatrice', 5],
-  ['Regardez autour de vous… les couleurs… la lumière… les formes.', 'evocatrice', 2],
   ['Écoutez les sons de cet endroit… peut-être le vent… l’eau… ou simplement le silence.', 'descriptive', 6],
-  ['Sentez la température de l’air sur votre peau… le sol sous vos pieds…', 'descriptive', 4],
   ['Peut-être même une odeur agréable… familière.', 'descriptive', 5],
   ['Vous pouvez imaginer la température de l’air sur votre visage… sentir le sol sous vos pieds… ou simplement apprécier la sensation d’être ici…', 'descriptive', 6],
   ['Et vous n’avez rien à réussir… rien à voir absolument… rien à ressentir de particulier…', 'tresDouce', 4, LENT],
