@@ -53,6 +53,15 @@ header .s{font-size:11px;letter-spacing:.7px;text-transform:uppercase;color:oklc
 .picked{display:none;align-items:center;gap:10px;padding:10px 12px;border:1px solid var(--teal);background:var(--teal-050);border-radius:10px;margin-top:8px}
 .picked.on{display:flex}
 .picked .x{border:0;background:transparent;color:var(--muted);font-size:18px}
+/* Sinistralité AT 2024 (Ameli) */
+.sinistre{display:none;margin-top:8px;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:#fff;font-size:12.5px}
+.sinistre.on{display:block}
+.sinistre .t{font-weight:600;color:var(--navy-700);margin-bottom:6px}
+.sinistre .bar{position:relative;height:8px;border-radius:4px;background:var(--line);margin:6px 0 2px}
+.sinistre .bar i{position:absolute;left:0;top:0;bottom:0;border-radius:4px}
+.sinistre .bar b{position:absolute;top:-3px;width:2px;height:14px;background:var(--navy)}
+.sinistre .kpis{display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:6px;color:var(--muted)}
+.sinistre .kpis span b{color:var(--ink)}
 
 .chips{display:flex;flex-wrap:wrap;gap:7px}
 .chip{border:1px solid var(--line);background:#fff;padding:6px 12px;border-radius:20px;font-size:12.5px}
@@ -113,6 +122,7 @@ table.rq td{padding:8px 6px;border-bottom:1px solid oklch(0.95 .005 250);vertica
           <div class="drop" id="nafDrop"></div>
           <div class="hint">Le code NAF pré-sélectionne le profil de risque et les métiers associés.</div>
           <div class="picked" id="nafPicked"></div>
+          <div class="sinistre" id="nafSinistre"></div>
         </div>
         <div class="field">
           <label>Taille de l'entreprise</label>
@@ -196,6 +206,7 @@ const S = { taille:'', unites:new Set(), metiers:new Set() };
 const answers = {};
 const customRisks = [];
 let NAF_CODES = [];
+let NAF_SINISTRE = null; // meta.sinistralite de naf-codes.json
 var doublons = { n:0, items:[] };
 let selNaf = null;
 
@@ -207,6 +218,7 @@ const esc = s => String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>'
   try{
     const d = await (await fetch('naf-codes.json')).json();
     NAF_CODES = d.codes || [];
+    NAF_SINISTRE = (d.meta && d.meta.sinistralite) || null;
     document.getElementById('nafInfo').textContent = `${NAF_CODES.length} codes NAF rév.2 chargés`;
   }catch(e){
     NAF_CODES = [];
@@ -248,10 +260,36 @@ function pickNaf(code){
   p.innerHTML=`<span class="code" style="font-weight:700;color:var(--teal-600)">${esc(x.c)}</span>
     <span style="flex:1">${esc(x.l)}<br><small style="color:var(--muted)">Section ${esc(x.s)} — profil PréventIA : <b>${esc(window.NAFSEC?NAFSEC.label(x.secteur):x.secteur)}</b></small></span>
     <button class="x" onclick="clearNaf()">×</button>`;
+  M.at2024 = x.at2024 || null;
+  drawSinistre(x);
   autoMetiers(x);
   drawMetiers(); drawRisques(); draw();
 }
-function clearNaf(){ selNaf=null; M.naf=M.nafLib=M.section=M.sectionLib=''; document.getElementById('nafPicked').className='picked'; drawRisques(); draw(); }
+
+/* Encart sinistralité AT 2024 — données Ameli agrégées dans naf-codes.json (champ at2024) */
+function drawSinistre(x){
+  const el=document.getElementById('nafSinistre'), a=x.at2024, ref=NAF_SINISTRE;
+  if(!ref){ el.className='sinistre'; return; }
+  el.className='sinistre on';
+  if(!a){ el.innerHTML=`<div class="t">Sinistralité AT ${ref.annee}</div><span style="color:var(--muted)">Aucun salarié du régime général sur ce code en ${ref.annee}.</span>`; return; }
+  const ratio = a.if!=null ? a.if/ref.ifNational : 0;
+  const col = ratio>=1.5 ? 'oklch(0.60 0.19 27)' : ratio>=1 ? 'var(--orange)' : 'var(--teal)';
+  const max = Math.max(a.if||0, ref.ifNational*2);
+  const pct = v => Math.min(100, v/max*100).toFixed(1)+'%';
+  const nf = n => n==null ? '—' : n.toLocaleString('fr-FR');
+  el.innerHTML=`<div class="t">Sinistralité AT ${ref.annee} — ${nf(a.sal)} salariés en France</div>
+    <div><b style="font-size:16px;color:${col}">${nf(a.if)}</b> AT pour 1 000 salariés
+      <span style="color:var(--muted)">· moyenne nationale ${nf(ref.ifNational)} (×${ratio.toFixed(1).replace('.',',')})</span></div>
+    <div class="bar"><i style="width:${pct(a.if||0)};background:${col}"></i><b style="left:${pct(ref.ifNational)}" title="Moyenne nationale"></b></div>
+    <div class="kpis">
+      ${a.rang ? `<span>Rang <b>${a.rang}</b>/${ref.nbClasses}</span>` : `<span>⚠ effectif &lt; ${ref.seuilFiabilite} : indicateur peu fiable</span>`}
+      <span>TF <b>${nf(a.tf)}</b></span><span>TG <b>${nf(a.tg)}</b></span><span>IG <b>${nf(a.ig)}</b></span>
+      <span>AT ≥ 4 j <b>${a.graves!=null?a.graves+' %':'—'}</b></span><span>Décès <b>${nf(a.deces)}</b></span>
+      ${a.risque ? `<span>Risque n°1 <b>${esc(a.risque)}</b> (${a.partRisque} % des AT)</span>` : ''}
+    </div>
+    <div style="color:var(--muted);font-size:11px;margin-top:4px">Source : Assurance Maladie – Risques professionnels, AT ${ref.annee} par CTN × NAF (CTN ${esc(a.ctn.join(', '))}).</div>`;
+}
+function clearNaf(){ selNaf=null; M.naf=M.nafLib=M.section=M.sectionLib=''; M.at2024=null; document.getElementById('nafPicked').className='picked'; document.getElementById('nafSinistre').className='sinistre'; drawRisques(); draw(); }
 
 /* Pré-sélection des métiers par mots-clés du libellé NAF */
 function autoMetiers(x){
