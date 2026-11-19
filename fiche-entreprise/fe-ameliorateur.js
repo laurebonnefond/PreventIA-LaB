@@ -43,7 +43,9 @@
     .replace(/[«»\u201c\u201d\u2018\u2019'`]/g, ' ')
     .replace(/[.,;:!?()\[\]{}\-–—/\\]+/g, ' ').replace(/\s+/g, ' ').trim();
   const KEEP_SHORT = new Set(['rps', 'tms', 'cmr', 'aes', 'cpp', 'cdh', 'sst', 'atex', 'epi', 'vlep', 'fds', 'ape', 'naf', 'ppe']);
-  const kw = s => nrm(s).split(' ').filter(w => (w.length > 3 || KEEP_SHORT.has(w)) && !STOP.has(w));
+  /* racine simple : « risques chimiques » ≈ « risque chimique » (pluriel s/x retiré au-delà de 4 lettres) */
+  const kw = s => nrm(s).split(' ').filter(w => (w.length > 3 || KEEP_SHORT.has(w)) && !STOP.has(w))
+    .map(w => (w.length > 4 && !KEEP_SHORT.has(w)) ? w.replace(/[sx]$/, '') : w);
   function sim(a, b) {
     const A = new Set(kw(a)), B = new Set(kw(b));
     if (!A.size || !B.size) return 0;
@@ -310,7 +312,11 @@
       const s = Math.max(sim(nameExp, r.label), sim(nameExp, r.court || ''));
       if (s > bs) { bs = s; best = r; }
     });
-    return bs >= 0.3 ? best : null;
+    if (bs >= 0.3) return best;
+    /* repli : vocabulaire terrain (« Risques liés au bruit » → bruit) */
+    const n = nrm(name);
+    const id = Object.keys(LEXIQUE).find(k => LEXIQUE[k].some(t => hasTerm(n, nrm(t))));
+    return id ? Object.values(global.DB ? DB.risques : {}).find(r => r.id === id) || null : null;
   }
 
   /* ═════════ PARSING — stratégie 1 : blocs titrés « observés / conseillés » ═════════ */
@@ -404,13 +410,139 @@
     return (A.risks || []).map(r => ({ name: r.label, observed: '', advised: r.epc || '', libre: '' }));
   }
 
+  /* ═════════ LECTURE .docx AVEC TABLEAUX ═════════
+     mammoth.extractRawText aplatit les tableaux (cellules collées sans repère).
+     On passe par le HTML : chaque ligne de tableau est réécrite en texte
+     exploitable par le parseur (« Risque » + « Moyens observés : … » + « Moyens conseillés : … »).
+     ═══════════════════════════════════════════════════════════════════════ */
+  const RE_COL_OBS = /observ|existant|en place|constat|actuel/i;
+  const RE_COL_CON = /conseil|pr[ée]conis|recommand|[àa] mettre|[àa] pr[ée]voir|am[ée]lioration/i;
+  function htmlVersTexte(html) {
+    const doc = new DOMParser().parseFromString(html, 'text/html');
+    const out = [];
+    const t = n => (n.textContent || '').replace(/\s+/g, ' ').trim();
+    const cellule = td => { const ps = [...td.querySelectorAll('p,li')].map(t).filter(Boolean); return ps.length ? ps.join(' ; ') : t(td); };
+    function tableau(tb) {
+      const rows = [...tb.querySelectorAll('tr')].filter(tr => tr.closest('table') === tb).map(tr => [...tr.children].map(cellule));
+      const h = rows.findIndex(r => r.some(c => c.length < 60 && RE_COL_OBS.test(c)) && r.some(c => c.length < 60 && RE_COL_CON.test(c)));
+      if (h >= 0) {                                   /* tableau « risque | observé | conseillé » */
+        const io = rows[h].findIndex(c => RE_COL_OBS.test(c)), ic = rows[h].findIndex(c => RE_COL_CON.test(c));
+        const ir = rows[h].findIndex((c, i) => i !== io && i !== ic);
+        rows.slice(h + 1).forEach(r => {
+          const nom = (r[ir] || '').replace(/[.!?:;]+$/, '').slice(0, 70);
+          if (!nom || (!r[io] && !r[ic])) return;
+          out.push('', cap(nom), 'Moyens observés : ' + (r[io] || ''), 'Moyens conseillés : ' + (r[ic] || ''), '');
+        });
+        return;
+      }
+      rows.forEach(r => {                             /* tableau générique : « libellé : valeur » */
+        const c = r.filter(Boolean);
+        if (c.length === 2 && c[0].length < 60) out.push(c[0].replace(/\s*:$/, '') + ' : ' + c[1]);
+        else c.forEach(x => out.push(x));
+      });
+      out.push('');
+    }
+    (function walk(node) {
+      [...node.children].forEach(el => {
+        if (el.tagName === 'TABLE') return tableau(el);
+        if (/^(P|H[1-6]|LI)$/.test(el.tagName)) { const x = t(el); out.push(x); return; }
+        walk(el);
+      });
+    })(doc.body);
+    return out.join('\n');
+  }
+
+  /* ═════════ CONTRÔLE D'ANONYMISATION ═════════
+     Repère ce qui ressemble à une donnée identifiante. Indicatif : un
+     contrôle visuel reste nécessaire (un nom sans civilité n'est pas détecté).
+     ═══════════════════════════════════════════════════════════════════════ */
+  const L_ = "[A-ZÀ-ÖØ-Þ][A-Za-zÀ-ÖØ-öø-ÿ'’-]+";
+  const ANON = [
+    { type: 'NIR (n° sécurité sociale)', jeton: '[NIR]', re: /\b[12]\s?\d{2}\s?(?:0[1-9]|1[0-2])\s?(?:\d{2}|2A|2B)\s?\d{3}\s?\d{3}(?:\s?\d{2})?\b/g },
+    { type: 'SIRET / SIREN', jeton: '[SIRET]', re: /\b\d{3} ?\d{3} ?\d{3}(?: ?\d{5})?\b(?=[^\d]|$)/g, ctx: /siret|siren|immatricul|rcs/i },
+    { type: 'Courriel', jeton: '[COURRIEL]', re: /[\w.+-]+@[\w-]+\.[\w.-]+/g },
+    { type: 'Téléphone', jeton: '[TÉL]', re: /(?:\+33\s?|\b0)[1-9](?:[\s.-]?\d{2}){4}\b/g },
+    { type: 'Personne (civilité + nom)', jeton: '[NOM]', re: new RegExp("\\b(?:M\\.|Mr\\.?|Mme|Mlle|Madame|Monsieur|Mademoiselle|Dr\\.?|Docteur|Pr\\.?)[ \\t]+" + L_ + "(?:[ \\t]+" + L_ + ")?", 'g') },
+    { type: 'Raison sociale', jeton: 'Établissement A', re: new RegExp("\\b(?:SARL|SASU|SAS|EURL|SCI|SCP|SELARL|SELAS|EARL|GAEC|SNC|SCOP)[ \\t]+(?:[A-Z0-9][\\wÀ-ÿ&'’.-]*)(?:[ \\t]+[A-Z0-9][\\wÀ-ÿ&'’.-]*){0,3}", 'g') },
+    { type: 'Adresse', jeton: '[ADRESSE]', re: /\b\d{1,4}\s?(?:bis|ter)?,?\s+(?:rue|avenue|av\.|boulevard|bd|chemin|impasse|all[ée]e|place|route|quai|cours|lotissement|zone)\s+[^\n,;]{3,40}/gi },
+    { type: 'Code postal + ville', jeton: '[CP VILLE]', re: /\b(?:[0-8]\d|9[0-8])\d{3}[ \t]+[A-ZÉÈ][A-Za-zÀ-ÿ'’ -]{2,30}\b/g }
+  ];
+  function scanAnonymat(text) {
+    const hits = [];
+    ANON.forEach(a => {
+      a.re.lastIndex = 0; let m;
+      while ((m = a.re.exec(text))) {
+        if (a.ctx && !a.ctx.test(text.slice(Math.max(0, m.index - 40), m.index)) && m[0].replace(/\s/g, '').length < 14) continue;
+        hits.push({ type: a.type, val: m[0] });
+      }
+    });
+    return hits;
+  }
+  const masque = v => v.length <= 4 ? '••••' : v.slice(0, 3) + '•'.repeat(Math.min(8, v.length - 3));
+  function pseudonymiser(text) {
+    let t = text;
+    ANON.forEach(a => {
+      t = t.replace(a.re, (m, ...r) => {
+        const off = r[r.length - 2];
+        if (a.ctx && !a.ctx.test(t.slice(Math.max(0, off - 40), off)) && m.replace(/\s/g, '').length < 14) return m;
+        return a.jeton;
+      });
+    });
+    return t;
+  }
+
+  /* ═════════ DÉTECTION NAF / EFFECTIF DANS LE DOCUMENT ═════════ */
+  const nafCodes = () => { try { return (typeof NAF_CODES !== 'undefined' && NAF_CODES) || []; } catch (e) { return []; } };
+  function detecterMeta(text) {
+    const d = {};
+    const m1 = text.match(/(?:naf|ape)[^\d\n]{0,20}(\d{2})\.?(\d{2})\s?([A-Z])\b/i) || text.match(/\b(\d{2})\.(\d{2})([A-Z])\b/);
+    if (m1) {
+      const c = `${m1[1]}.${m1[2]}${m1[3].toUpperCase()}`;
+      const x = nafCodes().find(n => n.c === c);
+      if (x || !nafCodes().length) { d.naf = c; if (x) d.nafLib = x.l; }
+    }
+    const m2 = text.match(/(?:effectif|nombre\s+de\s+salari[ée]s)[^\d\n]{0,25}(\d{1,5})/i) || text.match(/\b(\d{1,5})\s*(?:salari[ée]s|agents|ETP)\b/i);
+    if (m2 && +m2[1] > 0) d.effectif = m2[1];
+    return d;
+  }
+
+  /* ═════════ ANGLES MORTS : risques attendus mais absents de la fiche ═════════
+     Sources croisées : métiers de la base rattachés au NAF, 1re cause d'AT
+     du NAF (Ameli 2024, naf-codes.json) et sélection de l'onglet Création.
+     ═══════════════════════════════════════════════════════════════════════ */
+  const AT_VERS_RISQUE = {
+    'Manutention manuelle': 'manutention', 'Chutes de plain-pied': 'cpp', 'Chutes de hauteur': 'cdh',
+    'Agressions (y compris par animaux)': 'rps', 'Outillage à main': 'machine', 'Risque routier': 'routier', 'Risque machines': 'machine'
+  };
+  function risquesAttendus() {
+    if (!global.DB || !DB.risques) return { liste: [], at: null };
+    const parId = id => Object.values(DB.risques).find(r => r.id === id);
+    const out = new Map();
+    const add = (r, raison) => { if (!r) return; if (!out.has(r.id)) out.set(r.id, { r, raisons: [] }); const o = out.get(r.id); if (!o.raisons.includes(raison)) o.raisons.push(raison); };
+    const naf = (state.meta.naf || '').toUpperCase().trim();
+    let at = null;
+    if (naf) {
+      (DB.metiers || []).filter(m => (m.naf_codes || []).some(p => naf.startsWith(p)))
+        .forEach(m => m.risques.forEach(k => add(DB.risques[k], 'métier « ' + m.label + ' »')));
+      const x = nafCodes().find(n => n.c === naf);
+      if (x && x.at2024) {
+        at = x.at2024;
+        if (at.risque && AT_VERS_RISQUE[at.risque]) add(parId(AT_VERS_RISQUE[at.risque]), `1re cause d'AT du NAF (${at.partRisque ?? '?'} % des AT 2024)`);
+      }
+    }
+    try { if (typeof global.aggregate === 'function') (global.aggregate().risks || []).forEach(r => add(r, 'sélection onglet Création')); } catch (e) { }
+    const couverts = new Set(state.risqueRows.map(row => { const m = matchRisk(row.risque); return m && m.id; }).filter(Boolean));
+    return { liste: [...out.values()].filter(o => !couverts.has(o.r.id)), at };
+  }
+
   /* ═════════ ANALYSE ═════════ */
   let RAW = '';           // texte brut importé (jamais affiché en entier)
-  const state = { meta: {}, secs: [], risqueRows: [], precoRows: [], placeholders: 0, strategie: '', source: '' };
+  const state = { meta: {}, secs: [], risqueRows: [], precoRows: [], placeholders: 0, strategie: '', source: '', anonymat: [], detecte: {} };
 
   function analyser(text) {
     RAW = clean(text);
     state.placeholders = nbPlaceholders(RAW);
+    state.anonymat = scanAnonymat(RAW);
 
     let secs = parseBlocs(RAW), strat = 'Blocs « observés / conseillés » détectés dans le document';
     if (secs.length < 2) { const alt = parseParMotsCles(RAW); if (alt.length > secs.length) { secs = alt; strat = 'Aucun bloc « observés / conseillés » exploitable — reconstruction par balayage sémantique des risques'; } }
@@ -431,8 +563,9 @@
 
     /* tableaux */
     const rq = [], pr = [];
+    const RE_VIDE = /^(?:aucun|aucune|n[ée]ant|rien|non|pas de|sans objet|ras|nc|n\/a|n[ée]ant\.?|\*+|-+|—)\b/i;
     secs.forEach(s => {
-      const obs = splitItems(s.observed), cons = splitItems(s.advised);
+      const obs = splitItems(s.observed).filter(o => !RE_VIDE.test(o) || o.split(' ').length > 3), cons = splitItems(s.advised);
       const kept = cons.filter(c => !obs.some(o => sim(o, c) >= 0.55));
       const statut = (!cons.length || !kept.length) ? 'ok' : (!obs.length ? 'no' : 'warn');
       const m = matchRisk(s.name);
@@ -454,6 +587,9 @@
       effectif: (global.M && M.effectif) || '', preventeur: (global.M && M.preventeur) || '',
       date: (global.M && M.date) || new Date().toISOString().slice(0, 10)
     };
+    /* compléter les champs vides avec ce que le document contient (NAF, effectif) */
+    const det = detecterMeta(RAW); state.detecte = {};
+    ['naf', 'nafLib', 'effectif'].forEach(k => { if (det[k] && !state.meta[k]) { state.meta[k] = det[k]; state.detecte[k] = true; } });
     render();
   }
 
@@ -532,6 +668,14 @@
 .ame-conclu p{margin:3px 0}
 .ame-conclu a{color:${hx(CHARTE.cyan)};text-decoration:none}
 .ame-add{margin-top:8px}
+.ame-anon{border:1px solid ${hx(CHARTE.no)};background:#FDF1EF;border-radius:12px;padding:12px 14px;margin-bottom:12px;font-size:12.5px}
+.ame-anon b.t{color:${hx(CHARTE.no)}}
+.ame-anon code{background:#fff;border:1px solid #F3D2CC;border-radius:5px;padding:1px 6px;margin:2px 4px 2px 0;display:inline-block;font-size:11.5px}
+.ame-gap{border:1px dashed ${hx(CHARTE.orange)};background:#FFF8F1;border-radius:12px;padding:12px 14px;margin-top:12px;font-size:12.5px}
+.ame-gap .row{display:flex;gap:10px;align-items:center;padding:6px 0;border-top:1px solid #F6E3D2}
+.ame-gap .row:first-of-type{border-top:0}
+.ame-gap .row .why{flex:1;color:${hx(CHARTE.muted)};font-size:11.5px}
+.ame-det{font-size:9.5px;font-weight:700;color:${hx(CHARTE.navy)};background:${hx(CHARTE.cyanClair)};border-radius:10px;padding:1px 6px;margin-left:4px}
 .ame-flag{display:inline-block;font-size:10px;font-weight:700;padding:2px 7px;border-radius:20px;background:#E9F5FC;color:${hx(CHARTE.navy)};margin-left:6px}
 `;
   function injectCSS() {
@@ -571,6 +715,29 @@
       return;
     }
     const m = state.meta, d = (global.doublons && global.doublons.n) || 0;
+    const det = k => state.detecte && state.detecte[k] ? '<span class="ame-det" title="Trouvé dans le document importé">détecté</span>' : '';
+
+    /* panneau anonymisation */
+    const an = state.anonymat || [];
+    const parType = {}; an.forEach(h => (parType[h.type] = parType[h.type] || []).push(h.val));
+    const panAnon = an.length ? `<div class="ame-anon no-print">
+      <b class="t">🛡️ ${an.length} donnée(s) potentiellement identifiante(s) détectée(s) dans le document</b>
+      <div style="margin:6px 0">${Object.entries(parType).map(([t, v]) => `<div><b>${escq(t)}</b> (${v.length}) : ${[...new Set(v)].slice(0, 6).map(x => `<code>${escq(masque(x))}</code>`).join('')}</div>`).join('')}</div>
+      <button class="btn primary" onclick="AME.pseudonymiser()">🛡️ Pseudonymiser et relancer l'analyse</button>
+      <span class="hint" style="margin-left:8px">Remplace par [NOM], [SIRET], [TÉL]… Contrôle indicatif : relisez quand même (un nom sans civilité n'est pas repéré).</span>
+    </div>` : `<div class="hint no-print" style="margin-bottom:10px">🛡️ Contrôle d'anonymisation : aucun SIRET, NIR, courriel, téléphone, adresse ni nom précédé d'une civilité détecté.</div>`;
+
+    /* panneau angles morts */
+    const RA = risquesAttendus();
+    const atTxt = RA.at ? `Sinistralité AT 2024 du NAF ${escq(m.naf)} : indice de fréquence ${RA.at.if ?? '—'}, taux de gravité ${RA.at.tg ?? '—'}, 1re cause : ${escq(RA.at.risque || '—')}.` : '';
+    const panGap = RA.liste.length ? `<div class="ame-gap no-print" id="ameGap">
+      <b>🔎 Angles morts possibles — ${RA.liste.length} risque(s) attendu(s) mais absent(s) de la fiche</b>
+      ${atTxt ? `<div class="hint" style="margin:4px 0 6px">${atTxt}</div>` : ''}
+      ${RA.liste.map(o => `<div class="row"><b style="min-width:200px">${escq(o.r.label)}</b><span class="why">attendu via ${o.raisons.map(escq).join(' · ')}</span>
+        <button class="btn" onclick="AME.addAttendu('${escq(o.r.id)}')">➕ Ajouter</button></div>`).join('')}
+      <div style="margin-top:8px"><button class="btn accent" onclick="AME.addTousAttendus()">➕ Tout ajouter (statut « non maîtrisé » + préconisation d'évaluation)</button></div>
+    </div>` : (m.naf ? `<div class="hint no-print" style="margin-top:8px">🔎 Aucun angle mort détecté par rapport au NAF ${escq(m.naf)}${atTxt ? ' — ' + atTxt : ''}</div>`
+      : `<div class="hint no-print" style="margin-top:8px">🔎 Renseignez le code NAF (ou les métiers dans l'onglet Création) pour repérer les risques attendus absents de la fiche.</div>`);
 
     const trRisque = (r, i) => `<tr data-i="${i}">
       <td contenteditable data-f="risque"><b>${escq(r.risque)}</b></td>
@@ -597,6 +764,7 @@
     </div>
     <div class="hint" style="margin-bottom:10px">🧭 Stratégie d'extraction : ${escq(state.strategie)}${state.source ? ' — source : ' + escq(state.source) : ''}</div>
 
+    ${panAnon}
     <div class="ame-doc" id="ameDoc">
       <div class="ame-band">
         <div class="s">PréventIA-LaB · Fiche d'entreprise améliorée</div>
@@ -606,8 +774,8 @@
         <div class="ame-h2">1 · Identification</div>
         <div class="ame-meta">
           <div><label>Entreprise (pseudonyme)</label><input id="ed_ent" value="${escq(m.entreprise)}" placeholder="Établissement A"></div>
-          <div><label>Code NAF</label><input id="ed_naf" value="${escq(m.naf)}" placeholder="86.10Z"></div>
-          <div><label>Effectif</label><input id="ed_eff" value="${escq(m.effectif)}" placeholder="24"></div>
+          <div><label>Code NAF ${det('naf')}</label><input id="ed_naf" value="${escq(m.naf)}" placeholder="86.10Z" title="${escq(m.nafLib)}" onchange="AME.collect();AME.render()"></div>
+          <div><label>Effectif ${det('effectif')}</label><input id="ed_eff" value="${escq(m.effectif)}" placeholder="24"></div>
           <div><label>Préventeur</label><input id="ed_prev" value="${escq(m.preventeur)}" placeholder="IPRP / IDEST"></div>
           <div><label>Date</label><input id="ed_date" type="date" value="${escq(m.date)}"></div>
         </div>
@@ -620,6 +788,7 @@
           <th style="width:13%">Statut</th><th style="width:25%">Référence</th><th style="width:4%"></th></tr></thead>
           <tbody id="ed_risques">${state.risqueRows.map(trRisque).join('')}</tbody></table>
         <button class="btn ame-add" onclick="AME.addRisque()">➕ Ajouter un risque</button>
+        ${panGap}
 
         <div class="ame-h2">4 · Préconisations employeur priorisées</div>
         <table class="ame-t"><thead><tr><th style="width:40%">Préconisation</th><th style="width:28%">Référence réglementaire</th>
@@ -650,7 +819,8 @@
     const txt = el => (el ? el.textContent.trim() : '');
     const v = (id, def) => { const e = document.getElementById(id); return e ? e.value.trim() : (def || ''); };
     const m0 = state.meta || {};
-    state.meta = { entreprise: v('ed_ent', m0.entreprise), naf: v('ed_naf', m0.naf), nafLib: m0.nafLib || '',
+    const nafSaisi = v('ed_naf', m0.naf).toUpperCase(), nx = nafCodes().find(n => n.c === nafSaisi);
+    state.meta = { entreprise: v('ed_ent', m0.entreprise), naf: nafSaisi, nafLib: nx ? nx.l : (nafSaisi === m0.naf ? m0.nafLib || '' : ''),
       effectif: v('ed_eff', m0.effectif), preventeur: v('ed_prev', m0.preventeur), date: v('ed_date', m0.date) || m0.date };
     const sy = document.getElementById('ed_synth'); if (sy) state.synthese = sy.textContent.trim();
 
@@ -683,6 +853,24 @@
       sel.style.color = hx(PRIO_HEX[sel.value]);
       if (c) c.textContent = sel.value === 'urgent' ? '3 mois' : sel.value === 'importante' ? '6 mois' : '12 mois';
     },
+    pseudonymiser() {
+      if (!RAW) return;
+      const avant = (state.anonymat || []).length;
+      analyser(pseudonymiser(RAW));
+      const st = document.getElementById('ameFileStatus');
+      if (st) st.innerHTML = `🛡️ ${avant - state.anonymat.length} donnée(s) remplacée(s) par des jetons — analyse relancée sur le texte pseudonymisé.`;
+    },
+    addAttendu(id, sansRendu) {
+      if (!sansRendu) collect();
+      const r = Object.values(DB.risques).find(x => x.id === id); if (!r) return;
+      state.risqueRows.push({ risque: r.label, moyens: 'Non documenté dans la fiche source — à vérifier lors de la visite', statut: 'no', ref: r.ref || REF_DEFAUT });
+      const prio = (r.grav || 0) >= 5 ? 'urgent' : 'importante';
+      state.precoRows.push({ texte: `Évaluer le risque « ${r.label} » et l'intégrer au DUERP` + (r.epc ? ` (pistes : ${r.epc})` : ''), ref: r.ref || REF_DEFAUT, prio, delai: prio === 'urgent' ? '3 mois' : '6 mois' });
+      const ordre = { urgent: 0, importante: 1, recommandee: 2 };
+      state.precoRows.sort((a, b) => ordre[a.prio] - ordre[b.prio]);
+      if (!sansRendu) render();
+    },
+    addTousAttendus() { collect(); risquesAttendus().liste.forEach(o => AME.addAttendu(o.r.id, true)); render(); },
     collect, render, analyser, matchRisk
   };
 
@@ -703,8 +891,10 @@
         });
       }
       const buf = await file.arrayBuffer();
-      const r = await global.mammoth.extractRawText({ arrayBuffer: buf });
-      const texte = clean(r.value || '');
+      /* HTML d'abord (conserve la structure des tableaux), texte brut en repli */
+      let texte = '';
+      try { texte = clean(htmlVersTexte((await global.mammoth.convertToHtml({ arrayBuffer: buf })).value || '')); } catch (e) { console.warn('convertToHtml :', e.message); }
+      if (texte.length < 80) texte = clean((await global.mammoth.extractRawText({ arrayBuffer: buf })).value || '');
       if (texte.length < 80) throw new Error('document vide ou illisible (' + texte.length + ' caractères extraits)');
       state.source = file.name;
       set(`✅ « ${escq(file.name)} » importé — ${texte.length} caractères analysés localement. <b>Vérifiez l'anonymisation</b> (raison sociale, SIRET, noms) avant diffusion.`);
@@ -754,8 +944,8 @@ Moyens conseillés : désigner un référent santé sécurité, former deux sauv
       children: [new TextRun({ text: t, bold: true, size: 34, color: CHARTE.navy, font: CHARTE.font })]
     });
     const H2 = t => new Paragraph({
-      spacing: { before: 260, after: 100 }, border: { bottom: { style: BorderStyle.SINGLE, size: 6, color: CHARTE.teal } },
-      children: [new TextRun({ text: t, bold: true, size: 26, color: CHARTE.teal, font: CHARTE.font })]
+      spacing: { before: 260, after: 100 }, border: { bottom: { style: BorderStyle.SINGLE, size: 6, color: CHARTE.cyan } },
+      children: [new TextRun({ text: t, bold: true, size: 26, color: CHARTE.cyan, font: CHARTE.font })]
     });
     const cell = (text, o = {}) => new TableCell({
       width: o.w ? { size: o.w, type: WidthType.PERCENTAGE } : undefined,
@@ -901,6 +1091,7 @@ Moyens conseillés : désigner un référent santé sécurité, former deux sauv
     const btn = document.getElementById('ameDlBtn');
     if (!state.risqueRows.length) { alert('Importez d’abord une fiche (.docx) ou chargez l’exemple : il n’y a rien à exporter.'); return; }
     collect();
+    if ((state.anonymat || []).length && !confirm(`${state.anonymat.length} donnée(s) potentiellement identifiante(s) restent dans le document source (SIRET, noms, téléphone…).\n\nOK = exporter quand même · Annuler = revenir et cliquer « Pseudonymiser »`)) return;
     const old = btn ? btn.textContent : '';
     if (btn) { btn.disabled = true; btn.textContent = '⏳ Préparation du document…'; }
     const nom = `FE_${(state.meta.entreprise || 'anonyme').replace(/\W+/g, '_')}_AMELIOREE`;
