@@ -62,7 +62,7 @@
 
   /* ═════════ MOTIFS « observé » / « conseillé » (larges, tolérants) ═════════ */
   const A_ = '[a-zA-ZÀ-ÖØ-öø-ÿ]';   // lettre accentuée incluse (\w ne matche pas « é »)
-  const RE_OBS = /^\s*(?:moyens?\s+|mesures?\s+|dispositifs?\s+|actions?\s+)?(?:observ[a-zà-öø-ÿ]*|constat[a-zà-öø-ÿ]*|existant[a-zà-öø-ÿ]*|en\s*place|actuel[a-zà-öø-ÿ]*|d[ée]j[àa]\s*en\s*place|r[ée]alis[a-zà-öø-ÿ]*|pr[ée]sent[a-zà-öø-ÿ]*)\s*[:：\-–—>»]\s*(.*)$/i;
+  const RE_OBS = /^\s*(?:moyens?\s+|mesures?\s+|dispositifs?\s+|actions?\s+)?(?:d[ée]clar[a-zà-öø-ÿ]*|observ[a-zà-öø-ÿ]*|constat[a-zà-öø-ÿ]*|existant[a-zà-öø-ÿ]*|en\s*place|actuel[a-zà-öø-ÿ]*|d[ée]j[àa]\s*en\s*place|r[ée]alis[a-zà-öø-ÿ]*|pr[ée]sent[a-zà-öø-ÿ]*)\s*[:：\-–—>»]\s*(.*)$/i;
   const RE_CON = /^\s*(?:moyens?\s+|mesures?\s+|actions?\s+)?(?:conseill[a-zà-öø-ÿ]*|pr[ée]conis[a-zà-öø-ÿ]*|recommand[a-zà-öø-ÿ]*|[àa]\s*mettre\s*en\s*place|propositions?|axes?\s+d.?am[ée]lioration|[àa]\s*pr[ée]voir|[àa]\s*am[ée]liorer|pistes?)\s*[:：\-–—>»]\s*(.*)$/i;
   const RE_TITRE = /^\s*(?:(?:\d{1,2}(?:\.\d{1,2})*|[IVX]{1,5})\s*[.)\-–]\s*|[•▪●]\s*)?([A-ZÉÈÀÂÎÔÛÇ][^.!?]{2,72})\s*:?\s*$/;
 
@@ -415,7 +415,7 @@
      On passe par le HTML : chaque ligne de tableau est réécrite en texte
      exploitable par le parseur (« Risque » + « Moyens observés : … » + « Moyens conseillés : … »).
      ═══════════════════════════════════════════════════════════════════════ */
-  const RE_COL_OBS = /observ|existant|en place|constat|actuel/i;
+  const RE_COL_OBS = /d[ée]clar|observ|existant|en place|constat|actuel/i;
   const RE_COL_CON = /conseil|pr[ée]conis|recommand|[àa] mettre|[àa] pr[ée]voir|am[ée]lioration/i;
   function htmlVersTexte(html) {
     const doc = new DOMParser().parseFromString(html, 'text/html');
@@ -431,7 +431,7 @@
         rows.slice(h + 1).forEach(r => {
           const nom = (r[ir] || '').replace(/[.!?:;]+$/, '').slice(0, 70);
           if (!nom || (!r[io] && !r[ic])) return;
-          out.push('', cap(nom), 'Moyens observés : ' + (r[io] || ''), 'Moyens conseillés : ' + (r[ic] || ''), '');
+          out.push('', cap(nom), 'Moyens déclarés : ' + (r[io] || ''), 'Moyens conseillés : ' + (r[ic] || ''), '');
         });
         return;
       }
@@ -519,8 +519,10 @@
     const parId = id => Object.values(DB.risques).find(r => r.id === id);
     const out = new Map();
     const add = (r, raison) => { if (!r) return; if (!out.has(r.id)) out.set(r.id, { r, raisons: [] }); const o = out.get(r.id); if (!o.raisons.includes(raison)) o.raisons.push(raison); };
-    const naf = (state.meta.naf || '').toUpperCase().trim();
+    const C = state.contexte || ctxVide();
+    const naf = (C.naf || state.meta.naf || '').toUpperCase().trim();   /* activité réelle prioritaire sur le code APE */
     let at = null;
+    (C.metiers || []).forEach(id => { const mt = (DB.metiers || []).find(x => x.id === id); if (mt) mt.risques.forEach(k => add(DB.risques[k], 'métier déclaré « ' + mt.label + ' »')); });
     if (naf) {
       (DB.metiers || []).filter(m => (m.naf_codes || []).some(p => naf.startsWith(p)))
         .forEach(m => m.risques.forEach(k => add(DB.risques[k], 'métier « ' + m.label + ' »')));
@@ -532,20 +534,21 @@
     }
     try { if (typeof global.aggregate === 'function') (global.aggregate().risks || []).forEach(r => add(r, 'sélection onglet Création')); } catch (e) { }
     const couverts = new Set(state.risqueRows.map(row => { const m = matchRisk(row.risque); return m && m.id; }).filter(Boolean));
-    return { liste: [...out.values()].filter(o => !couverts.has(o.r.id)), at };
+    return { liste: [...out.values()].filter(o => !couverts.has(o.r.id)), at, naf };
   }
 
   /* ═════════ ANALYSE ═════════ */
   let RAW = '';           // texte brut importé (jamais affiché en entier)
-  const state = { meta: {}, secs: [], risqueRows: [], precoRows: [], placeholders: 0, strategie: '', source: '', anonymat: [], detecte: {} };
+  const state = { meta: {}, secs: [], risqueRows: [], precoRows: [], placeholders: 0, strategie: '', source: '', anonymat: [], detecte: {}, contexte: ctxVide(), ctxOuvert: false };
+  function ctxVide() { return { naf: '', nafLib: '', secteur: '', metiers: [], autres: '' }; }
 
   function analyser(text) {
     RAW = clean(text);
     state.placeholders = nbPlaceholders(RAW);
     state.anonymat = scanAnonymat(RAW);
 
-    let secs = parseBlocs(RAW), strat = 'Blocs « observés / conseillés » détectés dans le document';
-    if (secs.length < 2) { const alt = parseParMotsCles(RAW); if (alt.length > secs.length) { secs = alt; strat = 'Aucun bloc « observés / conseillés » exploitable — reconstruction par balayage sémantique des risques'; } }
+    let secs = parseBlocs(RAW), strat = 'Blocs « déclarés (ou observés) / conseillés » détectés dans le document';
+    if (secs.length < 2) { const alt = parseParMotsCles(RAW); if (alt.length > secs.length) { secs = alt; strat = 'Aucun bloc « déclarés / conseillés » exploitable — reconstruction par balayage sémantique des risques'; } }
     if (!secs.length) { secs = parseDepuisSelection(); strat = 'Document non structuré — squelette généré depuis le NAF et les métiers sélectionnés (onglet Création)'; }
     state.strategie = strat;
     state.secs = secs;
@@ -606,7 +609,7 @@
     const d = (global.doublons && global.doublons.n) || 0;
     return `L'analyse porte sur ${r.length} famille(s) de risques : ${ok} maîtrisée(s), ${w} partiellement maîtrisée(s), ${no} non maîtrisée(s) — indice de maîtrise documentaire ${idx}/100. `
       + `${p.length} préconisation(s) restent à l'employeur après déduplication, dont ${u} de priorité urgente (échéance 3 mois). `
-      + (d ? `${d} redondance(s) « moyen observé / moyen conseillé » ont été retirées du plan d'actions. ` : 'Aucune redondance « observé / conseillé » détectée. ')
+      + (d ? `${d} redondance(s) « moyen déclaré / moyen conseillé » ont été retirées du plan d'actions. ` : 'Aucune redondance « déclaré / conseillé » détectée. ')
       + (state.placeholders ? `${state.placeholders} champ(s) laissé(s) à compléter dans le document source. ` : '')
       + `Document d'aide à la décision (méthode PréventIA®) — à confirmer par une visite in situ et à valider par le médecin du travail (art. R.4624-46 du Code du travail).`;
   }
@@ -676,6 +679,14 @@
 .ame-gap .row:first-of-type{border-top:0}
 .ame-gap .row .why{flex:1;color:${hx(CHARTE.muted)};font-size:11.5px}
 .ame-det{font-size:9.5px;font-weight:700;color:${hx(CHARTE.navy)};background:${hx(CHARTE.cyanClair)};border-radius:10px;padding:1px 6px;margin-left:4px}
+.ame-ctx{border:1px solid ${hx(CHARTE.cyan)};background:#F7FBFD;border-radius:12px;padding:10px 14px;margin:12px 0 4px}
+.ame-ctx summary{cursor:pointer;font-weight:700;color:${hx(CHARTE.navy)};font-size:13px}
+.ame-ctx .res{font-weight:400;color:${hx(CHARTE.muted)};font-size:12px;margin-left:6px}
+.ame-ctx select{width:100%;padding:7px 9px;border:1px solid var(--line);border-radius:8px;font-size:13px;font-family:Arial,Helvetica,sans-serif}
+.ame-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
+.ame-chip{border:1px solid var(--line);background:#fff;border-radius:20px;padding:4px 11px;font-size:12px;cursor:pointer;font-family:Arial,Helvetica,sans-serif}
+.ame-chip:hover{border-color:${hx(CHARTE.cyan)}}
+.ame-chip.on{background:${hx(CHARTE.navy)};color:#fff;border-color:${hx(CHARTE.navy)}}
 .ame-flag{display:inline-block;font-size:10px;font-weight:700;padding:2px 7px;border-radius:20px;background:#E9F5FC;color:${hx(CHARTE.navy)};margin-left:6px}
 `;
   function injectCSS() {
@@ -727,16 +738,41 @@
       <span class="hint" style="margin-left:8px">Remplace par [NOM], [SIRET], [TÉL]… Contrôle indicatif : relisez quand même (un nom sans civilité n'est pas repéré).</span>
     </div>` : `<div class="hint no-print" style="margin-bottom:10px">🛡️ Contrôle d'anonymisation : aucun SIRET, NIR, courriel, téléphone, adresse ni nom précédé d'une civilité détecté.</div>`;
 
+    /* panneau activité réelle (optionnel) */
+    const C = state.contexte;
+    if (!document.getElementById('ctxNafList')) {
+      const dl = document.createElement('datalist'); dl.id = 'ctxNafList';
+      dl.innerHTML = nafCodes().map(n => `<option value="${escq(n.c)}">${escq(n.l)}</option>`).join('');
+      document.body.appendChild(dl);
+    }
+    const lettre = C.secteur || '';
+    const metiersVus = (global.DB && DB.metiers || []).filter(x => !lettre || (x.secteur || '').startsWith(lettre) || C.metiers.includes(x.id));
+    const secteurs = (global.DB && DB.secteurs || []).slice().sort((a, b) => a.naf.localeCompare(b.naf));
+    const resume = [C.naf ? 'NAF ' + C.naf : (C.secteur ? 'secteur ' + C.secteur : ''), C.metiers.length ? C.metiers.length + ' métier(s)' : ''].filter(Boolean).join(' · ');
+    const panCtx = `<details class="ame-ctx no-print" ${state.ctxOuvert || !resume ? 'open' : ''} ontoggle="AME.state.ctxOuvert=this.open">
+      <summary>🏭 Activité réelle et métiers les plus rencontrés <span class="res">${resume ? '— ' + escq(resume) : '(optionnel — à préciser si le code APE ne reflète pas l’activité)'}</span></summary>
+      <div class="hint" style="margin:6px 0 8px">Le code APE attribué par l'INSEE ne correspond pas toujours à l'activité réellement exercée. Ce que vous indiquez ici est prioritaire pour repérer les angles morts et figure dans l'export.</div>
+      <div class="ame-meta">
+        <div><label>NAF de l'activité réelle</label><input id="ctx_naf" list="ctxNafList" value="${escq(C.naf)}" placeholder="ex. 10.71C ou « boulangerie »" title="${escq(C.nafLib)}" onchange="AME.setContexte()"></div>
+        <div><label>Secteur d'activité</label><select id="ctx_sect" onchange="AME.setContexte()"><option value="">— tous secteurs —</option>
+          ${secteurs.map(x => `<option value="${escq(x.naf)}" ${C.secteur === x.naf ? 'selected' : ''}>${escq(x.naf + ' · ' + x.label)}</option>`).join('')}</select></div>
+        <div style="grid-column:span 2"><label>Autres métiers (texte libre)</label><input id="ctx_autres" value="${escq(C.autres)}" placeholder="ex. livreur, vendeuse" onchange="AME.setContexte()"></div>
+      </div>
+      ${C.nafLib ? `<div class="hint">Activité réelle : ${escq(C.nafLib)}</div>` : ''}
+      <label style="font-size:11px;font-weight:600;color:${hx(CHARTE.navy)};display:block;margin-top:8px">Métiers les plus rencontrés ${lettre ? '(secteur ' + escq(lettre) + ')' : ''} — cliquez pour sélectionner</label>
+      <div class="ame-chips">${metiersVus.map(x => `<button type="button" class="ame-chip ${C.metiers.includes(x.id) ? 'on' : ''}" onclick="AME.toggleMetier('${escq(x.id)}')">${escq(x.label)}</button>`).join('') || '<span class="hint">Aucun métier de la base pour ce secteur — utilisez le champ texte libre.</span>'}</div>
+    </details>`;
+
     /* panneau angles morts */
     const RA = risquesAttendus();
-    const atTxt = RA.at ? `Sinistralité AT 2024 du NAF ${escq(m.naf)} : indice de fréquence ${RA.at.if ?? '—'}, taux de gravité ${RA.at.tg ?? '—'}, 1re cause : ${escq(RA.at.risque || '—')}.` : '';
+    const atTxt = RA.at ? `Sinistralité AT 2024 du NAF ${escq(RA.naf)} : indice de fréquence ${RA.at.if ?? '—'}, taux de gravité ${RA.at.tg ?? '—'}, 1re cause : ${escq(RA.at.risque || '—')}.` : '';
     const panGap = RA.liste.length ? `<div class="ame-gap no-print" id="ameGap">
       <b>🔎 Angles morts possibles — ${RA.liste.length} risque(s) attendu(s) mais absent(s) de la fiche</b>
       ${atTxt ? `<div class="hint" style="margin:4px 0 6px">${atTxt}</div>` : ''}
       ${RA.liste.map(o => `<div class="row"><b style="min-width:200px">${escq(o.r.label)}</b><span class="why">attendu via ${o.raisons.map(escq).join(' · ')}</span>
         <button class="btn" onclick="AME.addAttendu('${escq(o.r.id)}')">➕ Ajouter</button></div>`).join('')}
       <div style="margin-top:8px"><button class="btn accent" onclick="AME.addTousAttendus()">➕ Tout ajouter (statut « non maîtrisé » + préconisation d'évaluation)</button></div>
-    </div>` : (m.naf ? `<div class="hint no-print" style="margin-top:8px">🔎 Aucun angle mort détecté par rapport au NAF ${escq(m.naf)}${atTxt ? ' — ' + atTxt : ''}</div>`
+    </div>` : (RA.naf || state.contexte.metiers.length ? `<div class="hint no-print" style="margin-top:8px">🔎 Aucun angle mort détecté par rapport à l'activité et aux métiers indiqués${atTxt ? ' — ' + atTxt : ''}</div>`
       : `<div class="hint no-print" style="margin-top:8px">🔎 Renseignez le code NAF (ou les métiers dans l'onglet Création) pour repérer les risques attendus absents de la fiche.</div>`);
 
     const trRisque = (r, i) => `<tr data-i="${i}">
@@ -774,17 +810,18 @@
         <div class="ame-h2">1 · Identification</div>
         <div class="ame-meta">
           <div><label>Entreprise (pseudonyme)</label><input id="ed_ent" value="${escq(m.entreprise)}" placeholder="Établissement A"></div>
-          <div><label>Code NAF ${det('naf')}</label><input id="ed_naf" value="${escq(m.naf)}" placeholder="86.10Z" title="${escq(m.nafLib)}" onchange="AME.collect();AME.render()"></div>
+          <div><label>Code NAF (APE) ${det('naf')}</label><input id="ed_naf" value="${escq(m.naf)}" placeholder="86.10Z" title="${escq(m.nafLib)}" onchange="AME.collect();AME.render()"></div>
           <div><label>Effectif ${det('effectif')}</label><input id="ed_eff" value="${escq(m.effectif)}" placeholder="24"></div>
           <div><label>Préventeur</label><input id="ed_prev" value="${escq(m.preventeur)}" placeholder="IPRP / IDEST"></div>
           <div><label>Date</label><input id="ed_date" type="date" value="${escq(m.date)}"></div>
         </div>
+        ${panCtx}
 
         <div class="ame-h2">2 · Synthèse de l'analyse</div>
         <div class="ame-sy" id="ed_synth" contenteditable>${escq(syntheseTexte())}</div>
 
         <div class="ame-h2">3 · Tableau synthétique des risques</div>
-        <table class="ame-t"><thead><tr><th style="width:20%">Famille de risque</th><th style="width:38%">Moyens en place (observés)</th>
+        <table class="ame-t"><thead><tr><th style="width:20%">Famille de risque</th><th style="width:38%">Moyens en place (déclarés par l’employeur)</th>
           <th style="width:13%">Statut</th><th style="width:25%">Référence</th><th style="width:4%"></th></tr></thead>
           <tbody id="ed_risques">${state.risqueRows.map(trRisque).join('')}</tbody></table>
         <button class="btn ame-add" onclick="AME.addRisque()">➕ Ajouter un risque</button>
@@ -798,7 +835,7 @@
 
         ${d ? `<div class="ame-h2">5 · Contrôle qualité — redondances retirées</div>
         ${global.doublons.items.slice(0, 12).map(x => `<div class="dbl"><b>${escq(x.risque)}</b> — similarité ${Math.round(x.sim * 100)} %<br>
-          <span style="color:var(--muted)">Observé :</span> ${escq(x.observe)}<br>
+          <span style="color:var(--muted)">Déclaré :</span> ${escq(x.observe)}<br>
           <span style="color:var(--muted)">Conseillé :</span> ${escq(x.conseille)}</div>`).join('')}
         <p class="hint">Ces conseils ont été retirés du plan d'actions : la mesure est déjà déclarée en place.</p>` : ''}
 
@@ -806,7 +843,7 @@
         <div class="ame-conclu" id="ed_conclu" contenteditable>${renderConclusionHTML()}</div>
         <div class="hint" style="margin-top:6px">Conseils issus du modèle SPSTI 23/87 (« Remarques et conseils de l'équipe pluridisciplinaire »), déclenchés automatiquement par les risques détectés. Tout le bloc reste modifiable avant export.</div>
 
-        <div class="mention" style="margin-top:18px">Fiche d'entreprise établie au titre de l'article R.4624-46 du Code du travail. Les scores et statuts sont des indicateurs d'aide à la décision (méthode PréventIA®), sans valeur réglementaire, à confirmer par une visite in situ et à valider par le médecin du travail.</div>
+        <div class="mention" style="margin-top:18px">Fiche d'entreprise établie au titre de l'article R.4624-46 du Code du travail. Les moyens de prévention mentionnés sont ceux déclarés par l’employeur lors de la visite ; ils n’ont pas tous pu être constatés. Les scores et statuts sont des indicateurs d'aide à la décision (méthode PréventIA®), sans valeur réglementaire, à confirmer par une visite in situ et à valider par le médecin du travail.</div>
       </div>
     </div>`;
 
@@ -863,12 +900,32 @@
     addAttendu(id, sansRendu) {
       if (!sansRendu) collect();
       const r = Object.values(DB.risques).find(x => x.id === id); if (!r) return;
-      state.risqueRows.push({ risque: r.label, moyens: 'Non documenté dans la fiche source — à vérifier lors de la visite', statut: 'no', ref: r.ref || REF_DEFAUT });
+      state.risqueRows.push({ risque: r.label, moyens: 'Non déclaré dans la fiche source — à vérifier lors de la visite', statut: 'no', ref: r.ref || REF_DEFAUT });
       const prio = (r.grav || 0) >= 5 ? 'urgent' : 'importante';
       state.precoRows.push({ texte: `Évaluer le risque « ${r.label} » et l'intégrer au DUERP` + (r.epc ? ` (pistes : ${r.epc})` : ''), ref: r.ref || REF_DEFAUT, prio, delai: prio === 'urgent' ? '3 mois' : '6 mois' });
       const ordre = { urgent: 0, importante: 1, recommandee: 2 };
       state.precoRows.sort((a, b) => ordre[a.prio] - ordre[b.prio]);
       if (!sansRendu) render();
+    },
+    setContexte() {
+      collect();
+      const C = state.contexte, val = (document.getElementById('ctx_naf') || {}).value || '';
+      const q = val.trim(), mc = q.toUpperCase().match(/\d{2}\.?\d{2}\s?[A-Z]/);
+      let x = null;
+      if (mc) { const c = mc[0].replace(/\s/g, '').replace(/^(\d{2})(\d{2})/, '$1.$2'); x = nafCodes().find(n => n.c === c); }
+      else if (q.length > 2) { const nq = nrm(q); x = nafCodes().find(n => nrm(n.l).startsWith(nq)) || nafCodes().find(n => nrm(n.l).includes(nq)); }
+      const ancienNaf = C.naf;
+      C.naf = x ? x.c : (mc ? mc[0] : ''); C.nafLib = x ? x.l : '';
+      const sel = (document.getElementById('ctx_sect') || {}).value || '';
+      C.secteur = (C.naf !== ancienNaf && x && x.s) ? x.s : (sel || (x && x.s) || '');   /* NAF connu → secteur aligné par défaut */
+      C.autres = ((document.getElementById('ctx_autres') || {}).value || '').trim();
+      state.ctxOuvert = true; render();
+    },
+    toggleMetier(id) {
+      collect();
+      const L = state.contexte.metiers, i = L.indexOf(id);
+      if (i >= 0) L.splice(i, 1); else L.push(id);
+      state.ctxOuvert = true; render();
     },
     addTousAttendus() { collect(); risquesAttendus().liste.forEach(o => AME.addAttendu(o.r.id, true)); render(); },
     collect, render, analyser, matchRisk
@@ -896,7 +953,7 @@
       try { texte = clean(htmlVersTexte((await global.mammoth.convertToHtml({ arrayBuffer: buf })).value || '')); } catch (e) { console.warn('convertToHtml :', e.message); }
       if (texte.length < 80) texte = clean((await global.mammoth.extractRawText({ arrayBuffer: buf })).value || '');
       if (texte.length < 80) throw new Error('document vide ou illisible (' + texte.length + ' caractères extraits)');
-      state.source = file.name;
+      state.source = file.name; state.contexte = ctxVide(); state.ctxOuvert = false;
       set(`✅ « ${escq(file.name)} » importé — ${texte.length} caractères analysés localement. <b>Vérifiez l'anonymisation</b> (raison sociale, SIRET, noms) avant diffusion.`);
       analyser(texte);
     } catch (e) {
@@ -922,7 +979,7 @@ Moyens conseillés : former les salariés à la méthode PRAP
 Moyens observés : ***
 Moyens conseillés : désigner un référent santé sécurité, former deux sauveteurs secouristes du travail`;
   function ameDemo() {
-    state.source = 'exemple intégré';
+    state.source = 'exemple intégré'; state.contexte = ctxVide(); state.ctxOuvert = false;
     const st = document.getElementById('ameFileStatus');
     if (st) st.innerHTML = '📄 Exemple chargé — aucune donnée réelle.';
     analyser(DEMO);
@@ -1007,6 +1064,7 @@ Moyens conseillés : désigner un référent santé sécurité, former deux sauv
       `Préventeur : ${m.preventeur || '—'}`,
       state.source ? `Source : ${state.source}` : null
     ].filter(Boolean).join('  ·  ');
+    const ctxLine = ligneContexte();
 
     /* Conclusion pluridisciplinaire enrichie (extraite du modèle SPSTI) */
     const conclu = conclusionPluridisciplinaire();
@@ -1052,16 +1110,17 @@ Moyens conseillés : désigner un référent santé sécurité, former deux sauv
         children: [
           bandeau,
           P('', { after: 160 }),
-          P(idLine, { size: 17, color: CHARTE.muted }),
+          P(idLine, { size: 17, color: CHARTE.muted, after: ctxLine ? 40 : 100 }),
+          ...(ctxLine ? [P(ctxLine, { size: 17, color: CHARTE.navy })] : []),
           H2('1 · Synthèse de l’analyse'),
           P(state.synthese || syntheseTexte(), { size: 19 }),
           H2('2 · Tableau synthétique des risques'),
-          table([20, 38, 14, 28], ['Famille de risque', 'Moyens en place (observés)', 'Statut', 'Référence'], rqRows),
+          table([20, 38, 14, 28], ['Famille de risque', 'Moyens en place (déclarés par l’employeur)', 'Statut', 'Référence'], rqRows),
           H2('3 · Préconisations employeur priorisées'),
           table([42, 28, 16, 14], ['Préconisation', 'Référence réglementaire', 'Priorité', 'Échéance'], prRows),
           ...conclusionChildren,
           P('', { after: 200 }),
-          P('Fiche d’entreprise établie au titre de l’article R.4624-46 du Code du travail. L’attribution par l’INSEE d’un code APE, à des fins statistiques, ne saurait suffire à créer des droits ou des obligations (art. 5 du décret n° 2007-1888). Les statuts et priorités sont des indicateurs d’aide à la décision (méthode PréventIA®), sans valeur réglementaire, à confirmer par une visite in situ et à valider par le médecin du travail.',
+          P('Fiche d’entreprise établie au titre de l’article R.4624-46 du Code du travail. Les moyens de prévention mentionnés sont ceux déclarés par l’employeur lors de la visite ; ils n’ont pas tous pu être constatés. L’attribution par l’INSEE d’un code APE, à des fins statistiques, ne saurait suffire à créer des droits ou des obligations (art. 5 du décret n° 2007-1888). Les statuts et priorités sont des indicateurs d’aide à la décision (méthode PréventIA®), sans valeur réglementaire, à confirmer par une visite in situ et à valider par le médecin du travail.',
             { italics: true, size: 15, color: CHARTE.muted })
         ]
       }]
@@ -1069,6 +1128,16 @@ Moyens conseillés : désigner un référent santé sécurité, former deux sauv
   }
 
   /* Repli .doc HTML — même charte */
+  /* « Activité réelle : … · Métiers principaux : … » pour les exports */
+  function ligneContexte() {
+    const C = state.contexte || ctxVide();
+    const sect = C.secteur && global.DB ? (DB.secteurs || []).find(x => x.naf === C.secteur) : null;
+    const mets = (C.metiers || []).map(id => ((global.DB && DB.metiers) || []).find(x => x.id === id)).filter(Boolean).map(x => x.label);
+    if (C.autres) mets.push(C.autres);
+    return [C.naf ? `Activité réelle : NAF ${C.naf}${C.nafLib ? ' — ' + C.nafLib : ''}` : (sect ? `Secteur d’activité : ${sect.label}` : ''),
+      mets.length ? `Métiers principaux : ${mets.join(', ')}` : ''].filter(Boolean).join('  ·  ');
+  }
+
   function fallbackHTML() {
     const m = state.meta;
     const rows = state.risqueRows.map(r => `<tr><td><b>${escq(r.risque)}</b></td><td>${escq(r.moyens)}</td>
@@ -1079,12 +1148,13 @@ Moyens conseillés : désigner un référent santé sécurité, former deux sauv
         <div style="font-size:9pt;letter-spacing:1px;color:#7DCCEF">PRÉVENTIA-LAB · FICHE D'ENTREPRISE AMÉLIORÉE</div>
         <div style="font-size:18pt;font-weight:700">${escq(m.entreprise || 'Établissement anonymisé')}</div></div>
       <p style="color:${hx(CHARTE.muted)};font-size:9pt">${escq([m.naf ? 'NAF ' + m.naf : '', m.effectif ? 'Effectif : ' + m.effectif : '', 'Date : ' + m.date, 'Préventeur : ' + (m.preventeur || '—')].filter(Boolean).join('  ·  '))}</p>
+      ${ligneContexte() ? `<p style="color:${hx(CHARTE.navy)};font-size:9pt">${escq(ligneContexte())}</p>` : ''}
       <h2>1 · Synthèse de l'analyse</h2><p>${escq(state.synthese || syntheseTexte())}</p>
       <h2>2 · Tableau synthétique des risques</h2>
-      <table><thead><tr><th>Famille de risque</th><th>Moyens en place (observés)</th><th>Statut</th><th>Référence</th></tr></thead><tbody>${rows}</tbody></table>
+      <table><thead><tr><th>Famille de risque</th><th>Moyens en place (déclarés par l’employeur)</th><th>Statut</th><th>Référence</th></tr></thead><tbody>${rows}</tbody></table>
       <h2>3 · Préconisations employeur priorisées</h2>
       <table><thead><tr><th>Préconisation</th><th>Référence réglementaire</th><th>Priorité</th><th>Échéance</th></tr></thead><tbody>${pre}</tbody></table>
-      <p style="font-size:8pt;font-style:italic;color:${hx(CHARTE.muted)}">Fiche d'entreprise établie au titre de l'article R.4624-46 du Code du travail — document d'aide à la décision (méthode PréventIA®), à valider par le médecin du travail après visite in situ.</p>`;
+      <p style="font-size:8pt;font-style:italic;color:${hx(CHARTE.muted)}">Fiche d'entreprise établie au titre de l'article R.4624-46 du Code du travail. Les moyens de prévention mentionnés sont ceux déclarés par l’employeur lors de la visite ; ils n’ont pas tous pu être constatés. Document d'aide à la décision (méthode PréventIA®), à valider par le médecin du travail après visite in situ.</p>`;
   }
 
   async function ameExportDocx() {
@@ -1143,7 +1213,7 @@ Moyens conseillés : désigner un référent santé sécurité, former deux sauv
     const A = {
       secteur: null,
       taille: taille,
-      metiers: [],
+      metiers: (state.contexte.metiers || []).map(id => (DB_.metiers || []).find(x => x.id === id)).filter(Boolean),
       unites: [],
       risks: matched
     };
@@ -1172,8 +1242,8 @@ Moyens conseillés : désigner un référent santé sécurité, former deux sauv
     /* 4. Métadonnées */
     const meta = {
       entreprise: state.meta.entreprise || '',
-      naf: state.meta.naf || '',
-      nafLib: state.meta.nafLib || '',
+      naf: state.contexte.naf || state.meta.naf || '',
+      nafLib: state.contexte.naf ? (state.contexte.nafLib || '') + ' (activité réelle)' : (state.meta.nafLib || ''),
       section: '', sectionLib: '',
       effectif: state.meta.effectif || '',
       date: state.meta.date || '',
