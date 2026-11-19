@@ -331,7 +331,7 @@
     if (V.synthese) out += XML_H('Synthèse de l’analyse') + XML_PARA(V.synthese);
     if (rq.length) {
       out += XML_H('Tableau synthétique des risques');
-      out += xmlTable([2000, 3900, 1300, 2400], ['Famille de risque', 'Moyens en place (déclarés ou observés)', 'Statut', 'Référence'],
+      out += xmlTable([2000, 3900, 1300, 2400], ['Famille de risque', 'Moyens en place (déclarés par l’employeur)', 'Statut', 'Référence'],
         rq.map(r => {
           const s = STAT[r.statut] || STAT.warn;
           return [{ t: r.risque, bold: true }, { t: r.moyens }, { t: s[0], bold: true, color: s[1] }, { t: r.ref, color: '44546A' }];

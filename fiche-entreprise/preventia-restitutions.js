@@ -321,7 +321,7 @@
       + (rows.some(x => x.r.survCond) ? ` et ${rows.filter(x => x.r.survCond).length} dont le suivi dépend de l'exposition (à préciser). ` : `. `);
     if (top.length) concl += `Familles prioritaires : ${top.slice(0, 3).map(f => f.nom).join(', ')}. `;
     if (nonEval.length) concl += `${nonEval.length} risque(s) restent à évaluer in situ. `;
-    if (doublons && doublons.n) concl += `${doublons.n} redondance(s) « observé / conseillé » détectée(s) : à arbitrer avant diffusion. `;
+    if (doublons && doublons.n) concl += `${doublons.n} redondance(s) « déclaré / conseillé » détectée(s) : à arbitrer avant diffusion. `;
     concl += `Document d'aide à la rédaction (art. R.4624-46) — à valider par le médecin du travail après visite d'entreprise.`;
     return {
       familles: top.map(f => `${f.nom} (${fs[f.key]})`),
@@ -392,11 +392,11 @@
       || '<tr><td colspan="7" class="pvx-sub">Aucune action prioritaire</td></tr>'}</tbody></table>`;
 
     const doubTable = (doublons && doublons.items && doublons.items.length)
-      ? `<table><thead><tr><th>Risque</th><th>Observé</th><th>Conseillé</th><th>Similarité</th></tr></thead><tbody>${
+      ? `<table><thead><tr><th>Risque</th><th>Déclaré</th><th>Conseillé</th><th>Similarité</th></tr></thead><tbody>${
         doublons.items.slice(0, 15).map(d => `<tr><td>${esc(d.risque || '—')}</td><td class="pvx-sub">${esc(d.observe)}</td>
           <td class="pvx-sub">${esc(d.conseille)}</td><td><b style="color:#d23f2f">${Math.round((d.sim || 0) * 100)} %</b></td></tr>`).join('')
-      }</tbody></table><div class="pvx-sub" style="margin-top:8px">Une mesure déjà <b>observée</b> ne doit pas être reformulée en <b>conseil</b> : arbitrer (supprimer le doublon ou monter le conseil d'un cran).</div>`
-      : `<div class="pvx-sub">Aucune redondance détectée entre les colonnes « observé » et « conseillé » (seuil Jaccard 0,55).</div>`;
+      }</tbody></table><div class="pvx-sub" style="margin-top:8px">Une mesure déjà <b>déclarée en place</b> ne doit pas être reformulée en <b>conseil</b> : arbitrer (supprimer le doublon ou monter le conseil d'un cran).</div>`
+      : `<div class="pvx-sub">Aucune redondance détectée entre les colonnes « déclaré » et « conseillé » (seuil Jaccard 0,55).</div>`;
 
     return `<div id="pvxExpert">
       ${sec('1 · Identification de l’entreprise', idCard)}
@@ -405,7 +405,7 @@
       ${sec('3 · Risques professionnels — cotation détaillée', risqTable)}
       ${sec('4 · Synthèse par famille (8 familles PréventIA)', famTable)}
       ${sec('5 · Moyens de prévention en place', moyensTable)}
-      ${sec('6 · Contrôle qualité — doublons « observé / conseillé »', doubTable)}
+      ${sec('6 · Contrôle qualité — doublons « déclaré / conseillé »', doubTable)}
       ${sec('7 · Analyse', `<div style="font-size:13.5px;line-height:1.75">
         <b>Familles prioritaires :</b> ${ia.familles.join(' · ') || 'aucune'}<br>
         <b>Risques relevant d’un suivi renforcé (SIR) :</b> ${ia.sir.map(esc).join(' · ') || 'aucun'}<br>
@@ -489,7 +489,7 @@
             <b>Suivi renforcé (SIR) :</b> ${ia.sir.map(esc).join(' · ') || 'aucun'}<br>
             <b>Risques déclarés maîtrisés :</b> ${ia.protecteurs.map(esc).join(' · ') || '—'}<br>
             <b>À expertiser :</b> ${ia.expertise.map(esc).join(' · ') || '—'}<br>
-            <b>Doublons observé/conseillé :</b> ${(doublons && doublons.n) || 0}
+            <b>Doublons déclaré/conseillé :</b> ${(doublons && doublons.n) || 0}
           </div></div>
         <div class="pvx-block"><h5>Conclusion</h5>
           <div style="font-size:10.5px;line-height:1.55;background:var(--pvx-teal-050);padding:8px 10px;border-radius:8px">${esc(ia.conclusion)}</div></div>
