@@ -649,11 +649,11 @@ a.meta-chip.period:hover { background:#136A63; color:#fff; }
     <div class="legend-grid">
       <div class="legend-item si">
         <div class="code">SI</div>
-        <p>Suivi Individuel — Visite d'Information et de Prévention (VIP) initiale puis tous les 5 ans (3 ans si SIA). Par professionnel de santé au travail.</p>
+        <p>Suivi Individuel — Visite d'Information et de Prévention (VIP) dans les 3 mois puis tous les 5 ans max. Par professionnel de santé au travail. VIP <strong>avant l'affectation</strong> pour les agents biologiques du groupe 2 et les champs électromagnétiques &gt; VLE (R.4624-18).</p>
       </div>
       <div class="legend-item sia">
         <div class="code">SIA</div>
-        <p>Suivi Individuel Adapté — Modulé selon situation : travailleurs de nuit, < 18 ans, travailleurs handicapés (RQTH), femmes enceintes/allaitantes, invalidité, champs EM > VLA. Périodicité ≤ 3 ans.</p>
+        <p>Suivi Individuel Adapté — Modulé selon situation : travailleurs de nuit, < 18 ans, travailleurs handicapés (RQTH), femmes enceintes/allaitantes, invalidité. Périodicité ≤ 3 ans (nuit, handicap, invalidité), sinon ≤ 5 ans.</p>
       </div>
       <div class="legend-item sir">
         <div class="code">SIR</div>
@@ -804,6 +804,9 @@ const PERIODE_LONG = {
   SIA: "Visite d'information et de prévention par un professionnel de santé au travail, selon les modalités définies par le médecin du travail : renouvellement au moins tous les 3 ans pour les travailleurs de nuit, handicapés ou titulaires d'une pension d'invalidité (art. R.4624-17), sinon au moins tous les 5 ans.",
   SI:  "Visite d'information et de prévention renouvelée au moins tous les 5 ans par un professionnel de santé au travail (médecin du travail ou IDEST), sauf modulation par le médecin du travail."
 };
+// Agents biologiques groupe 2 (et CEM > VLE) : SI avec VIP AVANT l'affectation (R.4624-18), renouvellement ≤ 5 ans
+const VIP_AVANT = m => m.suivi === 'SI' && (m.categories || []).includes('BIO_12');
+const periode = m => (PERIODE[m.suivi] || '') + (VIP_AVANT(m) ? ' · VIP avant affectation' : '');
 const LIEN_DISQUE = s => `../periodicites/index.html#${s}`;
 
 // Découpe "a, b (c, d), e" → ["a", "b (c, d)", "e"] : ne coupe pas dans les parenthèses
@@ -823,7 +826,7 @@ function renderCards(list, term) {
   const container = document.getElementById('results-cards');
   container.innerHTML = list.map((m, idx) => {
     const cls = m.suivi.toLowerCase();
-    const periodTxt = PERIODE[m.suivi] || '';
+    const periodTxt = periode(m);
     return `
       <article class="card ${cls}">
         <div class="card-head">
@@ -868,7 +871,7 @@ function renderTable(list, term) {
       <td class="metier-name">${highlight(m.metier, term)}</td>
       <td>${highlight(m.secteur, term)}</td>
       <td class="suivi suivi-${m.suivi.toLowerCase()}">${m.suivi}</td>
-      <td><a href="${LIEN_DISQUE(m.suivi)}">${PERIODE[m.suivi] || '—'}</a></td>
+      <td><a href="${LIEN_DISQUE(m.suivi)}">${periode(m) || '—'}</a></td>
       <td>${highlight(m.risques, term)}</td>
       <td>${highlight(m.epi, term)}</td>
       <td>${highlight(m.epc, term)}</td>
@@ -1053,7 +1056,7 @@ function genererOrdonnance(idx, attempt) {
       infoRow("Secteur d'activité", m.secteur),
       infoRow("Code PCS-ESE", m.pcs_ese || "Non renseigné"),
       infoRow("Type de suivi médical", suiviLabels[m.suivi] || m.suivi),
-      infoRow("Périodicité du suivi", PERIODE[m.suivi] || "Selon avis du médecin du travail"),
+      infoRow("Périodicité du suivi", periode(m) || "Selon avis du médecin du travail"),
       infoRow("Date d'édition", today)
     ]
   }));
@@ -1082,6 +1085,8 @@ function genererOrdonnance(idx, attempt) {
     children.push(para("→ Examen médical d'aptitude à l'embauche réalisé par le médecin du travail AVANT l'affectation au poste, puis renouvelé périodiquement (art. R.4624-24 et suivants du Code du travail)."));
   } else if (m.suivi === 'SIA') {
     children.push(para("→ Visite d'information et de prévention adaptée, avec modalités définies par le médecin du travail."));
+  } else if (VIP_AVANT(m)) {
+    children.push(para("→ Exposition aux agents biologiques du groupe 2 : visite d'information et de prévention (VIP) réalisée AVANT l'affectation au poste par un professionnel de santé au travail (art. R.4624-18 CT), puis renouvellement au moins tous les 5 ans."));
   } else {
     children.push(para("→ Visite d'information et de prévention (VIP) réalisée par un professionnel de santé au travail."));
   }
@@ -1233,7 +1238,7 @@ function genererFicheSuivi(idx, attempt) {
     ['Secteur d\'activité', m.secteur],
     ['Code PCS-ESE', m.pcs_ese || 'Non renseigné'],
     ['Type de suivi', `${m.suivi} — ${suiviLabel}`],
-    ['Périodicité', PERIODE[m.suivi] || 'Selon avis MT'],
+    ['Périodicité', periode(m) || 'Selon avis MT'],
     ['Date d\'édition', today],
     ['Rédacteur', 'IDE-ST / IPRP — SPSTI']
   ];
@@ -1279,6 +1284,9 @@ function genererFicheSuivi(idx, attempt) {
   } else if (m.suivi === 'SIA') {
     children.push(par('Ce poste relève du SIA (art. R4624-17 à R4624-21 CT) : visite d\'information et de prévention avec modalités adaptées ; périodicité ≤ 3 ans pour le travail de nuit, le handicap ou l\'invalidité, sinon ≤ 5 ans.'));
     children.push(bul('Situations relevant du SIA : travailleurs de nuit, handicap, femmes enceintes, invalidité, ACD dangereux non CMR'));
+  } else if (VIP_AVANT(m)) {
+    children.push(par('Ce poste relève du SI (art. R4624-10 à R4624-16 CT). Exposition aux agents biologiques du groupe 2 : VIP initiale AVANT l\'affectation au poste (art. R4624-18 CT), puis renouvellement ≤ 5 ans.'));
+    children.push(bul('Même règle pour les champs électromagnétiques au-delà des VLE (art. R4453-10) : SI avec VIP préalable, et non SIA'));
   } else {
     children.push(par('Ce poste relève du SI (art. R4624-10 à R4624-16 CT) : VIP initiale dans les 3 mois suivant l\'embauche, puis renouvellement ≤ 5 ans.'));
   }
@@ -1288,9 +1296,9 @@ function genererFicheSuivi(idx, attempt) {
   const vCW = [2800,3000,2200,1900];
   const visites = [
     [m.suivi==='SIR'?'Examen médical d\'aptitude initial':'VIPI',
-     m.suivi==='SIR'?'Avant affectation au poste':'Dans les 3 mois suivant l\'embauche',
+     m.suivi==='SIR'||VIP_AVANT(m)?'Avant affectation au poste':'Dans les 3 mois suivant l\'embauche',
      m.suivi==='SIR'?'Médecin du travail':'IDE-ST / MT',
-     m.suivi==='SIR'?'R4624-24 CT':'R4624-10 CT'],
+     m.suivi==='SIR'?'R4624-24 CT':VIP_AVANT(m)?'R4624-18 CT':'R4624-10 CT'],
     ['Renouvellement',
      m.suivi==='SIR'?'≤ 4 ans':m.suivi==='SIA'?'≤ 3 ans (nuit, handicap, invalidité), sinon ≤ 5 ans':'≤ 5 ans',
      m.suivi==='SIR'?'Médecin du travail':'IDE-ST / MT',
